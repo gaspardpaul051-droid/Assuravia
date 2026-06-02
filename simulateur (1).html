@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- Google Analytics 4 — remplace G-XXXXXXXXXX par ton ID de mesure -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculer ma prime | assuravia.ch</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+:root{
+  --blue:#1B5E8C;--blue-d:#0E3D5B;--blue-l:#EAF3FA;--blue-ll:#F4F9FC;
+  --green:#19865A;--green-d:#126645;--green-l:#E8F6EF;
+  --gold:#B8860B;--gold-l:#FFF9E6;--gold-b:#FFD700;
+  --silver:#6B7B8D;--silver-l:#F0F4F8;--silver-b:#C0C0C0;
+  --bronze:#8B4513;--bronze-l:#FFF0E8;--bronze-b:#CD7F32;
+  --slate:#2D4A5F;--text:#1A2E42;--muted:#4A6278;
+  --light:#F0F5F9;--border:#D0E4EF;--white:#FFFFFF;
+  --shadow:0 2px 20px rgba(27,94,140,.10);
+  --shadow-lg:0 8px 48px rgba(27,94,140,.14);
+  --font:'Outfit',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--light);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:1.35rem;font-weight:800;color:var(--blue)}
+.logo em{color:var(--green);font-style:normal}
+.nav-back{display:flex;align-items:center;gap:.4rem;font-size:.875rem;color:var(--muted);cursor:pointer;transition:color .15s}
+.nav-back:hover{color:var(--blue)}
+.nav-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* PROGRESS */
+.progress-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:1rem 24px}
+.progress-inner{max-width:640px;margin:0 auto}
+.progress-steps{display:flex;justify-content:space-between;margin-bottom:.6rem;position:relative}
+.progress-steps::before{content:'';position:absolute;top:13px;left:13px;right:13px;height:2px;background:var(--border);z-index:0}
+.progress-fill{position:absolute;top:13px;left:13px;height:2px;background:var(--green);transition:width .4s ease;z-index:1}
+.ps{width:28px;height:28px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--muted);position:relative;z-index:2;transition:all .3s;border:2px solid var(--border)}
+.ps.done{background:var(--green);border-color:var(--green);color:#fff}
+.ps.active{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 4px rgba(27,94,140,.15)}
+.progress-lbl{font-size:.78rem;color:var(--muted);text-align:center}
+
+/* STEPS */
+.steps-container{max-width:640px;margin:3rem auto;padding:0 24px 4rem}
+.step{display:none;animation:fadeIn .35s ease}
+.step.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.step-tag{font-size:.72rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem;display:flex;align-items:center;gap:.35rem}
+.step-tag svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2.5}
+.step-q{font-size:1.9rem;font-weight:800;color:var(--text);line-height:1.15;margin-bottom:.5rem}
+.step-q em{color:var(--green);font-style:normal}
+.step-hint{font-size:.9rem;color:var(--muted);margin-bottom:2rem;line-height:1.6}
+
+/* INPUTS */
+.fg{margin-bottom:1.1rem}
+.fg label{display:block;font-size:.82rem;font-weight:700;color:var(--slate);margin-bottom:.4rem;letter-spacing:.02em}
+.fg input,.fg select{width:100%;padding:.9rem 1.1rem;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font);font-size:1rem;color:var(--text);background:var(--white);transition:all .2s;outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(27,94,140,.08)}
+.fg input::placeholder{color:#A0B4C4}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:500px){.input-row{grid-template-columns:1fr}}
+
+/* COUNTER */
+.counter-group{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;background:var(--white);border:1.5px solid var(--border);border-radius:12px;margin-bottom:1rem;transition:border-color .2s}
+.counter-group:hover{border-color:var(--blue-l)}
+.cg-left{display:flex;align-items:center;gap:.85rem}
+.cg-icon{width:44px;height:44px;border-radius:10px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cg-icon svg{width:22px;height:22px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round}
+.cg-label{font-size:.95rem;font-weight:600;color:var(--text)}
+.cg-sub{font-size:.78rem;color:var(--muted)}
+.counter-ctrl{display:flex;align-items:center;gap:.5rem}
+.counter-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:1.2rem;font-weight:300;display:flex;align-items:center;justify-content:center;transition:all .18s;color:var(--slate);line-height:1}
+.counter-btn:hover{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.counter-btn:disabled{opacity:.35;cursor:not-allowed}
+.counter-val{font-size:1.2rem;font-weight:800;color:var(--blue);min-width:28px;text-align:center}
+
+/* DATE */
+.fg input[type="date"]{cursor:pointer;color-scheme:light}
+
+/* BTNS */
+.btn-next{width:100%;padding:1rem;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:1.05rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .22s;margin-top:.5rem}
+.btn-next:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(25,134,90,.3)}
+.btn-next svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.btn-next:hover svg{transform:translateX(3px)}
+.btn-back{display:inline-flex;align-items:center;gap:.35rem;font-size:.875rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--font);padding:.5rem 0;margin-top:.75rem;transition:color .15s}
+.btn-back:hover{color:var(--blue)}
+.btn-back svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ═══════════ RESULTS (STEP 5) ═══════════ */
+.results-wrap{max-width:1060px;margin:2rem auto;padding:0 24px 4rem}
+.results-header{text-align:center;margin-bottom:2.5rem;animation:fadeIn .4s ease}
+.results-header .greeting{font-size:1rem;color:var(--green);font-weight:600;margin-bottom:.4rem}
+.results-header h2{font-size:2rem;font-weight:800;color:var(--text);margin-bottom:.5rem}
+.results-header p{font-size:.95rem;color:var(--muted)}
+.results-header .persons-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--blue-l);color:var(--blue);border-radius:20px;padding:.3rem .9rem;font-size:.82rem;font-weight:600;margin-top:.5rem}
+
+/* PODIUM LAYOUT */
+.podium-wrap{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:16px;align-items:end;margin-bottom:2rem}
+.podium-card{border-radius:14px;overflow:hidden;border:2px solid var(--border);background:var(--white);box-shadow:var(--shadow);transition:all .3s;animation:slideUp .5s ease both}
+.podium-card:nth-child(1){animation-delay:.1s}
+.podium-card:nth-child(2){animation-delay:0s}
+.podium-card:nth-child(3){animation-delay:.2s}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.podium-card.rank1{border-color:var(--gold-b);box-shadow:0 8px 40px rgba(255,215,0,.2),var(--shadow-lg)}
+.podium-card.rank2{border-color:var(--silver-b)}
+.podium-card.rank3{}
+
+/* Card header */
+.pc-header{padding:1.1rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.pc-header.h1{background:linear-gradient(135deg,#7B5800,#B8860B)}
+.pc-header.h2{background:linear-gradient(135deg,#4A5568,#6B7B8D)}
+.pc-header.h3{background:linear-gradient(135deg,#6B3A2A,#8B4513)}
+.pc-rank{display:flex;align-items:center;gap:.5rem}
+.pc-rank-num{font-size:1.4rem;font-weight:800;color:rgba(255,255,255,.9)}
+.pc-rank-lbl{font-size:.72rem;color:rgba(255,255,255,.75);font-weight:500}
+.pc-medal{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc-medal.m1{background:rgba(255,215,0,.25)}
+.pc-medal.m2{background:rgba(192,192,192,.25)}
+.pc-medal.m3{background:rgba(205,127,50,.25)}
+.pc-medal svg{width:20px;height:20px;fill:rgba(255,255,255,.9)}
+
+/* Recommended badge */
+.rec-badge{background:var(--green);color:#fff;font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+
+/* Card body */
+.pc-body{padding:1.25rem}
+.pc-logo-wrap{margin-bottom:.75rem}
+.ins-logo{width:140px;height:44px;display:block}
+.pc-contract{font-size:.75rem;color:var(--muted);margin-bottom:1.1rem;display:flex;align-items:center;gap:.3rem}
+.pc-contract svg{width:12px;height:12px;stroke:var(--green);fill:none;stroke-width:2.5}
+.pc-price-wrap{margin-bottom:1.1rem}
+.pc-price-monthly{display:flex;align-items:baseline;gap:.4rem;line-height:1;margin-bottom:.3rem}
+.pc-price-amount{font-size:2.1rem;font-weight:800;color:var(--blue)}
+.rank1 .pc-price-amount{font-size:2.3rem}
+.pc-price-unit{font-size:.95rem;font-weight:700;color:var(--muted)}
+.pc-price-annual{font-size:.82rem;color:var(--muted)}
+.pc-price-annual strong{color:var(--text);font-weight:700}
+.pc-divider{height:1px;background:var(--border);margin:1rem 0}
+.pc-features{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.25rem}
+.pc-feat{display:flex;align-items:flex-start;gap:.5rem;font-size:.82rem;color:var(--muted);line-height:1.4}
+.feat-ok{width:16px;height:16px;min-width:16px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.feat-ok svg{width:9px;height:9px;stroke:var(--green);fill:none;stroke-width:3}
+
+/* Card CTAs */
+.pc-ctas{display:flex;flex-direction:column;gap:.6rem}
+.cta-primary{padding:.8rem 1rem;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s;width:100%}
+.cta-primary:hover{background:var(--green-d);transform:translateY(-1px);box-shadow:0 4px 16px rgba(25,134,90,.3)}
+.cta-primary svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5}
+.cta-secondary{padding:.7rem 1rem;background:transparent;color:var(--blue);border:1.5px solid var(--border);border-radius:8px;font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:all .2s;width:100%}
+.cta-secondary:hover{border-color:var(--blue);background:var(--blue-ll)}
+.cta-secondary svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:2}
+
+/* COMPARISON TABLE */
+.comp-table-wrap{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1.5rem;animation:fadeIn .6s .3s both}
+.comp-table-title{padding:1.1rem 1.5rem;font-size:.88rem;font-weight:700;color:var(--slate);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+.comp-table-title svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:2}
+.comp-table{width:100%;border-collapse:collapse}
+.comp-table th{padding:.75rem 1rem;font-size:.78rem;font-weight:700;color:var(--muted);text-align:center;border-bottom:1px solid var(--border);background:var(--light)}
+.comp-table th:first-child{text-align:left}
+.comp-table td{padding:.7rem 1rem;font-size:.82rem;color:var(--muted);text-align:center;border-bottom:1px solid rgba(208,228,239,.5)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{text-align:left;color:var(--text);font-weight:500}
+.comp-table tr:hover td{background:var(--light)}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--green-l)}
+.ck svg{width:11px;height:11px;stroke:var(--green);fill:none;stroke-width:3}
+.cross{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FEE2E2}
+.cross svg{width:10px;height:10px;stroke:#DC2626;fill:none;stroke-width:2.5}
+.badge-gold{background:var(--gold-l);color:var(--gold);font-size:.72rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;white-space:nowrap}
+
+/* ═══════════ CONTACT STEP (STEP 6) ═══════════ */
+.contact-card{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:2.5rem;box-shadow:var(--shadow)}
+.chosen-banner{display:flex;align-items:center;gap:.75rem;background:var(--green-l);border:1px solid rgba(25,134,90,.2);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.75rem}
+.chosen-banner svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:2;flex-shrink:0}
+.chosen-banner-text{font-size:.9rem;color:var(--green-d);font-weight:600}
+
+/* ═══════════ CONFIRMATION (STEP 7) ═══════════ */
+.confirm-card{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:3rem 2.5rem;text-align:center;box-shadow:var(--shadow-lg)}
+.confirm-check{width:80px;height:80px;border-radius:50%;background:var(--green-l);border:3px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+.confirm-check svg{width:40px;height:40px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round}
+.confirm-title{font-size:1.7rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
+.confirm-msg{font-size:1rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.confirm-info{background:var(--light);border-radius:10px;padding:1rem 1.25rem;font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:.6rem;justify-content:center;margin-bottom:2rem}
+.confirm-info svg{width:18px;height:18px;stroke:var(--blue);fill:none;stroke-width:2;flex-shrink:0}
+.btn-home{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;background:var(--blue);color:#fff;border-radius:10px;font-family:var(--font);font-size:.95rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
+.btn-home:hover{background:var(--blue-d);transform:translateY(-1px)}
+
+/* CONFETTI CANVAS */
+#confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;display:none}
+
+@media(max-width:768px){
+  .podium-wrap{grid-template-columns:1fr;gap:12px;align-items:start}
+  .results-wrap{padding:0 16px 3rem}
+  .steps-container{padding:0 16px 3rem}
+  .step-q{font-size:1.5rem}
+}
+
+/* LOGO IN CARD HEADER */
+.pc-logo{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;padding:4px;flex-shrink:0}
+
+/* FEATURE SUB-TEXT */
+.pc-feat{align-items:flex-start}
+.pc-feat-sub{font-size:.75rem;color:var(--muted);margin-top:.1rem;font-weight:400;line-height:1.35}
+
+/* AMOUNT BADGES IN TABLE */
+.amt{display:inline-block;font-size:.82rem;font-weight:700;color:var(--slate)}
+.amt-green{color:var(--green)}
+.amt-blue{color:var(--blue)}
+
+/* TABLE ROW HOVER */
+.comp-table tbody tr:hover td{background:var(--blue-ll)}
+
+.ct-lbl{font-weight:600;color:var(--text);font-size:.85rem}
+.ct-sub{font-size:.73rem;color:var(--muted);line-height:1.4;margin-top:.1rem}
+.ok-txt{font-size:.8rem;color:var(--green);font-weight:600}
+.no-txt{font-size:.8rem;color:#B0BCCA}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <a href="index.html" class="logo">assur<em>avia</em>.ch</a>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Retour au site
+  </a>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-inner">
+    <div class="progress-steps" id="progressSteps">
+      <div class="steps-line-track" style="position:relative;width:100%;display:flex;justify-content:space-between">
+        <div class="ps active" id="ps1">1</div>
+        <div class="ps" id="ps2">2</div>
+        <div class="ps" id="ps3">3</div>
+        <div class="ps" id="ps4">4</div>
+      </div>
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-lbl" id="progressLbl">Étape 1 sur 4 — Vos coordonnées</div>
+  </div>
+</div>
+
+<!-- ═══ STEP 1 : NOM + PRÉNOM ═══ -->
+<div class="steps-container" id="stepContainer">
+  <div class="step active" id="step1">
+    <div class="step-tag">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Vos coordonnées
+    </div>
+    <h1 class="step-q">Comment vous appelez-vous ?</h1>
+    <p class="step-hint">Ces informations nous permettent de personnaliser votre simulation.</p>
+    <div class="input-row">
+      <div class="fg"><label>Prénom</label><input id="prenom" type="text" placeholder="Marie" autocomplete="given-name"></div>
+      <div class="fg"><label>Nom</label><input id="nom" type="text" placeholder="Dupont" autocomplete="family-name"></div>
+    </div>
+    <button class="btn-next" onclick="nextStep(1)">
+      Continuer
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+<!-- ═══ STEP 2 : PERSONNES ═══ -->
+  <div class="step" id="step2">
+    <div class="step-tag">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Composition du voyage
+    </div>
+    <h1 class="step-q">Combien de personnes<br>voyagent avec vous ?</h1>
+    <p class="step-hint">Indiquez le nombre de personnes à assurer pour ce voyage.</p>
+    <div class="counter-group">
+      <div class="cg-left">
+        <div class="cg-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div><div class="cg-label">Adultes</div><div class="cg-sub">14 ans et plus</div></div>
+      </div>
+      <div class="counter-ctrl">
+        <button class="counter-btn" id="adultes-minus" onclick="changeCount('adultes',-1)">&#8722;</button>
+        <span class="counter-val" id="adultes-val">1</span>
+        <button class="counter-btn" onclick="changeCount('adultes',1)">&#43;</button>
+      </div>
+    </div>
+    <div class="counter-group">
+      <div class="cg-left">
+        <div class="cg-icon"><svg viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="14" cy="8" r="4"/><path d="M6 24c0-4.418 3.582-8 8-8s8 3.582 8 8"/></svg></div>
+        <div><div class="cg-label">Enfants</div><div class="cg-sub">Moins de 14 ans</div></div>
+      </div>
+      <div class="counter-ctrl">
+        <button class="counter-btn" id="enfants-minus" onclick="changeCount('enfants',-1)">&#8722;</button>
+        <span class="counter-val" id="enfants-val">0</span>
+        <button class="counter-btn" onclick="changeCount('enfants',1)">&#43;</button>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(2)">
+      Continuer
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="btn-back" onclick="goToStep(1)">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </button>
+  </div>
+
+<!-- ═══ STEP 3 : ADRESSE ═══ -->
+  <div class="step" id="step3">
+    <div class="step-tag">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Adresse de résidence
+    </div>
+    <h1 class="step-q">Quelle est votre adresse<br>de résidence ?</h1>
+    <p class="step-hint">Requise pour valider votre éligibilité aux offres en Suisse.</p>
+    <div class="fg"><label>Adresse complète</label><input id="adresse" type="text" placeholder="Rue des Alpes 12, 1201 Genève" autocomplete="street-address"></div>
+    <button class="btn-next" onclick="nextStep(3)">
+      Continuer
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="btn-back" onclick="goToStep(2)">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </button>
+  </div>
+
+<!-- ═══ STEP 4 : DATE DÉBUT ═══ -->
+  <div class="step" id="step4">
+    <div class="step-tag">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Date de début
+    </div>
+    <h1 class="step-q">Quand souhaitez-vous<br>commencer votre couverture ?</h1>
+    <p class="step-hint">Votre assurance débutera à la date choisie. Le contrat est conclu pour 3 ans.</p>
+    <div class="fg"><label>Date de début souhaitée</label><input id="dateDebut" type="date"></div>
+    <button class="btn-next" onclick="showResults()">
+      Calculer ma prime
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    </button>
+    <button class="btn-back" onclick="goToStep(3)">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour
+    </button>
+  </div>
+</div>
+
+<!-- ═══ STEP 5 : RÉSULTATS ═══ -->
+<div id="step5" style="display:none">
+  <div class="results-wrap">
+    <div class="results-header">
+      <div class="greeting" id="res-greeting">Bonjour !</div>
+      <h2>Voici vos 3 meilleures offres</h2>
+      <p>Sélectionnez l'offre qui correspond le mieux à vos besoins.</p>
+      <div class="persons-badge" id="res-persons">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span id="res-persons-text"></span>
+      </div>
+    </div>
+
+    <!-- PODIUM -->
+    <div class="podium-wrap" id="podiumWrap">
+
+      <!-- RANK 3 — GENERALI (left) -->
+      <div class="podium-card rank3" id="card-generali">
+        <div class="pc-header h3">
+          <div class="pc-rank">
+            <div class="pc-rank-num">#3</div>
+            <div class="pc-rank-lbl">Bronze</div>
+          </div>
+          <img src="https://logo.clearbit.com/generali.com" alt="Generali" class="pc-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">Generali</div>
+          <div class="pc-contract"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Contrat 3 ans — Paiement annuel</div>
+          <div class="pc-price-monthly" id="price-generali-m">—</div>
+          <div class="pc-price-annual" id="price-generali-a">—</div>
+          <div class="pc-divider"></div>
+          <div class="pc-features">
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais d'annulation</strong><div class="pc-feat-sub">Jusqu'à CHF 50'000 par événement</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais médicaux à l'étranger</strong><div class="pc-feat-sub">Frais réels couverts + rapatriement</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Bagages</strong><div class="pc-feat-sub">Jusqu'à CHF 3'000 — Franchise CHF 200</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Protection juridique</strong><div class="pc-feat-sub"><span style="color:var(--bronze,#8B4513);font-weight:700">CHF 250'000</span> dans le monde entier</div></div></div>
+          </div>
+          <div class="pc-ctas">
+            <button class="cta-primary" onclick="selectOffer('generali','online')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Souscrire en ligne</button>
+            <button class="cta-secondary" onclick="selectOffer('generali','callback')"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Être rappelé</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANK 1 — BALOISE (center, elevated) -->
+      <div class="podium-card rank1" id="card-baloise">
+        <div class="pc-header h1">
+          <div class="pc-rank">
+            <div class="pc-rank-num">#1</div>
+            <div class="pc-rank-lbl">Recommandé</div>
+          </div>
+          <img src="https://logo.clearbit.com/baloise.com" alt="Baloise" class="pc-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-body">
+          <div class="pc-name n1">Baloise</div>
+          <div class="pc-contract"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Contrat 3 ans — Paiement annuel</div>
+          <div class="pc-price-monthly" id="price-baloise-m">—</div>
+          <div class="pc-price-annual" id="price-baloise-a">—</div>
+          <div class="pc-divider"></div>
+          <div class="pc-features">
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais d'annulation</strong><div class="pc-feat-sub">Jusqu'à CHF 30'000 configurable</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais médicaux à l'étranger</strong><div class="pc-feat-sub">Frais réels + rapatriement — Aucune franchise</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Bagages</strong><div class="pc-feat-sub">Jusqu'à CHF 5'000 — Aucune franchise</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Protection juridique</strong><div class="pc-feat-sub">Incluse, monde entier</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><span class="badge-gold">EXCLUSIF</span><div class="pc-feat-sub">Indemnisation mauvais temps — CHF 100/bagage retard (immédiat)</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><span class="badge-gold">EXCLUSIF</span><div class="pc-feat-sub">Indemnisation retard de vol — versement automatique</div></div></div>
+          </div>
+          <div class="pc-ctas">
+            <button class="cta-primary" onclick="selectOffer('baloise','online')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Souscrire en ligne</button>
+            <button class="cta-secondary" onclick="selectOffer('baloise','callback')"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Être rappelé</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANK 2 — AXA (right) -->
+      <div class="podium-card rank2" id="card-axa">
+        <div class="pc-header h2">
+          <div class="pc-rank">
+            <div class="pc-rank-num">#2</div>
+            <div class="pc-rank-lbl">Argent</div>
+          </div>
+          <img src="https://logo.clearbit.com/axa.ch" alt="AXA" class="pc-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="pc-body">
+          <div class="pc-name">AXA</div>
+          <div class="pc-contract"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Contrat 3 ans — Paiement annuel</div>
+          <div class="pc-price-monthly" id="price-axa-m">—</div>
+          <div class="pc-price-annual" id="price-axa-a">—</div>
+          <div class="pc-divider"></div>
+          <div class="pc-features">
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais d'annulation</strong><div class="pc-feat-sub">Jusqu'à CHF 80'000 par police</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Frais médicaux à l'étranger</strong><div class="pc-feat-sub">CHF 500'000 — Aucune franchise</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Bagages</strong><div class="pc-feat-sub">Module disponible — Jusqu'à 11 personnes</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Protection juridique</strong><div class="pc-feat-sub">Incluse, monde entier</div></div></div>
+            <div class="pc-feat"><span class="feat-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><div><strong>Rabais combinaison</strong><div class="pc-feat-sub">−25% si modules de base combinés</div></div></div>
+          </div>
+          <div class="pc-ctas">
+            <button class="cta-primary" onclick="selectOffer('axa','online')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Souscrire en ligne</button>
+            <button class="cta-secondary" onclick="selectOffer('axa','callback')"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Être rappelé</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE v2 -->
+    <div class="comp-table-wrap">
+      <div class="comp-table-title">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Comparatif détaillé des montants couverts
+      </div>
+      <div style="overflow-x:auto">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Garantie</th>
+            <th style="width:24%">Baloise</th>
+            <th style="width:24%">Generali</th>
+            <th style="width:24%">AXA Suisse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="ct-lbl">Frais d'annulation</div><div class="ct-sub">Si vous ne pouvez pas partir</div></td>
+            <td><span class="amt">Jusqu'à CHF 30'000</span></td>
+            <td><span class="amt">Jusqu'à CHF 50'000</span><div class="ct-sub">CHF 100'000 en famille</div></td>
+            <td><span class="amt">Jusqu'à CHF 80'000</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Frais médicaux à l'étranger</div><div class="ct-sub">Soins urgents sur place</div></td>
+            <td><span class="amt">Frais réels</span></td>
+            <td><span class="amt">Jusqu'à CHF 300'000</span></td>
+            <td><span class="amt">Jusqu'à CHF 1'000'000</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Rapatriement médicalisé</div><div class="ct-sub">Retour en Suisse organisé</div></td>
+            <td><span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> <span class="ok-txt">Inclus</span></td>
+            <td><span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> <span class="ok-txt">Inclus</span></td>
+            <td><span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> <span class="ok-txt">Inclus</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Avance d'hospitalisation</div><div class="ct-sub">Si paiement immédiat requis</div></td>
+            <td><span class="amt">CHF 10'000</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Sauvetage &amp; recherche</div><div class="ct-sub">Opérations de secours</div></td>
+            <td><span class="amt">CHF 20'000</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Bagages</div><div class="ct-sub">Perte, vol, détérioration</div></td>
+            <td><span class="amt">CHF 5'000</span><div class="ct-sub">Sans franchise</div></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non couvert</span></td>
+            <td><span class="amt">CHF 3'000</span><div class="ct-sub">Franchise CHF 200</div></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Retard de bagages</div><div class="ct-sub">Achats de première nécessité</div></td>
+            <td><span class="amt">CHF 100 / bagage</span><div class="ct-sub">Versement immédiat</div></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+            <td><span class="amt">CHF 1'000 / pers.</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Correspondance manquée</div><div class="ct-sub">Vol ou train raté</div></td>
+            <td><span class="amt">Europe CHF 2'000</span><div class="ct-sub">Monde CHF 3'000</div></td>
+            <td><span class="amt">Europe CHF 2'000</span><div class="ct-sub">Monde CHF 3'000</div></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Protection juridique voyage</div><div class="ct-sub">Litiges hôtel, vol, location…</div></td>
+            <td><span class="amt">CHF 250'000</span><div class="ct-sub">Europe — CHF 50'000 reste du monde</div></td>
+            <td><span class="amt">CHF 250'000</span></td>
+            <td><span class="amt">CHF 250'000</span></td>
+          </tr>
+          <tr>
+            <td><div class="ct-lbl">Indemnisation retard de vol</div><div class="ct-sub">Sans déclaration active</div></td>
+            <td><span class="badge-gold">Exclusif Baloise</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+            <td><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> <span class="no-txt">Non inclus</span></td>
+          </tr>
+          <tr style="background:var(--blue-ll)">
+            <td><div class="ct-lbl">Durée du contrat</div></td>
+            <td style="text-align:center;font-weight:600;color:var(--slate);font-size:.8rem">3 ans — paiement annuel<br>Monde entier</td>
+            <td style="text-align:center;font-weight:600;color:var(--slate);font-size:.8rem">3 ans — paiement annuel<br>Monde entier</td>
+            <td style="text-align:center;font-weight:600;color:var(--slate);font-size:.8rem">3 ans — paiement annuel<br>Monde entier</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div style="padding:.75rem 1.25rem;font-size:.73rem;color:var(--muted);border-top:1px solid var(--border)">
+        Sources : conditions contractuelles Baloise, Generali &amp; AXA Suisse. Montants indicatifs — se référer aux CGA de chaque assureur pour les conditions exactes.
+      </div>
+    </div>
+</div>
+  </div>
+</div>
+
+<!-- ═══ STEP 6 : CONTACT ═══ -->
+<div id="step6" style="display:none">
+  <div class="steps-container">
+    <div class="contact-card">
+      <div class="chosen-banner" id="chosen-banner">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        <div class="chosen-banner-text" id="chosen-banner-text">Vous avez choisi Baloise</div>
+      </div>
+      <div class="step-tag">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+        Presque terminé
+      </div>
+      <h1 class="step-q">Vos coordonnées<br>de contact</h1>
+      <p class="step-hint">Pour finaliser votre demande et vous envoyer la confirmation.</p>
+      <div class="fg"><label>Adresse e-mail</label><input id="email" type="email" placeholder="marie.dupont@email.ch" autocomplete="email"></div>
+      <div class="fg"><label>Numéro de téléphone</label><input id="telephone" type="tel" placeholder="+41 XX XXX XX XX" autocomplete="tel"></div>
+      <button class="btn-next" onclick="submitFinal()">
+        <span id="submit-btn-text">Confirmer ma demande</span>
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+      <button class="btn-back" onclick="backToResults()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Modifier mon choix
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 7 : CONFIRMATION ═══ -->
+<div id="step7" style="display:none">
+  <div class="steps-container">
+    <div class="confirm-card">
+      <div class="confirm-check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h1 class="confirm-title" id="confirm-title">Félicitations !</h1>
+      <p class="confirm-msg" id="confirm-msg">Votre demande a bien été enregistrée.</p>
+      <div class="confirm-info" id="confirm-info">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span id="confirm-email-text"></span>
+      </div>
+      <a href="index.html" class="btn-home">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Retour à l'accueil
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+// CONFIG EMAILJS
+// Créez un compte gratuit sur https://www.emailjs.com
+// Remplacez les valeurs ci-dessous par vos identifiants
+// ════════════════════════════════
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+
+// Init EmailJS
+try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch(e) {}
+
+// ════════════════════════════════
+// STATE
+// ════════════════════════════════
+const state = {
+  prenom: '', nom: '',
+  adultes: 1, enfants: 0,
+  adresse: '', dateDebut: '',
+  selectedInsurer: '', action: ''
+};
+
+// ════════════════════════════════
+// PROGRESS
+// ════════════════════════════════
+const progressLabels = [
+  'Étape 1 sur 4 — Vos coordonnées',
+  'Étape 2 sur 4 — Composition du voyage',
+  'Étape 3 sur 4 — Adresse de résidence',
+  'Étape 4 sur 4 — Date de début'
+];
+function updateProgress(step) {
+  document.querySelectorAll('.ps').forEach((el,i) => {
+    el.classList.remove('active','done');
+    if (i < step - 1) el.classList.add('done');
+    else if (i === step - 1) el.classList.add('active');
+  });
+  const fill = ((step - 1) / 3) * 100;
+  document.getElementById('progressFill').style.width = fill + '%';
+  if (progressLabels[step - 1]) document.getElementById('progressLbl').textContent = progressLabels[step - 1];
+}
+
+// ════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════
+function goToStep(n) {
+  ['step1','step2','step3','step4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById('step' + n);
+  if (target) { target.classList.add('active'); updateProgress(n); }
+  document.getElementById('stepContainer').style.display = '';
+  document.getElementById('step5').style.display = 'none';
+  document.getElementById('step6').style.display = 'none';
+  document.getElementById('step7').style.display = 'none';
+  document.getElementById('progressWrap').style.display = '';
+}
+
+function nextStep(current) {
+  if (current === 1) {
+    const p = document.getElementById('prenom').value.trim();
+    const n = document.getElementById('nom').value.trim();
+    if (!p || !n) { shake('step1'); return; }
+    state.prenom = p; state.nom = n;
+  } else if (current === 3) {
+    const a = document.getElementById('adresse').value.trim();
+    if (!a) { shake('step3'); return; }
+    state.adresse = a;
+  }
+  goToStep(current + 1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function shake(stepId) {
+  const el = document.getElementById(stepId);
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'shake .4s ease';
+}
+
+function showResults() {
+  const d = document.getElementById('dateDebut').value;
+  if (!d) { shake('step4'); return; }
+  state.dateDebut = d;
+  if (typeof gtag === 'function') { gtag('event', 'simulation_terminee', { nb_personnes: state.adultes + state.enfants }); }
+  document.getElementById('stepContainer').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('step5').style.display = '';
+  document.getElementById('step6').style.display = 'none';
+  document.getElementById('step7').style.display = 'none';
+  displayResults();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function backToResults() {
+  document.getElementById('step6').style.display = 'none';
+  document.getElementById('step5').style.display = '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ════════════════════════════════
+// COUNTERS
+// ════════════════════════════════
+function changeCount(type, delta) {
+  if (type === 'adultes') {
+    state.adultes = Math.max(1, state.adultes + delta);
+    document.getElementById('adultes-val').textContent = state.adultes;
+    document.getElementById('adultes-minus').disabled = state.adultes <= 1;
+  } else {
+    state.enfants = Math.max(0, state.enfants + delta);
+    document.getElementById('enfants-val').textContent = state.enfants;
+    document.getElementById('enfants-minus').disabled = state.enfants <= 0;
+  }
+  document.getElementById('adultes-minus').disabled = state.adultes <= 1;
+  document.getElementById('enfants-minus').disabled = state.enfants <= 0;
+}
+
+// ════════════════════════════════
+// PRICE CALCULATION
+// ════════════════════════════════
+function calcPrice(insurer) {
+  const total = state.adultes + state.enfants;
+  let annual;
+  if (insurer === 'baloise') annual = 82 + (total - 1) * 50;
+  else if (insurer === 'axa') annual = 119 + (total - 1) * 62;
+  else annual = 150 + (total - 1) * 60;
+  const monthly = (annual / 12).toFixed(2).replace('.', '.');
+  return { annual, monthly };
+}
+
+// ════════════════════════════════
+// DISPLAY RESULTS
+// ════════════════════════════════
+function displayResults() {
+  document.getElementById('res-greeting').textContent = 'Bonjour ' + state.prenom + ' !';
+  const total = state.adultes + state.enfants;
+  const parts = [];
+  if (state.adultes > 0) parts.push(state.adultes + ' adulte' + (state.adultes > 1 ? 's' : ''));
+  if (state.enfants > 0) parts.push(state.enfants + ' enfant' + (state.enfants > 1 ? 's' : ''));
+  document.getElementById('res-persons-text').textContent = parts.join(' + ') + ' assurée' + (total > 1 ? 's' : '');
+
+  ['baloise', 'axa', 'generali'].forEach(ins => {
+    const {annual, monthly} = calcPrice(ins);
+    document.getElementById('price-' + ins + '-m').innerHTML = 'CHF ' + monthly + '<span style="font-size:.85rem;font-weight:500;color:var(--muted)"> / mois</span>';
+    document.getElementById('price-' + ins + '-a').innerHTML = '<strong>CHF ' + annual + ' / an</strong> · Contrat 3 ans — Paiement annuel';
+  });
+}
+
+// ════════════════════════════════
+// SELECT OFFER
+// ════════════════════════════════
+function selectOffer(insurer, action) {
+  state.selectedInsurer = insurer;
+  state.action = action;
+  // ── TRACKING : quel assureur + souscription en ligne ou rappel ──
+  if (typeof gtag === 'function') {
+    gtag('event', 'choix_offre', {
+      assureur: insurer,
+      type_action: action === 'online' ? 'souscription_en_ligne' : 'demande_rappel',
+      nb_personnes: state.adultes + state.enfants
+    });
+  }
+  const names = {baloise:'Baloise', axa:'AXA', generali:'Generali'};
+  const label = action === 'online'
+    ? 'Souscription en ligne — ' + names[insurer]
+    : 'Être rappelé — ' + names[insurer];
+  document.getElementById('chosen-banner-text').textContent = label;
+  document.getElementById('step5').style.display = 'none';
+  document.getElementById('step6').style.display = '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ════════════════════════════════
+// SUBMIT FINAL
+// ════════════════════════════════
+function submitFinal() {
+  const email = document.getElementById('email').value.trim();
+  const tel = document.getElementById('telephone').value.trim();
+  if (!email || !tel) { return; }
+  
+  const btn = document.querySelector('#step6 .btn-next');
+  btn.textContent = 'Envoi en cours...';
+  btn.disabled = true;
+  
+  const isOnline = state.action === 'online';
+  const names = {baloise:'Baloise', axa:'AXA', generali:'Generali'};
+  const {annual, monthly} = calcPrice(state.selectedInsurer);
+  
+  // Prepare email data
+  const emailData = {
+    from_name: state.prenom + ' ' + state.nom,
+    prenom: state.prenom,
+    nom: state.nom,
+    email: email,
+    telephone: tel,
+    adultes: state.adultes,
+    enfants: state.enfants,
+    adresse: state.adresse,
+    date_debut: state.dateDebut,
+    assureur: names[state.selectedInsurer],
+    action: isOnline ? 'Souscription en ligne' : 'Demande de rappel',
+    prime_mensuelle: 'CHF ' + monthly + '/mois',
+    prime_annuelle: 'CHF ' + annual + '/an',
+  };
+  
+  // Try to send via EmailJS
+  const sendEmail = () => {
+    try {
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailData)
+        .then(() => showConfirmation(isOnline, email))
+        .catch(() => showConfirmation(isOnline, email));
+    } catch(e) {
+      showConfirmation(isOnline, email);
+    }
+  };
+  
+  setTimeout(() => {
+    sendEmail();
+  }, 600);
+}
+
+function showConfirmation(isOnline, email) {
+  // ── TRACKING : conversion finale ──
+  if (typeof gtag === 'function') {
+    gtag('event', 'demande_confirmee', {
+      assureur: state.selectedInsurer,
+      type_action: isOnline ? 'souscription_en_ligne' : 'demande_rappel'
+    });
+  }
+  document.getElementById('step6').style.display = 'none';
+  document.getElementById('step7').style.display = '';
+  
+  if (isOnline) {
+    document.getElementById('confirm-title').textContent = 'Félicitations !';
+    document.getElementById('confirm-msg').innerHTML = 'Votre souscription est bien enregistrée.<br><br><strong style="color:var(--green-d);font-size:1.05rem">Un mail de confirmation va vous être envoyé avec la copie de votre police d\'assurance.</strong>';
+    document.getElementById('confirm-email-text').textContent = 'Confirmation envoyée à ' + email;
+  } else {
+    document.getElementById('confirm-title').textContent = 'Demande enregistrée !';
+    document.getElementById('confirm-msg').innerHTML = 'Un conseiller assuravia.ch va vous rappeler dans les 24h ouvrées pour finaliser votre souscription.';
+    document.getElementById('confirm-email-text').textContent = 'Un récapitulatif a été envoyé à ' + email;
+  }
+  
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(launchConfetti, 300);
+}
+
+// ════════════════════════════════
+// CONFETTI
+// ════════════════════════════════
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.style.display = 'block';
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#19865A','#1B5E8C','#6DD9A0','#FFD700','#FF9F43','#EE5A24','#0652DD','#C4E538'];
+  const particles = Array.from({length:180}, () => ({
+    x: Math.random() * canvas.width,
+    y: -20 - Math.random() * 100,
+    w: Math.random() * 14 + 5,
+    h: Math.random() * 7 + 4,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    vx: Math.random() * 6 - 3,
+    vy: Math.random() * 4 + 3,
+    vr: Math.random() * 8 - 4,
+    r: Math.random() * 360,
+    opacity: 1
+  }));
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let any = false;
+    particles.forEach(p => {
+      if (p.y < canvas.height + 30) {
+        any = true;
+        p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        p.vy += 0.06;
+        if (p.y > canvas.height * .65) p.opacity = Math.max(0, p.opacity - .018);
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+        ctx.restore();
+      }
+    });
+    if (any) requestAnimationFrame(draw);
+    else canvas.style.display = 'none';
+  }
+  draw();
+}
+
+// ════════════════════════════════
+// INIT
+// ════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Set min date for date picker
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('dateDebut').min = today;
+  document.getElementById('dateDebut').value = today;
+  
+  // Disable minus buttons initially
+  document.getElementById('adultes-minus').disabled = true;
+  document.getElementById('enfants-minus').disabled = true;
+  
+  // Enter key on inputs
+  ['prenom','nom','adresse'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') { const step = id === 'adresse' ? 3 : 1; nextStep(step); } });
+  });
+  
+  updateProgress(1);
+});
+</script>
+
+<style>
+@keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-8px)}30%{transform:translateX(8px)}45%{transform:translateX(-6px)}60%{transform:translateX(6px)}75%{transform:translateX(-3px)}90%{transform:translateX(3px)}}
+</style>
+</body>
+</html>
