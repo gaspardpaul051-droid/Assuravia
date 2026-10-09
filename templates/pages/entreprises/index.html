@@ -1,37 +1,98 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
 {% block theme %}pro{% endblock %}
-{% block title %}Assurances entreprises, indépendants et PME en Suisse romande | Assuravia{% endblock %}
-{% block description %}RC professionnelle, LPP, LAA, perte de gain maladie, inventaire, transport, assurances techniques : des offres adaptées aux indépendants et PME de Suisse romande.{% endblock %}
+{% block title %}Assurances et prévoyance pour entreprises, indépendants et PME en Suisse romande | Assuravia{% endblock %}
+{% block description %}RC professionnelle, LPP, LAA, perte de gain maladie, inventaire, transport : un conseiller analyse vos contrats d'entreprise et compare le marché. Gratuit et sans engagement.{% endblock %}
 {% block content %}
-<section class="hero-hub">
-  <div class="cadre">
-    <p class="etiquette etiquette--pro">{{ i.icone("batiment", "icone icone--petite") }} Pro</p>
-    <h1>Les assurances pour les entreprises</h1>
-    <p class="chapeau">Indépendants, PME, commerces et artisans : des obligations légales aux couvertures qui protègent votre activité. Un conseiller analyse vos contrats et compare le marché.</p>
+<section class="hero-univers">
+  <div class="cadre hero-univers__grille">
+    <div>
+      <p class="etiquette etiquette--pro">{{ i.icone("mallette", "icone icone--petite") }} Espace Pro</p>
+      <h1>Vous gérez votre entreprise. On s'occupe de vos assurances.</h1>
+      <p class="chapeau">Indépendants, PME, commerces et artisans : vos assurances et votre prévoyance professionnelle coûtent cher et changent avec votre activité. Un conseiller Assuravia analyse vos contrats, compare le marché et vous propose de meilleures prestations, souvent pour moins cher.</p>
+      <div class="accueil__actions">
+        <a class="bouton bouton--pro" href="/conseil/">Demander une analyse gratuite</a>
+        <a class="bouton bouton--secondaire" href="#solutions">Voir nos solutions</a>
+      </div>
+    </div>
+    <ul class="promesses promesses--pro">
+      <li>{{ i.icone("valide") }}<span><strong>Vos obligations couvertes</strong> LAA, LPP, CCT : vous êtes en règle, sans y passer vos soirées.</span></li>
+      <li>{{ i.icone("balance") }}<span><strong>Le marché comparé</strong> Primes, prestations et conditions mises côte à côte.</span></li>
+      <li>{{ i.icone("groupe") }}<span><strong>Un interlocuteur unique</strong> Pour tous vos contrats, de la RC pro à la caisse de pension.</span></li>
+      <li>{{ i.icone("horloge") }}<span><strong>Au rythme de votre activité</strong> Nouvel employé, nouveau client, nouveau local : on adapte.</span></li>
+    </ul>
   </div>
 </section>
-<section class="bloc bloc--serre">
+
+<section class="bloc">
   <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Ce que nous faisons pour votre entreprise</h2>
+      <p>Nous partons de votre activité réelle, pas d'un catalogue. Le résultat : des contrats qui vous protègent vraiment, pour un coût que vous maîtrisez.</p>
+    </div>
+    <div class="domaines">
+      <article class="domaine domaine--pro"><span class="domaine__icone">{{ i.icone("bouclier") }}</span><h3>Protéger l'activité</h3><p>RC professionnelle, biens, stock, machines, transport : ce qui pourrait arrêter votre entreprise du jour au lendemain.</p></article>
+      <article class="domaine domaine--pro"><span class="domaine__icone">{{ i.icone("groupe") }}</span><h3>Assurer le personnel</h3><p>LAA, perte de gain maladie, LPP : vos obligations d'employeur, avec des prestations qui fidélisent vos collaborateurs.</p></article>
+      <article class="domaine domaine--pro"><span class="domaine__icone">{{ i.icone("courbe") }}</span><h3>Préparer l'avenir du dirigeant</h3><p>Plan cadre, rachats LPP, 3e pilier d'indépendant : votre prévoyance personnelle, souvent oubliée.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte" id="solutions">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Nos solutions pour les entreprises</h2>
+      <p>Choisissez une assurance pour recevoir des offres, ou demandez une analyse de tous vos contrats.</p>
+    </div>
     {% with groupe="entreprises" %}{% include "partials/catalogue.html" %}{% endwith %}
   </div>
 </section>
-<section class="bloc bloc--teinte">
-  <div class="cadre texte-long">
-    <h2>Ce qui est obligatoire pour un employeur en Suisse</h2>
-    <ul>
-      <li><strong>L'assurance accidents (LAA)</strong> pour tous les employés, dès la première heure de travail.</li>
-      <li><strong>La prévoyance professionnelle (LPP)</strong> pour les employés dont le salaire annuel dépasse CHF 22'680 en 2026.</li>
-      <li><strong>Les assurances sociales AVS, AI, APG et chômage</strong>, gérées par votre caisse de compensation.</li>
-    </ul>
-    <p>La perte de gain maladie n'est pas imposée par la loi, mais elle l'est souvent par votre convention collective, et elle vous évite de payer vous-même le salaire d'un employé malade.</p>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Des entreprises comme la vôtre</h2>
+      <p>Quelques cas types que nous rencontrons souvent chez les indépendants et les PME romandes.</p>
+    </div>
+    {% with groupe="entreprises" %}{% include "partials/cas-types.html" %}{% endwith %}
   </div>
 </section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Ce qui est obligatoire pour un employeur</h2>
+      <p>Un rappel des bases, que votre conseiller vérifie avec vous.</p>
+    </div>
+    <ul class="obligations">
+      <li>{{ i.icone("croix") }}<span><strong>Assurance accidents (LAA)</strong> Pour tous les employés, dès la première heure de travail.</span></li>
+      <li>{{ i.icone("groupe") }}<span><strong>Prévoyance professionnelle (LPP)</strong> Pour les employés dont le salaire annuel dépasse CHF 22'680 en 2026.</span></li>
+      <li>{{ i.icone("batiment") }}<span><strong>AVS, AI, APG et chômage</strong> Gérées par votre caisse de compensation.</span></li>
+      <li>{{ i.icone("thermometre") }}<span><strong>Perte de gain maladie</strong> Pas imposée par la loi, mais souvent par votre CCT, et elle vous évite de payer seul le salaire d'un employé malade.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Vos questions</h2>
+      <p>Ce que les dirigeants nous demandent avant une analyse.</p>
+    </div>
+    <div class="faq">
+      <details><summary>Combien coûte l'analyse de nos contrats ?</summary><div class="faq__reponse"><p>Rien. Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu.</p></div></details>
+      <details><summary>Faut-il tout changer d'un coup ?</summary><div class="faq__reponse"><p>Non. On tient compte des échéances et des délais de résiliation de chaque contrat, et on ne propose de changer que ce qui vaut la peine.</p></div></details>
+      <details><summary>Je suis indépendant sans employé, est-ce pour moi ?</summary><div class="faq__reponse"><p>Oui. RC professionnelle, perte de gain et prévoyance sont souvent les points faibles des indépendants. <a href="/entreprises/rc-professionnelle/">Commencez par la RC pro</a>.</p></div></details>
+      <details><summary>Que faut-il pour l'analyse ?</summary><div class="faq__reponse"><p>Vos polices actuelles, le nombre d'employés et la masse salariale. Le conseiller vous dit précisément quoi préparer lors du premier appel.</p></div></details>
+    </div>
+  </div>
+</section>
+
 <section class="bandeau bandeau--pro">
   <div class="cadre bandeau__contenu">
     <div>
       <h2>Faites analyser vos contrats d'entreprise</h2>
-      <p>Un conseiller vérifie vos couvertures, vos échéances et vos primes, puis vous propose des économies concrètes.</p>
+      <p>De meilleures prestations, souvent pour moins cher. L'analyse est gratuite.</p>
     </div>
     <a class="bouton bouton--action" href="/conseil/">Demander une analyse gratuite</a>
   </div>

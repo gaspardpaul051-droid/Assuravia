@@ -142,6 +142,19 @@ def lire_glossaire(path: Path) -> list[dict]:
     return termes
 
 
+def lire_cas(path: Path) -> dict:
+    """Lit content/cas.txt : cas types illustratifs, groupés par « particuliers » / « entreprises »."""
+    cas = {g: [] for g in GROUPES}
+    for ligne in path.read_text(encoding="utf-8").splitlines():
+        if not ligne.strip() or ligne.startswith("#"):
+            continue
+        c = [x.strip() for x in ligne.split("|")]
+        if len(c) != 6 or c[0] not in GROUPES:
+            raise ValueError(f"Ligne de cas invalide : {ligne}")
+        cas[c[0]].append({"profil": c[1], "situation": c[2], "solution": c[3], "icone": c[4], "lien": c[5]})
+    return cas
+
+
 def lire_article(path: Path) -> dict:
     meta, corps = lire_entete(path)
     for cle in ("titre", "description", "date", "categorie"):
@@ -208,6 +221,7 @@ def main() -> None:
         par_slug=par_slug,
         articles=articles,
         glossaire=lire_glossaire(ROOT / "content" / "glossaire.txt"),
+        cas=lire_cas(ROOT / "content" / "cas.txt"),
         annee=aujourd_hui.year,
     )
 

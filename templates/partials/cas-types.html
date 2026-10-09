@@ -1,0 +1,24 @@
+{# Carrousel de cas types. Attend `groupe`. #}
+{% import "partials/icones.html" as i %}
+{% set theme = groupes[groupe].theme %}
+<div class="carrousel carrousel--{{ theme }}" data-carrousel aria-roledescription="carrousel" aria-label="Cas types">
+  <div class="carrousel__commandes">
+    <p class="carrousel__mention">Exemples de situations types, à titre illustratif.</p>
+    <div class="carrousel__boutons">
+      <button type="button" class="carrousel__bouton" data-carrousel-precedent aria-label="Cas précédents">{{ i.icone("fleche", "icone icone--petite carrousel__retour") }}</button>
+      <button type="button" class="carrousel__bouton" data-carrousel-pause aria-label="Mettre en pause le défilement" aria-pressed="false"><span class="carrousel__pause" aria-hidden="true"></span></button>
+      <button type="button" class="carrousel__bouton" data-carrousel-suivant aria-label="Cas suivants">{{ i.icone("fleche", "icone icone--petite") }}</button>
+    </div>
+  </div>
+  <ul class="carrousel__piste" data-carrousel-piste aria-live="off">
+    {% for c in cas[groupe] %}
+    <li class="cas" aria-roledescription="diapositive" aria-label="{{ loop.index }} sur {{ cas[groupe]|length }}">
+      <span class="cas__icone">{{ i.icone(c.icone) }}</span>
+      <p class="cas__profil">{{ c.profil }}</p>
+      <p class="cas__situation"><span>La situation</span>{{ c.situation }}</p>
+      <p class="cas__solution"><span>Ce qu'on a proposé</span>{{ c.solution }}</p>
+      <a class="cas__lien" href="{{ c.lien }}">En savoir plus {{ i.icone("fleche", "icone icone--petite") }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

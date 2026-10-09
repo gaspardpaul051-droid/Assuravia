@@ -343,6 +343,31 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panneau.hidden) basculer(false); });
   }
 
+  // 11. Carrousel de cas types : défilement automatique, pause au survol, au focus ou sur demande
+  var mouvementReduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("[data-carrousel]").forEach(function (car) {
+    var piste = car.querySelector("[data-carrousel-piste]");
+    var pause = car.querySelector("[data-carrousel-pause]");
+    var arrete = mouvementReduit, survol = false, minuterie = null;
+    var pas = function () { var c = piste.querySelector(".cas"); return c ? c.getBoundingClientRect().width + 24 : piste.clientWidth; };
+    var avancer = function (sens) {
+      var fin = piste.scrollLeft + piste.clientWidth >= piste.scrollWidth - 4;
+      if (sens > 0 && fin) piste.scrollTo({ left: 0 });
+      else if (sens < 0 && piste.scrollLeft <= 4) piste.scrollTo({ left: piste.scrollWidth });
+      else piste.scrollBy({ left: sens * pas() });
+    };
+    var majPause = function () { pause.setAttribute("aria-pressed", arrete ? "true" : "false"); pause.setAttribute("aria-label", arrete ? "Reprendre le défilement" : "Mettre en pause le défilement"); };
+    var lancer = function () { clearInterval(minuterie); minuterie = setInterval(function () { if (!arrete && !survol && !document.hidden) avancer(1); }, 5000); };
+    car.querySelector("[data-carrousel-suivant]").addEventListener("click", function () { avancer(1); });
+    car.querySelector("[data-carrousel-precedent]").addEventListener("click", function () { avancer(-1); });
+    pause.addEventListener("click", function () { arrete = !arrete; majPause(); });
+    car.addEventListener("mouseenter", function () { survol = true; });
+    car.addEventListener("mouseleave", function () { survol = false; });
+    car.addEventListener("focusin", function () { survol = true; });
+    car.addEventListener("focusout", function () { survol = false; });
+    majPause(); lancer();
+  });
+
   // 8. Page de remerciement : message adapté au formulaire envoyé
   if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");

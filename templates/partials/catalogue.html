@@ -1,15 +1,16 @@
-{# Catalogue filtrable. Attend `groupe` ("particuliers" ou "entreprises"). #}
+{# Produits d'un groupe, rangés par catégorie. Attend `groupe`. #}
 {% import "partials/icones.html" as i %}
 {% set g = groupes[groupe] %}
-<div class="catalogue" data-catalogue>
-  <div class="filtres" role="group" aria-label="Filtrer par catégorie">
-    <button type="button" class="filtre" aria-pressed="true" data-filtre="">Toutes les assurances</button>
-    {% for c in g.categories %}
-    <button type="button" class="filtre" aria-pressed="false" data-filtre="{{ c }}">{{ c }}</button>
-    {% endfor %}
-  </div>
-  <div class="cartes">
-    {% for p in produits[groupe] %}{% include "partials/carte-produit.html" %}{% endfor %}
-  </div>
-  <p class="catalogue__statut" aria-live="polite" data-catalogue-statut></p>
+<div class="catalogue">
+  {% for c in g.categories %}
+  {% set liste = produits[groupe]|selectattr("categorie", "equalto", c)|list %}
+  {% if liste %}
+  <section class="catalogue__categorie" aria-labelledby="cat-{{ groupe }}-{{ loop.index }}">
+    <h3 class="catalogue__titre" id="cat-{{ groupe }}-{{ loop.index }}">{{ c }}</h3>
+    <div class="cartes">
+      {% for p in liste %}{% include "partials/carte-produit.html" %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+  {% endfor %}
 </div>

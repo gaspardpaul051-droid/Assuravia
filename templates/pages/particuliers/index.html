@@ -1,28 +1,96 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
-{% block title %}Assurances pour particuliers en Suisse romande : comparez gratuitement | Assuravia{% endblock %}
-{% block description %}3e pilier, complémentaire maladie, RC ménage, véhicule, voyage, protection juridique, garantie de loyer, placements : toutes les assurances privées, comparées gratuitement.{% endblock %}
+{% block title %}Assurances, prévoyance et placements pour particuliers en Suisse romande | Assuravia{% endblock %}
+{% block description %}Complémentaire maladie, 3e pilier, placements, ménage, véhicule, garantie de loyer : un conseiller fait le point sur vos contrats et compare le marché pour vous. Gratuit et sans engagement.{% endblock %}
 {% block content %}
-<section class="hero-hub">
-  <div class="cadre">
-    <p class="etiquette etiquette--prive">{{ i.icone("utilisateur", "icone icone--petite") }} Privé</p>
-    <h1>Les assurances pour les particuliers</h1>
-    <p class="chapeau">Santé, retraite, logement, véhicule : choisissez ce qui vous intéresse. Vous obtenez un calcul immédiat ou des offres comparées par un conseiller, gratuitement.</p>
+<section class="hero-univers">
+  <div class="cadre hero-univers__grille">
+    <div>
+      <p class="etiquette etiquette--prive">{{ i.icone("utilisateur", "icone icone--petite") }} Espace Privé</p>
+      <h1>Protégez votre famille, préparez demain, faites fructifier votre épargne.</h1>
+      <p class="chapeau">Couvertures en double, 3e pilier oublié, épargne qui dort : ce sont les situations que nous rencontrons le plus souvent. Un conseiller Assuravia fait le point sur toute votre situation et vous montre ce qui peut être mieux, sans rien vous imposer.</p>
+      <div class="accueil__actions">
+        <a class="bouton bouton--prive" href="/conseil/">Faire mon bilan gratuit</a>
+        <a class="bouton bouton--secondaire" href="#solutions">Voir nos solutions</a>
+      </div>
+    </div>
+    <ul class="promesses promesses--prive">
+      <li>{{ i.icone("valide") }}<span><strong>Vos contrats passés en revue</strong> Doublons, lacunes, sous-assurance : on repère ce qui ne va pas.</span></li>
+      <li>{{ i.icone("balance") }}<span><strong>Le marché comparé pour vous</strong> Vous n'avez pas à demander dix offres vous-même.</span></li>
+      <li>{{ i.icone("livre") }}<span><strong>Des explications claires</strong> Franchise, 3e pilier, placements : on vous explique simplement.</span></li>
+      <li>{{ i.icone("horloge") }}<span><strong>Au bon moment</strong> Échéances, délais de résiliation, versement avant le 31 décembre.</span></li>
+    </ul>
   </div>
 </section>
-<section class="bloc bloc--serre">
+
+<section class="bloc">
   <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Un seul conseiller pour tout votre foyer</h2>
+      <p>Santé, logement, retraite, épargne : tout est lié. En regardant l'ensemble, on évite les doublons et on voit ce qui manque vraiment.</p>
+    </div>
+    <div class="domaines">
+      <article class="domaine domaine--prive"><span class="domaine__icone">{{ i.icone("bouclier") }}</span><h3>Assurer</h3><p>Santé, logement, véhicule, voyages, litiges : les bonnes couvertures, au bon prix, sans payer pour ce qui ne vous sert pas.</p></article>
+      <article class="domaine domaine--prive"><span class="domaine__icone">{{ i.icone("tirelire") }}</span><h3>Prévoir</h3><p>3e pilier, libre passage, rachats : préparer votre retraite tout en payant moins d'impôts chaque année.</p></article>
+      <article class="domaine domaine--prive"><span class="domaine__icone">{{ i.icone("courbe") }}</span><h3>Faire fructifier</h3><p>Une épargne placée selon votre horizon et votre tolérance au risque, avec des frais que vous comprenez.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte" id="solutions">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Nos solutions pour les particuliers</h2>
+      <p>Pour le 3e pilier et la garantie de loyer, vous obtenez un calcul immédiat. Pour le reste, un conseiller compare les offres pour vous.</p>
+    </div>
     {% with groupe="particuliers" %}{% include "partials/catalogue.html" %}{% endwith %}
   </div>
 </section>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Des situations comme la vôtre</h2>
+      <p>Quelques cas types que nous rencontrons souvent, et ce qu'un bon conseil change.</p>
+    </div>
+    {% with groupe="particuliers" %}{% include "partials/cas-types.html" %}{% endwith %}
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Comment ça marche</h2></div>
+    <ol class="etapes">
+      <li><h3>Vous nous dites où vous en êtes</h3><p>Un formulaire de 2 minutes, ou un message sur WhatsApp. Pas de compte à créer.</p></li>
+      <li><h3>On fait le point avec vous</h3><p>Un conseiller vous rappelle, regarde vos contrats actuels et compare le marché.</p></li>
+      <li><h3>Vous choisissez</h3><p>Vous recevez des propositions claires. Rien ne change tant que vous n'avez rien signé.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Vos questions</h2>
+      <p>Ce que les particuliers nous demandent avant de faire le point.</p>
+    </div>
+    <div class="faq">
+      <details><summary>Combien coûte le bilan ?</summary><div class="faq__reponse"><p>Rien. Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu, que vous signiez ou non.</p></div></details>
+      <details><summary>Dois-je préparer des documents ?</summary><div class="faq__reponse"><p>Ce n'est pas obligatoire, mais vos polices actuelles et votre dernière déclaration d'impôts permettent au conseiller d'aller plus vite et d'être plus précis.</p></div></details>
+      <details><summary>Puis-je ne faire analyser qu'un seul contrat ?</summary><div class="faq__reponse"><p>Bien sûr. Vous pouvez demander uniquement un 3e pilier ou une complémentaire maladie. Le bilan complet est proposé, jamais imposé.</p></div></details>
+      <details><summary>Vous occupez-vous aussi des placements ?</summary><div class="faq__reponse"><p>Oui. Un spécialiste analyse votre profil, votre horizon et votre tolérance au risque avant de vous proposer des solutions. <a href="/particuliers/placements/">En savoir plus sur les placements</a>.</p></div></details>
+    </div>
+  </div>
+</section>
+
 <section class="bandeau bandeau--prive">
   <div class="cadre bandeau__contenu">
     <div>
-      <h2>Vous ne savez pas par où commencer ?</h2>
-      <p>Décrivez votre situation, un conseiller vous dit ce qui vous manque et ce que vous payez en trop.</p>
+      <h2>Prêt à faire le point ?</h2>
+      <p>Deux minutes pour décrire votre situation, un conseiller s'occupe du reste.</p>
     </div>
-    <a class="bouton bouton--action" href="/conseil/">Faire un bilan gratuit</a>
+    <a class="bouton bouton--action" href="/conseil/">Faire mon bilan gratuit</a>
   </div>
 </section>
 {% endblock %}
