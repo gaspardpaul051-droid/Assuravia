@@ -482,7 +482,7 @@ tr:nth-child(even) td { background: var(--surface); }
 @media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
 
 /* ---------- Pages d'accueil Privé et Pro ---------- */
-.hero-univers { padding-block: var(--e-8); background: linear-gradient(180deg, var(--accent-pale), var(--fond)); }
+.hero-univers { padding-block: var(--e-8) 0; background: linear-gradient(180deg, var(--accent-pale), var(--fond)); }
 .theme-pro .hero-univers { background: linear-gradient(160deg, #EEF2F8 0%, var(--fond) 70%); }
 .hero-univers__grille { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
 .hero-univers h1 { max-width: 20ch; }
@@ -495,7 +495,8 @@ tr:nth-child(even) td { background: var(--surface); }
 .promesses--pro strong { color: #fff; }
 .promesses .icone { width: 40px; height: 40px; padding: 9px; border-radius: var(--r-plein); background: var(--bleu-pale); color: var(--bleu); }
 .promesses--pro .icone { background: rgba(226, 190, 82, 0.15); color: var(--or-clair); }
-@media (max-width: 900px) { .hero-univers__grille { grid-template-columns: 1fr; } .hero-univers { padding-block: var(--e-6) var(--e-7); } }
+@media (max-width: 900px) { .hero-univers__grille { grid-template-columns: 1fr; } .hero-univers { padding-block: var(--e-6) 0; } }
+.paysage--court { height: clamp(100px, 13vw, 180px); }
 .domaine--prive .domaine__icone { background: var(--bleu-pale); color: var(--bleu); }
 .catalogue__categorie + .catalogue__categorie { margin-top: var(--e-7); }
 .catalogue__titre { display: flex; align-items: center; gap: var(--e-3); font-size: var(--t-xl); margin-bottom: var(--e-5); }
