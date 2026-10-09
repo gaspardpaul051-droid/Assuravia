@@ -1,0 +1,35 @@
+[build]
+  command = "pip install -r requirements.txt && python3 build.py"
+  publish = "dist"
+
+[build.environment]
+  PYTHON_VERSION = "3.13"
+
+# Pages publicitaires : jamais indexées par Google
+[[headers]]
+  for = "/lp/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Anciennes adresses du site garantie de loyer (pubs Google et liens existants)
+[[redirects]]
+  from = "/demande"
+  to = "/particuliers/garantie-de-loyer/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog"
+  to = "/guide/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/*"
+  to = "/guide/"
+  status = 301

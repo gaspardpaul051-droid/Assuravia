@@ -1,0 +1,81 @@
+{# Champs communs aux formulaires de leads (Netlify Forms). #}
+
+{% macro ouvrir(nom, produit, titre_bouton=None) -%}
+<form class="formulaire" name="{{ nom }}" method="POST" action="/merci/?f={{ nom }}" data-netlify="true" netlify-honeypot="bot-field" data-lead>
+  <input type="hidden" name="form-name" value="{{ nom }}">
+  <input type="hidden" name="produit" value="{{ produit }}" data-produit>
+  <input type="hidden" name="page" value="" data-champ="page">
+  <input type="hidden" name="utm_source" value="" data-champ="utm_source">
+  <input type="hidden" name="utm_medium" value="" data-champ="utm_medium">
+  <input type="hidden" name="utm_campaign" value="" data-champ="utm_campaign">
+  <input type="hidden" name="utm_term" value="" data-champ="utm_term">
+  <input type="hidden" name="gclid" value="" data-champ="gclid">
+  <p class="cache" aria-hidden="true"><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+{%- endmacro %}
+
+{% macro champ(nom, label, type="text", requis=True, auto=None, aide=None, attrs="", id="f") -%}
+<div class="champ">
+  <label for="{{ nom }}-{{ id }}">{{ label }}{% if not requis %} <span class="facultatif">(facultatif)</span>{% endif %}</label>
+  <input id="{{ nom }}-{{ id }}" name="{{ nom }}" type="{{ type }}"{% if requis %} required{% endif %}{% if auto %} autocomplete="{{ auto }}"{% endif %} {{ attrs|safe }}>
+  {% if aide %}<p class="champ__aide">{{ aide }}</p>{% endif %}
+</div>
+{%- endmacro %}
+
+{% macro choix(nom, label, options, requis=True, id="f") -%}
+<div class="champ">
+  <label for="{{ nom }}-{{ id }}">{{ label }}{% if not requis %} <span class="facultatif">(facultatif)</span>{% endif %}</label>
+  <select id="{{ nom }}-{{ id }}" name="{{ nom }}"{% if requis %} required{% endif %}>
+    <option value="">Choisir…</option>
+    {% for val, txt in options %}<option value="{{ val }}">{{ txt }}</option>{% endfor %}
+  </select>
+</div>
+{%- endmacro %}
+
+{% macro contact(id="f", societe=False) -%}
+<div class="grille-champs">
+  <div class="champ">
+    <label for="prenom-{{ id }}">Prénom</label>
+    <input id="prenom-{{ id }}" name="prenom" required autocomplete="given-name">
+  </div>
+  <div class="champ">
+    <label for="nom-{{ id }}">Nom</label>
+    <input id="nom-{{ id }}" name="nom" required autocomplete="family-name">
+  </div>
+  <div class="champ">
+    <label for="telephone-{{ id }}">Téléphone</label>
+    <input id="telephone-{{ id }}" name="telephone" type="tel" required autocomplete="tel" inputmode="tel" pattern="[0-9 +().\-]{9,20}" placeholder="079 123 45 67">
+  </div>
+  <div class="champ">
+    <label for="email-{{ id }}">E-mail</label>
+    <input id="email-{{ id }}" name="email" type="email" required autocomplete="email">
+  </div>
+  {% if not societe %}
+  <div class="champ">
+    <label for="canton-{{ id }}">Canton</label>
+    <select id="canton-{{ id }}" name="canton" required>
+      <option value="">Choisir…</option>
+      {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="champ">
+    <label for="rappel-{{ id }}">Quand vous rappeler ?</label>
+    <select id="rappel-{{ id }}" name="moment_rappel">
+      <option value="indifferent">Peu importe</option>
+      <option value="matin">Le matin</option>
+      <option value="midi">Entre 12 h et 14 h</option>
+      <option value="apres-midi">L'après-midi</option>
+      <option value="soir">Après 17 h</option>
+    </select>
+  </div>
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro fermer(bouton, id="f") -%}
+  <div class="consentement">
+    <input id="consentement-{{ id }}" name="consentement" type="checkbox" value="oui" required>
+    <label for="consentement-{{ id }}">J'accepte d'être contacté par téléphone ou e-mail au sujet de ma demande, par un conseiller Assuravia ou par un partenaire spécialisé à qui elle peut être transmise. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+  </div>
+  <button class="bouton bouton--plein" type="submit">{{ bouton }}</button>
+  <p class="formulaire__note">Gratuit et sans engagement.</p>
+{%- endmacro %}

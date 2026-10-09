@@ -1,0 +1,68 @@
+{% import "partials/form.html" as f %}
+<div class="simulateur" data-simulateur>
+  <div class="simulateur__entrees">
+    <div class="champ">
+      <label for="sim-canton">Canton de domicile</label>
+      <select id="sim-canton" data-sim="canton">
+        {% for code, nom in cantons if code != 'autre' %}<option value="{{ code }}"{% if code == 'VD' %} selected{% endif %}>{{ nom }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="champ">
+      <label for="sim-situation">Situation</label>
+      <select id="sim-situation" data-sim="situation">
+        <option value="seul">Célibataire, divorcé, veuf</option>
+        <option value="couple">Marié ou partenariat enregistré</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="sim-statut">Statut professionnel</label>
+      <select id="sim-statut" data-sim="statut">
+        <option value="salarie">Salarié, affilié à une caisse de pension</option>
+        <option value="independant">Indépendant sans caisse de pension</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="sim-revenu">Revenu annuel net (CHF)</label>
+      <input id="sim-revenu" data-sim="revenu" type="number" inputmode="numeric" min="0" step="1000" value="85000">
+      <p class="champ__aide">Le revenu figurant sur votre certificat de salaire, ou le bénéfice net si vous êtes indépendant.</p>
+    </div>
+    <div class="champ">
+      <label for="sim-versement">Montant versé sur le 3e pilier cette année (CHF)</label>
+      <input id="sim-versement" data-sim="versement" type="number" inputmode="numeric" min="0" step="100" value="7258">
+      <p class="champ__aide" data-sim-plafond>Maximum 2026 : CHF 7'258.</p>
+    </div>
+  </div>
+  <div class="simulateur__resultat" aria-live="polite">
+    <p class="resultat__label">Économie d'impôts estimée cette année</p>
+    <p class="resultat__montant"><span data-sim-sortie="economie">CHF 2'300</span></p>
+    <p class="resultat__detail" data-sim-sortie="detail"></p>
+    <p class="resultat__avertissement">Estimation indicative, fondée sur des taux marginaux moyens au chef-lieu du canton (impôt fédéral, cantonal et communal). Votre économie réelle dépend de vos déductions et de votre commune.</p>
+  </div>
+</div>
+
+{{ f.ouvrir("3e-pilier", "3e-pilier") }}
+  <input type="hidden" name="sim_canton" data-sim-cache="canton">
+  <input type="hidden" name="sim_situation" data-sim-cache="situation">
+  <input type="hidden" name="sim_statut" data-sim-cache="statut">
+  <input type="hidden" name="sim_revenu" data-sim-cache="revenu">
+  <input type="hidden" name="sim_versement" data-sim-cache="versement">
+  <input type="hidden" name="sim_economie" data-sim-cache="economie">
+  <h2 class="form-titre">Être conseillé pour mon 3e pilier</h2>
+  <p class="formulaire__intro">Un conseiller vérifie votre calcul, vous explique les options (banque ou assurance) et vous aide à verser avant le 31 décembre.</p>
+  <div class="champ">
+    <label for="besoin-3a">Ce qui vous intéresse</label>
+    <select id="besoin-3a" name="besoin" required>
+      <option value="">Choisir…</option>
+      <option value="ouvrir">Ouvrir un 3e pilier</option>
+      <option value="optimiser">Optimiser un 3e pilier existant</option>
+      <option value="declaration">Aide pour ma déclaration d'impôts</option>
+      <option value="les-deux">3e pilier et déclaration d'impôts</option>
+    </select>
+  </div>
+  <div class="champ">
+    <label for="age-3a">Votre âge</label>
+    <input id="age-3a" name="age" type="number" min="18" max="70" required inputmode="numeric">
+  </div>
+  {{ f.contact("3a") }}
+{{ f.fermer("Être rappelé par un conseiller", "3a") }}
+</form>

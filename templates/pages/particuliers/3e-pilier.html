@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}3e pilier : calculez votre économie d'impôts 2026 | Assuravia{% endblock %}
+{% block description %}Simulateur gratuit : combien d'impôts économisez-vous en versant sur votre 3e pilier en 2026 ? Genève, Vaud, Valais, Fribourg, Neuchâtel, Jura, Berne.{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre">
+    <p class="fil"><a href="/particuliers/">Particuliers</a></p>
+    <h1>3e pilier : combien d'impôts allez-vous économiser en 2026 ?</h1>
+    <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation, le calcul se met à jour immédiatement.</p>
+    {% include "partials/simulateur-3a.html" %}
+  </div>
+</section>
+
+<section class="bloc bloc--brume">
+  <div class="cadre texte-long">
+    <h2>Combien pouvez-vous verser en 2026 ?</h2>
+    <table>
+      <thead><tr><th>Votre situation</th><th>Versement maximum déductible</th></tr></thead>
+      <tbody>
+        <tr><td>Salarié affilié à une caisse de pension (2e pilier)</td><td>CHF 7'258</td></tr>
+        <tr><td>Indépendant sans caisse de pension</td><td>20 % du revenu net, au maximum CHF 36'288</td></tr>
+      </tbody>
+    </table>
+    <p>Le versement doit être crédité sur votre compte 3a au plus tard le 31 décembre. Les banques et assureurs recommandent de verser quelques jours avant, pour tenir compte des délais de traitement.</p>
+
+    <h2>Pourquoi le 3e pilier fait baisser vos impôts</h2>
+    <p>Le montant versé est déduit de votre revenu imposable, pour l'impôt fédéral comme pour l'impôt cantonal et communal. L'économie dépend donc de votre taux marginal, c'est-à-dire du taux auquel est imposée la dernière tranche de votre revenu : plus votre revenu est élevé, plus la déduction rapporte.</p>
+    <p>À la retraite, le capital est imposé à part, à un taux réduit. Sur l'ensemble de la période, l'avantage fiscal reste en général important.</p>
+
+    <h2>Banque ou assurance ?</h2>
+    <dl class="faits faits--colonne">
+      <div><dt>3e pilier bancaire</dt><dd>Souple : vous versez ce que vous voulez, quand vous voulez, en compte épargne ou en fonds de placement.</dd></div>
+      <div><dt>3e pilier d'assurance</dt><dd>Engagement de verser régulièrement, en échange d'une protection en cas de décès ou d'invalidité et d'une épargne garantie selon les produits.</dd></div>
+    </dl>
+    <p>Le bon choix dépend de votre âge, de votre famille et de votre capacité d'épargne. C'est précisément ce que le conseiller examine avec vous.</p>
+
+    <h2>Rattraper les années manquées</h2>
+    <p>Depuis 2025, il est possible de rattraper des versements 3a pour les années incomplètes, à partir de l'année 2025 et jusqu'à 10 ans en arrière. Il faut avoir eu un revenu soumis à l'AVS l'année concernée et avoir d'abord versé le maximum de l'année en cours.</p>
+
+    <h2>Questions fréquentes</h2>
+    <details><summary>Quand puis-je retirer mon 3e pilier ?</summary><p>Au plus tôt 5 ans avant l'âge de référence AVS, et au plus tard 5 ans après si vous continuez de travailler. Un retrait anticipé est possible notamment pour acheter votre logement principal, vous mettre à votre compte ou quitter définitivement la Suisse.</p></details>
+    <details><summary>Faut-il ouvrir plusieurs comptes 3a ?</summary><p>Souvent oui : le retrait d'un compte se fait en une fois. Avec plusieurs comptes, vous pouvez étaler les retraits sur plusieurs années et réduire l'impôt sur le capital.</p></details>
+    <details><summary>Je suis frontalier, puis-je déduire un 3e pilier ?</summary><p>Cela dépend de votre statut fiscal (imposition à la source, quasi-résidence). Indiquez-le au conseiller : il vérifie si la déduction s'applique à votre cas.</p></details>
+    <p><a class="bouton bouton--plein" href="#contenu">Refaire le calcul</a></p>
+  </div>
+</section>
+{% endblock %}

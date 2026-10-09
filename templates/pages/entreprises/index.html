@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Assurances entreprises et PME en Suisse romande | Assuravia{% endblock %}
+{% block description %}RC professionnelle, LPP, LAA, perte de gain maladie, inventaire, transport : des offres adaptées aux indépendants et PME de Suisse romande.{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre">
+    <h1>Assurances pour les entreprises et les indépendants</h1>
+    <p class="chapeau">Des obligations légales (LAA, LPP) aux couvertures qui protègent votre activité. Un conseiller analyse vos contrats actuels et compare les offres du marché.</p>
+    {% with liste=produits.entreprises %}{% include "partials/liste-produits.html" %}{% endwith %}
+  </div>
+</section>
+<section class="bloc bloc--brume">
+  <div class="cadre texte-long">
+    <h2>Ce qui est obligatoire pour un employeur en Suisse</h2>
+    <ul>
+      <li><strong>L'assurance accidents (LAA)</strong> pour tous les employés, dès la première heure de travail.</li>
+      <li><strong>La prévoyance professionnelle (LPP)</strong> pour les employés dont le salaire annuel dépasse le seuil d'entrée fixé par la loi.</li>
+      <li><strong>Les assurances sociales AVS, AI, APG et chômage</strong>, gérées par votre caisse de compensation.</li>
+    </ul>
+    <p>La perte de gain maladie n'est pas obligatoire par la loi, mais elle est souvent prévue par une convention collective, et elle vous évite de payer vous-même le salaire d'un employé malade.</p>
+  </div>
+</section>
+{% endblock %}

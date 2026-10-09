@@ -1,0 +1,37 @@
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block title %}Faire une demande de conseil | Assuravia{% endblock %}
+{% block description %}Décrivez votre besoin en assurance ou prévoyance, un conseiller vous recontacte gratuitement.{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre cadre--etroit">
+    <h1>Faire une demande</h1>
+    <p class="chapeau">Dites-nous ce que vous cherchez. Un conseiller vous rappelle pour comprendre votre situation et vous proposer des offres adaptées.</p>
+    {{ f.ouvrir("demande", "") }}
+      <div class="champ">
+        <label for="choix-produit">Votre demande concerne</label>
+        <select id="choix-produit" name="produit_choisi" required data-choix-produit>
+          <option value="">Choisir…</option>
+          <optgroup label="Particuliers">
+            {% for p in produits.particuliers %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
+          </optgroup>
+          <optgroup label="Entreprises">
+            {% for p in produits.entreprises %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
+          </optgroup>
+          <option value="autre">Autre ou plusieurs besoins</option>
+        </select>
+      </div>
+      <div class="champ" data-si-entreprise hidden>
+        <label for="entreprise-d">Nom et activité de l'entreprise</label>
+        <input id="entreprise-d" name="entreprise" placeholder="Ex. Dupont Sàrl, menuiserie">
+      </div>
+      <div class="champ">
+        <label for="message-d">Votre situation en quelques mots <span class="facultatif">(facultatif)</span></label>
+        <textarea id="message-d" name="message" rows="4" placeholder="Ex. je paie trop cher ma complémentaire, je change d'emploi le mois prochain…"></textarea>
+      </div>
+      {{ f.contact("d") }}
+    {{ f.fermer("Envoyer ma demande", "d") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

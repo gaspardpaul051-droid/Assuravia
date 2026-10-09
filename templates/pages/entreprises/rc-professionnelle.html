@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}RC professionnelle en Suisse romande : comparer les offres | Assuravia{% endblock %}
+{% block description %}Responsabilité civile professionnelle pour indépendants et PME en Suisse romande. Décrivez votre activité en 2 minutes, un conseiller compare les offres pour vous. Gratuit.{% endblock %}
+{% block content %}
+<section class="produit">
+  <div class="cadre produit__grille">
+    <div class="produit__texte">
+      <p class="fil"><a href="/entreprises/">Entreprises</a></p>
+      <h1>RC professionnelle : protégez votre entreprise contre les réclamations</h1>
+      <p class="chapeau">Un client se blesse dans vos locaux, une installation que vous avez posée provoque un dégât d'eau, un conseil erroné coûte de l'argent à un mandant : la responsabilité civile prend en charge les dommages et votre défense.</p>
+      <ul class="points">
+        <li>Pour indépendants, Sàrl, SA et entreprises en création</li>
+        <li>Offres comparées selon votre activité et votre chiffre d'affaires</li>
+        <li>Un conseiller vous rappelle, gratuitement et sans engagement</li>
+      </ul>
+    </div>
+    <aside class="produit__form" id="demande">
+      <h2 class="form-titre">Recevoir des offres pour votre RC pro</h2>
+      {% include "partials/form-rc-pro.html" %}
+    </aside>
+  </div>
+</section>
+
+<section class="bloc bloc--brume">
+  <div class="cadre texte-long">
+    <h2>Ce que couvre une RC professionnelle</h2>
+    <p>L'assurance responsabilité civile intervient quand votre entreprise cause un dommage à quelqu'un d'autre dans le cadre de son activité. Elle a deux rôles :</p>
+    <ul>
+      <li><strong>Indemniser</strong> les dommages corporels, matériels et les pertes financières qui en découlent, quand votre responsabilité est engagée.</li>
+      <li><strong>Vous défendre</strong> contre les réclamations injustifiées ou excessives : l'assureur examine la demande et refuse de payer à votre place quand elle n'est pas fondée.</li>
+    </ul>
+    <p>Pour les métiers de conseil (fiduciaire, informatique, architecture, ingénierie, gestion), les pertes purement financières subies par un client sont le principal risque. Elles relèvent souvent d'une couverture spécifique, appelée RC professionnelle au sens strict. Pour les artisans et commerces, on parle plutôt de RC d'entreprise. Le conseiller vous indique ce qui correspond à votre activité.</p>
+
+    <h2>Ce qui n'est en général pas couvert</h2>
+    <ul>
+      <li>Les dommages à vos propres biens (ils relèvent de l'assurance choses ou inventaire).</li>
+      <li>Le coût de refaire un travail mal exécuté : c'est votre obligation contractuelle, pas un dommage à un tiers.</li>
+      <li>Les dommages causés intentionnellement, les amendes et les peines conventionnelles.</li>
+      <li>Les accidents de vos employés, couverts par l'assurance accidents LAA.</li>
+    </ul>
+
+    <h2>Est-ce obligatoire ?</h2>
+    <p>En Suisse, la RC professionnelle n'est pas obligatoire pour toutes les entreprises. Elle l'est pour certaines professions réglementées, comme les avocats ou les professions médicales, et de nombreux clients, régies ou maîtres d'ouvrage l'exigent avant de signer un contrat. Surtout, une seule réclamation peut dépasser ce que votre entreprise est capable de payer.</p>
+
+    <h2>Ce qui fait varier le prix</h2>
+    <dl class="faits faits--colonne">
+      <div><dt>L'activité</dt><dd>Un bureau de conseil et une entreprise de toiture n'ont pas le même risque.</dd></div>
+      <div><dt>Le chiffre d'affaires ou la masse salariale</dt><dd>C'est la base de calcul de la prime chez la plupart des assureurs.</dd></div>
+      <div><dt>La somme d'assurance</dt><dd>Souvent 3, 5 ou 10 millions de francs par sinistre. Certains contrats clients imposent un minimum.</dd></div>
+      <div><dt>La franchise</dt><dd>Une franchise plus élevée réduit la prime.</dd></div>
+      <div><dt>Les sinistres passés</dt><dd>Un historique sans sinistre permet souvent de négocier.</dd></div>
+    </dl>
+
+    <h2>Questions fréquentes</h2>
+    <details><summary>Je suis indépendant et je travaille seul, en ai-je besoin ?</summary><p>Oui, si un client peut subir un dommage à cause de votre travail. Votre RC privée ne couvre pas votre activité professionnelle, et en raison individuelle vous répondez des dettes de l'entreprise sur vos biens personnels.</p></details>
+    <details><summary>Puis-je changer d'assureur en cours de contrat ?</summary><p>En principe, à l'échéance, en respectant le délai de résiliation prévu par votre contrat (souvent 3 mois). Indiquez la date d'échéance dans le formulaire : le conseiller prépare les offres à temps.</p></details>
+    <details><summary>Mon entreprise est en cours de création, puis-je déjà demander une offre ?</summary><p>Oui. C'est même le bon moment, car certains clients ou bailleurs demandent une attestation d'assurance dès le début.</p></details>
+    <details><summary>Combien de temps pour recevoir une offre ?</summary><p>Le conseiller vous rappelle pour compléter votre dossier, puis vous transmet les offres. Le délai dépend de votre activité et des assureurs sollicités.</p></details>
+    <p><a class="bouton bouton--plein" href="#demande">Recevoir des offres</a></p>
+  </div>
+</section>
+{% endblock %}

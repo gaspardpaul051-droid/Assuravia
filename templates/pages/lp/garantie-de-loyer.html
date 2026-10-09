@@ -1,0 +1,14 @@
+{% set landing = true %}
+{% set noindex = true %}
+{% extends "base.html" %}
+{% block title %}Garantie de loyer sans dépôt | Assuravia{% endblock %}
+{% block description %}Gardez vos 3 mois de loyer : garantie de loyer en ligne en 3 minutes.{% endblock %}
+{% block content %}
+<section class="produit produit--simple produit--lp">
+  <div class="cadre">
+    <h1>Gardez vos 3 mois de loyer sur votre compte</h1>
+    <p class="chapeau">Remplacez le dépôt bancaire par une garantie de loyer. Demande en ligne en 3 minutes, gratuite et sans engagement.</p>
+    {% include "partials/form-garantie.html" %}
+  </div>
+</section>
+{% endblock %}

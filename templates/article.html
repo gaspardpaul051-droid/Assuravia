@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ article.titre }} | Assuravia{% endblock %}
+{% block description %}{{ article.description }}{% endblock %}
+{% block head %}
+<script type="application/ld+json">
+{{ {"@context": "https://schema.org", "@type": "Article", "headline": article.titre, "description": article.description, "datePublished": article.date, "dateModified": article.get("maj", article.date), "inLanguage": "fr-CH", "publisher": {"@type": "Organization", "name": "Assuravia", "url": site_url}}|tojson }}
+</script>
+{% endblock %}
+{% block content %}
+<article class="article">
+  <div class="cadre texte-long">
+    <p class="fil"><a href="/guide/">Guide</a></p>
+    <h1>{{ article.titre }}</h1>
+    <p class="article__date">Publié le {{ article.date_fr }}{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
+    <div class="article__corps">
+      {{ article.html|safe }}
+    </div>
+    {% if article.cta_url %}
+    <aside class="encart">
+      <p class="encart__titre">{{ article.cta_titre }}</p>
+      <p>{{ article.cta_texte }}</p>
+      <a class="bouton bouton--plein" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
+    </aside>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

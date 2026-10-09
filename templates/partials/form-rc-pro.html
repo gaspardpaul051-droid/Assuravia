@@ -1,0 +1,97 @@
+{% import "partials/form.html" as f %}
+{{ f.ouvrir("rc-pro", "rc-pro") }}
+  <fieldset class="etape" data-etape="1">
+    <legend>Votre entreprise <span class="etape__num">Étape 1 sur 2</span></legend>
+    <div class="grille-champs">
+      <div class="champ champ--large">
+        <label for="activite-rc">Activité exercée</label>
+        <input id="activite-rc" name="activite" required placeholder="Ex. menuiserie, fiduciaire, coiffure, conseil informatique">
+      </div>
+      <div class="champ">
+        <label for="forme-rc">Forme juridique</label>
+        <select id="forme-rc" name="forme_juridique" required>
+          <option value="">Choisir…</option>
+          <option value="independant">Indépendant / raison individuelle</option>
+          <option value="sarl">Sàrl</option>
+          <option value="sa">SA</option>
+          <option value="association">Association / fondation</option>
+          <option value="creation">En cours de création</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label for="canton-rc">Canton du siège</label>
+        <select id="canton-rc" name="canton" required>
+          <option value="">Choisir…</option>
+          {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="champ">
+        <label for="employes-rc">Nombre de personnes (vous compris)</label>
+        <select id="employes-rc" name="nb_personnes" required>
+          <option value="">Choisir…</option>
+          <option value="1">1</option>
+          <option value="2-5">2 à 5</option>
+          <option value="6-10">6 à 10</option>
+          <option value="11-50">11 à 50</option>
+          <option value="50+">Plus de 50</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label for="ca-rc">Chiffre d'affaires annuel</label>
+        <select id="ca-rc" name="chiffre_affaires" required>
+          <option value="">Choisir…</option>
+          <option value="<100k">Moins de CHF 100'000</option>
+          <option value="100-250k">CHF 100'000 à 250'000</option>
+          <option value="250k-1m">CHF 250'000 à 1 million</option>
+          <option value="1-5m">CHF 1 à 5 millions</option>
+          <option value=">5m">Plus de CHF 5 millions</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label for="actuel-rc">Avez-vous déjà une RC pro ?</label>
+        <select id="actuel-rc" name="assurance_actuelle" required>
+          <option value="">Choisir…</option>
+          <option value="non">Non</option>
+          <option value="oui">Oui</option>
+          <option value="ne-sait-pas">Je ne sais pas</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label for="echeance-rc">Échéance du contrat actuel <span class="facultatif">(facultatif)</span></label>
+        <input id="echeance-rc" name="echeance" type="month">
+      </div>
+      <div class="champ">
+        <label for="sinistres-rc">Sinistres ces 5 dernières années</label>
+        <select id="sinistres-rc" name="sinistres" required>
+          <option value="">Choisir…</option>
+          <option value="aucun">Aucun</option>
+          <option value="1">Un</option>
+          <option value="2+">Deux ou plus</option>
+        </select>
+      </div>
+    </div>
+    <button class="bouton bouton--plein" type="button" data-suivant>Continuer</button>
+  </fieldset>
+  <fieldset class="etape" data-etape="2">
+    <legend>Vos coordonnées <span class="etape__num">Étape 2 sur 2</span></legend>
+    <div class="grille-champs">
+      <div class="champ champ--large">
+        <label for="societe-rc">Nom de l'entreprise <span class="facultatif">(facultatif si en création)</span></label>
+        <input id="societe-rc" name="entreprise" autocomplete="organization">
+      </div>
+      <div class="champ champ--large">
+        <label for="fonction-rc">Votre fonction</label>
+        <select id="fonction-rc" name="fonction" required>
+          <option value="">Choisir…</option>
+          <option value="proprietaire">Propriétaire / associé</option>
+          <option value="direction">Direction</option>
+          <option value="admin">Administration / finances</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+    </div>
+    {{ f.contact("rc", societe=True) }}
+{{ f.fermer("Recevoir mes offres RC pro", "rc") }}
+    <button class="bouton bouton--discret" type="button" data-precedent>Revenir à l'étape 1</button>
+  </fieldset>
+</form>

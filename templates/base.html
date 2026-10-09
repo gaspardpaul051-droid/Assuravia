@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Assuravia{% endblock %}</title>
+<meta name="description" content="{% block description %}{% endblock %}">
+{% if noindex %}
+<meta name="robots" content="noindex, nofollow">
+{% else %}
+<link rel="canonical" href="{{ site_url }}{{ url }}">
+{% endif %}
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_CH">
+<meta property="og:site_name" content="Assuravia">
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:url" content="{{ site_url }}{{ url }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="/css/site.css">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#contenu">Aller au contenu</a>
+{% if landing %}
+<header class="entete entete--lp">
+  <div class="cadre">
+    <span class="logo">{% include "partials/logo.html" %}</span>
+    <p class="entete__reassurance">Gratuit et sans engagement</p>
+  </div>
+</header>
+{% else %}
+<header class="entete">
+  <div class="cadre">
+    <a class="logo" href="/" aria-label="Assuravia, accueil">{% include "partials/logo.html" %}</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="/particuliers/"{% if url.startswith('/particuliers/') %} aria-current="page"{% endif %}>Particuliers</a>
+      <a href="/entreprises/"{% if url.startswith('/entreprises/') %} aria-current="page"{% endif %}>Entreprises</a>
+      <a href="/guide/"{% if url.startswith('/guide/') %} aria-current="page"{% endif %}>Guide</a>
+      <a class="bouton bouton--petit" href="/conseil/">Faire une demande</a>
+    </nav>
+  </div>
+</header>
+{% endif %}
+<main id="contenu">
+{% block content %}{% endblock %}
+</main>
+<footer class="pied">
+  <div class="cadre">
+    {% if not landing %}
+    <div class="pied__colonnes">
+      <div>
+        <p class="pied__marque">{% include "partials/logo.html" %}</p>
+        <p>Assurances et prévoyance pour les particuliers et les entreprises de Suisse romande. Un conseiller vous recontacte gratuitement.</p>
+      </div>
+      <div>
+        <h2 class="pied__titre">Particuliers</h2>
+        <ul>
+          {% for p in produits.particuliers[:6] %}<li><a href="{{ produit_url(p) }}">{{ p.nom }}</a></li>{% endfor %}
+          <li><a href="/particuliers/">Tout voir</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="pied__titre">Entreprises</h2>
+        <ul>
+          {% for p in produits.entreprises[:6] %}<li><a href="{{ produit_url(p) }}">{{ p.nom }}</a></li>{% endfor %}
+          <li><a href="/entreprises/">Tout voir</a></li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+    <p class="pied__legal"><span>© {{ annee }} Assuravia</span> <a href="/mentions-legales/">Mentions légales</a> <a href="/confidentialite/">Protection des données</a></p>
+  </div>
+</footer>
+<script src="/js/site.js" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

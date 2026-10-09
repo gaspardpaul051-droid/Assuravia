@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /lp/
+Disallow: /merci/
+
+Sitemap: https://assuravia.ch/sitemap.xml

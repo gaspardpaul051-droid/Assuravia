@@ -1,0 +1,14 @@
+{% set landing = true %}
+{% set noindex = true %}
+{% extends "base.html" %}
+{% block title %}3e pilier 2026 : calculez vos impôts en moins | Assuravia{% endblock %}
+{% block description %}Calculez en 1 minute combien d'impôts vous économisez avec un 3e pilier en 2026.{% endblock %}
+{% block content %}
+<section class="produit produit--simple produit--lp">
+  <div class="cadre">
+    <h1>Versez sur votre 3e pilier avant le 31 décembre et payez moins d'impôts</h1>
+    <p class="chapeau">Calculez votre économie en 1 minute. Un conseiller peut ensuite vous aider à ouvrir ou optimiser votre 3e pilier, gratuitement.</p>
+    {% include "partials/simulateur-3a.html" %}
+  </div>
+</section>
+{% endblock %}

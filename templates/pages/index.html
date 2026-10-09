@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Assurances et prévoyance en Suisse romande | Assuravia{% endblock %}
+{% block description %}RC professionnelle, 3e pilier, garantie de loyer, complémentaire maladie : dites-nous ce que vous cherchez, un conseiller vous recontacte gratuitement.{% endblock %}
+{% block content %}
+<section class="accueil">
+  <div class="cadre accueil__grille">
+    <div class="accueil__texte">
+      <h1>Assurance, prévoyance, impôts : on vous montre le bon chemin.</h1>
+      <p class="chapeau">Assuravia aide les particuliers et les entreprises de Suisse romande à trouver la couverture qui leur convient. Dites-nous ce que vous cherchez, un conseiller vous recontacte gratuitement.</p>
+      <p class="accueil__liens"><a class="bouton bouton--plein" href="/conseil/">Faire une demande</a> <a class="lien-fort" href="#comment">Comment ça marche</a></p>
+    </div>
+    <nav class="poteau" aria-label="Accès directs">
+      <a class="panneau" href="/entreprises/rc-professionnelle/"><span class="panneau__lieu">RC professionnelle</span><span class="panneau__temps">2 min</span></a>
+      <a class="panneau" href="/particuliers/3e-pilier/"><span class="panneau__lieu">Économiser des impôts</span><span class="panneau__temps">1 min</span></a>
+      <a class="panneau" href="/particuliers/garantie-de-loyer/"><span class="panneau__lieu">Garantie de loyer</span><span class="panneau__temps">3 min</span></a>
+      <a class="panneau panneau--secondaire" href="/entreprises/"><span class="panneau__lieu">Toutes les assurances entreprise</span></a>
+      <a class="panneau panneau--secondaire" href="/particuliers/"><span class="panneau__lieu">Toutes les assurances privées</span></a>
+      <span class="poteau__pied" aria-hidden="true"></span>
+    </nav>
+  </div>
+</section>
+
+<section class="bloc" id="comment">
+  <div class="cadre">
+    <h2>Comment ça marche</h2>
+    <ol class="etapes">
+      <li><h3>Vous décrivez votre besoin</h3><p>Un formulaire court, en 2 à 3 minutes. Pas de compte à créer.</p></li>
+      <li><h3>Un conseiller vous rappelle</h3><p>Il vérifie votre situation et compare les offres adaptées sur le marché suisse.</p></li>
+      <li><h3>Vous décidez</h3><p>Vous recevez une proposition claire. Rien ne vous engage tant que vous n'avez rien signé.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="bloc bloc--brume">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Pour les entreprises</h2>
+      <p>Indépendants, PME, commerces et artisans : protégez votre activité et vos employés.</p>
+      {% with liste=produits.entreprises %}{% include "partials/liste-produits.html" %}{% endwith %}
+    </div>
+    <div>
+      <h2>Pour les particuliers</h2>
+      <p>Santé, logement, véhicule, retraite : couvrez ce qui compte, sans payer pour le reste.</p>
+      {% with liste=produits.particuliers %}{% include "partials/liste-produits.html" %}{% endwith %}
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre transparence">
+    <h2>Ce que vous pouvez attendre de nous</h2>
+    <dl class="faits">
+      <div><dt>C'est gratuit</dt><dd>Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu, jamais par vous.</dd></div>
+      <div><dt>Un vrai interlocuteur</dt><dd>Un conseiller qui connaît le marché suisse romand vous rappelle, au moment qui vous arrange.</dd></div>
+      <div><dt>Pas de démarchage</dt><dd>Nous ne contactons que les personnes qui en ont fait la demande.</dd></div>
+    </dl>
+  </div>
+</section>
+
+{% if articles %}
+<section class="bloc bloc--brume">
+  <div class="cadre">
+    <h2>Derniers articles du guide</h2>
+    {% with liste=articles[:3] %}{% include "partials/liste-articles.html" %}{% endwith %}
+    <p><a class="lien-fort" href="/guide/">Tous les articles</a></p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

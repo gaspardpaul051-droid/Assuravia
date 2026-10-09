@@ -1,0 +1,10 @@
+<ul class="index-produits">
+  {% for p in liste %}
+  <li>
+    <a href="{{ produit_url(p) }}">
+      <span class="index-produits__nom">{{ p.nom }}</span>
+      <span class="index-produits__desc">{{ p.desc }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

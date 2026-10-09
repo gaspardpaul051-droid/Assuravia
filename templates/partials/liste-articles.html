@@ -1,0 +1,11 @@
+<ul class="index-articles">
+  {% for a in liste %}
+  <li>
+    <a href="{{ a.url }}">
+      <span class="index-articles__cat">{{ a.categorie }}</span>
+      <span class="index-articles__titre">{{ a.titre }}</span>
+      <span class="index-articles__desc">{{ a.description }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

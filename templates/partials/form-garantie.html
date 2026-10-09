@@ -1,0 +1,73 @@
+{% import "partials/form.html" as f %}
+<div class="calcul-loyer" data-calcul-loyer>
+  <div class="champ">
+    <label for="gl-loyer">Loyer mensuel net (CHF)</label>
+    <input id="gl-loyer" type="number" inputmode="numeric" min="0" step="10" value="2100" data-gl="loyer">
+  </div>
+  <div class="calcul-loyer__comparaison" aria-live="polite">
+    <div><p class="calcul-loyer__label">Avec un dépôt bancaire</p><p class="calcul-loyer__chiffre" data-gl-sortie="depot">CHF 6'300</p><p>bloqués pendant tout le bail</p></div>
+    <div class="calcul-loyer__solution"><p class="calcul-loyer__label">Avec une garantie de loyer</p><p class="calcul-loyer__chiffre">CHF 0</p><p>bloqué, et une prime dès <span data-gl-sortie="prime">CHF 252</span> par an</p></div>
+  </div>
+  <p class="champ__aide">Prime indicative à partir de 4 % du montant garanti par an, hors timbre fédéral. Le prix exact dépend de l'assureur et de votre dossier.</p>
+</div>
+
+{{ f.ouvrir("garantie-loyer", "garantie-de-loyer") }}
+  <input type="hidden" name="loyer_mensuel" data-gl-cache="loyer">
+  <h2 class="form-titre">Faire ma demande de garantie</h2>
+  <div class="grille-champs">
+    <div class="champ">
+      <label for="montant-gl">Montant de la garantie (CHF)</label>
+      <input id="montant-gl" name="montant_garantie" type="number" inputmode="numeric" min="0" required data-gl="montant">
+      <p class="champ__aide">En général 3 mois de loyer, indiqué dans votre bail.</p>
+    </div>
+    <div class="champ">
+      <label for="entree-gl">Date d'entrée dans le logement</label>
+      <input id="entree-gl" name="date_entree" type="date" required>
+    </div>
+    <div class="champ">
+      <label for="type-gl">Type de bail</label>
+      <select id="type-gl" name="type_bail" required>
+        <option value="">Choisir…</option>
+        <option value="logement">Logement</option>
+        <option value="commercial">Local commercial</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="situation-gl">Situation professionnelle</label>
+      <select id="situation-gl" name="situation_pro" required>
+        <option value="">Choisir…</option>
+        <option value="salarie-cdi">Salarié (contrat à durée indéterminée)</option>
+        <option value="salarie-cdd">Salarié (contrat à durée déterminée)</option>
+        <option value="independant">Indépendant</option>
+        <option value="etudiant">Étudiant</option>
+        <option value="retraite">Retraité</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="poursuites-gl">Avez-vous des poursuites en cours ?</label>
+      <select id="poursuites-gl" name="poursuites" required>
+        <option value="">Choisir…</option>
+        <option value="non">Non</option>
+        <option value="oui">Oui</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="coloc-gl">Co-titulaire du bail ?</label>
+      <select id="coloc-gl" name="cotitulaire">
+        <option value="non">Non, je suis seul</option>
+        <option value="oui">Oui (conjoint ou colocataire)</option>
+      </select>
+    </div>
+    <div class="champ champ--large">
+      <label for="adresse-gl">Adresse du logement</label>
+      <input id="adresse-gl" name="adresse_logement" required autocomplete="street-address" placeholder="Rue, numéro, NPA, localité">
+    </div>
+  </div>
+  {{ f.contact("gl") }}
+  <div class="consentement">
+    <input id="autres-gl" name="interet_autres" type="checkbox" value="oui">
+    <label for="autres-gl">Je souhaite aussi un conseil pour réduire mes impôts ou mon assurance ménage.</label>
+  </div>
+{{ f.fermer("Envoyer ma demande", "gl") }}
+</form>

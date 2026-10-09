@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Assurances et prévoyance pour particuliers en Suisse romande | Assuravia{% endblock %}
+{% block description %}3e pilier, complémentaire maladie, RC ménage, véhicule, garantie de loyer, placements : un conseiller compare les offres pour vous, gratuitement.{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre">
+    <h1>Assurances et prévoyance pour les particuliers</h1>
+    <p class="chapeau">Choisissez ce qui vous intéresse. Pour le 3e pilier et la garantie de loyer, vous obtenez un calcul immédiat. Pour le reste, un conseiller vous rappelle et compare les offres.</p>
+    {% with liste=produits.particuliers %}{% include "partials/liste-produits.html" %}{% endwith %}
+  </div>
+</section>
+{% endblock %}

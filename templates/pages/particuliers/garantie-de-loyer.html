@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Garantie de loyer sans dépôt en Suisse romande | Assuravia{% endblock %}
+{% block description %}Gardez vos 3 mois de loyer sur votre compte : remplacez le dépôt bancaire par une garantie de loyer. Calcul immédiat et demande en ligne en 3 minutes.{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre">
+    <p class="fil"><a href="/particuliers/">Particuliers</a></p>
+    <h1>Garantie de loyer : gardez vos 3 mois de loyer sur votre compte</h1>
+    <p class="chapeau">Remplacez le dépôt bancaire exigé par la régie par une assurance. Vous payez une prime annuelle, votre argent reste disponible.</p>
+    {% include "partials/form-garantie.html" %}
+  </div>
+</section>
+
+<section class="bloc bloc--brume">
+  <div class="cadre texte-long">
+    <h2>Comment ça marche</h2>
+    <ol class="etapes etapes--compact">
+      <li><h3>Vous faites votre demande</h3><p>Le formulaire ci-dessus, en 3 minutes environ.</p></li>
+      <li><h3>L'assureur examine votre dossier</h3><p>Il vérifie notamment votre solvabilité, puis émet son offre.</p></li>
+      <li><h3>Vous remettez l'attestation à la régie</h3><p>L'acte de cautionnement remplace le dépôt bancaire.</p></li>
+    </ol>
+    <h2>Questions fréquentes</h2>
+    <details><summary>La régie est-elle obligée d'accepter ?</summary><p>Non. La plupart des régies acceptent une garantie de loyer d'assurance, mais demandez-lui son accord avant de lancer votre demande.</p></details>
+    <details><summary>Que se passe-t-il si la régie fait appel à la garantie ?</summary><p>L'assureur paie la régie, puis vous demande le remboursement. Si vous payez votre loyer et rendez le logement en bon état, rien ne change pour vous.</p></details>
+    <details><summary>Quel est le montant maximum ?</summary><p>Pour un logement, la garantie ne peut pas dépasser 3 mois de loyer.</p></details>
+    <details><summary>Puis-je résilier quand je déménage ?</summary><p>Le contrat prend fin quand la régie libère la garantie, en général après l'état des lieux de sortie. Les conditions de remboursement de prime varient selon l'assureur.</p></details>
+  </div>
+</section>
+{% endblock %}

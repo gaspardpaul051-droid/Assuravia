@@ -1,0 +1,42 @@
+# Assuravia : notes pour Claude
+
+Site de génération de leads assurance et prévoyance pour la Suisse romande (français uniquement).
+Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify à chaque push sur `main`.
+
+## Structure
+- `build.py` : générateur (Jinja2 + Markdown). La liste des produits est dans `PRODUITS`.
+- `templates/pages/` : une page = un fichier ; le chemin donne l'URL.
+- `templates/pages/lp/` : pages publicitaires (Google Ads), sans menu, `noindex`. Ne jamais les lier depuis le site.
+- `content/articles/*.md` : articles du guide, publiés sous `/guide/<nom-du-fichier>/`.
+- Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`), sinon Netlify crée un nouveau formulaire.
+
+## Article hebdomadaire
+Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :
+
+```
+---
+titre: Titre de 50 à 65 caractères, mot-clé principal au début
+description: Résumé de 140 à 160 caractères
+date: AAAA-MM-JJ
+categorie: Prévoyance | Entreprises | Logement | Santé | Véhicule | Impôts
+cta_titre: Titre de l'encart final
+cta_texte: Une phrase
+cta_url: /particuliers/3e-pilier/ (ou la page produit la plus proche, ou /conseil/?produit=<slug>)
+cta_bouton: Texte du bouton
+---
+Corps en Markdown, ## pour les intertitres.
+```
+
+Règles éditoriales :
+- Sujet utile à un lecteur de Suisse romande, en lien avec un produit du site (voir `PRODUITS`).
+  Alterner particuliers et entreprises, et suivre le calendrier (3e pilier en novembre-décembre,
+  déclaration d'impôts en février-mars, LAMal et complémentaires en septembre-novembre).
+- 900 à 1500 mots, vouvoiement, phrases courtes, aucun superlatif publicitaire.
+- Chaque chiffre (plafonds, taux, délais) est vérifié sur une source officielle ou un assureur
+  ou une banque suisse avant publication. En cas de doute, ne pas donner le chiffre.
+- Pas de contenu copié : tout est rédigé.
+- Ne pas promettre de résultats, ne pas se présenter comme indépendant ou neutre.
+- Vérifier qu'aucun article existant ne traite déjà le même sujet.
+- Lancer `python3 build.py` et vérifier qu'il n'y a pas d'erreur avant de pousser.
+- Mettre `brouillon: oui` dans l'en-tête pour préparer un article sans le publier.
