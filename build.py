@@ -97,6 +97,31 @@ def faq_jsonld(faq: list[dict]) -> str:
     }, ensure_ascii=False)
 
 
+def enrichir(html: str, meta: dict, path: Path) -> dict:
+    """Widgets communs aux articles et aux pages produit : encadrés, sommaire, CTA au milieu, quiz, essentiel, « pour qui »."""
+    # Encadrés « Le saviez-vous ? » : citations qui commencent par un titre en gras
+    html = re.sub(r"<blockquote>\s*<p><strong>(.*?)</strong>", r'<blockquote class="encadre"><p class="encadre__titre">\1</p><p>', html)
+    sommaire = [{"id": i, "titre": html_lib.unescape(re.sub(r"<[^>]+>", "", t))}
+                for i, t in re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', html)]
+    positions = [m.start() for m in re.finditer(r"<h2 ", html)]
+    coupe = positions[2] if len(positions) >= 3 else (positions[1] if len(positions) == 2 else len(html))
+    quiz = []
+    for bloc in [b for b in meta.get("quiz", "").split(";;") if b.strip()]:
+        parts = [x.strip() for x in bloc.split("|")]
+        if len(parts) != 3 or parts[1] not in ("vrai", "faux"):
+            raise ValueError(f"Quiz invalide dans {path} : {bloc}")
+        quiz.append({"affirmation": parts[0], "reponse": parts[1], "explication": parts[2]})
+    return {
+        "html": html,
+        "html_debut": html[:coupe],
+        "html_fin": html[coupe:],
+        "sommaire": sommaire,
+        "quiz": quiz,
+        "retenir": [x.strip() for x in meta.get("retenir", "").split("|") if x.strip()],
+        "pour_qui": [x.strip() for x in meta.get("pour_qui", "").split("|") if x.strip()],
+    }
+
+
 def lire_produit(path: Path) -> dict:
     meta, corps = lire_entete(path)
     for cle in CHAMPS_PRODUIT:
@@ -113,13 +138,14 @@ def lire_produit(path: Path) -> dict:
         if cle in meta:
             meta[cle] = re.sub(r" ([:?!;])", "\u00a0\\1", meta[cle])
     html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
+    widgets = enrichir(html, meta, path)
     return {
         **meta,
+        **widgets,
         "ordre": int(meta["ordre"]),
         "points": [p.strip() for p in meta["points"].split("|")],
         "url": meta.get("url") or f"{GROUPES[groupe]['url']}{meta['slug']}/",
         "page_fixe": page_fixe,
-        "html": html,
         "faq": faq,
         "faq_jsonld": faq_jsonld(faq),
         "theme": GROUPES[groupe]["theme"],
@@ -266,7 +292,8 @@ def main() -> None:
             continue
         voisins = [q for q in produits[p["groupe"]] if q["slug"] != p["slug"]]
         voisins.sort(key=lambda q: (q["categorie"] != p["categorie"], q["ordre"]))
-        ecrire(p["url"], tpl_produit.render(url=p["url"], produit=p, voisins=voisins[:3]))
+        lies = [a for a in articles if p["slug"] in a["produits_lies"]][:3]
+        ecrire(p["url"], tpl_produit.render(url=p["url"], produit=p, voisins=voisins[:3], articles_lies=lies))
         sitemap.append((p["url"], aujourd_hui.isoformat()))
 
     tpl_article = env.get_template("article.html")

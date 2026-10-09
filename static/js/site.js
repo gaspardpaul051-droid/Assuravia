@@ -425,6 +425,26 @@
     majPause(); lancer();
   });
 
+  // 11b. Pages produit : « Est-ce pour vous ? »
+  document.querySelectorAll("[data-pour-qui]").forEach(function (zone) {
+    var cases = zone.querySelectorAll("[data-pour-qui-case]");
+    var jauge = zone.querySelector("[data-pour-qui-jauge]");
+    var message = zone.querySelector("[data-pour-qui-message]");
+    var bouton = zone.querySelector("[data-pour-qui-bouton]");
+    var maj = function () {
+      var n = 0;
+      cases.forEach(function (c) { if (c.checked) n++; c.closest("li").classList.toggle("coche", c.checked); });
+      jauge.style.width = (n / cases.length * 100) + "%";
+      if (n === 0) message.textContent = "Cochez les situations qui vous ressemblent.";
+      else if (n === 1) message.textContent = "Une situation vous concerne : cette assurance mérite un coup d'œil. Un spécialiste vous dit en quelques minutes si elle vous est utile.";
+      else if (n < cases.length) message.textContent = n + " situations vous concernent : cette assurance est probablement utile pour vous. Faites vérifier votre couverture actuelle, c'est gratuit.";
+      else message.textContent = "Toutes les situations vous concernent : cette assurance est faite pour vous. Demandez des propositions adaptées, sans engagement.";
+      bouton.hidden = n === 0;
+      zone.classList.toggle("pour-qui--fort", n >= 2);
+    };
+    cases.forEach(function (c) { c.addEventListener("change", maj); });
+  });
+
   // 12. Articles : barre de progression, sommaire actif, quiz vrai ou faux
   var barre = document.querySelector("[data-progression]");
   if (barre) {

@@ -7,8 +7,10 @@
 {% block head %}
 {% if produit.faq_jsonld %}<script type="application/ld+json">{{ produit.faq_jsonld|safe }}</script>{% endif %}
 <script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": g.nom, "item": site_url ~ g.url}, {"@type": "ListItem", "position": 3, "name": produit.nom, "item": site_url ~ produit.url}]}|tojson }}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Service", "name": produit.nom, "serviceType": produit.nom, "description": produit.description or produit.desc, "url": site_url ~ produit.url, "areaServed": [{"@type": "State", "name": "Genève"}, {"@type": "State", "name": "Vaud"}, {"@type": "State", "name": "Valais"}, {"@type": "State", "name": "Fribourg"}, {"@type": "State", "name": "Neuchâtel"}, {"@type": "State", "name": "Jura"}], "audience": {"@type": "Audience", "audienceType": "Entreprises" if produit.groupe == "entreprises" else "Particuliers"}, "provider": {"@type": "Organization", "name": "Assuravia", "url": site_url ~ "/"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Conseil et comparaison gratuits, sans engagement"}}|tojson }}</script>
 {% endblock %}
 {% block content %}
+<div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
 <section class="hero-produit">
   <div class="cadre hero-produit__grille">
     <div class="hero-produit__texte">
@@ -29,19 +31,100 @@
 </section>
 
 <section class="bloc">
-  <div class="cadre texte-long">
-    {{ produit.html|safe }}
-    {% if produit.faq %}
-    <h2>Questions fréquentes</h2>
-    <div class="faq">
-      {% for q in produit.faq %}
-      <details><summary>{{ q.question|safe }}</summary><div class="faq__reponse">{{ q.reponse|safe }}</div></details>
-      {% endfor %}
+  <div class="cadre article__grille fiche">
+    <aside class="article__cote">
+      {% if produit.sommaire %}
+      <nav class="sommaire" aria-label="Sommaire de la page">
+        <p class="sommaire__titre">Sur cette page</p>
+        <ol>
+          {% for s in produit.sommaire %}<li><a href="#{{ s.id }}" data-sommaire-lien>{{ s.titre }}</a></li>{% endfor %}
+          {% if produit.pour_qui %}<li><a href="#pour-qui" data-sommaire-lien>Est-ce pour vous ?</a></li>{% endif %}
+          {% if produit.quiz %}<li><a href="#quiz-titre" data-sommaire-lien>Vrai ou faux</a></li>{% endif %}
+          {% if produit.faq %}<li><a href="#questions-frequentes" data-sommaire-lien>Questions fréquentes</a></li>{% endif %}
+        </ol>
+      </nav>
+      {% endif %}
+      <div class="mini-cta mini-cta--{{ produit.theme }}">
+        <p>{{ produit.nom }} : un conseil gratuit, sans engagement.</p>
+        <a class="bouton bouton--action bouton--petit" href="#demande">{{ produit.bouton }}</a>
+      </div>
+    </aside>
+    <div class="article__corps texte-long">
+      {% if produit.retenir %}
+      <aside class="retenir" aria-labelledby="retenir-titre">
+        <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+        <ul>{% for r in produit.retenir %}<li>{{ r }}</li>{% endfor %}</ul>
+      </aside>
+      {% endif %}
+      {{ produit.html_debut|safe }}
+      {% if produit.html_fin %}
+      <aside class="encart encart--milieu">
+        <p class="encart__titre">Un doute sur votre couverture ?</p>
+        <p>Un spécialiste regarde votre situation et vous explique ce qui vous convient. C'est gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a>
+      </aside>
+      {% endif %}
+      {{ produit.html_fin|safe }}
+
+      {% if produit.pour_qui %}
+      <section class="pour-qui pour-qui--{{ produit.theme }}" id="pour-qui" data-pour-qui aria-labelledby="pour-qui-titre">
+        <h2 id="pour-qui-titre">Est-ce pour vous ? Cochez ce qui vous concerne</h2>
+        <ul class="pour-qui__liste">
+          {% for item in produit.pour_qui %}
+          <li><label><input type="checkbox" data-pour-qui-case> <span>{{ item }}</span></label></li>
+          {% endfor %}
+        </ul>
+        <div class="pour-qui__resultat" aria-live="polite">
+          <div class="pour-qui__jauge"><span data-pour-qui-jauge></span></div>
+          <p data-pour-qui-message>Cochez les situations qui vous ressemblent.</p>
+          <a class="bouton bouton--action" href="#demande" data-pour-qui-bouton hidden>{{ produit.bouton }}</a>
+        </div>
+      </section>
+      {% endif %}
+
+      {% if produit.quiz %}
+      <section class="quiz" aria-labelledby="quiz-titre" data-quiz>
+        <h2 id="quiz-titre">Vrai ou faux ? Testez vos connaissances</h2>
+        <p class="quiz__score" aria-live="polite" data-quiz-score></p>
+        {% for q in produit.quiz %}
+        <div class="quiz__question" data-quiz-question data-reponse="{{ q.reponse }}">
+          <p class="quiz__affirmation">{{ q.affirmation }}</p>
+          <div class="quiz__choix">
+            <button type="button" class="quiz__bouton" data-choix="vrai">Vrai</button>
+            <button type="button" class="quiz__bouton" data-choix="faux">Faux</button>
+          </div>
+          <p class="quiz__explication" hidden data-quiz-explication><strong data-quiz-verdict></strong> {{ q.explication }}</p>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if produit.faq %}
+      <h2 id="questions-frequentes">Questions fréquentes</h2>
+      <div class="faq">
+        {% for q in produit.faq %}
+        <details><summary>{{ q.question|safe }}</summary><div class="faq__reponse">{{ q.reponse|safe }}</div></details>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <aside class="encart">
+        <p class="encart__titre">{{ produit.bouton }}</p>
+        <p>Un spécialiste vous rappelle au moment qui vous arrange, avec des propositions claires. Gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a>
+      </aside>
     </div>
-    {% endif %}
-    <p class="texte-long__action"><a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a></p>
   </div>
 </section>
+
+{% if articles_lies %}
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete bloc__entete--ligne"><h2>Pour aller plus loin</h2><a class="lien-fort" href="/blog/">Tous les articles</a></div>
+    {% with liste=articles_lies %}{% include "partials/liste-articles.html" %}{% endwith %}
+  </div>
+</section>
+{% endif %}
 
 {% if voisins %}
 <section class="bloc bloc--teinte">

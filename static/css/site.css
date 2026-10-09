@@ -758,3 +758,24 @@ input::placeholder, textarea::placeholder { color: #A3AEBD; opacity: 1; font-wei
 @media (max-width: 860px) { .illu-questions { max-width: 260px; } }
 .theme-prive .bloc:has(.illu-questions), .accueil ~ .bloc:has(:not([hidden]) > .illu-questions--prive) { background: radial-gradient(700px 360px at 0% 100%, var(--bleu-pale), transparent 70%), var(--fond); }
 .theme-pro .bloc:has(.illu-questions), .accueil ~ .bloc:has(:not([hidden]) > .illu-questions--pro) { background: radial-gradient(700px 360px at 0% 100%, var(--or-pale), transparent 70%), var(--fond); }
+/* ---------- Pages produit : widgets ---------- */
+.fiche .article__corps { min-width: 0; }
+.mini-cta--pro { background: var(--marine); }
+.pour-qui { margin: var(--e-7, 48px) 0; padding: var(--e-6); border-radius: var(--r-l); background: var(--bleu-pale); border: 1px solid #CFE6FA; }
+.pour-qui--pro { background: var(--or-pale); border-color: #EBDDAE; }
+.pour-qui h2 { margin-top: 0; }
+.pour-qui__liste { list-style: none; margin: 0 0 var(--e-5); padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
+@media (max-width: 700px) { .pour-qui__liste { grid-template-columns: 1fr; } }
+.pour-qui__liste li { margin: 0; }
+.pour-qui__liste label { display: flex; gap: var(--e-3); align-items: flex-start; height: 100%; padding: var(--e-4); border-radius: var(--r-m); background: var(--fond); border: 2px solid transparent; box-shadow: var(--ombre-1); cursor: pointer; font-size: var(--t-s); line-height: 1.5; transition: border-color var(--duree), transform var(--duree); }
+.pour-qui__liste label:hover { transform: translateY(-2px); }
+.pour-qui__liste input { width: 22px; height: 22px; flex: none; margin: 0; accent-color: var(--bleu); }
+.pour-qui--pro .pour-qui__liste input { accent-color: var(--marine); }
+.pour-qui__liste li.coche label { border-color: var(--bleu); }
+.pour-qui--pro .pour-qui__liste li.coche label { border-color: var(--or); }
+.pour-qui__resultat { display: grid; gap: var(--e-3); justify-items: start; }
+.pour-qui__resultat p { margin: 0; font-weight: 700; color: var(--marine); }
+.pour-qui__jauge { width: 100%; height: 10px; border-radius: var(--r-plein); background: rgba(11, 37, 69, 0.1); overflow: hidden; }
+.pour-qui__jauge span { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--bleu-vif), var(--bleu)); transition: width .4s ease; }
+.pour-qui--pro .pour-qui__jauge span { background: linear-gradient(90deg, var(--or-clair), var(--or)); }
+.pour-qui--fort .pour-qui__jauge span { background: linear-gradient(90deg, #3DBB74, var(--succes)); }
