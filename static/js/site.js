@@ -233,20 +233,27 @@
     loyer.addEventListener("input", calculer);
     calculer();
   });
-  // 6. Menu principal : sous-menus Privé et Pro, menu mobile
+  // 6. Menu principal : Privé et Pro mènent à leur page, la flèche ouvre la liste des produits
   var sousMenus = document.querySelectorAll("[data-sous-menu]");
-  sousMenus.forEach(function (d) {
-    d.addEventListener("toggle", function () {
-      if (d.open) sousMenus.forEach(function (autre) { if (autre !== d) autre.open = false; });
+  var fermerSousMenu = function (m) {
+    m.classList.remove("ouvert");
+    m.querySelector("[data-sous-menu-bascule]").setAttribute("aria-expanded", "false");
+  };
+  sousMenus.forEach(function (m) {
+    var bascule = m.querySelector("[data-sous-menu-bascule]");
+    bascule.addEventListener("click", function () {
+      var ouvrir = !m.classList.contains("ouvert");
+      sousMenus.forEach(fermerSousMenu);
+      if (ouvrir) { m.classList.add("ouvert"); bascule.setAttribute("aria-expanded", "true"); }
     });
   });
   document.addEventListener("click", function (e) {
-    sousMenus.forEach(function (d) { if (d.open && !d.contains(e.target) && window.matchMedia("(min-width: 1081px)").matches) d.open = false; });
+    sousMenus.forEach(function (m) { if (m.classList.contains("ouvert") && !m.contains(e.target) && window.matchMedia("(min-width: 1081px)").matches) fermerSousMenu(m); });
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
-    sousMenus.forEach(function (d) {
-      if (d.open) { d.open = false; d.querySelector("summary").focus(); }
+    sousMenus.forEach(function (m) {
+      if (m.classList.contains("ouvert")) { fermerSousMenu(m); m.querySelector("[data-sous-menu-bascule]").focus(); }
     });
     var nav = document.getElementById("navigation");
     var bouton = document.querySelector("[data-menu-bouton]");
@@ -277,6 +284,23 @@
           if (visible) n++;
         });
         if (statut) statut.textContent = n + " assurance" + (n > 1 ? "s" : "") + " affichée" + (n > 1 ? "s" : "");
+      });
+    });
+  });
+
+  // 7b. Glossaire : filtre par domaine
+  document.querySelectorAll("[data-glossaire]").forEach(function (g) {
+    var boutons = g.querySelectorAll("[data-filtre-glossaire]");
+    boutons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var choix = b.getAttribute("data-filtre-glossaire");
+        boutons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        g.querySelectorAll("[data-categorie-glossaire]").forEach(function (t) {
+          t.hidden = !!choix && t.getAttribute("data-categorie-glossaire") !== choix;
+        });
+        g.querySelectorAll(".glossaire__lettre").forEach(function (sec) {
+          sec.hidden = !sec.querySelector("[data-categorie-glossaire]:not([hidden])");
+        });
       });
     });
   });

@@ -2,9 +2,9 @@
 slug: placements
 groupe: particuliers
 nom: Placements et gestion de fortune
-categorie: Prévoyance et épargne
+categorie: Prévoyance et placement
 icone: courbe
-ordre: 10
+ordre: 2
 titre_seo: Placements et gestion de fortune en Suisse romande
 description: Faire fructifier votre épargne selon votre horizon et votre profil de risque : fonds, mandat de gestion, prévoyance. Un premier échange gratuit avec un spécialiste.
 desc: Faites travailler votre épargne selon votre horizon et votre profil de risque.

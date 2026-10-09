@@ -2,7 +2,7 @@
 slug: libre-passage
 groupe: particuliers
 nom: Libre passage
-categorie: Prévoyance et épargne
+categorie: Prévoyance et placement
 icone: fleches
 ordre: 9
 titre_seo: Compte de libre passage : que faire de son 2e pilier entre deux emplois

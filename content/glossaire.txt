@@ -1,0 +1,61 @@
+# Glossaire Assuravia. Une ligne par terme : catégorie | terme | définition | lien facultatif
+# Catégories : Assurance, Prévoyance, Placement. Vérifier chaque chiffre avant de l'ajouter.
+Assurance | Assurance de base (LAMal) | Assurance maladie obligatoire pour toute personne domiciliée en Suisse. Les prestations sont fixées par la loi et identiques chez tous les assureurs ; seules les primes varient. |
+Assurance | Assurance complémentaire (LCA) | Assurance maladie facultative qui couvre ce que la LAMal ne paie pas : chambre privée, soins dentaires, médecines complémentaires. L'assureur peut refuser une demande ou émettre des réserves. | /particuliers/complementaire-maladie/
+Assurance | Franchise | Montant des frais que vous payez vous-même chaque année avant que l'assurance rembourse. En LAMal, elle va de CHF 300 à CHF 2'500 pour un adulte : plus elle est haute, plus la prime baisse. |
+Assurance | Quote-part | Part de 10 % des frais que vous payez au-delà de la franchise en LAMal, plafonnée à CHF 700 par an pour un adulte et CHF 350 pour un enfant. |
+Assurance | Prime | Montant que vous payez pour être assuré, en général chaque mois ou chaque année. |
+Assurance | Somme d'assurance | Montant maximal que l'assureur paie en cas de sinistre, ou valeur totale des biens assurés. |
+Assurance | Sous-assurance | Situation où la somme d'assurance est inférieure à la valeur réelle des biens. L'assureur réduit alors l'indemnité en proportion, même pour un petit sinistre. | /particuliers/rc-menage/
+Assurance | Valeur à neuf | Indemnisation au prix d'un objet neuf équivalent, sans déduction pour l'usure. |
+Assurance | Valeur vénale | Valeur d'un bien au moment du sinistre, compte tenu de son âge et de son usure. Souvent utilisée pour les véhicules. |
+Assurance | Sinistre | Événement couvert par le contrat qui cause un dommage : accident, vol, incendie, dégât d'eau, réclamation d'un tiers. |
+Assurance | Responsabilité civile (RC) | Obligation de réparer un dommage causé à une autre personne. L'assurance RC paie ces dommages et vous défend contre les réclamations injustifiées. | /particuliers/rc-menage/
+Assurance | RC professionnelle | Assurance qui couvre les dommages causés à des clients ou à des tiers dans le cadre d'une activité professionnelle, y compris les pertes financières pour les métiers de conseil. | /entreprises/rc-professionnelle/
+Assurance | Casco | Assurance des dommages à votre propre véhicule. La casco partielle couvre notamment le vol, les éléments naturels et le bris de glace ; la casco complète ajoute les accidents dont vous êtes responsable. | /particuliers/vehicule/
+Assurance | Système de bonus | Mécanisme de l'assurance auto qui baisse la prime après des années sans sinistre et l'augmente après un sinistre. |
+Assurance | Délai d'attente | Période pendant laquelle une prestation n'est pas encore versée : après la souscription pour certaines garanties, ou au début d'une incapacité de travail en perte de gain. |
+Assurance | Réserve | Exclusion décidée par l'assureur, en complémentaire, pour une maladie ou un problème de santé existant au moment de la demande. |
+Assurance | Échéance | Date à laquelle un contrat arrive à son terme et peut être résilié, en respectant le délai de préavis prévu. |
+Assurance | Exclusion | Situation ou dommage que le contrat ne couvre pas, listé dans les conditions générales. |
+Assurance | Conditions générales (CGA) | Document qui fixe les règles d'un contrat d'assurance : ce qui est couvert, les exclusions, les délais et les obligations de l'assuré. |
+Assurance | Protection juridique | Assurance qui prend en charge les frais d'avocat, de justice et d'expertise en cas de litige. | /particuliers/protection-juridique/
+Assurance | Garantie de loyer | Assurance qui remplace le dépôt bancaire exigé par le bailleur. Vous payez une prime annuelle au lieu de bloquer jusqu'à 3 mois de loyer. | /particuliers/garantie-de-loyer/
+Assurance | LAA | Loi sur l'assurance-accidents. Elle oblige l'employeur à assurer ses employés contre les accidents professionnels et, dès 8 heures de travail par semaine, non professionnels. | /entreprises/laa/
+Assurance | Perte de gain maladie | Assurance qui verse une indemnité journalière, souvent 80 % du salaire, quand un employé ne peut pas travailler pour cause de maladie. | /entreprises/pgm/
+Assurance | Interruption d'exploitation | Assurance qui compense la perte de revenu d'une entreprise lorsque son activité est arrêtée par un sinistre couvert. | /entreprises/commerce-inventaire/
+Prévoyance | Système des trois piliers | Organisation de la prévoyance suisse : le 1er pilier (AVS, AI) couvre les besoins vitaux, le 2e (LPP) aide à maintenir le niveau de vie, le 3e (prévoyance individuelle) complète les deux. |
+Prévoyance | AVS | Assurance-vieillesse et survivants, le 1er pilier. Elle verse une rente à la retraite et aux survivants en cas de décès. |
+Prévoyance | AI | Assurance-invalidité, partie du 1er pilier. Elle soutient la réadaptation et verse une rente si la capacité de gain est durablement réduite. |
+Prévoyance | Âge de référence | Âge ordinaire de la retraite AVS : 65 ans pour les hommes et les femmes, avec une période de transition pour les femmes nées entre 1961 et 1963. |
+Prévoyance | LPP (2e pilier) | Prévoyance professionnelle obligatoire pour les salariés dont le salaire annuel dépasse le seuil d'entrée, fixé à CHF 22'680 en 2026. L'employeur paie au moins la moitié des cotisations. | /entreprises/lpp/
+Prévoyance | Salaire coordonné | Part du salaire assurée obligatoirement en LPP : le salaire annuel moins la déduction de coordination, de CHF 26'460 en 2026. |
+Prévoyance | Taux de conversion | Pourcentage qui transforme l'avoir de vieillesse en rente annuelle. Le minimum légal est de 6,8 % sur la partie obligatoire du 2e pilier. |
+Prévoyance | Rachat LPP | Versement volontaire dans sa caisse de pension pour combler des années de cotisation manquantes. Il est déductible du revenu imposable, mais bloque un retrait en capital pendant 3 ans. |
+Prévoyance | Libre passage | Compte ou police où est placé votre 2e pilier quand vous quittez une caisse de pension sans en rejoindre une nouvelle. | /particuliers/libre-passage/
+Prévoyance | 3e pilier A | Prévoyance individuelle liée. Les versements sont déductibles du revenu imposable, jusqu'à CHF 7'258 en 2026 pour un salarié affilié à une caisse de pension, et l'argent est bloqué jusqu'à la retraite sauf exceptions. | /particuliers/3e-pilier/
+Prévoyance | 3e pilier B | Prévoyance individuelle libre : assurance vie ou épargne, sans plafond ni blocage légal, avec un traitement fiscal qui varie selon les cantons. |
+Prévoyance | Rattrapage 3a | Possibilité, depuis 2025, de verser rétroactivement pour les années où le maximum du 3e pilier A n'a pas été versé, jusqu'à 10 ans en arrière et pour les lacunes nées dès 2025. | /particuliers/3e-pilier/
+Prévoyance | Lacune de prévoyance | Écart entre le revenu dont vous aurez besoin à la retraite ou en cas d'invalidité, et ce que vous verseront les 1er et 2e piliers. |
+Prévoyance | EPL | Encouragement à la propriété du logement : retrait ou mise en gage de votre 2e ou 3e pilier pour acheter votre logement principal. |
+Prévoyance | Rente ou capital | Deux façons de toucher sa prévoyance : un revenu versé à vie, ou un montant en une fois, imposé séparément à un taux réduit. |
+Prévoyance | Taux marginal d'imposition | Taux auquel est imposée la dernière tranche de votre revenu. C'est lui qui détermine l'économie d'impôts d'un versement au 3e pilier. | /particuliers/3e-pilier/
+Placement | Action | Part du capital d'une entreprise. Sa valeur suit les résultats et les perspectives de l'entreprise, et peut verser un dividende. |
+Placement | Obligation | Prêt accordé à un État ou une entreprise, qui verse en général un intérêt fixe et rembourse le montant à l'échéance. |
+Placement | Fonds de placement | Panier de titres géré par un professionnel, qui permet d'investir dans de nombreuses actions ou obligations avec un seul produit. | /particuliers/placements/
+Placement | ETF | Fonds coté en bourse qui reproduit un indice, par exemple le marché suisse. Ses frais sont en général bas. |
+Placement | Diversification | Répartition de l'argent entre plusieurs placements, régions et secteurs pour réduire le risque. |
+Placement | Profil de risque | Combinaison de votre capacité à supporter des pertes et de votre tolérance personnelle aux variations. Il guide le choix des placements. | /particuliers/placements/
+Placement | Horizon de placement | Durée pendant laquelle vous pouvez laisser votre argent investi. Plus elle est longue, plus vous pouvez accepter des variations à court terme. |
+Placement | Volatilité | Ampleur des variations de valeur d'un placement. Une forte volatilité signifie des hausses et des baisses importantes. |
+Placement | Rendement | Gain d'un placement sur une période, en pourcentage : intérêts, dividendes et variation de valeur. Les rendements passés ne garantissent pas les rendements futurs. |
+Placement | Intérêts composés | Effet des gains qui produisent eux-mêmes des gains. Sur une longue durée, c'est ce qui fait le plus croître une épargne régulière. |
+Placement | Frais totaux (TER) | Total Expense Ratio : frais annuels d'un fonds, en pourcentage de l'argent investi. Une petite différence pèse beaucoup sur 20 ans. |
+Placement | Allocation d'actifs | Répartition d'un portefeuille entre actions, obligations, liquidités et autres placements, selon votre profil et votre horizon. |
+Placement | Mandat de gestion | Contrat par lequel vous confiez la gestion de vos placements à un professionnel, selon une stratégie convenue ensemble. | /particuliers/placements/
+Placement | Conseil en placement | Service où un conseiller vous recommande des placements, mais où vous gardez la décision finale. |
+Placement | Liquidité | Facilité avec laquelle un placement peut être vendu et transformé en argent disponible. |
+Placement | Inflation | Hausse générale des prix, qui réduit le pouvoir d'achat de l'argent laissé sans rendement. |
+Placement | Dividende | Part du bénéfice qu'une entreprise verse à ses actionnaires. |
+Placement | Impôt anticipé | Impôt fédéral de 35 % prélevé sur les dividendes et les intérêts suisses. Il est remboursé si vous déclarez ces revenus et cette fortune dans votre déclaration d'impôts. |
+Placement | LSFin | Loi fédérale sur les services financiers. Elle impose aux prestataires des règles d'information et de vérification de l'adéquation des services à votre profil. |

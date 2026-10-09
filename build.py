@@ -40,7 +40,7 @@ CANTONS = [
 GROUPES = {
     "particuliers": {
         "nom": "Privé", "titre": "Particuliers", "url": "/particuliers/", "theme": "prive",
-        "categories": ["Santé", "Prévoyance et épargne", "Logement et biens", "Protection"],
+        "categories": ["Santé", "Prévoyance et placement", "Logement et biens", "Protection"],
     },
     "entreprises": {
         "nom": "Pro", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
@@ -120,6 +120,26 @@ def lire_produit(path: Path) -> dict:
     }
 
 
+def lire_glossaire(path: Path) -> list[dict]:
+    """Lit content/glossaire.txt : « catégorie | terme | définition | lien facultatif »."""
+    termes = []
+    for ligne in path.read_text(encoding="utf-8").splitlines():
+        if not ligne.strip() or ligne.startswith("#"):
+            continue
+        champs = [c.strip() for c in ligne.split("|")]
+        if len(champs) < 3 or champs[0] not in ("Assurance", "Prévoyance", "Placement"):
+            raise ValueError(f"Ligne de glossaire invalide : {ligne}")
+        terme = champs[1]
+        ident = re.sub(r"[^a-z0-9]+", "-", terme.lower().translate(str.maketrans("àâäéèêëîïôöùûüç", "aaaeeeeiioouuuc"))).strip("-")
+        termes.append({"categorie": champs[0], "terme": terme, "definition": champs[2],
+                       "lien": champs[3] if len(champs) > 3 and champs[3] else "", "id": ident})
+    cle = lambda t: t["terme"].lower().translate(str.maketrans("àâäéèêëîïôöùûüç", "aaaeeeeiioouuuc"))
+    termes.sort(key=cle)
+    for t in termes:
+        t["lettre"] = cle(t)[0].upper() if cle(t)[0].isalpha() else "#"
+    return termes
+
+
 def lire_article(path: Path) -> dict:
     meta, corps = lire_entete(path)
     for cle in ("titre", "description", "date", "categorie"):
@@ -184,6 +204,7 @@ def main() -> None:
         produits=produits,
         par_slug=par_slug,
         articles=articles,
+        glossaire=lire_glossaire(ROOT / "content" / "glossaire.txt"),
         annee=aujourd_hui.year,
     )
 

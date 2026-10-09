@@ -1,0 +1,42 @@
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block title %}Glossaire de l'assurance, de la prévoyance et du placement | Assuravia{% endblock %}
+{% block description %}Franchise, quote-part, salaire coordonné, 3e pilier, ETF, TER… Les termes de l'assurance, de la prévoyance et du placement en Suisse, expliqués simplement.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "DefinedTermSet", "name": "Glossaire Assuravia", "inLanguage": "fr-CH", "hasDefinedTerm": glossaire|map(attribute="terme")|list|map("string")|list}|tojson }}</script>
+{% endblock %}
+{% block content %}
+<section class="hero-hub">
+  <div class="cadre">
+    <p class="etiquette etiquette--neutre">{{ i.icone("livre", "icone icone--petite") }} {{ glossaire|length }} termes expliqués</p>
+    <h1>Glossaire</h1>
+    <p class="chapeau">Les mots de l'assurance, de la prévoyance et du placement, expliqués simplement. Quand un terme a sa page sur le site, un lien vous y mène.</p>
+  </div>
+</section>
+<section class="bloc bloc--serre">
+  <div class="cadre glossaire" data-glossaire>
+    <div class="filtres filtres--gauche" role="group" aria-label="Filtrer par domaine">
+      <button type="button" class="filtre" aria-pressed="true" data-filtre-glossaire="">Tous les termes</button>
+      <button type="button" class="filtre" aria-pressed="false" data-filtre-glossaire="Assurance">Assurance</button>
+      <button type="button" class="filtre" aria-pressed="false" data-filtre-glossaire="Prévoyance">Prévoyance</button>
+      <button type="button" class="filtre" aria-pressed="false" data-filtre-glossaire="Placement">Placement</button>
+    </div>
+    <nav class="lettres" aria-label="Aller à la lettre">
+      {% for lettre in glossaire|map(attribute="lettre")|unique %}<a href="#lettre-{{ lettre }}">{{ lettre }}</a>{% endfor %}
+    </nav>
+    {% for lettre, groupe in glossaire|groupby("lettre") %}
+    <section class="glossaire__lettre" aria-labelledby="lettre-{{ lettre }}">
+      <h2 id="lettre-{{ lettre }}">{{ lettre }}</h2>
+      <dl>
+        {% for t in groupe %}
+        <div class="terme terme--{{ 'assurance' if t.categorie == 'Assurance' else ('prevoyance' if t.categorie == 'Prévoyance' else 'placement') }}" id="{{ t.id }}" data-categorie-glossaire="{{ t.categorie }}">
+          <dt><span>{{ t.terme }}</span> <span class="terme__cat">{{ t.categorie }}</span></dt>
+          <dd>{{ t.definition }}{% if t.lien %} <a href="{{ t.lien }}">En savoir plus</a>{% endif %}</dd>
+        </div>
+        {% endfor %}
+      </dl>
+    </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

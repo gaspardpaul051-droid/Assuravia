@@ -44,18 +44,19 @@
     </button>
     <nav class="nav" id="navigation" aria-label="Navigation principale">
       {% for cle, g in groupes.items() %}
-      <details class="sous-menu sous-menu--{{ g.theme }}" data-sous-menu>
-        <summary{% if url.startswith(g.url) %} aria-current="true"{% endif %}><span class="pastille pastille--{{ g.theme }}" aria-hidden="true"></span>{{ g.nom }}{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</summary>
-        <div class="sous-menu__panneau">
+      <div class="sous-menu sous-menu--{{ g.theme }}" data-sous-menu>
+        <a class="sous-menu__lien" href="{{ g.url }}"{% if url.startswith(g.url) %} aria-current="{{ 'page' if url == g.url else 'true' }}"{% endif %}><span class="pastille pastille--{{ g.theme }}" aria-hidden="true"></span>{{ g.nom }}</a>
+        <button class="sous-menu__bascule" type="button" aria-expanded="false" aria-controls="menu-{{ cle }}" aria-label="Voir les produits {{ g.nom }}" data-sous-menu-bascule>{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</button>
+        <div class="sous-menu__panneau" id="menu-{{ cle }}">
           <p class="sous-menu__titre">Assurances pour {{ g.titre|lower }}</p>
           <ul>
             {% for p in produits[cle] %}
             <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom }}</a></li>
             {% endfor %}
           </ul>
-          <a class="sous-menu__tout" href="{{ g.url }}">Tous les produits {{ g.nom }} {{ i.icone("fleche", "icone icone--petite") }}</a>
+          <a class="sous-menu__tout" href="{{ g.url }}">Tout l'espace {{ g.nom }} {{ i.icone("fleche", "icone icone--petite") }}</a>
         </div>
-      </details>
+      </div>
       {% endfor %}
       <a class="nav__lien" href="/blog/"{% if url.startswith('/blog/') %} aria-current="page"{% endif %}>Blog</a>
       <a class="nav__lien" href="/contact/"{% if url.startswith('/contact/') %} aria-current="page"{% endif %}>Contact</a>
@@ -80,6 +81,7 @@
         <a href="/entreprises/">Pro</a>
         <a href="/blog/">Blog</a>
         <a href="/contact/">Contact</a>
+        <a href="/glossaire/">Glossaire</a>
       </nav>
     </div>
     {% endif %}

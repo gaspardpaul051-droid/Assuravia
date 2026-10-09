@@ -1,40 +1,44 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
-{% block title %}Assurances et prévoyance en Suisse romande, pour particuliers et entreprises | Assuravia{% endblock %}
-{% block description %}Particuliers et entreprises de Suisse romande : 3e pilier, complémentaire maladie, RC pro, LPP, garantie de loyer… Décrivez votre besoin, un conseiller compare pour vous. Gratuit.{% endblock %}
+{% block title %}Assurance, prévoyance et placement en Suisse romande | Assuravia{% endblock %}
+{% block description %}Assuravia accompagne particuliers et entreprises de Suisse romande pour leurs assurances, leur prévoyance et leurs placements. On analyse, on compare, on explique. Gratuit et sans engagement.{% endblock %}
 {% block content %}
 <section class="accueil">
-  <div class="cadre">
-    <div class="accueil__intro">
-      <h1>Assurance et prévoyance en Suisse romande, expliquées simplement.</h1>
-      <p class="chapeau">Dites-nous qui vous êtes et ce que vous cherchez. Un conseiller compare les offres du marché et vous rappelle, gratuitement.</p>
+  <div class="cadre accueil__grille">
+    <div class="accueil__texte">
+      <p class="etiquette etiquette--neutre">{{ i.icone("repere", "icone icone--petite") }} Genève, Vaud, Valais, Fribourg, Neuchâtel, Jura</p>
+      <h1>Vos assurances, votre prévoyance et vos placements, enfin clairs.</h1>
+      <p class="chapeau">Assuravia accompagne les particuliers et les entreprises de Suisse romande. On analyse votre situation, on compare le marché et on vous explique chaque option simplement. Vous décidez, et c'est gratuit.</p>
+      <div class="accueil__actions">
+        <a class="bouton bouton--action" href="/particuliers/">{{ i.icone("utilisateur", "icone icone--bouton") }} Je suis un particulier</a>
+        <a class="bouton bouton--secondaire" href="/entreprises/">{{ i.icone("batiment", "icone icone--bouton") }} Je représente une entreprise</a>
+      </div>
+      <ul class="coches">
+        <li>{{ i.icone("valide") }} Gratuit : les assureurs et partenaires nous rémunèrent, pas vous</li>
+        <li>{{ i.icone("valide") }} Sans engagement : rien ne change tant que vous n'avez rien signé</li>
+      </ul>
     </div>
-    <div class="portes">
-      <a class="porte porte--prive" href="/particuliers/">
-        <span class="porte__icone">{{ i.icone("utilisateur") }}</span>
-        <span class="porte__sur-titre">Privé</span>
-        <span class="porte__titre">Je suis un particulier</span>
-        <span class="porte__desc">Santé, retraite et impôts, logement, véhicule, protection juridique.</span>
-        <span class="porte__liste">{% for p in produits.particuliers[:4] %}<span>{{ p.nom }}</span>{% endfor %}</span>
-        <span class="porte__action">Voir les {{ produits.particuliers|length }} assurances privées {{ i.icone("fleche", "icone icone--bouton") }}</span>
-      </a>
-      <a class="porte porte--pro" href="/entreprises/">
-        <span class="porte__icone">{{ i.icone("batiment") }}</span>
-        <span class="porte__sur-titre">Pro</span>
-        <span class="porte__titre">Je représente une entreprise</span>
-        <span class="porte__desc">Indépendants et PME : responsabilité, personnel, biens et exploitation.</span>
-        <span class="porte__liste">{% for p in produits.entreprises[:4] %}<span>{{ p.nom }}</span>{% endfor %}</span>
-        <span class="porte__action">Voir les {{ produits.entreprises|length }} assurances pro {{ i.icone("fleche", "icone icone--bouton") }}</span>
-      </a>
-    </div>
+    <figure class="bilan" aria-labelledby="bilan-titre">
+      <figcaption class="bilan__entete">
+        <span class="bilan__etiquette">Exemple de bilan</span>
+        <span id="bilan-titre" class="bilan__titre">Famille de 4 personnes, Lausanne</span>
+      </figcaption>
+      <ul class="bilan__lignes">
+        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("coeur") }}</span><span><strong>Complémentaire maladie</strong> Deux couvertures dentaires en double, supprimées</span></li>
+        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("tirelire") }}</span><span><strong>3e pilier</strong> Ouvert pour les deux parents, avec déduction fiscale dès cette année</span></li>
+        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("maison") }}</span><span><strong>Assurance ménage</strong> Somme d'assurance corrigée après le déménagement</span></li>
+        <li><span class="bilan__icone bilan__icone--pro">{{ i.icone("courbe") }}</span><span><strong>Épargne</strong> Une partie placée selon un horizon de 15 ans</span></li>
+      </ul>
+      <p class="bilan__note">Cas illustratif. Chaque bilan dépend de votre situation.</p>
+    </figure>
   </div>
 </section>
 
 <section class="confiance" aria-label="Nos engagements">
   <div class="cadre confiance__liste">
     <div>{{ i.icone("valide") }}<p><strong>Gratuit pour vous</strong> Nous sommes rémunérés par les assureurs</p></div>
-    <div>{{ i.icone("repere") }}<p><strong>Suisse romande</strong> Genève, Vaud, Valais, Fribourg, Neuchâtel, Jura</p></div>
     <div>{{ i.icone("telephone") }}<p><strong>Un vrai conseiller</strong> Rappel au moment qui vous arrange</p></div>
+    <div>{{ i.icone("livre") }}<p><strong>Des explications claires</strong> Sans jargon, avec un glossaire</p></div>
     <div>{{ i.icone("cadenas") }}<p><strong>Données protégées</strong> Selon la loi suisse sur la protection des données</p></div>
   </div>
 </section>
@@ -42,11 +46,77 @@
 <section class="bloc">
   <div class="cadre">
     <div class="bloc__entete">
-      <h2>Les demandes les plus fréquentes</h2>
-      <p>Trois sujets où un bon conseil fait rapidement une différence.</p>
+      <h2>Assuravia, c'est quoi ?</h2>
+      <p>Une plateforme romande qui vous aide à faire les bons choix sur trois sujets que tout le monde repousse : se protéger, préparer l'avenir et faire travailler son argent. Vous nous dites où vous en êtes, un conseiller fait le tri pour vous.</p>
     </div>
-    <div class="cartes">
-      {% for slug in ["3e-pilier", "rc-pro", "complementaire-maladie"] %}{% with p=par_slug[slug] %}{% include "partials/carte-produit.html" %}{% endwith %}{% endfor %}
+    <div class="domaines">
+      <article class="domaine">
+        <span class="domaine__icone">{{ i.icone("bouclier") }}</span>
+        <h3>Assurer</h3>
+        <p>Protéger votre famille, votre logement, votre véhicule ou votre entreprise, sans payer pour des couvertures inutiles.</p>
+        <p class="domaine__exemples">Complémentaire maladie, ménage, véhicule, protection juridique, RC professionnelle, LAA</p>
+      </article>
+      <article class="domaine">
+        <span class="domaine__icone">{{ i.icone("tirelire") }}</span>
+        <h3>Prévoir</h3>
+        <p>Préparer votre retraite, combler vos lacunes et payer moins d'impôts grâce aux 2e et 3e piliers.</p>
+        <p class="domaine__exemples">3e pilier, libre passage, LPP pour les employeurs, perte de gain</p>
+      </article>
+      <article class="domaine">
+        <span class="domaine__icone">{{ i.icone("courbe") }}</span>
+        <h3>Faire fructifier</h3>
+        <p>Placer votre épargne selon votre horizon et votre tolérance au risque, avec des frais que vous comprenez.</p>
+        <p class="domaine__exemples">Fonds et ETF, mandat de gestion, 3e pilier en titres</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Par où commencer ?</h2>
+      <p>Choisissez la situation qui vous ressemble.</p>
+    </div>
+    <div class="portes">
+      <div class="porte porte--prive">
+        <span class="porte__sur-titre">{{ i.icone("utilisateur", "icone icone--petite") }} Privé</span>
+        <h3 class="porte__titre">Pour vous et votre famille</h3>
+        <ul class="situations">
+          <li><a href="/particuliers/garantie-de-loyer/">Vous emménagez et la régie demande 3 mois de loyer</a></li>
+          <li><a href="/particuliers/3e-pilier/">Vous voulez payer moins d'impôts cette année</a></li>
+          <li><a href="/particuliers/placements/">Votre épargne dort sur un compte</a></li>
+          <li><a href="/particuliers/libre-passage/">Vous changez d'emploi ou faites une pause</a></li>
+          <li><a href="/particuliers/voyage/">Vous partez loin et les soins y coûtent cher</a></li>
+        </ul>
+        <a class="porte__action" href="/particuliers/">Tout l'espace Privé {{ i.icone("fleche", "icone icone--bouton") }}</a>
+      </div>
+      <div class="porte porte--pro">
+        <span class="porte__sur-titre">{{ i.icone("batiment", "icone icone--petite") }} Pro</span>
+        <h3 class="porte__titre">Pour votre entreprise</h3>
+        <ul class="situations">
+          <li><a href="/entreprises/rc-professionnelle/">Vous vous lancez comme indépendant</a></li>
+          <li><a href="/entreprises/laa/">Vous engagez votre premier employé</a></li>
+          <li><a href="/entreprises/rc-professionnelle/">Un gros client exige une attestation d'assurance</a></li>
+          <li><a href="/entreprises/commerce-inventaire/">Vous ouvrez un commerce ou un atelier</a></li>
+          <li><a href="/entreprises/transport/">Vous expédiez de la marchandise à l'étranger</a></li>
+        </ul>
+        <a class="porte__action" href="/entreprises/">Tout l'espace Pro {{ i.icone("fleche", "icone icone--bouton") }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Pourquoi passer par Assuravia ?</h2>
+    </div>
+    <div class="atouts">
+      <div><span class="atout__icone">{{ i.icone("groupe") }}</span><h3>Un seul interlocuteur</h3><p>Assurances, prévoyance et placements : une seule demande, et un conseiller qui voit l'ensemble de votre situation.</p></div>
+      <div><span class="atout__icone">{{ i.icone("balance") }}</span><h3>Le marché comparé pour vous</h3><p>Vous n'avez pas à demander dix offres vous-même. Le conseiller compare et vous présente celles qui vous correspondent.</p></div>
+      <div><span class="atout__icone">{{ i.icone("livre") }}</span><h3>Des réponses claires</h3><p>Franchise, quote-part, salaire coordonné : on vous explique avec des mots simples, et notre blog vous aide à y voir clair.</p></div>
+      <div><span class="atout__icone">{{ i.icone("horloge") }}</span><h3>Au bon moment</h3><p>Délai de résiliation, versement avant le 31 décembre, échéance d'un contrat : on vous aide à ne rien rater.</p></div>
     </div>
   </div>
 </section>
@@ -74,6 +144,7 @@
     <div class="faq">
       <details><summary>Pourquoi est-ce gratuit ?</summary><div class="faq__reponse"><p>Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu. Vous ne payez rien, que vous signiez ou non.</p></div></details>
       <details><summary>Qui va me rappeler ?</summary><div class="faq__reponse"><p>Un conseiller Assuravia ou un partenaire spécialisé dans votre demande, par exemple un spécialiste de la prévoyance pour un 3e pilier. Vous le savez dès le premier appel.</p></div></details>
+      <details><summary>Vous occupez-vous aussi des placements ?</summary><div class="faq__reponse"><p>Oui. Pour faire fructifier votre épargne, un spécialiste analyse votre profil, votre horizon et votre tolérance au risque, puis vous présente des solutions adaptées : fonds, mandat de gestion ou 3e pilier en titres.</p></div></details>
       <details><summary>Vais-je être démarché ensuite ?</summary><div class="faq__reponse"><p>Non. Nous ne contactons que les personnes qui en ont fait la demande, et seulement au sujet de cette demande.</p></div></details>
       <details><summary>Que faire de mon contrat actuel ?</summary><div class="faq__reponse"><p>Rien pour l'instant. Le conseiller vérifie votre échéance et le délai de résiliation, et ne vous propose de changer que si c'est intéressant pour vous.</p></div></details>
     </div>
