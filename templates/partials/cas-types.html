@@ -3,7 +3,13 @@
 {% set theme = groupes[groupe].theme %}
 <div class="carrousel carrousel--{{ theme }}" data-carrousel aria-roledescription="carrousel" aria-label="Cas types">
   <div class="carrousel__commandes">
-    <p class="carrousel__mention">Exemples de situations types, à titre illustratif.</p>
+    <div class="carrousel__entete">
+      <span class="carrousel__icone">{{ i.icone("utilisateur" if theme == "prive" else "mallette") }}</span>
+      <div>
+        <p class="carrousel__surtitre">Cas types</p>
+        <p class="carrousel__titre">{{ cas[groupe]|length }} situations, {{ cas[groupe]|length }} solutions sur mesure</p>
+      </div>
+    </div>
     <div class="carrousel__boutons">
       <button type="button" class="carrousel__bouton" data-carrousel-precedent aria-label="Cas précédents">{{ i.icone("fleche", "icone icone--petite carrousel__retour") }}</button>
       <button type="button" class="carrousel__bouton" data-carrousel-pause aria-label="Mettre en pause le défilement" aria-pressed="false"><span class="carrousel__pause" aria-hidden="true"></span></button>
@@ -17,8 +23,10 @@
       <p class="cas__profil">{{ c.profil }}</p>
       <p class="cas__situation"><span>La situation</span>{{ c.situation }}</p>
       <p class="cas__solution"><span>Ce qu'on a proposé</span>{{ c.solution }}</p>
+      <p class="cas__resultat">{{ i.icone("valide", "icone icone--petite") }}<span>{{ c.resultat }}</span></p>
       <a class="cas__lien" href="{{ c.lien }}">En savoir plus {{ i.icone("fleche", "icone icone--petite") }}</a>
     </li>
     {% endfor %}
   </ul>
+  <p class="carrousel__mention">Exemples illustratifs, inspirés des situations que nous rencontrons le plus souvent.</p>
 </div>

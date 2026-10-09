@@ -5,7 +5,7 @@ Produit le site statique dans dist/ (publié par Netlify).
 
 - Pages fixes : templates/pages/ (Jinja2). Le chemin du fichier donne l'URL :
   templates/pages/entreprises/rc-professionnelle.html -> /entreprises/rc-professionnelle/
-- Produits : content/produits/*.md. Chaque produit a une carte sur la page Privé ou Pro
+- Produits : content/produits/*.md. Chaque produit a une carte sur la page Privé ou Professionnel
   et, sauf s'il a une page fixe (champ `url`), une page générée avec templates/produit.html.
 - Articles du blog : content/articles/*.md, publiés sous /blog/<fichier>/.
 """
@@ -45,7 +45,7 @@ GROUPES = {
         "categories": ["Santé", "Prévoyance et placement", "Logement et biens", "Protection", "Impôts"],
     },
     "entreprises": {
-        "nom": "Pro", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
+        "nom": "Professionnel", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
         "categories": ["Responsabilité", "Personnel", "Biens et exploitation"],
     },
 }
@@ -149,9 +149,9 @@ def lire_cas(path: Path) -> dict:
         if not ligne.strip() or ligne.startswith("#"):
             continue
         c = [x.strip() for x in ligne.split("|")]
-        if len(c) != 6 or c[0] not in GROUPES:
+        if len(c) != 7 or c[0] not in GROUPES:
             raise ValueError(f"Ligne de cas invalide : {ligne}")
-        cas[c[0]].append({"profil": c[1], "situation": c[2], "solution": c[3], "icone": c[4], "lien": c[5]})
+        cas[c[0]].append({"profil": c[1], "situation": c[2], "solution": c[3], "resultat": c[4], "icone": c[5], "lien": c[6]})
     return cas
 
 

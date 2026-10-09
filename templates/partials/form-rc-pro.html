@@ -48,7 +48,7 @@
         </select>
       </div>
       <div class="champ">
-        <label for="actuel-rc">Avez-vous déjà une RC pro ?</label>
+        <label for="actuel-rc">Avez-vous déjà une RC professionnelle ?</label>
         <select id="actuel-rc" name="assurance_actuelle" required>
           <option value="">Choisir…</option>
           <option value="non">Non</option>
@@ -91,7 +91,7 @@
       </div>
     </div>
     {{ f.contact("rc", societe=True) }}
-{{ f.fermer("Recevoir mes offres RC pro", "rc") }}
+{{ f.fermer("Recevoir mes offres de RC professionnelle", "rc") }}
     <button class="bouton bouton--discret" type="button" data-precedent>Revenir à l'étape 1</button>
   </fieldset>
 </form>

@@ -233,7 +233,7 @@
     loyer.addEventListener("input", calculer);
     calculer();
   });
-  // 6. Menu principal : Privé et Pro mènent à leur page, la flèche ouvre la liste des produits
+  // 6. Menu principal : Privé et Professionnel mènent à leur page, la flèche ouvre la liste des produits
   var sousMenus = document.querySelectorAll("[data-sous-menu]");
   var fermerSousMenu = function (m) {
     m.classList.remove("ouvert");
@@ -347,6 +347,10 @@
   var mouvementReduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.querySelectorAll("[data-carrousel]").forEach(function (car) {
     var piste = car.querySelector("[data-carrousel-piste]");
+    // Ordre aléatoire à chaque visite : on ne voit pas toujours les trois mêmes cas en premier
+    var items = Array.prototype.slice.call(piste.children);
+    for (var k = items.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = items[k]; items[k] = items[j]; items[j] = t; }
+    items.forEach(function (li, n) { li.setAttribute("aria-label", (n + 1) + " sur " + items.length); piste.appendChild(li); });
     var pause = car.querySelector("[data-carrousel-pause]");
     var arrete = mouvementReduit, survol = false, minuterie = null;
     var pas = function () { var c = piste.querySelector(".cas"); return c ? c.getBoundingClientRect().width + 24 : piste.clientWidth; };

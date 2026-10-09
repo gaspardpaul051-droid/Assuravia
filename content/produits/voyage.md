@@ -2,7 +2,7 @@
 slug: voyage
 groupe: particuliers
 nom: Assurance voyage
-categorie: Santé
+categorie: Protection
 icone: avion
 ordre: 7
 titre_seo: Assurance voyage annulation et frais médicaux à l'étranger
