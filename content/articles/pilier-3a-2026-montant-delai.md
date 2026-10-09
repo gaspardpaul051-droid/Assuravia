@@ -1,7 +1,7 @@
 ---
 titre: Pilier 3a 2026 : combien verser et jusqu'à quand pour payer moins d'impôts
 description: Montants maximums 2026, date limite du 31 décembre, économie d'impôts selon votre revenu et rattrapage des années manquées : l'essentiel sur le 3e pilier.
-date: 2026-10-09
+date: 2026-09-08
 categorie: Prévoyance
 cta_titre: Combien allez-vous économiser ?
 cta_texte: Le simulateur calcule votre économie d'impôts selon votre canton et votre revenu, en une minute.

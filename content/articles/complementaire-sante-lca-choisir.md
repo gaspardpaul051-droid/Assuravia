@@ -1,7 +1,7 @@
 ---
 titre: Complémentaire santé en Suisse : bien la choisir en 2026
 description: Hospitalisation, dentaire, médecines alternatives : ce que couvrent les complémentaires LCA, comment éviter les doublons et quand changer sans risque. Guide pratique.
-date: 2026-10-09
+date: 2026-10-02
 categorie: Santé
 cta_titre: Faites vérifier vos complémentaires
 cta_texte: Un conseiller repère les doublons et les lacunes de vos contrats actuels, et compare le marché. Gratuit.
