@@ -1,0 +1,27 @@
+{# Illustration animée « une question ? ». Attend `theme` : prive ou pro. #}
+<div class="illu-questions illu-questions--{{ theme }}" aria-hidden="true">
+  <svg viewBox="0 0 360 260" focusable="false">
+    <ellipse cx="180" cy="236" rx="140" ry="12" class="iq-ombre"/>
+    <!-- bureau -->
+    <rect x="70" y="170" width="220" height="12" rx="4" class="iq-fonce"/>
+    <rect x="86" y="182" width="10" height="52" class="iq-fonce"/>
+    <rect x="264" y="182" width="10" height="52" class="iq-fonce"/>
+    <!-- ordinateur -->
+    <rect x="186" y="118" width="84" height="52" rx="6" class="iq-fonce"/>
+    <rect x="192" y="124" width="72" height="40" rx="3" class="iq-ecran"/>
+    <path d="M200 136h40M200 146h56M200 156h28" class="iq-lignes"/>
+    <!-- conseiller -->
+    <circle cx="128" cy="92" r="20" class="iq-peau"/>
+    <path d="M108 88c0-16 10-24 20-24s21 8 21 22c-6-6-14-8-22-8s-13 4-19 10z" class="iq-fonce"/>
+    <path d="M92 170v-34c0-14 16-24 36-24s36 10 36 24v34z" class="iq-accent"/>
+    <path d="M118 114l10 14 10-14" class="iq-col"/>
+    <path d="M160 140l26 8" class="iq-bras"/>
+    <!-- tasse -->
+    <rect x="98" y="152" width="16" height="18" rx="3" class="iq-clair"/>
+    <path d="M114 157c6 0 6 9 0 9" class="iq-anse"/>
+    <!-- bulles -->
+    <g class="iq-bulle iq-bulle--1"><rect x="196" y="22" width="64" height="44" rx="14" class="iq-accent"/><path d="M214 66l-6 14 18-14z" class="iq-accent"/><text x="228" y="53" text-anchor="middle" class="iq-texte">?</text></g>
+    <g class="iq-bulle iq-bulle--2"><rect x="276" y="62" width="54" height="38" rx="12" class="iq-or"/><path d="M286 100l-4 12 14-12z" class="iq-or"/><text x="303" y="88" text-anchor="middle" class="iq-texte iq-texte--fonce">!</text></g>
+    <g class="iq-bulle iq-bulle--3"><rect x="34" y="28" width="54" height="36" rx="12" class="iq-clair2"/><path d="M76 64l8 12 2-12z" class="iq-clair2"/><circle cx="50" cy="46" r="3.5" class="iq-fonce"/><circle cx="61" cy="46" r="3.5" class="iq-fonce"/><circle cx="72" cy="46" r="3.5" class="iq-fonce"/></g>
+  </svg>
+</div>

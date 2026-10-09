@@ -178,6 +178,8 @@
       <h2>Questions fréquentes</h2>
       <p>Ce que l'on nous demande le plus souvent avant de faire une demande.</p>
       <p><a class="lien-fort" href="/contact/">Une autre question ? Écrivez-nous</a></p>
+      <div data-univers="prive">{% with theme="prive" %}{% include "partials/illu-questions.html" %}{% endwith %}</div>
+      <div data-univers="pro" hidden>{% with theme="pro" %}{% include "partials/illu-questions.html" %}{% endwith %}</div>
     </div>
     <div class="faq">
       <details><summary>Pourquoi est-ce gratuit ?</summary><div class="faq__reponse"><p>Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu. Vous ne payez rien, que vous signiez ou non.</p></div></details>
