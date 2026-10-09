@@ -5,6 +5,7 @@
 <script type="application/ld+json">
 {{ {"@context": "https://schema.org", "@type": "Article", "headline": article.titre, "description": article.description, "datePublished": article.date, "dateModified": article.get("maj", article.date), "inLanguage": "fr-CH", "publisher": {"@type": "Organization", "name": "Assuravia", "url": site_url}}|tojson }}
 </script>
+{% if article.faq_jsonld %}<script type="application/ld+json">{{ article.faq_jsonld|safe }}</script>{% endif %}
 {% endblock %}
 {% block content %}
 <article class="article">
@@ -14,6 +15,14 @@
     <p class="article__date">Publié le {{ article.date_fr }}{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
     <div class="article__corps">
       {{ article.html|safe }}
+      {% if article.faq %}
+      <h2>Questions fréquentes</h2>
+      <div class="faq">
+        {% for q in article.faq %}
+        <details><summary>{{ q.question|safe }}</summary><div class="faq__reponse">{{ q.reponse|safe }}</div></details>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
     {% if article.cta_url %}
     <aside class="encart">
