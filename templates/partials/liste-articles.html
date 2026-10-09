@@ -1,3 +1,4 @@
+{% import "partials/icones.html" as i %}
 <ul class="cartes-articles">
   {% for a in liste %}
   <li>
@@ -5,7 +6,7 @@
       <span class="badge">{{ a.categorie }}</span>
       <span class="carte-article__titre">{{ a.titre }}</span>
       <span class="carte-article__desc">{{ a.description }}</span>
-      <span class="carte-article__date">{{ a.date_fr }}</span>
+      <span class="carte-article__date">{{ i.icone("horloge", "icone icone--petite") }} {{ a.lecture }} min de lecture, {{ a.date_fr }}</span>
     </a>
   </li>
   {% endfor %}

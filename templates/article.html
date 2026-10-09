@@ -1,36 +1,116 @@
+{% import "partials/icones.html" as i %}
 {% extends "base.html" %}
 {% block title %}{{ article.titre }} | Assuravia{% endblock %}
 {% block description %}{{ article.description }}{% endblock %}
 {% block head %}
+<meta property="article:published_time" content="{{ article.date }}">
 <script type="application/ld+json">
-{{ {"@context": "https://schema.org", "@type": "Article", "headline": article.titre, "description": article.description, "datePublished": article.date, "dateModified": article.get("maj", article.date), "inLanguage": "fr-CH", "publisher": {"@type": "Organization", "name": "Assuravia", "url": site_url}}|tojson }}
+{{ {"@context": "https://schema.org", "@type": "BlogPosting", "headline": article.titre, "description": article.description, "datePublished": article.date, "dateModified": article.get("maj", article.date), "inLanguage": "fr-CH", "wordCount": article.mots, "articleSection": article.categorie, "mainEntityOfPage": site_url ~ article.url, "author": {"@type": "Organization", "name": "Assuravia", "url": site_url ~ "/"}, "publisher": {"@type": "Organization", "name": "Assuravia", "logo": {"@type": "ImageObject", "url": site_url ~ "/marque/embleme.svg"}}}|tojson }}
 </script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": site_url ~ "/blog/"}, {"@type": "ListItem", "position": 3, "name": article.titre, "item": site_url ~ article.url}]}|tojson }}</script>
 {% if article.faq_jsonld %}<script type="application/ld+json">{{ article.faq_jsonld|safe }}</script>{% endif %}
 {% endblock %}
 {% block content %}
+<div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
 <article class="article">
-  <div class="cadre texte-long">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/blog/">Blog</a></nav>
-    <h1>{{ article.titre }}</h1>
-    <p class="article__date">Publié le {{ article.date_fr }}{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
+  <header class="article__entete">
+    <div class="cadre">
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/blog/">Blog</a></nav>
+      <p class="badge">{{ article.categorie }}</p>
+      <h1>{{ article.titre }}</h1>
+      <p class="chapeau">{{ article.description }}</p>
+      <p class="article__meta">{{ i.icone("horloge", "icone icone--petite") }} {{ article.lecture }} min de lecture <span aria-hidden="true">·</span> Publié le <time datetime="{{ article.date }}">{{ article.date_fr }}</time>{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
+    </div>
+  </header>
+  <div class="cadre article__grille">
+    <aside class="article__cote">
+      {% if article.sommaire %}
+      <nav class="sommaire" aria-label="Sommaire de l'article">
+        <p class="sommaire__titre">Dans cet article</p>
+        <ol>
+          {% for s in article.sommaire %}<li><a href="#{{ s.id }}" data-sommaire-lien>{{ s.titre }}</a></li>{% endfor %}
+          {% if article.faq %}<li><a href="#questions-frequentes" data-sommaire-lien>Questions fréquentes</a></li>{% endif %}
+        </ol>
+      </nav>
+      {% endif %}
+      {% if article.cta_url %}
+      <div class="mini-cta">
+        <p>{{ article.cta_titre }}</p>
+        <a class="bouton bouton--action bouton--petit" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
+      </div>
+      {% endif %}
+    </aside>
     <div class="article__corps">
-      {{ article.html|safe }}
+      {% if article.retenir %}
+      <aside class="retenir" aria-labelledby="retenir-titre">
+        <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+        <ul>{% for r in article.retenir %}<li>{{ r }}</li>{% endfor %}</ul>
+      </aside>
+      {% endif %}
+      {{ article.html_debut|safe }}
+      {% if article.cta_url and article.html_fin %}
+      <aside class="encart encart--milieu">
+        <p class="encart__titre">{{ article.cta_titre }}</p>
+        <p>{{ article.cta_texte }}</p>
+        <a class="bouton bouton--action" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
+      </aside>
+      {% endif %}
+      {{ article.html_fin|safe }}
+
+      {% if article.quiz %}
+      <section class="quiz" aria-labelledby="quiz-titre" data-quiz>
+        <h2 id="quiz-titre">Vrai ou faux ? Testez-vous</h2>
+        <p class="quiz__score" aria-live="polite" data-quiz-score></p>
+        {% for q in article.quiz %}
+        <div class="quiz__question" data-quiz-question data-reponse="{{ q.reponse }}">
+          <p class="quiz__affirmation">{{ q.affirmation }}</p>
+          <div class="quiz__choix">
+            <button type="button" class="quiz__bouton" data-choix="vrai">Vrai</button>
+            <button type="button" class="quiz__bouton" data-choix="faux">Faux</button>
+          </div>
+          <p class="quiz__explication" hidden data-quiz-explication><strong data-quiz-verdict></strong> {{ q.explication }}</p>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+
       {% if article.faq %}
-      <h2>Questions fréquentes</h2>
+      <h2 id="questions-frequentes">Questions fréquentes</h2>
       <div class="faq">
         {% for q in article.faq %}
         <details><summary>{{ q.question|safe }}</summary><div class="faq__reponse">{{ q.reponse|safe }}</div></details>
         {% endfor %}
       </div>
       {% endif %}
+
+      {% if article.cta_url %}
+      <aside class="encart">
+        <p class="encart__titre">{{ article.cta_titre }}</p>
+        <p>{{ article.cta_texte }}</p>
+        <a class="bouton bouton--action" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
+      </aside>
+      {% endif %}
     </div>
-    {% if article.cta_url %}
-    <aside class="encart">
-      <p class="encart__titre">{{ article.cta_titre }}</p>
-      <p>{{ article.cta_texte }}</p>
-      <a class="bouton bouton--plein" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
-    </aside>
-    {% endif %}
   </div>
 </article>
+
+{% if article.produits_lies %}
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Les solutions liées à cet article</h2></div>
+    <div class="cartes">
+      {% for slug in article.produits_lies %}{% with p=par_slug[slug] %}{% include "partials/carte-produit.html" %}{% endwith %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if autres %}
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete bloc__entete--ligne"><h2>À lire aussi</h2><a class="lien-fort" href="/blog/">Tous les articles</a></div>
+    {% with liste=autres %}{% include "partials/liste-articles.html" %}{% endwith %}
+  </div>
+</section>
+{% endif %}
 {% endblock %}

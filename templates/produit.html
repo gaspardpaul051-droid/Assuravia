@@ -23,7 +23,7 @@
     <aside class="panneau-form" id="demande">
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
-      {% with p=produit %}{% include "partials/form-prive.html" if produit.groupe == "particuliers" else "partials/form-pro.html" %}{% endwith %}
+      {% with p=produit %}{% if produit.formulaire == "impots" %}{% include "partials/form-impots.html" %}{% elif produit.groupe == "particuliers" %}{% include "partials/form-prive.html" %}{% else %}{% include "partials/form-pro.html" %}{% endif %}{% endwith %}
     </aside>
   </div>
 </section>

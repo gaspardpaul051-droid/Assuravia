@@ -7,6 +7,9 @@ cta_titre: Combien allez-vous économiser ?
 cta_texte: Le simulateur calcule votre économie d'impôts selon votre canton et votre revenu, en une minute.
 cta_url: /particuliers/3e-pilier/
 cta_bouton: Calculer mon économie
+retenir: Jusqu'à CHF 7'258 déductibles en 2026 pour un salarié, jusqu'à CHF 36'288 pour un indépendant sans caisse de pension | Le versement doit être crédité avant le 31 décembre | L'économie dépend de votre taux marginal d'imposition | Depuis 2025, les années manquées peuvent être rattrapées
+produits_lies: 3e-pilier, placements, declaration-impots
+quiz: Le 3e pilier A peut être versé jusqu'au 15 janvier pour l'année précédente. | faux | Le versement doit être crédité au plus tard le 31 décembre de l'année concernée. ;; Un indépendant sans caisse de pension peut verser plus qu'un salarié. | vrai | Il peut verser jusqu'à 20 % de son revenu net, au maximum CHF 36'288 en 2026. ;; Avoir plusieurs comptes 3a peut réduire l'impôt au moment du retrait. | vrai | Chaque compte se retire en une fois : en étalant les retraits sur plusieurs années, l'impôt sur le capital baisse souvent.
 ---
 
 Le pilier 3a est l'un des rares moyens légaux de réduire ses impôts en Suisse, et il a une date limite stricte : le 31 décembre. Voici ce qu'il faut savoir pour en profiter en 2026.
@@ -27,6 +30,8 @@ Ces montants sont des maximums : vous pouvez verser moins, et la déduction corr
 Pour être déductible sur l'année 2026, le versement doit être **crédité** sur votre compte 3a au plus tard le 31 décembre. Un virement lancé le 30 décembre peut arriver trop tard. Prévoyez quelques jours de marge, surtout pendant les fêtes.
 
 Si vous n'avez pas encore de 3e pilier, l'ouverture prend en général quelques jours. Mieux vaut s'y prendre dès novembre.
+
+> **Le saviez-vous ?** Le versement au 3e pilier se déduit dans la [déclaration d'impôts](/particuliers/declaration-impots/) de l'année du versement. Gardez bien l'attestation que vous envoie votre banque ou votre assureur en début d'année.
 
 ## Combien d'impôts allez-vous économiser ?
 

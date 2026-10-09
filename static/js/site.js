@@ -368,6 +368,49 @@
     majPause(); lancer();
   });
 
+  // 12. Articles : barre de progression, sommaire actif, quiz vrai ou faux
+  var barre = document.querySelector("[data-progression]");
+  if (barre) {
+    var corps = document.querySelector(".article__corps");
+    var liens = document.querySelectorAll("[data-sommaire-lien]");
+    var majLecture = function () {
+      var r = corps.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      var fait = Math.min(Math.max(-r.top / (total > 0 ? total : 1), 0), 1);
+      barre.style.width = (fait * 100) + "%";
+      var courant = null;
+      liens.forEach(function (l) {
+        var cible = document.getElementById(l.getAttribute("href").slice(1));
+        if (cible && cible.getBoundingClientRect().top < 140) courant = l;
+      });
+      liens.forEach(function (l) { l.classList.toggle("actif", l === courant); });
+    };
+    window.addEventListener("scroll", majLecture, { passive: true });
+    majLecture();
+  }
+  document.querySelectorAll("[data-quiz]").forEach(function (quiz) {
+    var questions = quiz.querySelectorAll("[data-quiz-question]");
+    var score = 0, repondues = 0;
+    var sortie = quiz.querySelector("[data-quiz-score]");
+    questions.forEach(function (q) {
+      var boutons = q.querySelectorAll("[data-choix]");
+      boutons.forEach(function (b) {
+        b.addEventListener("click", function () {
+          var bon = b.getAttribute("data-choix") === q.getAttribute("data-reponse");
+          boutons.forEach(function (x) {
+            x.disabled = true;
+            if (x.getAttribute("data-choix") === q.getAttribute("data-reponse")) x.classList.add("juste");
+          });
+          if (!bon) b.classList.add("faux");
+          q.querySelector("[data-quiz-verdict]").textContent = bon ? "Bonne réponse." : "Pas tout à fait.";
+          q.querySelector("[data-quiz-explication]").hidden = false;
+          repondues++; if (bon) score++;
+          sortie.textContent = "Votre score : " + score + " sur " + repondues + (repondues === questions.length ? (score === questions.length ? ". Parfait !" : ". Un conseiller peut compléter vos connaissances.") : "");
+        });
+      });
+    });
+  });
+
   // 8. Page de remerciement : message adapté au formulaire envoyé
   if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");

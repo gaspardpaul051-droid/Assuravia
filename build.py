@@ -42,7 +42,7 @@ CANTONS = [
 GROUPES = {
     "particuliers": {
         "nom": "Privé", "titre": "Particuliers", "url": "/particuliers/", "theme": "prive",
-        "categories": ["Santé", "Prévoyance et placement", "Logement et biens", "Protection"],
+        "categories": ["Santé", "Prévoyance et placement", "Logement et biens", "Protection", "Impôts"],
     },
     "entreprises": {
         "nom": "Pro", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
@@ -162,12 +162,34 @@ def lire_article(path: Path) -> dict:
             raise ValueError(f"Champ '{cle}' manquant dans {path}")
     date = dt.date.fromisoformat(meta["date"])
     html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
+    # Encadrés « Le saviez-vous ? » : citations qui commencent par ce titre en gras
+    html = re.sub(r"<blockquote>\s*<p><strong>(.*?)</strong>", r'<blockquote class="encadre"><p class="encadre__titre">\1</p><p>', html)
+    sommaire = [{"id": i, "titre": html_lib.unescape(re.sub(r"<[^>]+>", "", t))}
+                for i, t in re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', html)]
+    # L'encart d'appel à l'action s'insère avant le 3e intertitre
+    positions = [m.start() for m in re.finditer(r"<h2 ", html)]
+    coupe = positions[2] if len(positions) >= 3 else len(html)
+    mots = len(re.sub(r"<[^>]+>", " ", html).split()) + sum(len(re.sub(r"<[^>]+>", " ", q["reponse"]).split()) for q in faq)
+    quiz = []
+    for bloc in [b for b in meta.get("quiz", "").split(";;") if b.strip()]:
+        parts = [x.strip() for x in bloc.split("|")]
+        if len(parts) != 3 or parts[1] not in ("vrai", "faux"):
+            raise ValueError(f"Quiz invalide dans {path} : {bloc}")
+        quiz.append({"affirmation": parts[0], "reponse": parts[1], "explication": parts[2]})
     return {
         **meta,
         "slug": path.stem,
         "date_obj": date,
         "date_fr": date_fr(date),
         "html": html,
+        "html_debut": html[:coupe],
+        "html_fin": html[coupe:],
+        "sommaire": sommaire,
+        "lecture": max(1, round(mots / 200)),
+        "mots": mots,
+        "retenir": [x.strip() for x in meta.get("retenir", "").split("|") if x.strip()],
+        "quiz": quiz,
+        "produits_lies": [x.strip() for x in meta.get("produits_lies", "").split(",") if x.strip()],
         "faq": faq,
         "faq_jsonld": faq_jsonld(faq),
         "url": f"/blog/{path.stem}/",
@@ -245,7 +267,12 @@ def main() -> None:
 
     tpl_article = env.get_template("article.html")
     for a in articles:
-        ecrire(a["url"], tpl_article.render(url=a["url"], article=a))
+        inconnus = [x for x in a["produits_lies"] if x not in par_slug]
+        if inconnus:
+            raise ValueError(f"produits_lies inconnus dans {a['slug']} : {inconnus}")
+        autres = [b for b in articles if b["slug"] != a["slug"]]
+        autres.sort(key=lambda b: b["categorie"] != a["categorie"])
+        ecrire(a["url"], tpl_article.render(url=a["url"], article=a, autres=autres[:3]))
         sitemap.append((a["url"], a.get("maj", a["date"])))
 
     lignes = [f"<url><loc>{SITE_URL}{u}</loc><lastmod>{d}</lastmod></url>" for u, d in sitemap]

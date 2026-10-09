@@ -1,0 +1,46 @@
+{# Formulaire déclaration d'impôts. Attend `p` (produit). #}
+{% import "partials/form.html" as f %}
+{{ f.ouvrir("declaration-impots", p.slug) }}
+  <div class="grille-champs">
+    <div class="champ champ--large">
+      <label for="besoin-imp">Ce dont vous avez besoin</label>
+      <select id="besoin-imp" name="besoin" required>
+        <option value="">Choisir…</option>
+        <option value="remplir">Faire remplir ma déclaration</option>
+        <option value="verifier">Faire vérifier ma déclaration</option>
+        <option value="optimiser">Payer moins d'impôts l'an prochain</option>
+        <option value="courrier">Répondre à un courrier de l'administration fiscale</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="statut-imp">Votre situation</label>
+      <select id="statut-imp" name="statut" required>
+        <option value="">Choisir…</option>
+        <option value="salarie">Salarié</option>
+        <option value="independant">Indépendant</option>
+        <option value="retraite">Retraité</option>
+        <option value="frontalier">Frontalier</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="foyer-imp">Votre foyer</label>
+      <select id="foyer-imp" name="foyer" required>
+        <option value="">Choisir…</option>
+        <option value="seul">Seul, sans enfant</option>
+        <option value="couple">En couple, sans enfant</option>
+        <option value="famille">Avec enfants</option>
+      </select>
+    </div>
+    <div class="champ champ--large">
+      <label for="proprio-imp">Êtes-vous propriétaire d'un bien immobilier ?</label>
+      <select id="proprio-imp" name="proprietaire">
+        <option value="non">Non</option>
+        <option value="logement">Oui, mon logement</option>
+        <option value="plusieurs">Oui, plusieurs biens ou un bien loué</option>
+      </select>
+    </div>
+  </div>
+  {{ f.contact("imp") }}
+{{ f.fermer(p.bouton, "imp") }}
+</form>
