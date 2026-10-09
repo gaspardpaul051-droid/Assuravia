@@ -28,6 +28,42 @@
             <option value="autre-prive">Autre ou plusieurs besoins</option>
           </select>
         </div>
+        <div class="grille-champs">
+          <div class="champ">
+            <label for="situation-d">Situation professionnelle</label>
+            <select id="situation-d" name="situation" required>
+              <option value="">Choisir…</option>
+              <option value="salarie">Salarié</option>
+              <option value="independant">Indépendant</option>
+              <option value="retraite">Retraité</option>
+              <option value="etudiant">Étudiant ou en formation</option>
+              <option value="sans-activite">Sans activité lucrative</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="age-d">Votre âge</label>
+            <input id="age-d" name="age" type="number" inputmode="numeric" min="16" max="99" required placeholder="Ex. 42">
+          </div>
+          <div class="champ">
+            <label for="foyer-d">Votre foyer</label>
+            <select id="foyer-d" name="foyer" required>
+              <option value="">Choisir…</option>
+              <option value="seul">Seul</option>
+              <option value="couple">En couple</option>
+              <option value="famille">Famille avec enfants</option>
+              <option value="monoparental">Parent seul avec enfants</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="logement-d">Votre logement</label>
+            <select id="logement-d" name="logement" required>
+              <option value="">Choisir…</option>
+              <option value="locataire">Locataire</option>
+              <option value="proprietaire">Propriétaire</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+        </div>
         <div class="champ">
           <label for="message-d">Votre situation en quelques mots</label>
           <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Famille de 4 personnes à Lausanne, je trouve nos primes trop chères et je n'ai pas encore de 3e pilier."></textarea>
@@ -35,6 +71,18 @@
       </div>
       <div data-univers="pro" hidden>
         <input type="hidden" name="univers" value="Professionnel">
+        <div class="champ">
+          <label for="choix-produit-pro">Votre demande concerne</label>
+          <select id="choix-produit-pro" name="produit_choisi" required data-choix-produit>
+            <option value="bilan-complet-entreprise">Bilan complet des assurances et de la prévoyance de l'entreprise</option>
+            {% for cat in groupes.entreprises.categories %}
+            <optgroup label="{{ cat }}">
+              {% for p in produits.entreprises if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
+            </optgroup>
+            {% endfor %}
+            <option value="autre-pro">Autre ou plusieurs besoins</option>
+          </select>
+        </div>
         <div class="grille-champs">
           <div class="champ">
             <label for="entreprise-d">Nom de l'entreprise</label>
@@ -65,18 +113,6 @@
               <option value="autre">Autre</option>
             </select>
           </div>
-        </div>
-        <div class="champ">
-          <label for="choix-produit-pro">Votre demande concerne</label>
-          <select id="choix-produit-pro" name="produit_choisi" required data-choix-produit>
-            <option value="bilan-complet-entreprise">Bilan complet des assurances et de la prévoyance de l'entreprise</option>
-            {% for cat in groupes.entreprises.categories %}
-            <optgroup label="{{ cat }}">
-              {% for p in produits.entreprises if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
-            </optgroup>
-            {% endfor %}
-            <option value="autre-pro">Autre ou plusieurs besoins</option>
-          </select>
         </div>
         <div class="champ">
           <label for="message-dpro">Votre situation en quelques mots</label>
