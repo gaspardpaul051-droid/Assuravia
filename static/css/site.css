@@ -682,3 +682,4 @@ tr:nth-child(even) td { background: var(--surface); }
 .champs-duo { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
 /* Exemples dans les champs : gris léger */
 input::placeholder, textarea::placeholder { color: #A3AEBD; opacity: 1; font-weight: 400; }
+.formulaire > [data-univers] { display: grid; gap: var(--e-4); }

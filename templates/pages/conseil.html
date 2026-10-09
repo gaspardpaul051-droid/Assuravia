@@ -1,33 +1,87 @@
+{% import "partials/icones.html" as i %}
 {% import "partials/form.html" as f %}
 {% extends "base.html" %}
-{% block title %}Faire une demande de conseil | Assuravia{% endblock %}
+{% block title %}Demander un bilan ou des offres | Assuravia{% endblock %}
 {% block description %}Décrivez votre besoin en assurance ou prévoyance, un conseiller vous recontacte gratuitement.{% endblock %}
 {% block content %}
 <section class="produit produit--simple">
   <div class="cadre cadre--etroit">
     <h1>Faire une demande</h1>
     <p class="chapeau">Dites-nous ce que vous cherchez. Un conseiller vous rappelle pour comprendre votre situation et vous proposer des offres adaptées.</p>
+    <div class="choix-univers" role="group" aria-label="Vous êtes">
+      <span class="choix-univers__label">Vous êtes</span>
+      <button type="button" class="choix-univers__bouton choix-univers__bouton--prive" data-choix-univers="prive" aria-pressed="true">{{ i.icone("utilisateur", "icone icone--petite") }} Un particulier</button>
+      <button type="button" class="choix-univers__bouton choix-univers__bouton--pro" data-choix-univers="pro" aria-pressed="false">{{ i.icone("batiment", "icone icone--petite") }} Un professionnel</button>
+    </div>
     {{ f.ouvrir("demande", "") }}
-      <div class="champ">
-        <label for="choix-produit">Votre demande concerne</label>
-        <select id="choix-produit" name="produit_choisi" required data-choix-produit>
-          <option value="">Choisir…</option>
-          <optgroup label="Privé">
-            {% for p in produits.particuliers %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
-          </optgroup>
-          <optgroup label="Professionnel">
-            {% for p in produits.entreprises %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
-          </optgroup>
-          <option value="autre">Autre ou plusieurs besoins</option>
-        </select>
+      <div data-univers="prive">
+        <input type="hidden" name="univers" value="Privé">
+        <div class="champ">
+          <label for="choix-produit">Votre demande concerne</label>
+          <select id="choix-produit" name="produit_choisi" required data-choix-produit>
+            <option value="bilan-complet-prive">Bilan complet de mes assurances et de ma prévoyance</option>
+            {% for cat in groupes.particuliers.categories %}
+            <optgroup label="{{ cat }}">
+              {% for p in produits.particuliers if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
+            </optgroup>
+            {% endfor %}
+            <option value="autre-prive">Autre ou plusieurs besoins</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="message-d">Votre situation en quelques mots</label>
+          <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Famille de 4 personnes à Lausanne, je trouve nos primes trop chères et je n'ai pas encore de 3e pilier."></textarea>
+        </div>
       </div>
-      <div class="champ" data-si-entreprise hidden>
-        <label for="entreprise-d">Nom et activité de l'entreprise</label>
-        <input id="entreprise-d" name="entreprise" placeholder="Ex. Dupont Sàrl, menuiserie">
-      </div>
-      <div class="champ">
-        <label for="message-d">Votre situation en quelques mots</label>
-        <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Je paie trop cher ma complémentaire, je change d'emploi le mois prochain…"></textarea>
+      <div data-univers="pro" hidden>
+        <input type="hidden" name="univers" value="Professionnel">
+        <div class="grille-champs">
+          <div class="champ">
+            <label for="entreprise-d">Nom de l'entreprise</label>
+            <input id="entreprise-d" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl">
+          </div>
+          <div class="champ">
+            <label for="activite-d">Activité</label>
+            <input id="activite-d" name="activite" required placeholder="Ex. menuiserie, fiduciaire, commerce de détail">
+          </div>
+          <div class="champ">
+            <label for="employes-d">Nombre de personnes, vous compris</label>
+            <select id="employes-d" name="nb_personnes" required>
+              <option value="">Choisir…</option>
+              <option value="1">Indépendant seul</option>
+              <option value="2-5">2 à 5</option>
+              <option value="6-20">6 à 20</option>
+              <option value="21-50">21 à 50</option>
+              <option value="51+">Plus de 50</option>
+            </select>
+          </div>
+          <div class="champ">
+            <label for="fonction-d">Votre fonction</label>
+            <select id="fonction-d" name="fonction" required>
+              <option value="">Choisir…</option>
+              <option value="dirigeant">Dirigeant ou associé</option>
+              <option value="independant">Indépendant</option>
+              <option value="rh-finance">RH ou finances</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+        </div>
+        <div class="champ">
+          <label for="choix-produit-pro">Votre demande concerne</label>
+          <select id="choix-produit-pro" name="produit_choisi" required data-choix-produit>
+            <option value="bilan-complet-entreprise">Bilan complet des assurances et de la prévoyance de l'entreprise</option>
+            {% for cat in groupes.entreprises.categories %}
+            <optgroup label="{{ cat }}">
+              {% for p in produits.entreprises if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
+            </optgroup>
+            {% endfor %}
+            <option value="autre-pro">Autre ou plusieurs besoins</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="message-dpro">Votre situation en quelques mots</label>
+          <textarea id="message-dpro" name="message" rows="4" required placeholder="Ex. Nous engageons deux personnes en janvier et notre RC professionnelle arrive à échéance en mars."></textarea>
+        </div>
       </div>
       {{ f.contact("d") }}
     {{ f.fermer("Envoyer ma demande", "d") }}

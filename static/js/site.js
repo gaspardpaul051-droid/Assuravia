@@ -149,24 +149,6 @@
     });
   }
 
-  // 3. Formulaire général : produit présélectionné depuis l'URL (?produit=...)
-  var choix = document.querySelector("[data-choix-produit]");
-  if (choix) {
-    var cache = choix.form.querySelector("[data-produit]");
-    var blocEntreprise = choix.form.querySelector("[data-si-entreprise]");
-    var majChoix = function () {
-      cache.value = choix.value;
-      var opt = choix.selectedOptions[0];
-      var estEntreprise = opt && opt.parentElement.label === "Entreprises";
-      blocEntreprise.hidden = !estEntreprise;
-      blocEntreprise.querySelector("input").required = estEntreprise;
-    };
-    var demande = params.get("produit");
-    if (demande && choix.querySelector('option[value="' + CSS.escape(demande) + '"]')) choix.value = demande;
-    choix.addEventListener("change", majChoix);
-    majChoix();
-  }
-
   // 4. Simulateur 3e pilier
   // Taux marginaux indicatifs (impôt fédéral + cantonal + communal au chef-lieu, personne seule).
   var PALIERS = [30000, 50000, 75000, 100000, 125000, 150000, 200000, 250000];
@@ -327,7 +309,14 @@
   // 9a. Accueil : choix Particulier / Professionnel (titre, texte, bilan, questions, bandeau)
   var choixUnivers = document.querySelectorAll("[data-choix-univers]");
   var definirUnivers = function (u, memoriser) {
-    document.querySelectorAll("[data-univers]").forEach(function (el) { el.hidden = el.getAttribute("data-univers") !== u; });
+    document.querySelectorAll("[data-univers]").forEach(function (el) {
+      el.hidden = el.getAttribute("data-univers") !== u;
+      // Les champs d'un univers masqué ne sont ni vérifiés ni envoyés
+      el.querySelectorAll("input, select, textarea").forEach(function (c) { c.disabled = el.hidden; });
+    });
+    document.querySelectorAll("[data-choix-produit]").forEach(function (c) {
+      if (!c.disabled) c.form.querySelector("[data-produit]").value = c.value;
+    });
     choixUnivers.forEach(function (b) {
       var actif = b.getAttribute("data-choix-univers") === u;
       if (b.getAttribute("role") === "tab") {
@@ -347,7 +336,16 @@
     var param = new URLSearchParams(location.search).get("univers");
     if (param === "pro" || param === "prive") depart = param;
     if (!depart) { try { depart = localStorage.getItem("assuravia-univers"); } catch (e) {} }
-    if (depart === "pro") definirUnivers("pro", false);
+    // Formulaire de demande : produit présélectionné depuis l'URL (?produit=...)
+    var produitDemande = params.get("produit");
+    document.querySelectorAll("[data-choix-produit]").forEach(function (c) {
+      if (produitDemande && c.querySelector('option[value="' + CSS.escape(produitDemande) + '"]')) {
+        c.value = produitDemande;
+        depart = c.closest("[data-univers]").getAttribute("data-univers");
+      }
+      c.addEventListener("change", function () { c.form.querySelector("[data-produit]").value = c.value; });
+    });
+    definirUnivers(depart === "pro" ? "pro" : "prive", false);
     choixUnivers.forEach(function (b) {
       if (b.getAttribute("role") !== "tab") {
         b.addEventListener("click", function () { definirUnivers(b.getAttribute("data-choix-univers"), true); });
