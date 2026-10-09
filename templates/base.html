@@ -59,8 +59,7 @@
       </div>
       {% endfor %}
       <a class="nav__lien" href="/blog/"{% if url.startswith('/blog/') %} aria-current="page"{% endif %}>Blog</a>
-      <a class="nav__lien" href="/contact/"{% if url.startswith('/contact/') %} aria-current="page"{% endif %}>Contact</a>
-      <a class="bouton bouton--action bouton--petit nav__action" href="/conseil/">Demande gratuite</a>
+      <a class="bouton bouton--action bouton--petit nav__action" href="/contact/"{% if url.startswith('/contact/') %} aria-current="page"{% endif %}>{{ i.icone("mail", "icone icone--petite") }} Contact</a>
     </nav>
   </div>
 </header>
