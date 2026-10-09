@@ -24,34 +24,23 @@
         <div class="grille-champs">
           <div class="champ">
             <label for="prenom-c">Prénom</label>
-            <input id="prenom-c" name="prenom" required autocomplete="given-name">
+            <input id="prenom-c" name="prenom" required autocomplete="given-name" placeholder="Jean">
           </div>
           <div class="champ">
             <label for="nom-c">Nom</label>
-            <input id="nom-c" name="nom" required autocomplete="family-name">
+            <input id="nom-c" name="nom" required autocomplete="family-name" placeholder="Dupont">
           </div>
           <div class="champ">
             <label for="email-c">E-mail</label>
-            <input id="email-c" name="email" type="email" required autocomplete="email">
+            <input id="email-c" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com">
           </div>
           <div class="champ">
-            <label for="telephone-c">Téléphone <span class="facultatif">(facultatif)</span></label>
-            <input id="telephone-c" name="telephone" type="tel" autocomplete="tel" inputmode="tel">
-          </div>
-          <div class="champ champ--large">
-            <label for="sujet-c">Sujet</label>
-            <select id="sujet-c" name="sujet" required>
-              <option value="">Choisir…</option>
-              <option value="question">Question sur une assurance</option>
-              <option value="demande">Suivi de ma demande</option>
-              <option value="donnees">Mes données personnelles</option>
-              <option value="partenariat">Partenariat</option>
-              <option value="autre">Autre</option>
-            </select>
+            <label for="telephone-c">Téléphone</label>
+            <input id="telephone-c" name="telephone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="079 123 45 67">
           </div>
           <div class="champ champ--large">
             <label for="message-c">Message</label>
-            <textarea id="message-c" name="message" rows="5" required></textarea>
+            <textarea id="message-c" name="message" rows="5" required placeholder="Ex. J'aimerais savoir si mon assurance ménage couvre le vol de mon vélo."></textarea>
           </div>
         </div>
         <div class="consentement">

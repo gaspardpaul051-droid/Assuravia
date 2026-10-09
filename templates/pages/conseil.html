@@ -12,10 +12,10 @@
         <label for="choix-produit">Votre demande concerne</label>
         <select id="choix-produit" name="produit_choisi" required data-choix-produit>
           <option value="">Choisir…</option>
-          <optgroup label="Particuliers">
+          <optgroup label="Privé">
             {% for p in produits.particuliers %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
           </optgroup>
-          <optgroup label="Entreprises">
+          <optgroup label="Professionnel">
             {% for p in produits.entreprises %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
           </optgroup>
           <option value="autre">Autre ou plusieurs besoins</option>
@@ -26,8 +26,8 @@
         <input id="entreprise-d" name="entreprise" placeholder="Ex. Dupont Sàrl, menuiserie">
       </div>
       <div class="champ">
-        <label for="message-d">Votre situation en quelques mots <span class="facultatif">(facultatif)</span></label>
-        <textarea id="message-d" name="message" rows="4" placeholder="Ex. je paie trop cher ma complémentaire, je change d'emploi le mois prochain…"></textarea>
+        <label for="message-d">Votre situation en quelques mots</label>
+        <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Je paie trop cher ma complémentaire, je change d'emploi le mois prochain…"></textarea>
       </div>
       {{ f.contact("d") }}
     {{ f.fermer("Envoyer ma demande", "d") }}

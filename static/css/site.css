@@ -185,7 +185,7 @@ strong { font-weight: 700; }
   radial-gradient(1100px 420px at 0% -10%, var(--bleu-pale), transparent 70%),
   radial-gradient(900px 380px at 100% 0%, var(--or-pale), transparent 70%), var(--fond); }
 .paysage { display: block; width: 100%; height: clamp(120px, 16vw, 220px); margin-top: var(--e-6); }
-.accueil__grille { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+.accueil__grille { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
 .accueil h1 { max-width: 17ch; }
 .chapeau { font-size: var(--t-l); color: var(--texte-doux); max-width: 60ch; line-height: 1.55; }
 .accueil__actions { display: flex; flex-wrap: wrap; gap: var(--e-3); margin: var(--e-6) 0 var(--e-5); }
@@ -680,3 +680,5 @@ tr:nth-child(even) td { background: var(--surface); }
   .choix-univers__bouton { flex: 1; justify-content: center; padding: 0 12px; }
 }
 .champs-duo { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
+/* Exemples dans les champs : gris léger */
+input::placeholder, textarea::placeholder { color: #A3AEBD; opacity: 1; font-weight: 400; }

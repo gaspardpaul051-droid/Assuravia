@@ -24,10 +24,28 @@
   };
 
   // 2. Validation lisible : message sous le champ plutôt que la bulle du navigateur.
+  // E-mail : nom@domaine.ch (extension d'au moins 2 lettres). Téléphone : 0XX XXX XX XX ou +41 / 0041, +33…
+  var RE_EMAIL = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9](?:[A-Za-z0-9\-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9\-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+  var telValide = function (v) {
+    var n = v.replace(/[\s.\-()\/]/g, "");
+    if (/^0[1-9]\d{8}$/.test(n)) return true;                 // Suisse : 079 123 45 67
+    if (/^(\+|00)41[1-9]\d{8}$/.test(n)) return true;         // +41 79 123 45 67
+    return /^(\+|00)(?!41)[1-9]\d{7,13}$/.test(n);            // international : +33 6 12 34 56 78
+  };
+  function controleFormat(el) {
+    if (!el.setCustomValidity) return;
+    var v = (el.value || "").trim();
+    var erreur = "";
+    if (v && el.type === "email" && !RE_EMAIL.test(v)) erreur = "email";
+    if (v && el.type === "tel" && !telValide(v)) erreur = "tel";
+    el.setCustomValidity(erreur);
+  }
+
   function verifier(conteneur) {
     var ok = true, premier = null;
     conteneur.querySelectorAll("input, select, textarea").forEach(function (el) {
       if (el.type === "hidden" || el.closest("[hidden]")) return;
+      controleFormat(el);
       var msg = el.parentElement.querySelector(".champ__erreur");
       if (el.checkValidity()) {
         el.removeAttribute("aria-invalid");
@@ -46,8 +64,8 @@
       }
       if (msg) {
         msg.textContent = el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
-          : el.type === "email" ? "Vérifiez l'adresse e-mail, par exemple nom@exemple.ch."
-          : el.type === "tel" ? "Indiquez un numéro de téléphone complet, par exemple 079 123 45 67."
+          : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
+          : el.type === "tel" ? "Numéro non valide. Exemple : 079 123 45 67 ou +41 79 123 45 67"
           : "Vérifiez cette valeur.";
       }
     });
@@ -69,6 +87,7 @@
     // Corriger un champ retire son message d'erreur
     form.addEventListener("change", function (e) {
       var el = e.target;
+      controleFormat(el);
       if (el.getAttribute && el.getAttribute("aria-invalid") === "true" && el.checkValidity()) {
         el.removeAttribute("aria-invalid");
         var msg = el.parentElement.querySelector(".champ__erreur");
