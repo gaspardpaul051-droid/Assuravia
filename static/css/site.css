@@ -840,5 +840,5 @@ a.contact__ligne:hover span { text-decoration: underline; }
 @media (max-width: 620px) { .bravo { flex-direction: column; align-items: flex-start; } }
 .widget-article { margin: var(--e-7, 48px) 0; }
 .widget-article .capital { grid-template-columns: 1fr; }
-.article__corps .capital__barres, .article__corps .pour-qui__liste, .texte-long .pour-qui__liste, .article__corps .retenir ul { padding-left: 0; }
+.article__corps .capital__barres, .article__corps .pour-qui__liste, .texte-long .pour-qui__liste { padding-left: 0; }
 .article__corps .capital__barres li, .article__corps .pour-qui__liste li, .texte-long .pour-qui__liste li { margin: 0; }
