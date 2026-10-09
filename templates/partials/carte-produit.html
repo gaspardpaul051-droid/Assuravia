@@ -1,0 +1,12 @@
+{# Carte produit. Attend `p` (produit) et le module d'icônes importé sous `i`. #}
+{% set num_cat = groupes[p.groupe].categories.index(p.categorie) %}
+<article class="carte carte--{{ p.theme }} carte--cat{{ num_cat }}" data-categorie="{{ p.categorie }}">
+  <span class="carte__badge">{{ p.badge }}</span>
+  <span class="carte__icone">{{ i.icone(p.icone) }}</span>
+  <h3 class="carte__titre">{{ p.nom }}</h3>
+  <p class="carte__desc">{{ p.desc }}</p>
+  <ul class="carte__points">
+    {% for pt in p.points %}<li>{{ i.icone("coche", "icone icone--petite") }}{{ pt }}</li>{% endfor %}
+  </ul>
+  <a class="carte__bouton" href="{{ p.url }}" aria-label="{{ p.bouton }} : {{ p.nom }}">{{ i.icone(p.icone, "icone icone--petite") }}{{ p.bouton }}</a>
+</article>

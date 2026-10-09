@@ -1,0 +1,66 @@
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block title %}Contact | Assuravia{% endblock %}
+{% block description %}Une question sur une assurance ou sur votre demande ? Écrivez à Assuravia, nous vous répondons rapidement.{% endblock %}
+{% block content %}
+<section class="hero-hub">
+  <div class="cadre">
+    <h1>Contact</h1>
+    <p class="chapeau">Une question sur une assurance, sur votre demande ou sur vos données ? Écrivez-nous.</p>
+  </div>
+</section>
+<section class="bloc bloc--serre">
+  <div class="cadre contact">
+    <div class="contact__infos">
+      <h2>Nous écrire directement</h2>
+      <p class="contact__ligne">{{ i.icone("mail") }} <span>contact@assuravia.ch</span></p>
+      <p>Pour recevoir des offres, le plus rapide reste le formulaire de demande : il donne au conseiller tout ce dont il a besoin.</p>
+      <p><a class="bouton bouton--secondaire" href="/conseil/">Faire une demande d'offres</a></p>
+    </div>
+    <div class="panneau-form">
+      <h2 class="form-titre">Envoyer un message</h2>
+      {{ f.ouvrir("contact", "contact") }}
+        <div class="grille-champs">
+          <div class="champ">
+            <label for="prenom-c">Prénom</label>
+            <input id="prenom-c" name="prenom" required autocomplete="given-name">
+          </div>
+          <div class="champ">
+            <label for="nom-c">Nom</label>
+            <input id="nom-c" name="nom" required autocomplete="family-name">
+          </div>
+          <div class="champ">
+            <label for="email-c">E-mail</label>
+            <input id="email-c" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="champ">
+            <label for="telephone-c">Téléphone <span class="facultatif">(facultatif)</span></label>
+            <input id="telephone-c" name="telephone" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="champ champ--large">
+            <label for="sujet-c">Sujet</label>
+            <select id="sujet-c" name="sujet" required>
+              <option value="">Choisir…</option>
+              <option value="question">Question sur une assurance</option>
+              <option value="demande">Suivi de ma demande</option>
+              <option value="donnees">Mes données personnelles</option>
+              <option value="partenariat">Partenariat</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="champ champ--large">
+            <label for="message-c">Message</label>
+            <textarea id="message-c" name="message" rows="5" required></textarea>
+          </div>
+        </div>
+        <div class="consentement">
+          <input id="consentement-c" name="consentement" type="checkbox" value="oui" required>
+          <label for="consentement-c">J'accepte que mes données soient utilisées pour répondre à mon message, selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+        </div>
+        <button class="bouton bouton--action" type="submit">Envoyer le message</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

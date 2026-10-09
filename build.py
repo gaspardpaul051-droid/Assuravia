@@ -3,16 +3,18 @@
 Usage : python3 build.py
 Produit le site statique dans dist/ (publié par Netlify).
 
-- Les pages sont dans templates/pages/ (Jinja2). Le chemin du fichier donne l'URL :
+- Pages fixes : templates/pages/ (Jinja2). Le chemin du fichier donne l'URL :
   templates/pages/entreprises/rc-professionnelle.html -> /entreprises/rc-professionnelle/
-  templates/pages/index.html -> /
-- Les articles du guide sont dans content/articles/*.md (voir CLAUDE.md pour le format).
-- Les produits proposés sont définis dans PRODUITS ci-dessous.
+- Produits : content/produits/*.md. Chaque produit a une carte sur la page Privé ou Pro
+  et, sauf s'il a une page fixe (champ `url`), une page générée avec templates/produit.html.
+- Articles du blog : content/articles/*.md, publiés sous /blog/<fichier>/.
 """
 
 from __future__ import annotations
 
 import datetime as dt
+import html as html_lib
+import json
 import re
 import shutil
 from pathlib import Path
@@ -35,57 +37,28 @@ CANTONS = [
     ("autre", "Autre canton"),
 ]
 
-# Produits. "page" = page dédiée existante ; sinon le lien mène au formulaire général.
-PRODUITS = {
-    "particuliers": [
-        {"slug": "3e-pilier", "nom": "3e pilier", "desc": "Épargner pour la retraite et payer moins d'impôts.", "page": "/particuliers/3e-pilier/"},
-        {"slug": "garantie-de-loyer", "nom": "Garantie de loyer", "desc": "Remplacer le dépôt bancaire de 3 mois de loyer.", "page": "/particuliers/garantie-de-loyer/"},
-        {"slug": "complementaire-maladie", "nom": "Complémentaire maladie", "desc": "Dentaire, hospitalisation, médecines alternatives."},
-        {"slug": "rc-menage", "nom": "RC privée et ménage", "desc": "Dommages causés à autrui, vol, incendie, dégâts d'eau."},
-        {"slug": "vehicule", "nom": "Assurance véhicule", "desc": "RC, casco partielle ou complète pour voiture et moto."},
-        {"slug": "protection-juridique", "nom": "Protection juridique", "desc": "Frais d'avocat et litiges : travail, logement, circulation."},
-        {"slug": "voyage", "nom": "Assurance voyage", "desc": "Annulation, frais médicaux et rapatriement."},
-        {"slug": "objets-de-valeur", "nom": "Objets de valeur", "desc": "Bijoux, montres, œuvres d'art, instruments."},
-        {"slug": "libre-passage", "nom": "Libre passage", "desc": "Placer son 2e pilier entre deux emplois."},
-        {"slug": "placements", "nom": "Placements et gestion de fortune", "desc": "Faire fructifier son épargne selon son profil."},
-    ],
-    "entreprises": [
-        {"slug": "rc-pro", "nom": "RC professionnelle", "desc": "Dommages causés à vos clients ou à des tiers.", "page": "/entreprises/rc-professionnelle/"},
-        {"slug": "lpp", "nom": "LPP (2e pilier)", "desc": "Caisse de pension pour vos employés."},
-        {"slug": "laa", "nom": "LAA accidents", "desc": "Assurance accidents obligatoire des employés."},
-        {"slug": "pgm", "nom": "Perte de gain maladie", "desc": "Salaire maintenu en cas de maladie d'un employé."},
-        {"slug": "commerce-inventaire", "nom": "Commerce et inventaire", "desc": "Marchandises, mobilier et machines de l'entreprise."},
-        {"slug": "transport", "nom": "Assurance transport", "desc": "Marchandises transportées en Suisse ou à l'étranger."},
-        {"slug": "techniques", "nom": "Assurances techniques", "desc": "Bris de machines, électronique, chantiers."},
-    ],
+GROUPES = {
+    "particuliers": {
+        "nom": "Privé", "titre": "Particuliers", "url": "/particuliers/", "theme": "prive",
+        "categories": ["Santé", "Prévoyance et épargne", "Logement et biens", "Protection"],
+    },
+    "entreprises": {
+        "nom": "Pro", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
+        "categories": ["Responsabilité", "Personnel", "Biens et exploitation"],
+    },
 }
 
-
-ICONES = {
-    "3e-pilier": "tirelire", "garantie-de-loyer": "cle", "complementaire-maladie": "coeur",
-    "rc-menage": "maison", "vehicule": "voiture", "protection-juridique": "balance",
-    "voyage": "avion", "objets-de-valeur": "diamant", "libre-passage": "fleches",
-    "placements": "courbe", "rc-pro": "bouclier", "lpp": "groupe", "laa": "croix",
-    "pgm": "thermometre", "commerce-inventaire": "colis", "transport": "camion",
-    "techniques": "engrenage",
-}
-for _liste in PRODUITS.values():
-    for _p in _liste:
-        _p["icone"] = ICONES.get(_p["slug"], "bouclier")
-
-
-def produit_url(p: dict) -> str:
-    return p.get("page") or f"/conseil/?produit={p['slug']}"
+CHAMPS_PRODUIT = ("slug", "groupe", "nom", "categorie", "icone", "ordre", "desc", "points", "badge", "bouton")
 
 
 def date_fr(d: dt.date) -> str:
     return f"{d.day} {MOIS[d.month - 1]} {d.year}"
 
 
-def lire_article(path: Path) -> dict:
-    """Lit un article markdown avec un en-tête simple entre lignes '---'."""
+def lire_entete(path: Path) -> tuple[dict, str]:
+    """Lit un fichier markdown avec un en-tête simple « cle: valeur » entre lignes '---'."""
     texte = path.read_text(encoding="utf-8")
-    m = re.match(r"^---\n(.*?)\n---\n(.*)$", texte, re.S)
+    m = re.match(r"^---\n(.*?)\n---\n?(.*)$", texte, re.S)
     if not m:
         raise ValueError(f"En-tête manquant dans {path}")
     meta = {}
@@ -93,18 +66,76 @@ def lire_article(path: Path) -> dict:
         if ":" in ligne:
             cle, val = ligne.split(":", 1)
             meta[cle.strip()] = val.strip().strip('"')
+    return meta, m.group(2)
+
+
+def extraire_faq(html: str) -> tuple[str, list[dict]]:
+    """Sépare la section « Questions fréquentes » (h2 puis h3 + paragraphes) du reste."""
+    morceaux = re.split(r"<h2[^>]*>Questions fréquentes</h2>", html, maxsplit=1)
+    if len(morceaux) == 1:
+        return html, []
+    faq = []
+    for m in re.finditer(r"<h3[^>]*>(.*?)</h3>(.*?)(?=<h3|$)", morceaux[1], re.S):
+        faq.append({"question": m.group(1).strip(), "reponse": m.group(2).strip()})
+    return morceaux[0], faq
+
+
+def faq_jsonld(faq: list[dict]) -> str:
+    if not faq:
+        return ""
+    texte = lambda h: html_lib.unescape(re.sub(r"<[^>]+>", "", h)).strip()
+    return json.dumps({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": texte(q["question"]),
+             "acceptedAnswer": {"@type": "Answer", "text": texte(q["reponse"])}}
+            for q in faq
+        ],
+    }, ensure_ascii=False)
+
+
+def lire_produit(path: Path) -> dict:
+    meta, corps = lire_entete(path)
+    for cle in CHAMPS_PRODUIT:
+        if cle not in meta:
+            raise ValueError(f"Champ '{cle}' manquant dans {path}")
+    groupe = meta["groupe"]
+    if groupe not in GROUPES:
+        raise ValueError(f"Groupe inconnu dans {path} : {groupe}")
+    if meta["categorie"] not in GROUPES[groupe]["categories"]:
+        raise ValueError(f"Catégorie inconnue dans {path} : {meta['categorie']}")
+    page_fixe = "url" in meta
+    html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
+    return {
+        **meta,
+        "ordre": int(meta["ordre"]),
+        "points": [p.strip() for p in meta["points"].split("|")],
+        "url": meta.get("url") or f"{GROUPES[groupe]['url']}{meta['slug']}/",
+        "page_fixe": page_fixe,
+        "html": html,
+        "faq": faq,
+        "faq_jsonld": faq_jsonld(faq),
+        "theme": GROUPES[groupe]["theme"],
+    }
+
+
+def lire_article(path: Path) -> dict:
+    meta, corps = lire_entete(path)
     for cle in ("titre", "description", "date", "categorie"):
         if cle not in meta:
             raise ValueError(f"Champ '{cle}' manquant dans {path}")
     date = dt.date.fromisoformat(meta["date"])
-    html = markdown.markdown(m.group(2), extensions=["tables", "toc", "attr_list"])
+    html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
     return {
         **meta,
         "slug": path.stem,
         "date_obj": date,
         "date_fr": date_fr(date),
         "html": html,
-        "url": f"/guide/{path.stem}/",
+        "faq": faq,
+        "faq_jsonld": faq_jsonld(faq),
+        "url": f"/blog/{path.stem}/",
         "brouillon": meta.get("brouillon", "non") == "oui",
     }
 
@@ -117,10 +148,10 @@ def url_de(page: Path) -> str:
     return "/" + "/".join(parts) + ("/" if parts else "")
 
 
-def ecrire(url: str, html: str) -> None:
+def ecrire(url: str, contenu: str) -> None:
     out = DIST / url.lstrip("/") / "index.html" if url.endswith("/") else DIST / url.lstrip("/")
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(html, encoding="utf-8")
+    out.write_text(contenu, encoding="utf-8")
 
 
 def main() -> None:
@@ -135,19 +166,23 @@ def main() -> None:
         lstrip_blocks=True,
     )
     aujourd_hui = dt.date.today()
+
+    tous = [lire_produit(p) for p in sorted((ROOT / "content" / "produits").glob("*.md"))]
+    produits = {g: sorted((p for p in tous if p["groupe"] == g), key=lambda p: p["ordre"]) for g in GROUPES}
+    par_slug = {p["slug"]: p for p in tous}
+
     articles = sorted(
         (a for a in (lire_article(p) for p in (ROOT / "content" / "articles").glob("*.md"))
          if not a["brouillon"] and a["date_obj"] <= aujourd_hui),
         key=lambda a: a["date_obj"],
         reverse=True,
     )
-    tous_produits = [(groupe, p) for groupe, liste in PRODUITS.items() for p in liste]
     env.globals.update(
         site_url=SITE_URL,
         cantons=CANTONS,
-        produits=PRODUITS,
-        tous_produits=tous_produits,
-        produit_url=produit_url,
+        groupes=GROUPES,
+        produits=produits,
+        par_slug=par_slug,
         articles=articles,
         annee=aujourd_hui.year,
     )
@@ -156,11 +191,19 @@ def main() -> None:
 
     for page in sorted((ROOT / "templates" / "pages").rglob("*.html")):
         url = url_de(page)
-        tpl = env.get_template(str(page.relative_to(ROOT / "templates")))
-        html = tpl.render(url=url)
-        ecrire(url, html)
-        if 'name="robots" content="noindex' not in html:
+        contenu = env.get_template(str(page.relative_to(ROOT / "templates"))).render(url=url)
+        ecrire(url, contenu)
+        if 'name="robots" content="noindex' not in contenu:
             sitemap.append((url, aujourd_hui.isoformat()))
+
+    tpl_produit = env.get_template("produit.html")
+    for p in tous:
+        if p["page_fixe"]:
+            continue
+        voisins = [q for q in produits[p["groupe"]] if q["slug"] != p["slug"]]
+        voisins.sort(key=lambda q: (q["categorie"] != p["categorie"], q["ordre"]))
+        ecrire(p["url"], tpl_produit.render(url=p["url"], produit=p, voisins=voisins[:3]))
+        sitemap.append((p["url"], aujourd_hui.isoformat()))
 
     tpl_article = env.get_template("article.html")
     for a in articles:
@@ -174,7 +217,7 @@ def main() -> None:
         + "\n".join(lignes) + "\n</urlset>\n",
         encoding="utf-8",
     )
-    print(f"Site généré : {len(sitemap)} pages indexables, {len(articles)} articles.")
+    print(f"Site généré : {len(sitemap)} pages indexables, {len(tous)} produits, {len(articles)} articles.")
 
 
 if __name__ == "__main__":

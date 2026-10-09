@@ -1,0 +1,59 @@
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% set g = groupes[produit.groupe] %}
+{% block theme %}{{ produit.theme }}{% endblock %}
+{% block title %}{{ produit.titre_seo or produit.nom }} | Assuravia{% endblock %}
+{% block description %}{{ produit.description or produit.desc }}{% endblock %}
+{% block head %}
+{% if produit.faq_jsonld %}<script type="application/ld+json">{{ produit.faq_jsonld|safe }}</script>{% endif %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": g.nom, "item": site_url ~ g.url}, {"@type": "ListItem", "position": 3, "name": produit.nom, "item": site_url ~ produit.url}]}|tojson }}</script>
+{% endblock %}
+{% block content %}
+<section class="hero-produit">
+  <div class="cadre hero-produit__grille">
+    <div class="hero-produit__texte">
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="{{ g.url }}">{{ g.nom }}</a> <span aria-hidden="true">/</span> <span aria-current="page">{{ produit.nom }}</span></nav>
+      <p class="etiquette etiquette--{{ produit.theme }}">{{ i.icone(produit.icone, "icone icone--petite") }} {{ produit.categorie }}</p>
+      <h1>{{ produit.h1 or produit.nom }}</h1>
+      <p class="chapeau">{{ produit.chapeau or produit.desc }}</p>
+      <ul class="points">
+        {% for pt in produit.points %}<li>{{ pt }}</li>{% endfor %}
+      </ul>
+    </div>
+    <aside class="panneau-form" id="demande">
+      <h2 class="form-titre">{{ produit.bouton }}</h2>
+      <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
+      {% with p=produit %}{% include "partials/form-prive.html" if produit.groupe == "particuliers" else "partials/form-pro.html" %}{% endwith %}
+    </aside>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre texte-long">
+    {{ produit.html|safe }}
+    {% if produit.faq %}
+    <h2>Questions fréquentes</h2>
+    <div class="faq">
+      {% for q in produit.faq %}
+      <details><summary>{{ q.question|safe }}</summary><div class="faq__reponse">{{ q.reponse|safe }}</div></details>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <p class="texte-long__action"><a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a></p>
+  </div>
+</section>
+
+{% if voisins %}
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>À découvrir aussi</h2>
+      <p>D'autres assurances {{ g.nom }} qui complètent bien celle-ci.</p>
+    </div>
+    <div class="cartes">
+      {% for p in voisins %}{% include "partials/carte-produit.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

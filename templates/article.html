@@ -9,7 +9,7 @@
 {% block content %}
 <article class="article">
   <div class="cadre texte-long">
-    <p class="fil"><a href="/guide/">Guide</a></p>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/blog/">Blog</a></nav>
     <h1>{{ article.titre }}</h1>
     <p class="article__date">Publié le {{ article.date_fr }}{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
     <div class="article__corps">

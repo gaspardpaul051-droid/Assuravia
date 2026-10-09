@@ -1,12 +1,28 @@
+{% import "partials/icones.html" as i %}
 {% extends "base.html" %}
-{% block title %}Assurances et prévoyance pour particuliers en Suisse romande | Assuravia{% endblock %}
-{% block description %}3e pilier, complémentaire maladie, RC ménage, véhicule, garantie de loyer, placements : un conseiller compare les offres pour vous, gratuitement.{% endblock %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurances pour particuliers en Suisse romande : comparez gratuitement | Assuravia{% endblock %}
+{% block description %}3e pilier, complémentaire maladie, RC ménage, véhicule, voyage, protection juridique, garantie de loyer, placements : toutes les assurances privées, comparées gratuitement.{% endblock %}
 {% block content %}
-<section class="produit produit--simple">
+<section class="hero-hub">
   <div class="cadre">
-    <h1>Assurances et prévoyance pour les particuliers</h1>
-    <p class="chapeau">Choisissez ce qui vous intéresse. Pour le 3e pilier et la garantie de loyer, vous obtenez un calcul immédiat. Pour le reste, un conseiller vous rappelle et compare les offres.</p>
-    {% with liste=produits.particuliers %}{% include "partials/liste-produits.html" %}{% endwith %}
+    <p class="etiquette etiquette--prive">{{ i.icone("utilisateur", "icone icone--petite") }} Privé</p>
+    <h1>Les assurances pour les particuliers</h1>
+    <p class="chapeau">Santé, retraite, logement, véhicule : choisissez ce qui vous intéresse. Vous obtenez un calcul immédiat ou des offres comparées par un conseiller, gratuitement.</p>
+  </div>
+</section>
+<section class="bloc bloc--serre">
+  <div class="cadre">
+    {% with groupe="particuliers" %}{% include "partials/catalogue.html" %}{% endwith %}
+  </div>
+</section>
+<section class="bandeau bandeau--prive">
+  <div class="cadre bandeau__contenu">
+    <div>
+      <h2>Vous ne savez pas par où commencer ?</h2>
+      <p>Décrivez votre situation, un conseiller vous dit ce qui vous manque et ce que vous payez en trop.</p>
+    </div>
+    <a class="bouton bouton--action" href="/conseil/">Faire un bilan gratuit</a>
   </div>
 </section>
 {% endblock %}

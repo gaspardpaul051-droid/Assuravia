@@ -1,0 +1,34 @@
+{# Formulaire générique Privé. Attend `p` (produit). #}
+{% import "partials/form.html" as f %}
+{{ f.ouvrir("demande-prive", p.slug) }}
+  <div class="grille-champs">
+    <div class="champ champ--large">
+      <label for="situation-dp">Votre situation</label>
+      <select id="situation-dp" name="situation" required>
+        <option value="">Choisir…</option>
+        <option value="pas-assure">Je n'ai pas encore cette assurance</option>
+        <option value="comparer">Je suis assuré et je veux comparer</option>
+        <option value="echeance">Mon contrat arrive bientôt à échéance</option>
+        <option value="conseil">J'ai une question, je veux un conseil</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="age-dp">Votre âge</label>
+      <input id="age-dp" name="age" type="number" inputmode="numeric" min="16" max="99" required>
+    </div>
+    <div class="champ">
+      <label for="foyer-dp">Personnes à assurer</label>
+      <select id="foyer-dp" name="personnes">
+        <option value="1">Moi seul</option>
+        <option value="couple">Couple</option>
+        <option value="famille">Famille avec enfants</option>
+      </select>
+    </div>
+    <div class="champ champ--large">
+      <label for="message-dp">Précisions <span class="facultatif">(facultatif)</span></label>
+      <textarea id="message-dp" name="message" rows="3" placeholder="Ex. assureur actuel, échéance, besoin particulier"></textarea>
+    </div>
+  </div>
+  {{ f.contact("dp") }}
+{{ f.fermer(p.bouton, "dp") }}
+</form>

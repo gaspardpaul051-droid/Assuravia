@@ -233,4 +233,59 @@
     loyer.addEventListener("input", calculer);
     calculer();
   });
+  // 6. Menu principal : sous-menus Privé et Pro, menu mobile
+  var sousMenus = document.querySelectorAll("[data-sous-menu]");
+  sousMenus.forEach(function (d) {
+    d.addEventListener("toggle", function () {
+      if (d.open) sousMenus.forEach(function (autre) { if (autre !== d) autre.open = false; });
+    });
+  });
+  document.addEventListener("click", function (e) {
+    sousMenus.forEach(function (d) { if (d.open && !d.contains(e.target) && window.matchMedia("(min-width: 1081px)").matches) d.open = false; });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    sousMenus.forEach(function (d) {
+      if (d.open) { d.open = false; d.querySelector("summary").focus(); }
+    });
+    var nav = document.getElementById("navigation");
+    var bouton = document.querySelector("[data-menu-bouton]");
+    if (nav && nav.classList.contains("nav--ouverte")) { nav.classList.remove("nav--ouverte"); bouton.setAttribute("aria-expanded", "false"); bouton.focus(); }
+  });
+  var boutonMenu = document.querySelector("[data-menu-bouton]");
+  if (boutonMenu) {
+    boutonMenu.addEventListener("click", function () {
+      var nav = document.getElementById("navigation");
+      var ouvert = nav.classList.toggle("nav--ouverte");
+      boutonMenu.setAttribute("aria-expanded", ouvert ? "true" : "false");
+    });
+  }
+
+  // 7. Catalogue : filtres par catégorie
+  document.querySelectorAll("[data-catalogue]").forEach(function (cat) {
+    var boutons = cat.querySelectorAll("[data-filtre]");
+    var cartes = cat.querySelectorAll("[data-categorie]");
+    var statut = cat.querySelector("[data-catalogue-statut]");
+    boutons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var choix = b.getAttribute("data-filtre");
+        boutons.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        var n = 0;
+        cartes.forEach(function (c) {
+          var visible = !choix || c.getAttribute("data-categorie") === choix;
+          c.hidden = !visible;
+          if (visible) n++;
+        });
+        if (statut) statut.textContent = n + " assurance" + (n > 1 ? "s" : "") + " affichée" + (n > 1 ? "s" : "");
+      });
+    });
+  });
+
+  // 8. Page de remerciement : message adapté au formulaire envoyé
+  if (params.get("f") === "contact") {
+    var titre = document.querySelector(".merci h1");
+    var texte = document.querySelector(".merci .chapeau");
+    if (titre) titre.textContent = "Message envoyé";
+    if (texte) texte.textContent = "Merci. Nous vous répondons par e-mail dans les meilleurs délais.";
+  }
 })();

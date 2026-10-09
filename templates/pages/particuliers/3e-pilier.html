@@ -1,17 +1,18 @@
 {% extends "base.html" %}
+{% block theme %}prive{% endblock %}
 {% block title %}3e pilier : calculez votre économie d'impôts 2026 | Assuravia{% endblock %}
 {% block description %}Simulateur gratuit : combien d'impôts économisez-vous en versant sur votre 3e pilier en 2026 ? Genève, Vaud, Valais, Fribourg, Neuchâtel, Jura, Berne.{% endblock %}
 {% block content %}
 <section class="produit produit--simple">
   <div class="cadre">
-    <p class="fil"><a href="/particuliers/">Particuliers</a></p>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a></nav>
     <h1>3e pilier : combien d'impôts allez-vous économiser en 2026 ?</h1>
     <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation, le calcul se met à jour immédiatement.</p>
     {% include "partials/simulateur-3a.html" %}
   </div>
 </section>
 
-<section class="bloc bloc--brume">
+<section class="bloc bloc--teinte">
   <div class="cadre texte-long">
     <h2>Combien pouvez-vous verser en 2026 ?</h2>
     <table>

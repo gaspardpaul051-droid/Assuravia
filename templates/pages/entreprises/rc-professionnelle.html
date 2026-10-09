@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% block theme %}pro{% endblock %}
 {% block title %}RC professionnelle en Suisse romande : comparer les offres | Assuravia{% endblock %}
 {% block description %}Responsabilité civile professionnelle pour indépendants et PME en Suisse romande. Décrivez votre activité en 2 minutes, un conseiller compare les offres pour vous. Gratuit.{% endblock %}
 {% block content %}
 <section class="produit">
   <div class="cadre produit__grille">
     <div class="produit__texte">
-      <p class="fil"><a href="/entreprises/">Entreprises</a></p>
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Pro</a></nav>
       <h1>RC professionnelle : protégez votre entreprise contre les réclamations</h1>
       <p class="chapeau">Un client se blesse dans vos locaux, une installation que vous avez posée provoque un dégât d'eau, un conseil erroné coûte de l'argent à un mandant : la responsabilité civile prend en charge les dommages et votre défense.</p>
       <ul class="points">
@@ -21,7 +22,7 @@
   </div>
 </section>
 
-<section class="bloc bloc--brume">
+<section class="bloc bloc--teinte">
   <div class="cadre texte-long">
     <h2>Ce que couvre une RC professionnelle</h2>
     <p>L'assurance responsabilité civile intervient quand votre entreprise cause un dommage à quelqu'un d'autre dans le cadre de son activité. Elle a deux rôles :</p>

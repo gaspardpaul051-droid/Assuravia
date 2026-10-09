@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Blog assurance et prévoyance en Suisse romande | Assuravia{% endblock %}
+{% block description %}Conseils pratiques sur le 3e pilier, la LPP, la RC professionnelle, les complémentaires et toutes les assurances en Suisse romande. Un nouvel article chaque semaine.{% endblock %}
+{% block content %}
+<section class="hero-hub">
+  <div class="cadre">
+    <h1>Le blog</h1>
+    <p class="chapeau">Des réponses claires aux questions d'assurance, de prévoyance et d'impôts qu'on se pose en Suisse romande. Un nouvel article chaque semaine.</p>
+  </div>
+</section>
+<section class="bloc bloc--serre">
+  <div class="cadre">
+    {% if articles %}
+      {% with liste=articles %}{% include "partials/liste-articles.html" %}{% endwith %}
+    {% else %}
+      <p>Le premier article arrive très bientôt.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

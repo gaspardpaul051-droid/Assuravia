@@ -1,0 +1,47 @@
+{# Formulaire générique Pro. Attend `p` (produit). #}
+{% import "partials/form.html" as f %}
+{{ f.ouvrir("demande-pro", p.slug) }}
+  <div class="grille-champs">
+    <div class="champ champ--large">
+      <label for="entreprise-dpro">Nom de l'entreprise</label>
+      <input id="entreprise-dpro" name="entreprise" required autocomplete="organization">
+    </div>
+    <div class="champ champ--large">
+      <label for="activite-dpro">Activité</label>
+      <input id="activite-dpro" name="activite" required placeholder="Ex. menuiserie, cabinet dentaire, commerce de détail">
+    </div>
+    <div class="champ">
+      <label for="employes-dpro">Nombre de personnes</label>
+      <select id="employes-dpro" name="nb_personnes" required>
+        <option value="">Choisir…</option>
+        <option value="1">1 (indépendant)</option>
+        <option value="2-5">2 à 5</option>
+        <option value="6-10">6 à 10</option>
+        <option value="11-50">11 à 50</option>
+        <option value="50+">Plus de 50</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="canton-dpro">Canton du siège</label>
+      <select id="canton-dpro" name="canton" required>
+        <option value="">Choisir…</option>
+        {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="champ">
+      <label for="actuel-dpro">Contrat actuel</label>
+      <select id="actuel-dpro" name="assurance_actuelle" required>
+        <option value="">Choisir…</option>
+        <option value="non">Pas encore assuré</option>
+        <option value="oui">Déjà assuré, je veux comparer</option>
+        <option value="ne-sait-pas">Je ne sais pas</option>
+      </select>
+    </div>
+    <div class="champ">
+      <label for="echeance-dpro">Échéance <span class="facultatif">(facultatif)</span></label>
+      <input id="echeance-dpro" name="echeance" type="month">
+    </div>
+  </div>
+  {{ f.contact("dpro", societe=True) }}
+{{ f.fermer(p.bouton, "dpro") }}
+</form>

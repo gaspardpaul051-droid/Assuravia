@@ -25,11 +25,6 @@
   force = true
 
 [[redirects]]
-  from = "/blog"
-  to = "/guide/"
-  status = 301
-
-[[redirects]]
-  from = "/blog/*"
-  to = "/guide/"
+  from = "/guide/*"
+  to = "/blog/:splat"
   status = 301

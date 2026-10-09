@@ -1,77 +1,57 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
-{% block title %}Assurances et prévoyance en Suisse romande | Assuravia{% endblock %}
-{% block description %}RC professionnelle, 3e pilier, garantie de loyer, complémentaire maladie : dites-nous ce que vous cherchez, un conseiller vous recontacte gratuitement.{% endblock %}
+{% block title %}Assurances et prévoyance en Suisse romande, pour particuliers et entreprises | Assuravia{% endblock %}
+{% block description %}Particuliers et entreprises de Suisse romande : 3e pilier, complémentaire maladie, RC pro, LPP, garantie de loyer… Décrivez votre besoin, un conseiller compare pour vous. Gratuit.{% endblock %}
 {% block content %}
-<section class="hero">
-  <div class="cadre hero__grille">
-    <div class="hero__texte">
-      <h1>Trouvez la bonne assurance, sans perdre votre temps.</h1>
-      <p class="chapeau">Particuliers et entreprises de Suisse romande : décrivez votre besoin en 2 minutes. Un conseiller compare les offres du marché et vous rappelle.</p>
-      <ul class="coches">
-        <li>{{ i.icone("valide") }} Gratuit, payé par les assureurs et non par vous</li>
-        <li>{{ i.icone("valide") }} Sans engagement, vous décidez après avoir comparé</li>
-        <li>{{ i.icone("valide") }} Rappel au moment qui vous arrange</li>
-      </ul>
+<section class="accueil">
+  <div class="cadre">
+    <div class="accueil__intro">
+      <h1>Assurance et prévoyance en Suisse romande, expliquées simplement.</h1>
+      <p class="chapeau">Dites-nous qui vous êtes et ce que vous cherchez. Un conseiller compare les offres du marché et vous rappelle, gratuitement.</p>
     </div>
-    <form class="demarreur" action="/conseil/" method="get" data-demarreur>
-      <h2 class="demarreur__titre">Commencer ma demande</h2>
-      <fieldset class="segment">
-        <legend>Pour qui ?</legend>
-        <div class="segment__options">
-          <input type="radio" id="pour-part" name="pour" value="particuliers" checked>
-          <label for="pour-part">{{ i.icone("maison") }} Pour moi</label>
-          <input type="radio" id="pour-ent" name="pour" value="entreprises">
-          <label for="pour-ent">{{ i.icone("bouclier") }} Mon entreprise</label>
-        </div>
-      </fieldset>
-      <div class="champ">
-        <label for="demarreur-produit">Ce que vous cherchez</label>
-        <select id="demarreur-produit" name="produit" required>
-          <option value="">Choisir…</option>
-          {% for groupe, liste in produits.items() %}
-          <optgroup label="{{ 'Particuliers' if groupe == 'particuliers' else 'Entreprises' }}" data-groupe="{{ groupe }}">
-            {% for p in liste %}<option value="{{ p.slug }}" data-url="{{ produit_url(p) }}">{{ p.nom }}</option>{% endfor %}
-          </optgroup>
-          {% endfor %}
-        </select>
-      </div>
-      <button class="bouton bouton--action" type="submit">Continuer {{ i.icone("fleche", "icone icone--bouton") }}</button>
-      <p class="demarreur__note">{{ i.icone("horloge", "icone icone--petite") }} 2 à 3 minutes, sans création de compte</p>
-    </form>
+    <div class="portes">
+      <a class="porte porte--prive" href="/particuliers/">
+        <span class="porte__icone">{{ i.icone("utilisateur") }}</span>
+        <span class="porte__sur-titre">Privé</span>
+        <span class="porte__titre">Je suis un particulier</span>
+        <span class="porte__desc">Santé, retraite et impôts, logement, véhicule, protection juridique.</span>
+        <span class="porte__liste">{% for p in produits.particuliers[:4] %}<span>{{ p.nom }}</span>{% endfor %}</span>
+        <span class="porte__action">Voir les {{ produits.particuliers|length }} assurances privées {{ i.icone("fleche", "icone icone--bouton") }}</span>
+      </a>
+      <a class="porte porte--pro" href="/entreprises/">
+        <span class="porte__icone">{{ i.icone("batiment") }}</span>
+        <span class="porte__sur-titre">Pro</span>
+        <span class="porte__titre">Je représente une entreprise</span>
+        <span class="porte__desc">Indépendants et PME : responsabilité, personnel, biens et exploitation.</span>
+        <span class="porte__liste">{% for p in produits.entreprises[:4] %}<span>{{ p.nom }}</span>{% endfor %}</span>
+        <span class="porte__action">Voir les {{ produits.entreprises|length }} assurances pro {{ i.icone("fleche", "icone icone--bouton") }}</span>
+      </a>
+    </div>
   </div>
 </section>
 
 <section class="confiance" aria-label="Nos engagements">
   <div class="cadre confiance__liste">
-    <div>{{ i.icone("valide") }}<p><strong>Service gratuit</strong> pour vous, à chaque étape</p></div>
+    <div>{{ i.icone("valide") }}<p><strong>Gratuit pour vous</strong> Nous sommes rémunérés par les assureurs</p></div>
     <div>{{ i.icone("repere") }}<p><strong>Suisse romande</strong> Genève, Vaud, Valais, Fribourg, Neuchâtel, Jura</p></div>
-    <div>{{ i.icone("telephone") }}<p><strong>Un vrai conseiller</strong> vous rappelle, pas un robot</p></div>
-    <div>{{ i.icone("cadenas") }}<p><strong>Données protégées</strong> selon la loi suisse (LPD)</p></div>
+    <div>{{ i.icone("telephone") }}<p><strong>Un vrai conseiller</strong> Rappel au moment qui vous arrange</p></div>
+    <div>{{ i.icone("cadenas") }}<p><strong>Données protégées</strong> Selon la loi suisse sur la protection des données</p></div>
   </div>
 </section>
 
 <section class="bloc">
   <div class="cadre">
     <div class="bloc__entete">
-      <h2>Pour les entreprises</h2>
-      <p>Indépendants, PME, commerces et artisans : protégez votre activité et vos employés.</p>
+      <h2>Les demandes les plus fréquentes</h2>
+      <p>Trois sujets où un bon conseil fait rapidement une différence.</p>
     </div>
-    {% with liste=produits.entreprises %}{% include "partials/liste-produits.html" %}{% endwith %}
+    <div class="cartes">
+      {% for slug in ["3e-pilier", "rc-pro", "complementaire-maladie"] %}{% with p=par_slug[slug] %}{% include "partials/carte-produit.html" %}{% endwith %}{% endfor %}
+    </div>
   </div>
 </section>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre">
-    <div class="bloc__entete">
-      <h2>Pour les particuliers</h2>
-      <p>Santé, logement, véhicule, retraite : couvrez ce qui compte, sans payer pour le reste.</p>
-    </div>
-    {% with liste=produits.particuliers %}{% include "partials/liste-produits.html" %}{% endwith %}
-  </div>
-</section>
-
-<section class="bloc" id="comment">
+<section class="bloc bloc--teinte" id="comment">
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Comment ça marche</h2>
@@ -84,39 +64,31 @@
   </div>
 </section>
 
-<section class="bloc bloc--teinte">
+<section class="bloc">
   <div class="cadre deux-colonnes">
     <div>
       <h2>Questions fréquentes</h2>
-      <p>Ce que les gens nous demandent le plus souvent avant de faire une demande.</p>
+      <p>Ce que l'on nous demande le plus souvent avant de faire une demande.</p>
+      <p><a class="lien-fort" href="/contact/">Une autre question ? Écrivez-nous</a></p>
     </div>
     <div class="faq">
-      <details><summary>Pourquoi est-ce gratuit ?</summary><p>Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu. Vous ne payez rien, que vous signiez ou non.</p></details>
-      <details><summary>Qui va me rappeler ?</summary><p>Un conseiller Assuravia ou un partenaire spécialisé dans votre demande, par exemple un spécialiste de la prévoyance pour un 3e pilier. Vous le savez dès le premier appel.</p></details>
-      <details><summary>Vais-je être démarché ensuite ?</summary><p>Non. Nous ne contactons que les personnes qui en ont fait la demande, et seulement au sujet de cette demande.</p></details>
-      <details><summary>Que faire de mon contrat actuel ?</summary><p>Rien pour l'instant. Le conseiller vérifie votre échéance et le délai de résiliation, et ne vous propose de changer que si c'est intéressant pour vous.</p></details>
+      <details><summary>Pourquoi est-ce gratuit ?</summary><div class="faq__reponse"><p>Nous sommes rémunérés par les assureurs et partenaires avec qui un contrat est conclu. Vous ne payez rien, que vous signiez ou non.</p></div></details>
+      <details><summary>Qui va me rappeler ?</summary><div class="faq__reponse"><p>Un conseiller Assuravia ou un partenaire spécialisé dans votre demande, par exemple un spécialiste de la prévoyance pour un 3e pilier. Vous le savez dès le premier appel.</p></div></details>
+      <details><summary>Vais-je être démarché ensuite ?</summary><div class="faq__reponse"><p>Non. Nous ne contactons que les personnes qui en ont fait la demande, et seulement au sujet de cette demande.</p></div></details>
+      <details><summary>Que faire de mon contrat actuel ?</summary><div class="faq__reponse"><p>Rien pour l'instant. Le conseiller vérifie votre échéance et le délai de résiliation, et ne vous propose de changer que si c'est intéressant pour vous.</p></div></details>
     </div>
   </div>
 </section>
 
 {% if articles %}
-<section class="bloc">
+<section class="bloc bloc--teinte">
   <div class="cadre">
-    <div class="bloc__entete">
-      <h2>Derniers articles du guide</h2>
+    <div class="bloc__entete bloc__entete--ligne">
+      <h2>Derniers articles du blog</h2>
+      <a class="lien-fort" href="/blog/">Tous les articles</a>
     </div>
     {% with liste=articles[:3] %}{% include "partials/liste-articles.html" %}{% endwith %}
   </div>
 </section>
 {% endif %}
-
-<section class="bandeau">
-  <div class="cadre bandeau__contenu">
-    <div>
-      <h2>Prêt à comparer ?</h2>
-      <p>Une demande, plusieurs offres, et un conseiller pour vous aider à choisir.</p>
-    </div>
-    <a class="bouton bouton--action" href="/conseil/">Faire une demande {{ i.icone("fleche", "icone icone--bouton") }}</a>
-  </div>
-</section>
 {% endblock %}

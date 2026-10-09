@@ -1,23 +1,39 @@
+{% import "partials/icones.html" as i %}
 {% extends "base.html" %}
-{% block title %}Assurances entreprises et PME en Suisse romande | Assuravia{% endblock %}
-{% block description %}RC professionnelle, LPP, LAA, perte de gain maladie, inventaire, transport : des offres adaptées aux indépendants et PME de Suisse romande.{% endblock %}
+{% block theme %}pro{% endblock %}
+{% block title %}Assurances entreprises, indépendants et PME en Suisse romande | Assuravia{% endblock %}
+{% block description %}RC professionnelle, LPP, LAA, perte de gain maladie, inventaire, transport, assurances techniques : des offres adaptées aux indépendants et PME de Suisse romande.{% endblock %}
 {% block content %}
-<section class="produit produit--simple">
+<section class="hero-hub">
   <div class="cadre">
-    <h1>Assurances pour les entreprises et les indépendants</h1>
-    <p class="chapeau">Des obligations légales (LAA, LPP) aux couvertures qui protègent votre activité. Un conseiller analyse vos contrats actuels et compare les offres du marché.</p>
-    {% with liste=produits.entreprises %}{% include "partials/liste-produits.html" %}{% endwith %}
+    <p class="etiquette etiquette--pro">{{ i.icone("batiment", "icone icone--petite") }} Pro</p>
+    <h1>Les assurances pour les entreprises</h1>
+    <p class="chapeau">Indépendants, PME, commerces et artisans : des obligations légales aux couvertures qui protègent votre activité. Un conseiller analyse vos contrats et compare le marché.</p>
   </div>
 </section>
-<section class="bloc bloc--brume">
+<section class="bloc bloc--serre">
+  <div class="cadre">
+    {% with groupe="entreprises" %}{% include "partials/catalogue.html" %}{% endwith %}
+  </div>
+</section>
+<section class="bloc bloc--teinte">
   <div class="cadre texte-long">
     <h2>Ce qui est obligatoire pour un employeur en Suisse</h2>
     <ul>
       <li><strong>L'assurance accidents (LAA)</strong> pour tous les employés, dès la première heure de travail.</li>
-      <li><strong>La prévoyance professionnelle (LPP)</strong> pour les employés dont le salaire annuel dépasse le seuil d'entrée fixé par la loi.</li>
+      <li><strong>La prévoyance professionnelle (LPP)</strong> pour les employés dont le salaire annuel dépasse CHF 22'680 en 2026.</li>
       <li><strong>Les assurances sociales AVS, AI, APG et chômage</strong>, gérées par votre caisse de compensation.</li>
     </ul>
-    <p>La perte de gain maladie n'est pas obligatoire par la loi, mais elle est souvent prévue par une convention collective, et elle vous évite de payer vous-même le salaire d'un employé malade.</p>
+    <p>La perte de gain maladie n'est pas imposée par la loi, mais elle l'est souvent par votre convention collective, et elle vous évite de payer vous-même le salaire d'un employé malade.</p>
+  </div>
+</section>
+<section class="bandeau bandeau--pro">
+  <div class="cadre bandeau__contenu">
+    <div>
+      <h2>Faites analyser vos contrats d'entreprise</h2>
+      <p>Un conseiller vérifie vos couvertures, vos échéances et vos primes, puis vous propose des économies concrètes.</p>
+    </div>
+    <a class="bouton bouton--action" href="/conseil/">Demander une analyse gratuite</a>
   </div>
 </section>
 {% endblock %}

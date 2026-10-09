@@ -1,3 +1,4 @@
+{% import "partials/icones.html" as i %}
 <!doctype html>
 <html lang="fr-CH">
 <head>
@@ -16,32 +17,49 @@
 <meta property="og:title" content="{{ self.title() }}">
 <meta property="og:description" content="{{ self.description() }}">
 <meta property="og:url" content="{{ site_url }}{{ url }}">
+<meta name="theme-color" content="#0B2545">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/css/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Assuravia","url":"{{ site_url }}/","logo":"{{ site_url }}/marque/embleme.svg","areaServed":"Suisse romande","email":"contact@assuravia.ch"}</script>
 {% block head %}{% endblock %}
 </head>
-{% import "partials/icones.html" as i %}
-<body class="{% block body_class %}{% endblock %}">
+<body class="theme-{% block theme %}neutre{% endblock %}">
 <a class="skip" href="#contenu">Aller au contenu</a>
 {% if landing %}
 <header class="entete entete--lp">
-  <div class="cadre">
+  <div class="cadre entete__barre">
     <span class="logo">{% include "partials/logo.html" %}</span>
-    <p class="entete__reassurance">{{ i.icone("cadenas", "icone icone--petite") }} Gratuit, sans engagement</p>
+    <p class="entete__reassurance">{{ i.icone("cadenas", "icone icone--petite") }} Gratuit et sans engagement</p>
   </div>
 </header>
 {% else %}
 <header class="entete">
-  <div class="cadre">
+  <div class="cadre entete__barre">
     <a class="logo" href="/" aria-label="Assuravia, accueil">{% include "partials/logo.html" %}</a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="/particuliers/"{% if url.startswith('/particuliers/') %} aria-current="page"{% endif %}>Particuliers</a>
-      <a href="/entreprises/"{% if url.startswith('/entreprises/') %} aria-current="page"{% endif %}>Entreprises</a>
-      <a href="/guide/"{% if url.startswith('/guide/') %} aria-current="page"{% endif %}>Guide</a>
-      <a class="bouton bouton--action bouton--petit" href="/conseil/"><span class="sur-grand">Faire une demande</span><span class="sur-petit">Demande</span></a>
+    <button class="menu-bouton" type="button" aria-expanded="false" aria-controls="navigation" data-menu-bouton>
+      <span class="menu-bouton__barres" aria-hidden="true"></span> Menu
+    </button>
+    <nav class="nav" id="navigation" aria-label="Navigation principale">
+      {% for cle, g in groupes.items() %}
+      <details class="sous-menu sous-menu--{{ g.theme }}" data-sous-menu>
+        <summary{% if url.startswith(g.url) %} aria-current="true"{% endif %}><span class="pastille pastille--{{ g.theme }}" aria-hidden="true"></span>{{ g.nom }}{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</summary>
+        <div class="sous-menu__panneau">
+          <p class="sous-menu__titre">Assurances pour {{ g.titre|lower }}</p>
+          <ul>
+            {% for p in produits[cle] %}
+            <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom }}</a></li>
+            {% endfor %}
+          </ul>
+          <a class="sous-menu__tout" href="{{ g.url }}">Tous les produits {{ g.nom }} {{ i.icone("fleche", "icone icone--petite") }}</a>
+        </div>
+      </details>
+      {% endfor %}
+      <a class="nav__lien" href="/blog/"{% if url.startswith('/blog/') %} aria-current="page"{% endif %}>Blog</a>
+      <a class="nav__lien" href="/contact/"{% if url.startswith('/contact/') %} aria-current="page"{% endif %}>Contact</a>
+      <a class="bouton bouton--action bouton--petit nav__action" href="/conseil/">Demande gratuite</a>
     </nav>
   </div>
 </header>
@@ -52,25 +70,17 @@
 <footer class="pied">
   <div class="cadre">
     {% if not landing %}
-    <div class="pied__colonnes">
-      <div>
-        <p class="pied__marque">{% include "partials/logo.html" %}</p>
-        <p>Assurances et prévoyance pour les particuliers et les entreprises de Suisse romande. Un conseiller vous recontacte gratuitement.</p>
+    <div class="pied__haut">
+      <div class="pied__marque">
+        <span class="logo logo--inverse">{% include "partials/logo-inverse.html" %}</span>
+        <p>Assurance et prévoyance pour les particuliers et les entreprises de Suisse romande.</p>
       </div>
-      <div>
-        <h2 class="pied__titre">Particuliers</h2>
-        <ul>
-          {% for p in produits.particuliers[:6] %}<li><a href="{{ produit_url(p) }}">{{ p.nom }}</a></li>{% endfor %}
-          <li><a href="/particuliers/">Tout voir</a></li>
-        </ul>
-      </div>
-      <div>
-        <h2 class="pied__titre">Entreprises</h2>
-        <ul>
-          {% for p in produits.entreprises[:6] %}<li><a href="{{ produit_url(p) }}">{{ p.nom }}</a></li>{% endfor %}
-          <li><a href="/entreprises/">Tout voir</a></li>
-        </ul>
-      </div>
+      <nav class="pied__liens" aria-label="Liens du pied de page">
+        <a href="/particuliers/">Privé</a>
+        <a href="/entreprises/">Pro</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+      </nav>
     </div>
     {% endif %}
     <p class="pied__legal"><span>© {{ annee }} Assuravia</span> <a href="/mentions-legales/">Mentions légales</a> <a href="/confidentialite/">Protection des données</a></p>
