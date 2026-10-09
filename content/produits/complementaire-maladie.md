@@ -6,8 +6,8 @@ categorie: Santé
 icone: coeur
 ordre: 3
 titre_seo: Assurance complémentaire maladie (LCA) en Suisse romande
-description: Hospitalisation, dentaire, médecines complémentaires : comparez les assurances complémentaires LCA et ne payez que ce qui vous sert. Conseil gratuit en Suisse romande.
-desc: Dentaire, hospitalisation, médecines complémentaires : complétez votre LAMal sans payer pour rien.
+description: Hospitalisation, dentaire, médecines complémentaires : comparez les assurances complémentaires LCA et choisissez les prestations qui comptent pour vous. Conseil gratuit en Suisse romande.
+desc: Dentaire, hospitalisation, médecines complémentaires : complétez votre LAMal avec les prestations qui comptent pour vous.
 points: Hospitalisation en chambre semi-privée ou privée | Soins dentaires et lunettes | Médecines complémentaires
 badge: Offre gratuite
 bouton: Comparer les offres
@@ -34,7 +34,7 @@ L'assurance de base est la même chez tous les assureurs. Elle laisse pourtant d
 | Soins dentaires | Contrôles, détartrage, traitements, orthodontie pour les enfants |
 | Voyage et étranger | Frais médicaux au-delà de ce que rembourse la LAMal |
 
-## Comment éviter de payer trop
+## Comment bien choisir
 
 Les complémentaires sont des assurances privées : chaque assureur fixe ses prix et ses conditions, et les écarts sont importants. Quelques règles simples :
 

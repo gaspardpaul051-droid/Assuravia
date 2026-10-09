@@ -11,7 +11,7 @@ desc: Même couverture partout, mais pas le même prix : choisissez la bonne cai
 points: Primes comparées entre caisses | Franchise adaptée à vos frais réels | Modèle médecin de famille, Telmed ou HMO
 badge: Offre gratuite
 bouton: Comparer ma LAMal
-h1: Assurance de base LAMal : payez le juste prix pour la même couverture
+h1: Assurance de base LAMal : la bonne caisse, la bonne franchise, le bon modèle
 chapeau: Les prestations de l'assurance de base sont fixées par la loi et identiques chez toutes les caisses. Pourtant, les primes varient beaucoup. Le choix de la caisse, de la franchise et du modèle peut représenter plusieurs centaines de francs par an.
 ---
 

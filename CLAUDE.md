@@ -47,6 +47,7 @@ Règles éditoriales :
   ou une banque suisse avant publication. En cas de doute, ne pas donner le chiffre.
 - Pas de contenu copié : tout est rédigé.
 - Ne pas promettre de résultats, ne pas se présenter comme indépendant ou neutre.
+- Ton : mettre en avant la qualité des prestations et du conseil, pas le prix. Éviter les accroches du type « vous payez trop cher » ou « au juste prix ».
 - Vérifier qu'aucun article existant ne traite déjà le même sujet.
 - Lancer `python3 build.py` et vérifier qu'il n'y a pas d'erreur avant de pousser.
 - Mettre `brouillon: oui` dans l'en-tête pour préparer un article sans le publier.

@@ -7,7 +7,7 @@ icone: voiture
 ordre: 8
 titre_seo: Assurance véhicules d'entreprise et flotte en Suisse romande
 description: Voitures de service, utilitaires, camions : RC obligatoire, casco, flotte et passagers. Comparez les offres pour les véhicules de votre entreprise.
-desc: Voitures de service, utilitaires et camions assurés au juste prix, un par un ou en flotte.
+desc: Voitures de service, utilitaires et camions bien assurés, un par un ou en flotte.
 points: RC véhicule, casco partielle ou complète | Contrat de flotte pour plusieurs véhicules | Outillage et marchandises transportés
 badge: Offre gratuite
 bouton: Assurer mes véhicules
