@@ -5,7 +5,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 
 ## Structure
 - `build.py` : générateur (Jinja2 + Markdown).
-- `content/produits/*.md` : un fichier par produit (carte sur la page Privé ou Pro, entrée de menu
+- `content/produits/*.md` : un fichier par produit (champs widgets : `retenir`, `pour_qui`, `quiz`, comme les articles) (carte sur la page Privé ou Pro, entrée de menu
   et page produit générée avec `templates/produit.html`). Un produit avec un champ `url` a une page fixe.
   Groupes et catégories autorisées : `GROUPES` dans `build.py`.
 - `templates/pages/` : pages fixes ; le chemin donne l'URL.
@@ -31,6 +31,8 @@ cta_bouton: Texte du bouton
 retenir: 3 à 4 points clés séparés par | (encadré « L'essentiel en 30 secondes »)
 produits_lies: slugs de produits séparés par des virgules, par exemple 3e-pilier, placements
 quiz: Affirmation | vrai ou faux | Explication ;; Affirmation 2 | … (3 questions, facultatif)
+pour_qui: 4 situations « Vous … » séparées par | (widget à cocher, facultatif)
+widget: capital-3a (simulateur de capital, facultatif)
 ---
 Corps en Markdown, ## pour les intertitres. Un encadré se fait avec une citation commençant par un titre en gras :
 `> **Le saviez-vous ?** Texte…`. L'encart d'appel à l'action s'insère automatiquement avant le 3e intertitre.

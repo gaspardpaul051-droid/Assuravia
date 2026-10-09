@@ -66,21 +66,7 @@
       {% endif %}
       {{ produit.html_fin|safe }}
 
-      {% if produit.pour_qui %}
-      <section class="pour-qui pour-qui--{{ produit.theme }}" id="pour-qui" data-pour-qui aria-labelledby="pour-qui-titre">
-        <h2 id="pour-qui-titre">Est-ce pour vous ? Cochez ce qui vous concerne</h2>
-        <ul class="pour-qui__liste">
-          {% for item in produit.pour_qui %}
-          <li><label><input type="checkbox" data-pour-qui-case> <span>{{ item }}</span></label></li>
-          {% endfor %}
-        </ul>
-        <div class="pour-qui__resultat" aria-live="polite">
-          <div class="pour-qui__jauge"><span data-pour-qui-jauge></span></div>
-          <p data-pour-qui-message>Cochez les situations qui vous ressemblent.</p>
-          <a class="bouton bouton--action" href="#demande" data-pour-qui-bouton hidden>{{ produit.bouton }}</a>
-        </div>
-      </section>
-      {% endif %}
+      {% with w={"pour_qui": produit.pour_qui, "theme": produit.theme, "bouton": produit.bouton, "cible": "#demande"} %}{% include "partials/pour-qui.html" %}{% endwith %}
 
       {% if produit.quiz %}
       <section class="quiz" aria-labelledby="quiz-titre" data-quiz>

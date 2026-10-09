@@ -10,6 +10,8 @@ cta_bouton: Calculer mon économie
 retenir: Jusqu'à CHF 7'258 déductibles en 2026 pour un salarié, jusqu'à CHF 36'288 pour un indépendant sans caisse de pension | Le versement doit être crédité avant le 31 décembre | L'économie dépend de votre taux marginal d'imposition | Depuis 2025, les années manquées peuvent être rattrapées
 produits_lies: 3e-pilier, placements, declaration-impots
 quiz: Le 3e pilier A peut être versé jusqu'au 15 janvier pour l'année précédente. | faux | Le versement doit être crédité au plus tard le 31 décembre de l'année concernée. ;; Un indépendant sans caisse de pension peut verser plus qu'un salarié. | vrai | Il peut verser jusqu'à 20 % de son revenu net, au maximum CHF 36'288 en 2026. ;; Avoir plusieurs comptes 3a peut réduire l'impôt au moment du retrait. | vrai | Chaque compte se retire en une fois : en étalant les retraits sur plusieurs années, l'impôt sur le capital baisse souvent.
+pour_qui: Vous êtes salarié et n'avez pas encore versé sur votre 3a cette année | Vous avez un 3a sur un simple compte épargne | Vous avez sauté des versements depuis 2025 | Vous n'avez qu'un seul compte 3a
+widget: capital-3a
 ---
 
 Le pilier 3a est l'un des rares moyens légaux de réduire ses impôts en Suisse, et il a une date limite stricte : le 31 décembre. Voici ce qu'il faut savoir pour en profiter en 2026.

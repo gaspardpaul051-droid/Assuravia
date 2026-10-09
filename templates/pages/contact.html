@@ -14,9 +14,15 @@
   <div class="cadre contact">
     <div class="contact__infos">
       <h2>Nous écrire directement</h2>
-      <p class="contact__ligne">{{ i.icone("mail") }} <span>contact@assuravia.ch</span></p>
+      <a class="contact__whatsapp" href="https://wa.me/{{ whatsapp }}?text=Bonjour%20Assuravia%2C%20j%27ai%20une%20question%20%3A%20" target="_blank" rel="noopener">
+        <span class="contact__whatsapp-icone">{{ i.icone("whatsapp") }}</span>
+        <span><strong>Écrivez-nous sur WhatsApp</strong> Une question rapide ? Écrivez-nous directement</span>
+        {{ i.icone("fleche", "icone icone--petite") }}
+      </a>
+      <a class="contact__ligne" href="mailto:contact@assuravia.ch">{{ i.icone("mail") }} <span>contact@assuravia.ch</span></a>
       <p>Pour recevoir des offres, le plus rapide reste le formulaire de demande : il donne au conseiller tout ce dont il a besoin.</p>
       <p><a class="bouton bouton--secondaire" href="/conseil/">Faire une demande d'offres</a></p>
+      {% include "partials/illu-contact.html" %}
     </div>
     <div class="panneau-form">
       <h2 class="form-titre">Envoyer un message</h2>

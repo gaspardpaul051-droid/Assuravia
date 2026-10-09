@@ -12,6 +12,11 @@
 {% endblock %}
 {% block content %}
 <div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
+<div class="bravo" data-bravo hidden role="status">
+  <p><strong>Bravo, vous êtes arrivé au bout !</strong> {{ article.cta_texte }}</p>
+  <a class="bouton bouton--action bouton--petit" href="{{ article.cta_url }}">{{ article.cta_bouton }}</a>
+  <button type="button" class="bravo__fermer" data-bravo-fermer aria-label="Fermer">×</button>
+</div>
 <article class="article">
   <header class="article__entete">
     <div class="cadre">
@@ -56,6 +61,16 @@
       </aside>
       {% endif %}
       {{ article.html_fin|safe }}
+
+      {% if article.widget == "capital-3a" %}
+      <section class="widget-article" aria-labelledby="widget-titre">
+        <h2 id="widget-titre">À vous de jouer : simulez votre capital</h2>
+        <p>Bougez les curseurs pour voir ce que vos versements peuvent devenir d'ici 65 ans.</p>
+        {% with cap_cible="/particuliers/3e-pilier/" %}{% include "partials/simulateur-capital.html" %}{% endwith %}
+      </section>
+      {% endif %}
+
+      {% if article.pour_qui %}{% with w={"pour_qui": article.pour_qui, "theme": "pro" if article.categorie == "Entreprises" else "prive", "bouton": article.cta_bouton, "cible": article.cta_url, "titre": article.pour_qui_titre or "Où en êtes-vous ? Cochez ce qui vous concerne"} %}{% include "partials/pour-qui.html" %}{% endwith %}{% endif %}
 
       {% if article.quiz %}
       <section class="quiz" aria-labelledby="quiz-titre" data-quiz>

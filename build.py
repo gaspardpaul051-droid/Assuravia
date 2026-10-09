@@ -220,6 +220,7 @@ def lire_article(path: Path) -> dict:
         "retenir": [x.strip() for x in meta.get("retenir", "").split("|") if x.strip()],
         "quiz": quiz,
         "produits_lies": [x.strip() for x in meta.get("produits_lies", "").split(",") if x.strip()],
+        "pour_qui": [x.strip() for x in meta.get("pour_qui", "").split("|") if x.strip()],
         "faq": faq,
         "faq_jsonld": faq_jsonld(faq),
         "url": f"/blog/{path.stem}/",

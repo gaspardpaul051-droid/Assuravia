@@ -1,0 +1,31 @@
+{# Simulateur de capital 3e pilier : épargne régulière et rendement hypothétique. #}
+<div class="capital" data-capital>
+  <div class="capital__entrees">
+    <div class="capital__curseur">
+      <label for="cap-age">Votre âge <output data-cap-sortie="age">35 ans</output></label>
+      <input id="cap-age" type="range" min="18" max="64" step="1" value="35" data-cap="age">
+    </div>
+    <div class="capital__curseur">
+      <label for="cap-versement">Versement par an <output data-cap-sortie="versement">CHF 7'258</output></label>
+      <input id="cap-versement" type="range" min="500" max="7258" step="1" value="7258" data-cap="versement">
+      <p class="champ__aide">Jusqu'à CHF 7'258 en 2026 si vous êtes affilié à une caisse de pension.</p>
+    </div>
+    <div class="capital__curseur">
+      <label for="cap-capital">Déjà épargné sur le 3a <output data-cap-sortie="depart">CHF 0</output></label>
+      <input id="cap-capital" type="range" min="0" max="150000" step="1000" value="0" data-cap="depart">
+    </div>
+  </div>
+  <div class="capital__resultat" aria-live="polite">
+    <p class="capital__titre">Votre capital à 65 ans, selon la stratégie</p>
+    <ul class="capital__barres">
+      <li data-profil="0.005"><span class="capital__nom">Compte épargne <small>hypothèse 0,5 % par an</small></span><span class="capital__barre"><span></span></span><strong>CHF 0</strong></li>
+      <li data-profil="0.02"><span class="capital__nom">Titres prudents <small>hypothèse 2 % par an</small></span><span class="capital__barre"><span></span></span><strong>CHF 0</strong></li>
+      <li data-profil="0.035"><span class="capital__nom">Titres équilibrés <small>hypothèse 3,5 % par an</small></span><span class="capital__barre"><span></span></span><strong>CHF 0</strong></li>
+      <li data-profil="0.05"><span class="capital__nom">Titres dynamiques <small>hypothèse 5 % par an</small></span><span class="capital__barre"><span></span></span><strong>CHF 0</strong></li>
+    </ul>
+    <p class="capital__verse" data-cap-sortie="verse"></p>
+    <p class="capital__ecart" data-cap-sortie="ecart"></p>
+    <a class="bouton bouton--action" href="{{ cap_cible or '#conseil-3a' }}">Choisir la bonne stratégie avec un spécialiste</a>
+    <p class="resultat__avertissement">Simulation illustrative. Les rendements sont des hypothèses, pas des promesses : les placements en titres peuvent baisser, surtout à court terme. Frais et impôt sur le retrait non déduits.</p>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{# Widget « Est-ce pour vous ? ». Attend `w` : pour_qui, theme, bouton, cible, titre. #}
+      {% if w.pour_qui %}
+      <section class="pour-qui pour-qui--{{ w.theme }}" id="pour-qui" data-pour-qui aria-labelledby="pour-qui-titre">
+        <h2 id="pour-qui-titre">{{ w.titre or "Est-ce pour vous ? Cochez ce qui vous concerne" }}</h2>
+        <ul class="pour-qui__liste">
+          {% for item in w.pour_qui %}
+          <li><label><input type="checkbox" data-pour-qui-case> <span>{{ item }}</span></label></li>
+          {% endfor %}
+        </ul>
+        <div class="pour-qui__resultat" aria-live="polite">
+          <div class="pour-qui__jauge"><span data-pour-qui-jauge></span></div>
+          <p data-pour-qui-message>Cochez les situations qui vous ressemblent.</p>
+          <a class="bouton bouton--action" href="{{ w.cible }}" data-pour-qui-bouton hidden>{{ w.bouton }}</a>
+        </div>
+      </section>
+      {% endif %}

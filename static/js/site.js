@@ -3,6 +3,35 @@
   "use strict";
   document.documentElement.classList.add("js");
 
+  // 0. Une nouvelle page s'ouvre toujours en haut (sauf ancre ou retour arrière)
+  try {
+    var nav0 = performance.getEntriesByType("navigation")[0];
+    if (!window.location.hash && (!nav0 || nav0.type === "navigate")) {
+      window.scrollTo(0, 0);
+      window.addEventListener("load", function () { if (!window.location.hash) window.scrollTo(0, 0); });
+    }
+  } catch (e) { /* navigateur ancien */ }
+
+  // 0b. Apparition douce des blocs au défilement
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var aAnimer = document.querySelectorAll(".bloc__entete, .carte, .domaine, .cas, .atouts > div, .etapes > li, .obligations li, .retenir, .encart, .pour-qui, .quiz, .encadre, .texte-long table, .faq details, .checkup, .illu-questions, .article-carte");
+    var obs = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (en) {
+        if (en.isIntersecting) {
+          var el = en.target;
+          el.classList.add("vu"); obs.unobserve(el);
+          setTimeout(function () { el.classList.remove("apparait", "vu"); el.style.transitionDelay = ""; }, 900);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    aAnimer.forEach(function (el, n) {
+      if (el.getBoundingClientRect().top < window.innerHeight) return; // déjà visible : pas d'effet
+      el.classList.add("apparait");
+      el.style.transitionDelay = ((n % 3) * 80) + "ms";
+      obs.observe(el);
+    });
+  }
+
   var stockage = {
     lire: function (cle) { try { return window.sessionStorage.getItem(cle); } catch (e) { return null; } },
     ecrire: function (cle, val) { try { window.sessionStorage.setItem(cle, val); } catch (e) { /* stockage indisponible */ } }
@@ -147,6 +176,49 @@
       e.preventDefault();
       window.location.href = opt.getAttribute("data-url");
     });
+  }
+
+  // 4b. Simulateur de capital 3e pilier
+  var cap = document.querySelector("[data-capital]");
+  if (cap) {
+    var capVal = function (k) { return Number(cap.querySelector('[data-cap="' + k + '"]').value) || 0; };
+    var capSortie = function (k) { return cap.querySelector('[data-cap-sortie="' + k + '"]'); };
+    var anim = {};
+    var compter = function (el, cible) {
+      var depart = Number(el.getAttribute("data-val")) || 0, t0 = null, cle = el.dataset.cle;
+      cancelAnimationFrame(anim[cle]);
+      var pas = function (t) {
+        if (!t0) t0 = t;
+        var k = Math.min((t - t0) / 500, 1);
+        el.textContent = chf(depart + (cible - depart) * (1 - Math.pow(1 - k, 3)));
+        if (k < 1) anim[cle] = requestAnimationFrame(pas);
+      };
+      el.setAttribute("data-val", cible);
+      anim[cle] = requestAnimationFrame(pas);
+    };
+    var majCapital = function () {
+      var age = capVal("age"), v = capVal("versement"), c0 = capVal("depart");
+      var annees = Math.max(65 - age, 1);
+      capSortie("age").textContent = age + " ans";
+      capSortie("versement").textContent = chf(v);
+      capSortie("depart").textContent = chf(c0);
+      var lignes = cap.querySelectorAll("[data-profil]"), resultats = [];
+      lignes.forEach(function (li) {
+        var r = Number(li.getAttribute("data-profil")), k = c0;
+        for (var n = 0; n < annees; n++) k = (k + v) * (1 + r);
+        resultats.push(k);
+      });
+      var max = Math.max.apply(null, resultats);
+      lignes.forEach(function (li, n) {
+        li.querySelector(".capital__barre span").style.width = (resultats[n] / max * 100) + "%";
+        var s = li.querySelector("strong"); s.dataset.cle = "c" + n; compter(s, resultats[n]);
+      });
+      var verse = c0 + v * annees;
+      capSortie("verse").innerHTML = "Vous aurez versé <strong>" + chf(verse) + "</strong> en " + annees + " ans.";
+      capSortie("ecart").innerHTML = "Écart entre le compte épargne et la stratégie dynamique : <strong>" + chf(resultats[3] - resultats[0]) + "</strong>, dans cette hypothèse.";
+    };
+    cap.querySelectorAll("[data-cap]").forEach(function (el) { el.addEventListener("input", majCapital); });
+    majCapital();
   }
 
   // 4. Simulateur 3e pilier
@@ -444,6 +516,19 @@
     };
     cases.forEach(function (c) { c.addEventListener("change", maj); });
   });
+
+  // 11c. Articles : félicitations en fin de lecture
+  var bravo = document.querySelector("[data-bravo]");
+  if (bravo) {
+    var corpsArticle = document.querySelector(".article__corps"), bravoVu = false;
+    var verifierBravo = function () {
+      if (bravoVu) return;
+      var r = corpsArticle.getBoundingClientRect();
+      if (r.bottom < window.innerHeight * 1.05) { bravoVu = true; bravo.hidden = false; requestAnimationFrame(function () { bravo.classList.add("bravo--visible"); }); }
+    };
+    window.addEventListener("scroll", verifierBravo, { passive: true });
+    bravo.querySelector("[data-bravo-fermer]").addEventListener("click", function () { bravo.hidden = true; });
+  }
 
   // 12. Articles : barre de progression, sommaire actif, quiz vrai ou faux
   var barre = document.querySelector("[data-progression]");
