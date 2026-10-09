@@ -1,7 +1,7 @@
 {% import "partials/form.html" as f %}
 {{ f.ouvrir("rc-pro", "rc-pro") }}
   <fieldset class="etape" data-etape="1">
-    <legend>Votre entreprise <span class="etape__num">Étape 1 sur 2</span></legend>
+    <legend><span class="etape__num">Étape 1 sur 2</span>Votre entreprise</legend>
     <div class="grille-champs">
       <div class="champ champ--large">
         <label for="activite-rc">Activité exercée</label>
@@ -26,7 +26,7 @@
         </select>
       </div>
       <div class="champ">
-        <label for="employes-rc">Nombre de personnes (vous compris)</label>
+        <label for="employes-rc">Nombre de personnes, vous compris</label>
         <select id="employes-rc" name="nb_personnes" required>
           <option value="">Choisir…</option>
           <option value="1">1</option>
@@ -61,7 +61,7 @@
         <input id="echeance-rc" name="echeance" type="month">
       </div>
       <div class="champ">
-        <label for="sinistres-rc">Sinistres ces 5 dernières années</label>
+        <label for="sinistres-rc">Sinistres sur 5 ans</label>
         <select id="sinistres-rc" name="sinistres" required>
           <option value="">Choisir…</option>
           <option value="aucun">Aucun</option>
@@ -73,7 +73,7 @@
     <button class="bouton bouton--plein" type="button" data-suivant>Continuer</button>
   </fieldset>
   <fieldset class="etape" data-etape="2">
-    <legend>Vos coordonnées <span class="etape__num">Étape 2 sur 2</span></legend>
+    <legend><span class="etape__num">Étape 2 sur 2</span>Vos coordonnées</legend>
     <div class="grille-champs">
       <div class="champ champ--large">
         <label for="societe-rc">Nom de l'entreprise <span class="facultatif">(facultatif si en création)</span></label>

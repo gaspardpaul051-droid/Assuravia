@@ -1,10 +1,11 @@
-<ul class="index-articles">
+<ul class="cartes-articles">
   {% for a in liste %}
   <li>
-    <a href="{{ a.url }}">
-      <span class="index-articles__cat">{{ a.categorie }}</span>
-      <span class="index-articles__titre">{{ a.titre }}</span>
-      <span class="index-articles__desc">{{ a.description }}</span>
+    <a class="carte-article" href="{{ a.url }}">
+      <span class="badge">{{ a.categorie }}</span>
+      <span class="carte-article__titre">{{ a.titre }}</span>
+      <span class="carte-article__desc">{{ a.description }}</span>
+      <span class="carte-article__date">{{ a.date_fr }}</span>
     </a>
   </li>
   {% endfor %}

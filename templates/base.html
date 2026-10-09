@@ -19,17 +19,18 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="/css/site.css">
 {% block head %}{% endblock %}
 </head>
+{% import "partials/icones.html" as i %}
 <body class="{% block body_class %}{% endblock %}">
 <a class="skip" href="#contenu">Aller au contenu</a>
 {% if landing %}
 <header class="entete entete--lp">
   <div class="cadre">
     <span class="logo">{% include "partials/logo.html" %}</span>
-    <p class="entete__reassurance">Gratuit et sans engagement</p>
+    <p class="entete__reassurance">{{ i.icone("cadenas", "icone icone--petite") }} Gratuit, sans engagement</p>
   </div>
 </header>
 {% else %}
@@ -40,7 +41,7 @@
       <a href="/particuliers/"{% if url.startswith('/particuliers/') %} aria-current="page"{% endif %}>Particuliers</a>
       <a href="/entreprises/"{% if url.startswith('/entreprises/') %} aria-current="page"{% endif %}>Entreprises</a>
       <a href="/guide/"{% if url.startswith('/guide/') %} aria-current="page"{% endif %}>Guide</a>
-      <a class="bouton bouton--petit" href="/conseil/">Faire une demande</a>
+      <a class="bouton bouton--action bouton--petit" href="/conseil/"><span class="sur-grand">Faire une demande</span><span class="sur-petit">Demande</span></a>
     </nav>
   </div>
 </header>

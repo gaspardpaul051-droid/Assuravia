@@ -61,6 +61,19 @@ PRODUITS = {
 }
 
 
+ICONES = {
+    "3e-pilier": "tirelire", "garantie-de-loyer": "cle", "complementaire-maladie": "coeur",
+    "rc-menage": "maison", "vehicule": "voiture", "protection-juridique": "balance",
+    "voyage": "avion", "objets-de-valeur": "diamant", "libre-passage": "fleches",
+    "placements": "courbe", "rc-pro": "bouclier", "lpp": "groupe", "laa": "croix",
+    "pgm": "thermometre", "commerce-inventaire": "colis", "transport": "camion",
+    "techniques": "engrenage",
+}
+for _liste in PRODUITS.values():
+    for _p in _liste:
+        _p["icone"] = ICONES.get(_p["slug"], "bouclier")
+
+
 def produit_url(p: dict) -> str:
     return p.get("page") or f"/conseil/?produit={p['slug']}"
 

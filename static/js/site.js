@@ -40,6 +40,8 @@
       if (!msg && el.type !== "checkbox") {
         msg = document.createElement("p");
         msg.className = "champ__erreur";
+        msg.id = (el.id || el.name) + "-erreur";
+        el.setAttribute("aria-describedby", msg.id);
         el.insertAdjacentElement("afterend", msg);
       }
       if (msg) {
@@ -56,7 +58,22 @@
   document.querySelectorAll("form[data-lead]").forEach(function (form) {
     form.noValidate = true;
     form.addEventListener("submit", function (e) {
-      if (!verifier(form)) e.preventDefault();
+      if (!verifier(form)) { e.preventDefault(); return; }
+      var bouton = form.querySelector('button[type="submit"]');
+      if (bouton) {
+        bouton.setAttribute("aria-busy", "true");
+        bouton.textContent = "Envoi en cours…";
+        setTimeout(function () { bouton.disabled = true; }, 0);
+      }
+    });
+    // Corriger un champ retire son message d'erreur
+    form.addEventListener("change", function (e) {
+      var el = e.target;
+      if (el.getAttribute && el.getAttribute("aria-invalid") === "true" && el.checkValidity()) {
+        el.removeAttribute("aria-invalid");
+        var msg = el.parentElement.querySelector(".champ__erreur");
+        if (msg) msg.remove();
+      }
     });
 
     // Formulaires en étapes
@@ -84,6 +101,34 @@
       });
     }
   });
+
+  // 2b. Démarreur de demande (accueil) : filtre les besoins selon « pour qui », puis ouvre la bonne page
+  var demarreur = document.querySelector("[data-demarreur]");
+  if (demarreur) {
+    var selectBesoin = demarreur.querySelector("select");
+    var filtrer = function () {
+      var pour = demarreur.querySelector('input[name="pour"]:checked').value;
+      selectBesoin.querySelectorAll("optgroup").forEach(function (g) {
+        var visible = g.getAttribute("data-groupe") === pour;
+        g.hidden = !visible;
+        g.disabled = !visible;
+      });
+      var opt = selectBesoin.selectedOptions[0];
+      if (opt && opt.parentElement.disabled) selectBesoin.value = "";
+    };
+    demarreur.querySelectorAll('input[name="pour"]').forEach(function (r) { r.addEventListener("change", filtrer); });
+    filtrer();
+    demarreur.addEventListener("submit", function (e) {
+      var opt = selectBesoin.selectedOptions[0];
+      if (!selectBesoin.value) {
+        e.preventDefault();
+        verifier(demarreur);
+        return;
+      }
+      e.preventDefault();
+      window.location.href = opt.getAttribute("data-url");
+    });
+  }
 
   // 3. Formulaire général : produit présélectionné depuis l'URL (?produit=...)
   var choix = document.querySelector("[data-choix-produit]");
