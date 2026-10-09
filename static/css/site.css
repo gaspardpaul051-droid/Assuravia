@@ -756,5 +756,5 @@ input::placeholder, textarea::placeholder { color: #A3AEBD; opacity: 1; font-wei
 }
 @keyframes iq-flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @media (max-width: 860px) { .illu-questions { max-width: 260px; } }
-.bloc:has(.illu-questions--prive) { background: radial-gradient(700px 360px at 0% 100%, var(--bleu-pale), transparent 70%), var(--fond); }
-.bloc:has(.illu-questions--pro) { background: radial-gradient(700px 360px at 0% 100%, var(--or-pale), transparent 70%), var(--fond); }
+.theme-prive .bloc:has(.illu-questions), .accueil ~ .bloc:has(:not([hidden]) > .illu-questions--prive) { background: radial-gradient(700px 360px at 0% 100%, var(--bleu-pale), transparent 70%), var(--fond); }
+.theme-pro .bloc:has(.illu-questions), .accueil ~ .bloc:has(:not([hidden]) > .illu-questions--pro) { background: radial-gradient(700px 360px at 0% 100%, var(--or-pale), transparent 70%), var(--fond); }
