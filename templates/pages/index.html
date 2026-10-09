@@ -6,23 +6,29 @@
 <section class="accueil">
   <div class="cadre accueil__grille">
     <div class="accueil__texte">
-      <h1>Vos assurances, votre prévoyance et vos placements, enfin clairs.</h1>
-      <p class="chapeau">Payez le juste prix pour être bien protégé, préparez votre retraite et faites enfin travailler votre épargne. Particulier ou professionnel, Assuravia passe le marché au crible pour vous et vous rappelle avec des solutions concrètes. Gratuitement, et sans engagement.</p>
-      <div class="accueil__actions">
-        <a class="bouton bouton--prive" href="/particuliers/">{{ i.icone("utilisateur", "icone icone--bouton") }} Je suis un particulier</a>
-        <a class="bouton bouton--pro" href="/entreprises/">{{ i.icone("batiment", "icone icone--bouton") }} Je suis un professionnel</a>
+      <div class="choix-univers" role="group" aria-label="Vous êtes">
+        <span class="choix-univers__label">Vous êtes</span>
+        <button type="button" class="choix-univers__bouton choix-univers__bouton--prive" data-choix-univers="prive" aria-pressed="true">{{ i.icone("utilisateur", "icone icone--petite") }} Un particulier</button>
+        <button type="button" class="choix-univers__bouton choix-univers__bouton--pro" data-choix-univers="pro" aria-pressed="false">{{ i.icone("batiment", "icone icone--petite") }} Un professionnel</button>
+      </div>
+      <h1><span data-univers="prive">Vos assurances, votre prévoyance et vos placements, enfin clairs.</span><span data-univers="pro" hidden>Les assurances de votre entreprise, au juste prix et bien réglées.</span></h1>
+      <p class="chapeau" data-univers="prive">Santé, logement, famille, retraite et impôts : payez le juste prix pour être bien protégé, préparez votre retraite et faites enfin travailler votre épargne. Assuravia passe le marché au crible pour vous et vous rappelle avec des solutions concrètes. Gratuitement, et sans engagement.</p>
+      <p class="chapeau" data-univers="pro" hidden>Indépendant, PME, commerce ou artisan : protégez votre activité et votre personnel sans payer trop, soyez en règle avec vos obligations d'employeur et préparez votre propre retraite. Un conseiller Assuravia compare le marché et vous rappelle avec des solutions concrètes. Gratuitement, et sans engagement.</p>
+      <div class="accueil__actions" data-univers="prive">
+        <a class="bouton bouton--prive" href="/particuliers/">{{ i.icone("utilisateur", "icone icone--bouton") }} Découvrir l'espace Privé</a>
+        <a class="bouton bouton--secondaire" href="/conseil/">Demander un bilan gratuit</a>
+      </div>
+      <div class="accueil__actions" data-univers="pro" hidden>
+        <a class="bouton bouton--pro" href="/entreprises/">{{ i.icone("batiment", "icone icone--bouton") }} Découvrir l'espace Professionnel</a>
+        <a class="bouton bouton--secondaire" href="/conseil/">Demander une analyse gratuite</a>
       </div>
       <ul class="coches">
         <li>{{ i.icone("valide") }} Gratuit : les assureurs et partenaires nous rémunèrent, pas vous</li>
         <li>{{ i.icone("valide") }} Sans engagement : rien ne change tant que vous n'avez rien signé</li>
       </ul>
     </div>
-    <div class="bilans" data-onglets>
-      <div class="bilans__onglets" role="tablist" aria-label="Exemples de bilan">
-        <button type="button" role="tab" id="onglet-prive" aria-selected="true" aria-controls="bilan-prive" data-onglet>{{ i.icone("utilisateur", "icone icone--petite") }} Particulier</button>
-        <button type="button" role="tab" id="onglet-pro" aria-selected="false" aria-controls="bilan-pro" tabindex="-1" data-onglet>{{ i.icone("batiment", "icone icone--petite") }} Professionnel</button>
-      </div>
-      <figure class="bilan bilan--prive" id="bilan-prive" role="tabpanel" aria-labelledby="onglet-prive">
+    <div class="bilans">
+      <figure class="bilan bilan--prive" id="bilan-prive" data-univers="prive">
         <figcaption class="bilan__entete">
           <span class="bilan__etiquette">Exemple de bilan</span>
           <span class="bilan__titre">Famille de 4 personnes, Lausanne</span>
@@ -40,7 +46,7 @@
         <div class="bilan__total"><span>Économie annuelle estimée</span><strong>CHF 2'150</strong></div>
         <p class="bilan__note">Cas illustratif. Chaque bilan dépend de votre situation.</p>
       </figure>
-      <figure class="bilan bilan--pro" id="bilan-pro" role="tabpanel" aria-labelledby="onglet-pro" hidden>
+      <figure class="bilan bilan--pro" id="bilan-pro" data-univers="pro" hidden>
         <figcaption class="bilan__entete">
           <span class="bilan__etiquette">Exemple de bilan</span>
           <span class="bilan__titre">Menuiserie de 12 employés, Fribourg</span>
@@ -61,7 +67,8 @@
       </figure>
     </div>
   </div>
-  {% include "partials/paysage.html" %}
+  <div class="accueil__bandeau" data-univers="prive">{% include "partials/bandeau-prive.html" %}</div>
+  <div class="accueil__bandeau" data-univers="pro" hidden>{% include "partials/bandeau-pro.html" %}</div>
 </section>
 
 <section class="confiance" aria-label="Nos engagements">
@@ -106,10 +113,15 @@
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Par où commencer ?</h2>
-      <p>Les situations qu'on nous décrit le plus souvent, et ce qu'il faut savoir.</p>
+      <p data-univers="prive">Les situations que les particuliers nous décrivent le plus souvent, et ce qu'il faut savoir.</p>
+      <p data-univers="pro" hidden>Les situations que les indépendants et les PME nous décrivent le plus souvent, et ce qu'il faut savoir.</p>
+      <div class="choix-univers choix-univers--centre" role="group" aria-label="Afficher les questions pour">
+        <button type="button" class="choix-univers__bouton choix-univers__bouton--prive" data-choix-univers="prive" aria-pressed="true">{{ i.icone("utilisateur", "icone icone--petite") }} Particulier</button>
+        <button type="button" class="choix-univers__bouton choix-univers__bouton--pro" data-choix-univers="pro" aria-pressed="false">{{ i.icone("batiment", "icone icone--petite") }} Professionnel</button>
+      </div>
     </div>
-    <div class="debuts">
-      <div class="debut debut--prive">
+    <div class="debuts debuts--un">
+      <div class="debut debut--prive" data-univers="prive">
         <h3 class="debut__titre">{{ i.icone("utilisateur", "icone icone--petite") }} Particuliers</h3>
         <div class="faq">
           <details><summary>J'emménage et la régie demande 3 mois de loyer</summary><div class="faq__reponse"><p>Vous pouvez remplacer ce dépôt par une garantie de loyer : vous payez une prime annuelle et votre argent reste disponible. Demandez d'abord l'accord de la régie, puis <a href="/particuliers/garantie-de-loyer/">calculez votre garantie de loyer</a>.</p></div></details>
@@ -119,7 +131,7 @@
           <details><summary>Je pars loin, les soins y coûtent cher</summary><div class="faq__reponse"><p>À l'étranger, l'assurance de base ne rembourse les urgences que jusqu'au double du coût en Suisse, et ne paie pas le rapatriement. <a href="/particuliers/voyage/">Vérifiez votre couverture voyage</a>.</p></div></details>
         </div>
       </div>
-      <div class="debut debut--pro">
+      <div class="debut debut--pro" data-univers="pro" hidden>
         <h3 class="debut__titre">{{ i.icone("batiment", "icone icone--petite") }} Professionnels</h3>
         <div class="faq">
           <details><summary>Je me lance comme indépendant</summary><div class="faq__reponse"><p>Votre RC privée ne couvre pas votre activité. Une RC professionnelle protège contre les réclamations de vos clients, et une perte de gain remplace votre revenu si vous tombez malade. <a href="/entreprises/rc-professionnelle/">Recevez des offres de RC professionnelle</a>.</p></div></details>

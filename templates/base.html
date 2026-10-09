@@ -98,13 +98,23 @@
     <a class="contact-volant__whatsapp" href="https://wa.me/{{ whatsapp }}?text=Bonjour%20Assuravia%2C%20j%27ai%20une%20question%20%3A%20" target="_blank" rel="noopener">{{ i.icone("whatsapp") }} Écrire sur WhatsApp</a>
     <p class="contact-volant__ou">ou laissez-nous un message</p>
     {{ f.ouvrir("contact-rapide", "contact-rapide") }}
-      <div class="champ">
-        <label for="cv-prenom">Prénom</label>
-        <input id="cv-prenom" name="prenom" required autocomplete="given-name">
+      <div class="champs-duo">
+        <div class="champ">
+          <label for="cv-nom">Nom</label>
+          <input id="cv-nom" name="nom" required autocomplete="family-name">
+        </div>
+        <div class="champ">
+          <label for="cv-prenom">Prénom</label>
+          <input id="cv-prenom" name="prenom" required autocomplete="given-name">
+        </div>
       </div>
       <div class="champ">
-        <label for="cv-telephone">Téléphone ou e-mail</label>
-        <input id="cv-telephone" name="coordonnees" required autocomplete="tel">
+        <label for="cv-telephone">Téléphone</label>
+        <input id="cv-telephone" name="telephone" type="tel" required autocomplete="tel" inputmode="tel">
+      </div>
+      <div class="champ">
+        <label for="cv-email">E-mail</label>
+        <input id="cv-email" name="email" type="email" required autocomplete="email">
       </div>
       <div class="champ">
         <label for="cv-message">Votre question</label>

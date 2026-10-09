@@ -305,10 +305,46 @@
     });
   });
 
+  // 9a. Accueil : choix Particulier / Professionnel (titre, texte, bilan, questions, bandeau)
+  var choixUnivers = document.querySelectorAll("[data-choix-univers]");
+  var definirUnivers = function (u, memoriser) {
+    document.querySelectorAll("[data-univers]").forEach(function (el) { el.hidden = el.getAttribute("data-univers") !== u; });
+    choixUnivers.forEach(function (b) {
+      var actif = b.getAttribute("data-choix-univers") === u;
+      if (b.getAttribute("role") === "tab") {
+        b.setAttribute("aria-selected", actif ? "true" : "false");
+        b.tabIndex = actif ? 0 : -1;
+        document.getElementById(b.getAttribute("aria-controls")).hidden = !actif;
+      } else {
+        b.setAttribute("aria-pressed", actif ? "true" : "false");
+      }
+    });
+    var accueil = document.querySelector(".accueil");
+    if (accueil) accueil.classList.toggle("accueil--pro", u === "pro");
+    if (memoriser) { try { localStorage.setItem("assuravia-univers", u); } catch (e) {} }
+  };
+  if (choixUnivers.length) {
+    var depart = null;
+    var param = new URLSearchParams(location.search).get("univers");
+    if (param === "pro" || param === "prive") depart = param;
+    if (!depart) { try { depart = localStorage.getItem("assuravia-univers"); } catch (e) {} }
+    if (depart === "pro") definirUnivers("pro", false);
+    choixUnivers.forEach(function (b) {
+      if (b.getAttribute("role") !== "tab") {
+        b.addEventListener("click", function () { definirUnivers(b.getAttribute("data-choix-univers"), true); });
+      }
+    });
+  }
+
   // 9. Exemples de bilan : onglets Particulier / Professionnel
   document.querySelectorAll("[data-onglets]").forEach(function (zone) {
     var onglets = zone.querySelectorAll("[data-onglet]");
     var activer = function (o, focus) {
+      if (o.hasAttribute("data-choix-univers")) {
+        definirUnivers(o.getAttribute("data-choix-univers"), true);
+        if (focus) o.focus();
+        return;
+      }
       onglets.forEach(function (x) {
         var actif = x === o;
         x.setAttribute("aria-selected", actif ? "true" : "false");
