@@ -80,7 +80,7 @@ strong { font-weight: 700; }
 .entete { background: rgba(255, 255, 255, 0.97); border-bottom: 1px solid var(--bordure); position: sticky; top: 0; z-index: 40; }
 .entete__barre { display: flex; align-items: center; justify-content: space-between; gap: var(--e-4); min-height: 76px; }
 .logo { display: inline-flex; text-decoration: none; }
-.logo__svg { height: 46px; width: auto; }
+.logo__svg { height: 48px; width: auto; }
 .nav { display: flex; align-items: center; gap: var(--e-1); }
 .nav__lien, .sous-menu__lien {
   display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 var(--e-3);

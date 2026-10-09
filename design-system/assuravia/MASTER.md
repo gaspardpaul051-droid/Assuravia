@@ -4,10 +4,13 @@ Les jetons sont dans `static/css/site.css` (`:root`, `.theme-prive`, `.theme-pro
 Aucune couleur en dur dans les composants : toujours passer par les jetons.
 
 ## Logo
-- Écusson marine (#0B2545), filet or (#C9A227), monogramme « A » or clair (#E2BE52).
-- Versions : `static/marque/logo-horizontal.svg` (fond clair), `logo-inverse.svg` (fond marine),
-  `embleme.svg` (écusson seul, favicon, avatars). Dans le site, le logo est intégré en ligne
-  (`templates/partials/logo.html`) pour utiliser la police du site.
+- Écusson partagé en deux : moitié gauche bleue (#1565A8, univers Privé), moitié droite marine
+  (#0B2545, univers Pro), « A » blanc barré d'or clair (#E2BE52). Il dit en un signe ce que fait
+  Assuravia : protéger, pour les particuliers comme pour les entreprises.
+- Nom « Assuravia » en Plus Jakarta Sans 800, slogan « Assurance, prévoyance, placement » en or.
+- Versions dans `static/marque/` : `logo-horizontal.svg` (fond clair), `logo-inverse.svg` (fond marine :
+  écusson bleu vif et or, « A » marine, nom blanc), `embleme.svg` et `embleme-inverse.svg` (écusson seul).
+- Dans le site, le logo est intégré en ligne (`templates/partials/logo.html`) pour utiliser la police du site.
 - Zone de protection : la largeur du « A » tout autour. Taille minimale de l'écusson : 16 px.
 
 ## Couleurs
