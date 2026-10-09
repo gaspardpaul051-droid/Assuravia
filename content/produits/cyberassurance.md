@@ -2,9 +2,9 @@
 slug: cyberassurance
 groupe: entreprises
 nom: Cyberassurance
-categorie: Biens et exploitation
+categorie: Responsabilité
 icone: cyber
-ordre: 9
+ordre: 3
 titre_seo: Cyberassurance pour PME en Suisse : rançongiciel, fuite de données
 description: Piratage, rançongiciel, fuite de données clients : la cyberassurance paie les experts, la remise en état, la perte d'exploitation et les réclamations.
 desc: Piratage, rançongiciel ou fuite de données : des experts mobilisés tout de suite et les pertes couvertes.
