@@ -108,6 +108,10 @@ def lire_produit(path: Path) -> dict:
     if meta["categorie"] not in GROUPES[groupe]["categories"]:
         raise ValueError(f"Catégorie inconnue dans {path} : {meta['categorie']}")
     page_fixe = "url" in meta
+    # Espace insécable avant « : », « ? » et « ! » dans les textes affichés (typographie française)
+    for cle in ("h1", "chapeau", "desc", "nom"):
+        if cle in meta:
+            meta[cle] = re.sub(r" ([:?!;])", "\u00a0\\1", meta[cle])
     html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
     return {
         **meta,
