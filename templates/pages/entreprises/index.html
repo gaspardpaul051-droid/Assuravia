@@ -25,7 +25,18 @@
   {% include "partials/scene-pro.html" %}
 </section>
 
-<section class="bloc">
+<section class="bloc bloc--solutions" id="solutions">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Nos solutions pour les entreprises</h2>
+      <p>Cliquez sur l'assurance qui vous concerne pour recevoir des offres comparées, ou demandez une analyse de tous vos contrats.</p>
+      <ul class="pastilles pastilles--pro"><li>{{ i.icone("valide", "icone icone--petite") }} Gratuit</li><li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li><li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li></ul>
+    </div>
+    {% with groupe="entreprises" %}{% include "partials/catalogue.html" %}{% endwith %}
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Ce que nous faisons pour votre entreprise</h2>
@@ -36,16 +47,6 @@
       <article class="domaine domaine--pro"><span class="domaine__icone">{{ i.icone("groupe") }}</span><h3>Assurer le personnel</h3><p>LAA, perte de gain maladie, LPP : vos obligations d'employeur, avec des prestations qui fidélisent vos collaborateurs.</p></article>
       <article class="domaine domaine--pro"><span class="domaine__icone">{{ i.icone("courbe") }}</span><h3>Préparer l'avenir du dirigeant</h3><p>Plan cadre, rachats LPP, 3e pilier d'indépendant : votre prévoyance personnelle, souvent oubliée.</p></article>
     </div>
-  </div>
-</section>
-
-<section class="bloc bloc--teinte" id="solutions">
-  <div class="cadre">
-    <div class="bloc__entete">
-      <h2>Nos solutions pour les entreprises</h2>
-      <p>Choisissez une assurance pour recevoir des offres, ou demandez une analyse de tous vos contrats.</p>
-    </div>
-    {% with groupe="entreprises" %}{% include "partials/catalogue.html" %}{% endwith %}
   </div>
 </section>
 

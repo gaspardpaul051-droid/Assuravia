@@ -25,7 +25,18 @@
   {% include "partials/scene-prive.html" %}
 </section>
 
-<section class="bloc">
+<section class="bloc bloc--solutions" id="solutions">
+  <div class="cadre">
+    <div class="bloc__entete">
+      <h2>Nos solutions pour les particuliers</h2>
+      <p>Cliquez sur l'assurance qui vous intéresse. Calcul immédiat pour le 3e pilier et la garantie de loyer, offres comparées par un conseiller pour le reste.</p>
+      <ul class="pastilles"><li>{{ i.icone("valide", "icone icone--petite") }} Gratuit</li><li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li><li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li></ul>
+    </div>
+    {% with groupe="particuliers" %}{% include "partials/catalogue.html" %}{% endwith %}
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Un seul conseiller pour tout votre foyer</h2>
@@ -36,16 +47,6 @@
       <article class="domaine domaine--prive"><span class="domaine__icone">{{ i.icone("tirelire") }}</span><h3>Prévoir</h3><p>3e pilier, libre passage, déclaration d'impôts : préparer votre retraite tout en payant moins d'impôts chaque année.</p></article>
       <article class="domaine domaine--prive"><span class="domaine__icone">{{ i.icone("courbe") }}</span><h3>Faire fructifier</h3><p>Une épargne placée selon votre horizon et votre tolérance au risque, avec des frais que vous comprenez.</p></article>
     </div>
-  </div>
-</section>
-
-<section class="bloc bloc--teinte" id="solutions">
-  <div class="cadre">
-    <div class="bloc__entete">
-      <h2>Nos solutions pour les particuliers</h2>
-      <p>Pour le 3e pilier et la garantie de loyer, vous obtenez un calcul immédiat. Pour le reste, un conseiller compare les offres pour vous.</p>
-    </div>
-    {% with groupe="particuliers" %}{% include "partials/catalogue.html" %}{% endwith %}
   </div>
 </section>
 

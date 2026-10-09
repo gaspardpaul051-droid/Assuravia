@@ -683,3 +683,14 @@ tr:nth-child(even) td { background: var(--surface); }
 /* Exemples dans les champs : gris léger */
 input::placeholder, textarea::placeholder { color: #A3AEBD; opacity: 1; font-weight: 400; }
 .formulaire > [data-univers] { display: grid; gap: var(--e-4); }
+/* Cartes produit entièrement cliquables */
+.carte { cursor: pointer; }
+.carte__bouton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.carte:hover .carte__bouton { filter: brightness(1.15); }
+.carte:focus-within { outline: 3px solid var(--or); outline-offset: 2px; }
+/* Pastilles de réassurance au-dessus du catalogue */
+.pastilles { list-style: none; padding: 0; margin: var(--e-4) 0 0; display: flex; flex-wrap: wrap; gap: var(--e-2); }
+.pastilles li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--r-plein); background: var(--bleu-pale); color: var(--bleu); font-weight: 700; font-size: var(--t-s); }
+.pastilles--pro li { background: var(--or-pale); color: var(--marine); }
+.pastilles--pro .icone { color: var(--or-texte); }
+.bloc--solutions { padding-top: var(--e-7, 48px); }

@@ -2,7 +2,7 @@
 slug: declaration-impots
 groupe: particuliers
 nom: Déclaration d'impôts
-categorie: Impôts
+categorie: Prévoyance, placement et impôts
 icone: calcul
 ordre: 3
 formulaire: impots

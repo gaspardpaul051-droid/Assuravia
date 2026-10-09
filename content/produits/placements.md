@@ -2,7 +2,7 @@
 slug: placements
 groupe: particuliers
 nom: Placements et gestion de fortune
-categorie: Prévoyance et placement
+categorie: Prévoyance, placement et impôts
 icone: courbe
 ordre: 2
 titre_seo: Placements et gestion de fortune en Suisse romande
