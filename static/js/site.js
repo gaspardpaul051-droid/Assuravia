@@ -305,8 +305,46 @@
     });
   });
 
+  // 9. Exemples de bilan : onglets Particulier / Professionnel
+  document.querySelectorAll("[data-onglets]").forEach(function (zone) {
+    var onglets = zone.querySelectorAll("[data-onglet]");
+    var activer = function (o, focus) {
+      onglets.forEach(function (x) {
+        var actif = x === o;
+        x.setAttribute("aria-selected", actif ? "true" : "false");
+        x.tabIndex = actif ? 0 : -1;
+        document.getElementById(x.getAttribute("aria-controls")).hidden = !actif;
+      });
+      if (focus) o.focus();
+    };
+    onglets.forEach(function (o, n) {
+      o.addEventListener("click", function () { activer(o, false); });
+      o.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          e.preventDefault();
+          activer(onglets[(n + (e.key === "ArrowRight" ? 1 : onglets.length - 1)) % onglets.length], true);
+        }
+      });
+    });
+  });
+
+  // 10. Contact volant : WhatsApp et message rapide
+  var volant = document.querySelector("[data-contact-volant]");
+  if (volant) {
+    var boutonVolant = volant.querySelector("[data-contact-volant-bouton]");
+    var panneau = document.getElementById("contact-volant");
+    var basculer = function (ouvrir) {
+      panneau.hidden = !ouvrir;
+      boutonVolant.setAttribute("aria-expanded", ouvrir ? "true" : "false");
+      if (ouvrir) { var champ = panneau.querySelector("a, input"); if (champ) champ.focus(); } else { boutonVolant.focus(); }
+    };
+    boutonVolant.addEventListener("click", function () { basculer(panneau.hidden); });
+    volant.querySelector("[data-contact-volant-fermer]").addEventListener("click", function () { basculer(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panneau.hidden) basculer(false); });
+  }
+
   // 8. Page de remerciement : message adapté au formulaire envoyé
-  if (params.get("f") === "contact") {
+  if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");
     var texte = document.querySelector(".merci .chapeau");
     if (titre) titre.textContent = "Message envoyé";

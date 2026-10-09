@@ -7,29 +7,50 @@
   <div class="cadre accueil__grille">
     <div class="accueil__texte">
       <h1>Vos assurances, votre prévoyance et vos placements, enfin clairs.</h1>
-      <p class="chapeau">Assuravia accompagne les particuliers et les entreprises de Suisse romande. On analyse votre situation, on compare le marché et on vous explique chaque option simplement. Vous décidez, et c'est gratuit.</p>
+      <p class="chapeau">Payez le juste prix pour être bien protégé, préparez votre retraite et faites enfin travailler votre épargne. Particulier ou professionnel, Assuravia passe le marché au crible pour vous et vous rappelle avec des solutions concrètes. Gratuitement, et sans engagement.</p>
       <div class="accueil__actions">
-        <a class="bouton bouton--action" href="/particuliers/">{{ i.icone("utilisateur", "icone icone--bouton") }} Je suis un particulier</a>
-        <a class="bouton bouton--secondaire" href="/entreprises/">{{ i.icone("batiment", "icone icone--bouton") }} Je représente une entreprise</a>
+        <a class="bouton bouton--prive" href="/particuliers/">{{ i.icone("utilisateur", "icone icone--bouton") }} Je suis un particulier</a>
+        <a class="bouton bouton--pro" href="/entreprises/">{{ i.icone("batiment", "icone icone--bouton") }} Je suis un professionnel</a>
       </div>
       <ul class="coches">
         <li>{{ i.icone("valide") }} Gratuit : les assureurs et partenaires nous rémunèrent, pas vous</li>
         <li>{{ i.icone("valide") }} Sans engagement : rien ne change tant que vous n'avez rien signé</li>
       </ul>
     </div>
-    <figure class="bilan" aria-labelledby="bilan-titre">
-      <figcaption class="bilan__entete">
-        <span class="bilan__etiquette">Exemple de bilan</span>
-        <span id="bilan-titre" class="bilan__titre">Famille de 4 personnes, Lausanne</span>
-      </figcaption>
-      <ul class="bilan__lignes">
-        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("coeur") }}</span><span><strong>Complémentaire maladie</strong> Deux couvertures dentaires en double, supprimées</span></li>
-        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("tirelire") }}</span><span><strong>3e pilier</strong> Ouvert pour les deux parents, avec déduction fiscale dès cette année</span></li>
-        <li><span class="bilan__icone bilan__icone--prive">{{ i.icone("maison") }}</span><span><strong>Assurance ménage</strong> Somme d'assurance corrigée après le déménagement</span></li>
-        <li><span class="bilan__icone bilan__icone--pro">{{ i.icone("courbe") }}</span><span><strong>Épargne</strong> Une partie placée selon un horizon de 15 ans</span></li>
-      </ul>
-      <p class="bilan__note">Cas illustratif. Chaque bilan dépend de votre situation.</p>
-    </figure>
+    <div class="bilans" data-onglets>
+      <div class="bilans__onglets" role="tablist" aria-label="Exemples de bilan">
+        <button type="button" role="tab" id="onglet-prive" aria-selected="true" aria-controls="bilan-prive" data-onglet>{{ i.icone("utilisateur", "icone icone--petite") }} Particulier</button>
+        <button type="button" role="tab" id="onglet-pro" aria-selected="false" aria-controls="bilan-pro" tabindex="-1" data-onglet>{{ i.icone("batiment", "icone icone--petite") }} Professionnel</button>
+      </div>
+      <figure class="bilan bilan--prive" id="bilan-prive" role="tabpanel" aria-labelledby="onglet-prive">
+        <figcaption class="bilan__entete">
+          <span class="bilan__etiquette">Exemple de bilan</span>
+          <span class="bilan__titre">Famille de 4 personnes, Lausanne</span>
+        </figcaption>
+        <ul class="bilan__lignes">
+          <li><span class="bilan__icone">{{ i.icone("coeur") }}</span><span><strong>Complémentaire maladie</strong> Doublons dentaires supprimés, hospitalisation en semi-privée ajoutée</span></li>
+          <li><span class="bilan__icone">{{ i.icone("tirelire") }}</span><span><strong>3e pilier</strong> Ouvert pour les deux parents, déductible dès cette année</span></li>
+          <li><span class="bilan__icone">{{ i.icone("maison") }}</span><span><strong>Assurance ménage</strong> Sous-assurance corrigée après le déménagement</span></li>
+          <li><span class="bilan__icone">{{ i.icone("courbe") }}</span><span><strong>Épargne</strong> Une partie placée selon un horizon de 15 ans</span></li>
+        </ul>
+        <div class="bilan__total"><span>Économie annuelle estimée</span><strong>CHF 2'150</strong></div>
+        <p class="bilan__note">Cas illustratif : primes en moins et impôts économisés. Chaque bilan dépend de votre situation.</p>
+      </figure>
+      <figure class="bilan bilan--pro" id="bilan-pro" role="tabpanel" aria-labelledby="onglet-pro" hidden>
+        <figcaption class="bilan__entete">
+          <span class="bilan__etiquette">Exemple de bilan</span>
+          <span class="bilan__titre">Menuiserie de 12 employés, Fribourg</span>
+        </figcaption>
+        <ul class="bilan__lignes">
+          <li><span class="bilan__icone">{{ i.icone("croix") }}</span><span><strong>LAA et complémentaire</strong> Même couverture chez un autre assureur, prime plus basse</span></li>
+          <li><span class="bilan__icone">{{ i.icone("thermometre") }}</span><span><strong>Perte de gain maladie</strong> Délai d'attente adapté à la trésorerie, conforme à la CCT</span></li>
+          <li><span class="bilan__icone">{{ i.icone("groupe") }}</span><span><strong>LPP</strong> Fondation qui rémunère mieux les avoirs des employés</span></li>
+          <li><span class="bilan__icone">{{ i.icone("bouclier") }}</span><span><strong>RC professionnelle</strong> Somme d'assurance relevée pour un nouveau gros client</span></li>
+        </ul>
+        <div class="bilan__total"><span>Économie annuelle estimée</span><strong>CHF 6'800</strong></div>
+        <p class="bilan__note">Cas illustratif : de meilleures prestations pour un coût total plus bas. Chaque bilan dépend de votre entreprise.</p>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -75,32 +96,28 @@
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Par où commencer ?</h2>
-      <p>Choisissez la situation qui vous ressemble.</p>
+      <p>Les situations qu'on nous décrit le plus souvent, et ce qu'il faut savoir.</p>
     </div>
-    <div class="portes">
-      <div class="porte porte--prive">
-        <span class="porte__sur-titre">{{ i.icone("utilisateur", "icone icone--petite") }} Privé</span>
-        <h3 class="porte__titre">Pour vous et votre famille</h3>
-        <ul class="situations">
-          <li><a href="/particuliers/garantie-de-loyer/">Vous emménagez et la régie demande 3 mois de loyer</a></li>
-          <li><a href="/particuliers/3e-pilier/">Vous voulez payer moins d'impôts cette année</a></li>
-          <li><a href="/particuliers/placements/">Votre épargne dort sur un compte</a></li>
-          <li><a href="/particuliers/libre-passage/">Vous changez d'emploi ou faites une pause</a></li>
-          <li><a href="/particuliers/voyage/">Vous partez loin et les soins y coûtent cher</a></li>
-        </ul>
-        <a class="porte__action" href="/particuliers/">Tout l'espace Privé {{ i.icone("fleche", "icone icone--bouton") }}</a>
+    <div class="debuts">
+      <div class="debut debut--prive">
+        <h3 class="debut__titre">{{ i.icone("utilisateur", "icone icone--petite") }} Particuliers</h3>
+        <div class="faq">
+          <details><summary>J'emménage et la régie demande 3 mois de loyer</summary><div class="faq__reponse"><p>Vous pouvez remplacer ce dépôt par une garantie de loyer : vous payez une prime annuelle et votre argent reste disponible. Demandez d'abord l'accord de la régie, puis <a href="/particuliers/garantie-de-loyer/">calculez votre garantie de loyer</a>.</p></div></details>
+          <details><summary>Je veux payer moins d'impôts cette année</summary><div class="faq__reponse"><p>Un versement sur le 3e pilier A est déduit de votre revenu imposable, jusqu'à CHF 7'258 en 2026 si vous êtes salarié. Il doit arriver sur le compte avant le 31 décembre. <a href="/particuliers/3e-pilier/">Calculez votre économie d'impôts</a>.</p></div></details>
+          <details><summary>Mon épargne dort sur un compte</summary><div class="faq__reponse"><p>Avec des taux bas et l'inflation, elle perd du pouvoir d'achat. Selon votre horizon et votre tolérance au risque, une partie peut être placée en fonds ou confiée à un gestionnaire. <a href="/particuliers/placements/">Parlez à un spécialiste du placement</a>.</p></div></details>
+          <details><summary>Je change d'emploi ou je fais une pause</summary><div class="faq__reponse"><p>Sans nouvelle caisse de pension, votre 2e pilier doit être placé sur un compte de libre passage. Sinon, il finit au bout de quelques mois dans une fondation qui rapporte peu. <a href="/particuliers/libre-passage/">Voyez les solutions de libre passage</a>.</p></div></details>
+          <details><summary>Je pars loin, les soins y coûtent cher</summary><div class="faq__reponse"><p>À l'étranger, l'assurance de base ne rembourse les urgences que jusqu'au double du coût en Suisse, et ne paie pas le rapatriement. <a href="/particuliers/voyage/">Vérifiez votre couverture voyage</a>.</p></div></details>
+        </div>
       </div>
-      <div class="porte porte--pro">
-        <span class="porte__sur-titre">{{ i.icone("batiment", "icone icone--petite") }} Pro</span>
-        <h3 class="porte__titre">Pour votre entreprise</h3>
-        <ul class="situations">
-          <li><a href="/entreprises/rc-professionnelle/">Vous vous lancez comme indépendant</a></li>
-          <li><a href="/entreprises/laa/">Vous engagez votre premier employé</a></li>
-          <li><a href="/entreprises/rc-professionnelle/">Un gros client exige une attestation d'assurance</a></li>
-          <li><a href="/entreprises/commerce-inventaire/">Vous ouvrez un commerce ou un atelier</a></li>
-          <li><a href="/entreprises/transport/">Vous expédiez de la marchandise à l'étranger</a></li>
-        </ul>
-        <a class="porte__action" href="/entreprises/">Tout l'espace Pro {{ i.icone("fleche", "icone icone--bouton") }}</a>
+      <div class="debut debut--pro">
+        <h3 class="debut__titre">{{ i.icone("batiment", "icone icone--petite") }} Professionnels</h3>
+        <div class="faq">
+          <details><summary>Je me lance comme indépendant</summary><div class="faq__reponse"><p>Votre RC privée ne couvre pas votre activité. Une RC professionnelle protège contre les réclamations de vos clients, et une perte de gain remplace votre revenu si vous tombez malade. <a href="/entreprises/rc-professionnelle/">Recevez des offres de RC pro</a>.</p></div></details>
+          <details><summary>J'engage mon premier employé</summary><div class="faq__reponse"><p>Il doit être assuré contre les accidents (LAA) dès la première heure, et affilié à une caisse de pension s'il gagne plus de CHF 22'680 par an. <a href="/entreprises/laa/">Voyez vos obligations LAA</a> et <a href="/entreprises/lpp/">la LPP pour employeurs</a>.</p></div></details>
+          <details><summary>Un gros client exige une attestation d'assurance</summary><div class="faq__reponse"><p>Beaucoup de contrats imposent une RC professionnelle avec une somme minimale, souvent 5 ou 10 millions. Une attestation peut être émise rapidement une fois l'offre acceptée. <a href="/entreprises/rc-professionnelle/">Demandez une offre adaptée</a>.</p></div></details>
+          <details><summary>J'ouvre un commerce ou un atelier</summary><div class="faq__reponse"><p>Assurez votre marchandise et votre matériel, mais aussi la perte de chiffre d'affaires si un sinistre vous oblige à fermer. <a href="/entreprises/commerce-inventaire/">Découvrez l'assurance commerce et inventaire</a>.</p></div></details>
+          <details><summary>J'expédie de la marchandise à l'étranger</summary><div class="faq__reponse"><p>Les transporteurs ne remboursent qu'une petite partie de la valeur en cas de perte. Une assurance transport couvre la différence, envoi par envoi ou à l'année. <a href="/entreprises/transport/">Assurez vos transports</a>.</p></div></details>
+        </div>
       </div>
     </div>
   </div>

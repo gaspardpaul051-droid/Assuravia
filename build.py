@@ -25,6 +25,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
 SITE_URL = "https://assuravia.ch"
+# Numéro WhatsApp au format international sans + ni espaces, par exemple 41791234567.
+WHATSAPP = "41XXXXXXXXX"
 
 MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin",
@@ -199,6 +201,7 @@ def main() -> None:
     )
     env.globals.update(
         site_url=SITE_URL,
+        whatsapp=WHATSAPP,
         cantons=CANTONS,
         groupes=GROUPES,
         produits=produits,

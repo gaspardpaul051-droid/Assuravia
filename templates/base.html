@@ -88,6 +88,39 @@
     <p class="pied__legal"><span>© {{ annee }} Assuravia</span> <a href="/mentions-legales/">Mentions légales</a> <a href="/confidentialite/">Protection des données</a></p>
   </div>
 </footer>
+{% if not landing %}
+{% import "partials/form.html" as f %}
+<div class="contact-volant" data-contact-volant>
+  <div class="contact-volant__panneau" id="contact-volant" role="dialog" aria-modal="false" aria-labelledby="contact-volant-titre" hidden>
+    <div class="contact-volant__entete">
+      <p class="contact-volant__titre" id="contact-volant-titre">Une question ? On vous répond.</p>
+      <button type="button" class="contact-volant__fermer" aria-label="Fermer" data-contact-volant-fermer>{{ i.icone("croix-fermer", "icone icone--petite") }}</button>
+    </div>
+    <a class="contact-volant__whatsapp" href="https://wa.me/{{ whatsapp }}?text=Bonjour%20Assuravia%2C%20j%27ai%20une%20question%20%3A%20" target="_blank" rel="noopener">{{ i.icone("whatsapp") }} Écrire sur WhatsApp</a>
+    <p class="contact-volant__ou">ou laissez-nous un message</p>
+    {{ f.ouvrir("contact-rapide", "contact-rapide") }}
+      <div class="champ">
+        <label for="cv-prenom">Prénom</label>
+        <input id="cv-prenom" name="prenom" required autocomplete="given-name">
+      </div>
+      <div class="champ">
+        <label for="cv-telephone">Téléphone ou e-mail</label>
+        <input id="cv-telephone" name="coordonnees" required autocomplete="tel">
+      </div>
+      <div class="champ">
+        <label for="cv-message">Votre question</label>
+        <textarea id="cv-message" name="message" rows="3" required></textarea>
+      </div>
+      <div class="consentement">
+        <input id="cv-consentement" name="consentement" type="checkbox" value="oui" required>
+        <label for="cv-consentement">J'accepte d'être recontacté au sujet de ma question, selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+      </div>
+      <button class="bouton bouton--action" type="submit">Être recontacté</button>
+    </form>
+  </div>
+  <button type="button" class="contact-volant__bouton" aria-expanded="false" aria-controls="contact-volant" data-contact-volant-bouton>{{ i.icone("bulle") }}<span>Une question ?</span></button>
+</div>
+{% endif %}
 <script src="/js/site.js" defer></script>
 {% block scripts %}{% endblock %}
 </body>
