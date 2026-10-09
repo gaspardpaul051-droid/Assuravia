@@ -19,12 +19,21 @@
   <ul class="carrousel__piste" data-carrousel-piste aria-live="off">
     {% for c in cas[groupe] %}
     <li class="cas" aria-roledescription="diapositive" aria-label="{{ loop.index }} sur {{ cas[groupe]|length }}">
-      <span class="cas__icone">{{ i.icone(c.icone) }}</span>
-      <p class="cas__profil">{{ c.profil }}</p>
-      <p class="cas__situation"><span>La situation</span>{{ c.situation }}</p>
-      <p class="cas__solution"><span>Ce qu'on a proposé</span>{{ c.solution }}</p>
-      <p class="cas__resultat">{{ i.icone("valide", "icone icone--petite") }}<span>{{ c.resultat }}</span></p>
-      <a class="cas__lien" href="{{ c.lien }}">En savoir plus {{ i.icone("fleche", "icone icone--petite") }}</a>
+      {% set slug_lien = c.lien.strip("/").split("/")[-1] %}
+      {% set prod = (produits[groupe]|selectattr("url", "equalto", c.lien)|first) or par_slug.get(slug_lien) %}
+      <div class="cas__entete">
+        <span class="cas__icone">{{ i.icone(c.icone) }}</span>
+        <div>
+          <p class="cas__profil">{{ c.profil }}</p>
+          {% if prod %}<span class="cas__tag">{{ prod.nom }}</span>{% endif %}
+        </div>
+      </div>
+      <div class="cas__corps">
+        <div class="cas__etape"><span class="cas__puce" aria-hidden="true">1</span><p><strong>La situation</strong>{{ c.situation }}</p></div>
+        <div class="cas__etape cas__etape--solution"><span class="cas__puce" aria-hidden="true">2</span><p><strong>Ce qu'on a proposé</strong>{{ c.solution }}</p></div>
+        <div class="cas__resultat">{{ i.icone("valide", "icone") }}<p><strong>Résultat</strong>{{ c.resultat }}</p></div>
+        <a class="cas__lien" href="{{ c.lien }}">Je suis dans ce cas {{ i.icone("fleche", "icone icone--petite") }}</a>
+      </div>
     </li>
     {% endfor %}
   </ul>
