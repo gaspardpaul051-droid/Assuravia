@@ -62,7 +62,7 @@ Une protection juridique se juge le jour du litige. Avant de signer, posez-vous 
 4. **Quel plafond par cas ?** Un litige de travail ou de construction peut durer longtemps.
 5. **Comment fonctionne le service ?** Délais de réponse, juristes en français, possibilité de choisir un avocat.
 
-Une protection juridique ne remplace pas votre [RC privée](/particuliers/rc-menage/) : l'une vous défend, l'autre paie les dommages que vous causez. Les deux sont complémentaires.
+Une protection juridique ne remplace pas votre [RC privée](/particuliers/assurance-menage/) : l'une vous défend, l'autre paie les dommages que vous causez. Les deux sont complémentaires.
 
 ## Quand agir
 

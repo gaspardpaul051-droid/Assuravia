@@ -20,7 +20,7 @@ quiz: Une bague perdue lors d'une baignade est en général bien couverte par l'
 
 ## Pourquoi l'assurance ménage ne suffit pas
 
-L'[assurance ménage](/particuliers/rc-menage/) couvre vos biens contre le vol, l'incendie et les dégâts d'eau. Pour les objets précieux, elle prévoit souvent :
+L'[assurance ménage](/particuliers/assurance-menage/) couvre vos biens contre le vol, l'incendie et les dégâts d'eau. Pour les objets précieux, elle prévoit souvent :
 
 - **des plafonds** pour les bijoux, les montres et l'argent liquide ;
 - **des conditions de conservation**, par exemple un coffre-fort pour être couvert au-delà d'un certain montant ;

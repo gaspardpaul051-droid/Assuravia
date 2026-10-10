@@ -6,11 +6,11 @@ Assurance | Franchise | Montant des frais que vous payez vous-même chaque anné
 Assurance | Quote-part | Part de 10 % des frais que vous payez au-delà de la franchise en LAMal, plafonnée à CHF 700 par an pour un adulte et CHF 350 pour un enfant. |
 Assurance | Prime | Montant que vous payez pour être assuré, en général chaque mois ou chaque année. |
 Assurance | Somme d'assurance | Montant maximal que l'assureur paie en cas de sinistre, ou valeur totale des biens assurés. |
-Assurance | Sous-assurance | Situation où la somme d'assurance est inférieure à la valeur réelle des biens. L'assureur réduit alors l'indemnité en proportion, même pour un petit sinistre. | /particuliers/rc-menage/
+Assurance | Sous-assurance | Situation où la somme d'assurance est inférieure à la valeur réelle des biens. L'assureur réduit alors l'indemnité en proportion, même pour un petit sinistre. | /particuliers/assurance-menage/
 Assurance | Valeur à neuf | Indemnisation au prix d'un objet neuf équivalent, sans déduction pour l'usure. |
 Assurance | Valeur vénale | Valeur d'un bien au moment du sinistre, compte tenu de son âge et de son usure. Souvent utilisée pour les véhicules. |
 Assurance | Sinistre | Événement couvert par le contrat qui cause un dommage : accident, vol, incendie, dégât d'eau, réclamation d'un tiers. |
-Assurance | Responsabilité civile (RC) | Obligation de réparer un dommage causé à une autre personne. L'assurance RC paie ces dommages et vous défend contre les réclamations injustifiées. | /particuliers/rc-menage/
+Assurance | Responsabilité civile (RC) | Obligation de réparer un dommage causé à une autre personne. L'assurance RC paie ces dommages et vous défend contre les réclamations injustifiées. | /particuliers/assurance-menage/
 Assurance | RC professionnelle | Assurance qui couvre les dommages causés à des clients ou à des tiers dans le cadre d'une activité professionnelle, y compris les pertes financières pour les métiers de conseil. | /entreprises/rc-professionnelle/
 Assurance | Casco | Assurance des dommages à votre propre véhicule. La casco partielle couvre notamment le vol, les éléments naturels et le bris de glace ; la casco complète ajoute les accidents dont vous êtes responsable. | /particuliers/vehicule/
 Assurance | Système de bonus | Mécanisme de l'assurance auto qui baisse la prime après des années sans sinistre et l'augmente après un sinistre. |

@@ -281,13 +281,16 @@
       var form = valeur("formule");
       var taux = form ? Number(form.getAttribute("data-taux")) : 0;
       var primeMenage = taux ? arrondi(somme / 1000 * taux) : 0;
+      // Produit à prime fixe (ex. RC privée) : data-prime-base sur le bloc de simulation
+      var base = Number(funnel.getAttribute("data-prime-base")) || 0;
+      if (base) { taux = 1; primeMenage = base; form = { value: funnel.getAttribute("data-prime-nom") }; }
       var options = [];
-      [["option_rc", "Responsabilité civile privée"], ["option_pj", "Protection juridique"], ["option_cyber", "Cyberassurance"]].forEach(function (o) {
+      [["option_rc", "Responsabilité civile privée"], ["option_pj", "Protection juridique"], ["option_cyber", "Cyberassurance"], ["option_voyage", "Assurance voyage"]].forEach(function (o) {
         var el = valeur(o[0]);
         if (el && el.value === "oui") options.push({ nom: o[1], prix: Number(el.getAttribute("data-prix")) });
       });
       var total = primeMenage + options.reduce(function (t, o) { return t + o.prix; }, 0);
-      return { sommeCalc: sommeCalc, somme: somme, formule: form ? form.value : "", taux: taux, primeMenage: primeMenage, options: options, total: total };
+      return { sommeCalc: sommeCalc, somme: somme, formule: form ? form.value : "", taux: taux, primeMenage: primeMenage, options: options, total: total, base: base };
     };
     var afficher = function () {
       var c = calculer();
@@ -306,7 +309,8 @@
         set("total", "Sur mesure");
         set("mois", c.options.length ? "Options choisies : " + chf2(c.total) + " par an, plus votre offre ménage personnalisée" : "Un spécialiste construit votre offre avec vous");
       }
-      var lignes = ["<li><span>Ménage, formule " + c.formule + " <small>somme assurée " + chf(c.somme) + "</small></span><strong>" + (c.taux ? chf2(c.primeMenage) : "sur mesure") + "</strong></li>"];
+      var lignes = [c.base ? "<li><span>" + c.formule + "</span><strong>" + chf2(c.primeMenage) + "</strong></li>"
+        : "<li><span>Ménage, formule " + c.formule + " <small>somme assurée " + chf(c.somme) + "</small></span><strong>" + (c.taux ? chf2(c.primeMenage) : "sur mesure") + "</strong></li>"];
       c.options.forEach(function (o) { lignes.push("<li><span>" + o.nom + "</span><strong>" + chf2(o.prix) + "</strong></li>"); });
       set("detail", lignes.join(""));
       var cache = function (k, v) { var el = formF.querySelector('[data-calc="' + k + '"]'); if (el) el.value = v; };

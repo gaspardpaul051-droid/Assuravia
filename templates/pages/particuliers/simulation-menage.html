@@ -7,7 +7,7 @@
 {% block content %}
 <section class="funnel-page">
   <div class="cadre cadre--etroit">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/rc-menage/">RC privée et ménage</a></nav>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/assurance-menage/">RC privée et ménage</a></nav>
     <p class="etiquette etiquette--prive">{{ i.icone("maison", "icone icone--petite") }} Simulation assurance ménage</p>
 
     <div class="funnel" data-funnel>
@@ -17,7 +17,7 @@
       </div>
       <div class="funnel__progression" aria-hidden="true"><span data-funnel-barre></span></div>
 
-      {{ f.ouvrir("simulation-menage", "rc-menage") }}
+      {{ f.ouvrir("simulation-menage", "assurance-menage") }}
         <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
         <input type="hidden" name="somme_assuree" data-calc="somme">
         <input type="hidden" name="formule_choisie" data-calc="formule">
@@ -148,7 +148,7 @@
 
         <fieldset class="fe" data-fe="10" hidden>
           <legend class="fe__question">Ajouter la responsabilité civile privée ?</legend>
-          <p class="fe__aide">Elle paie les dommages que vous causez à d'autres personnes ou à leurs biens. La plupart des régies la demandent.</p>
+          <p class="fe__aide">Elle paie les dommages que vous causez à d'autres personnes ou à leurs biens, et la plupart des régies la demandent. Ménage et RC privée se combinent dans un même contrat : une seule police, une seule échéance.</p>
           <div class="choix-cartes">
             <label class="choix-carte choix-carte--compact"><input type="radio" name="option_rc" value="oui" data-prix="110" required data-fe-auto><span>Oui <small>+ CHF 110 / an</small></span></label>
             <label class="choix-carte choix-carte--compact"><input type="radio" name="option_rc" value="non" data-prix="0" required data-fe-auto><span>Non, j'en ai déjà une</span></label>

@@ -1,19 +1,19 @@
 ---
-slug: rc-menage
+slug: assurance-menage
 groupe: particuliers
-nom: RC privée et ménage
+nom: Assurance ménage
 categorie: Logement et biens
 icone: maison
 ordre: 4
-titre_seo: Assurance ménage et RC privée en Suisse romande : le guide
-description: Assurance ménage et RC privée : ce qui est couvert (vol, incendie, dégâts d'eau, dommages à autrui), les exclusions et comment éviter la sous-assurance.
-desc: Dommages causés à autrui, vol, incendie, dégâts d'eau : protégez votre logement et votre responsabilité.
-points: Responsabilité civile privée | Vol, incendie et dégâts d'eau | Valeur à neuf de vos biens
+titre_seo: Assurance ménage en Suisse romande : calcul et conseils
+description: Assurance ménage : vol, incendie, dégâts d'eau, éléments naturels. Calculez votre prime en 2 minutes et combinez-la avec votre RC privée.
+desc: Vol, incendie, dégâts d'eau : vos affaires protégées à leur juste valeur, seules ou avec votre RC privée.
+points: Vol, incendie et dégâts d'eau | Valeur à neuf de vos biens | Combinable avec la RC privée
 badge: Offre gratuite
 bouton: Calculer ma prime ménage
 simulateur: /particuliers/simulation-menage/
-h1: RC privée et assurance ménage : les deux assurances de base de votre logement
-chapeau: Une seule maladresse peut coûter très cher, et un dégât d'eau peut détruire une partie de vos affaires. Ces deux assurances se combinent souvent dans un même contrat, qu'il vaut la peine de construire avec soin.
+h1: Assurance ménage : vos affaires protégées, avec ou sans RC privée
+chapeau: Un dégât d'eau ou un cambriolage peut détruire une partie de vos affaires. L'assurance ménage les rembourse, et elle se combine facilement avec la RC privée dans un même contrat.
 retenir: La RC privée paie les dommages que vous causez à d'autres personnes ou à leurs biens. | L'assurance ménage protège vos propres affaires contre le vol, l'incendie, les dégâts d'eau et les éléments naturels. | Une somme d'assurance trop basse réduit l'indemnité, même pour un petit sinistre. | Dans certains cantons, comme Vaud, l'assurance du mobilier contre l'incendie est obligatoire.
 pour_qui: Vous emménagez dans un nouvel appartement et la régie demande une attestation RC. | Vous avez acheté des meubles, un vélo ou du matériel informatique depuis votre dernier contrat. | Vous vivez en couple, en famille ou en colocation et voulez savoir qui est couvert. | Vous ne savez plus quelle somme d'assurance figure dans votre police.
 quiz: La RC privée est obligatoire par la loi fédérale pour tous les habitants de Suisse. | faux | Elle est facultative au niveau fédéral, mais la plupart des régies l'exigent pour louer un logement. ;; Si la somme d'assurance ménage est trop basse, l'assureur peut réduire l'indemnité même pour un petit dommage. | vrai | C'est la règle de la sous-assurance : l'indemnité est réduite en proportion de l'écart entre la somme assurée et la valeur réelle. ;; Le vol de votre vélo devant la gare est toujours couvert par l'assurance ménage de base. | faux | Le vol hors du domicile demande souvent l'option vol simple à l'extérieur. Vérifiez votre police.
@@ -50,6 +50,16 @@ L'assurance ménage ne couvre en principe pas le bâtiment lui-même. Celui-ci r
 Dans plusieurs cantons, l'assurance du mobilier contre l'incendie et les éléments naturels est obligatoire. Dans le canton de Vaud, elle se conclut auprès de l'Établissement cantonal d'assurance (ECA). À Fribourg et dans le Jura, elle est aussi obligatoire, mais vous choisissez l'assureur. Le reste de la couverture ménage (vol, dégâts d'eau) se conclut librement.
 
 > **Le saviez-vous ?** Un objet de grande valeur, comme une montre ou une bague, n'est souvent indemnisé que jusqu'à un plafond dans l'assurance ménage, et rarement en cas de simple perte. Pour ces objets, une [assurance objets de valeur](/particuliers/objets-de-valeur/) offre une couverture plus complète.
+
+## Ménage et RC privée : deux assurances, un seul contrat
+
+L'assurance ménage protège **vos propres affaires**. La [RC privée](/particuliers/rc-privee/) paie les dommages que **vous causez aux autres**. Ce sont deux assurances différentes, mais la plupart des assureurs les proposent ensemble :
+
+- **une seule police**, une seule échéance et un seul interlocuteur en cas de sinistre ;
+- **une couverture cohérente** : pas de trou entre ce qui touche vos biens et ce qui touche ceux des autres ;
+- **une option, pas une obligation** : si vous avez déjà une RC privée qui vous convient, vous pouvez assurer seulement votre ménage.
+
+Dans notre simulation, la RC privée s'ajoute en un clic à votre assurance ménage.
 
 ## Le piège de la sous-assurance
 

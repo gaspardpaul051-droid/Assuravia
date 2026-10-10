@@ -44,7 +44,7 @@ Une assurance voyage n'est pas une assurance tous risques. Les exclusions les pl
 - **l'annulation par simple changement d'avis**, ou pour un motif non prévu au contrat ;
 - **les voyages vers des zones** que les autorités déconseillent ;
 - **certains sports à risque**, sauf option ;
-- **les dommages causés à autrui**, qui relèvent de votre [assurance RC ménage](/particuliers/rc-menage/).
+- **les dommages causés à autrui**, qui relèvent de votre [assurance RC ménage](/particuliers/assurance-menage/).
 
 Les conditions varient beaucoup d'un contrat à l'autre. Les mots précis comptent : « maladie grave », « proche », « événement imprévisible ».
 
