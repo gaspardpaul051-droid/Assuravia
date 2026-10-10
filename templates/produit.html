@@ -23,9 +23,19 @@
       </ul>
     </div>
     <aside class="panneau-form" id="demande">
+      {% if produit.simulateur %}
+      <h2 class="form-titre">{{ produit.bouton }}</h2>
+      <p class="form-sous-titre">Votre estimation en 2 minutes, gratuite et sans engagement. Pour commencer : où habitez-vous ?</p>
+      <div class="entree-simulation">
+        <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
+        <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
+      </div>
+      <a class="bouton bouton--action" href="{{ produit.simulateur }}">Lancer la simulation</a>
+      {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
       {% with p=produit %}{% if produit.formulaire == "impots" %}{% include "partials/form-impots.html" %}{% elif produit.groupe == "particuliers" %}{% include "partials/form-prive.html" %}{% else %}{% include "partials/form-pro.html" %}{% endif %}{% endwith %}
+      {% endif %}
     </aside>
   </div>
 </section>

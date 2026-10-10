@@ -3,12 +3,19 @@
   "use strict";
   document.documentElement.classList.add("js");
 
-  // 0. Une nouvelle page s'ouvre toujours en haut (sauf ancre ou retour arrière)
+  // 0. Une nouvelle page s'ouvre toujours en haut (sauf ancre ou retour arrière).
+  //    scrollIntoView remonte aussi la page qui contient le site quand il est affiché dans un cadre (aperçu).
+  var allerEnHaut = function () {
+    if (window.location.hash) return;
+    window.scrollTo(0, 0);
+    try { document.documentElement.scrollIntoView({ block: "start", behavior: "instant" }); } catch (e) { document.documentElement.scrollIntoView(true); }
+  };
   try {
     var nav0 = performance.getEntriesByType("navigation")[0];
-    if (!window.location.hash && (!nav0 || nav0.type === "navigate")) {
-      window.scrollTo(0, 0);
-      window.addEventListener("load", function () { if (!window.location.hash) window.scrollTo(0, 0); });
+    if (!nav0 || nav0.type !== "back_forward") {
+      allerEnHaut();
+      document.addEventListener("DOMContentLoaded", allerEnHaut);
+      window.addEventListener("load", allerEnHaut);
     }
   } catch (e) { /* navigateur ancien */ }
 
@@ -89,7 +96,8 @@
     conteneur.querySelectorAll("input, select, textarea").forEach(function (el) {
       if (el.type === "hidden" || el.closest("[hidden]")) return;
       controleFormat(el);
-      var msg = (el.closest(".champ") || el.parentElement).querySelector(".champ__erreur");
+      var zoneMsg = el.type === "radio" ? (el.closest("fieldset") || el.parentElement) : (el.closest(".champ") || el.parentElement);
+      var msg = zoneMsg.querySelector(".champ__erreur");
       if (el.checkValidity()) {
         el.removeAttribute("aria-invalid");
         if (msg) msg.remove();
@@ -103,10 +111,11 @@
         msg.className = "champ__erreur";
         msg.id = (el.id || el.name) + "-erreur";
         el.setAttribute("aria-describedby", msg.id);
-        (el.closest("[data-tel]") || el).insertAdjacentElement("afterend", msg);
+        (el.closest("[data-tel]") || (el.type === "radio" ? el.closest(".choix-cartes, .formules") : null) || el).insertAdjacentElement("afterend", msg);
       }
       if (msg) {
-        msg.textContent = el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
+        msg.textContent = el.validity.valueMissing && el.type === "radio" ? "Choisissez une réponse pour continuer."
+          : el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
           : el.type === "tel" ? "Numéro non valide. Choisissez l'indicatif du pays, puis le numéro, par exemple 79 123 45 67."
           : "Vérifiez cette valeur.";
@@ -245,6 +254,308 @@
     cap.querySelectorAll("[data-cap]").forEach(function (el) { el.addEventListener("input", majCapital); });
     majCapital();
   }
+
+  // 4c. Simulation en plusieurs écrans (funnel), ex. assurance ménage
+  var funnel = document.querySelector("[data-funnel]");
+  if (funnel) {
+    var formF = funnel.querySelector("form");
+    var etapesF = Array.prototype.slice.call(funnel.querySelectorAll("[data-fe]"));
+    var barreF = funnel.querySelector("[data-funnel-barre]");
+    var compteurF = funnel.querySelector("[data-funnel-compteur]");
+    var retourF = funnel.querySelector("[data-funnel-retour]");
+    var historique = [];
+    var courante = 0;
+    var valeur = function (nom) {
+      var el = formF.querySelector('[name="' + nom + '"]:checked') || formF.querySelector('[name="' + nom + '"]:not([type=radio])');
+      return el ? el : null;
+    };
+    var nombre = function (nom) { var el = valeur(nom); return el ? Number(el.value) || 0 : 0; };
+    var arrondi = function (x) { return Math.round(x * 20) / 20; };
+    var chf2 = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+    var calculer = function () {
+      var inv = valeur("inventaire");
+      var parPiece = inv ? Number(inv.getAttribute("data-valeur")) : 0;
+      var sommeCalc = nombre("pieces") * parPiece;
+      var ok = valeur("somme_ok");
+      var somme = ok && ok.value === "non" && nombre("somme_corrigee") > 0 ? nombre("somme_corrigee") : sommeCalc;
+      var form = valeur("formule");
+      var taux = form ? Number(form.getAttribute("data-taux")) : 0;
+      var primeMenage = taux ? arrondi(somme / 1000 * taux) : 0;
+      var options = [];
+      [["option_rc", "Responsabilité civile privée"], ["option_pj", "Protection juridique"], ["option_cyber", "Cyberassurance"]].forEach(function (o) {
+        var el = valeur(o[0]);
+        if (el && el.value === "oui") options.push({ nom: o[1], prix: Number(el.getAttribute("data-prix")) });
+      });
+      var total = primeMenage + options.reduce(function (t, o) { return t + o.prix; }, 0);
+      return { sommeCalc: sommeCalc, somme: somme, formule: form ? form.value : "", taux: taux, primeMenage: primeMenage, options: options, total: total };
+    };
+    var afficher = function () {
+      var c = calculer();
+      var set = function (cle, html) { funnel.querySelectorAll('[data-affiche="' + cle + '"]').forEach(function (el) { el.innerHTML = html; }); };
+      set("somme_calculee", chf(c.sommeCalc));
+      funnel.querySelectorAll("[data-prix-formule]").forEach(function (el) {
+        el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")))) + " / an";
+      });
+      set("total_floute", chf2(c.total || 999));
+      var prenom = valeur("prenom");
+      set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
+      if (c.taux) {
+        set("total", chf2(c.total));
+        set("mois", "soit environ " + chf2(c.total / 12) + " par mois");
+      } else {
+        set("total", "Sur mesure");
+        set("mois", c.options.length ? "Options choisies : " + chf2(c.total) + " par an, plus votre offre ménage personnalisée" : "Un spécialiste construit votre offre avec vous");
+      }
+      var lignes = ["<li><span>Ménage, formule " + c.formule + " <small>somme assurée " + chf(c.somme) + "</small></span><strong>" + (c.taux ? chf2(c.primeMenage) : "sur mesure") + "</strong></li>"];
+      c.options.forEach(function (o) { lignes.push("<li><span>" + o.nom + "</span><strong>" + chf2(o.prix) + "</strong></li>"); });
+      set("detail", lignes.join(""));
+      var cache = function (k, v) { var el = formF.querySelector('[data-calc="' + k + '"]'); if (el) el.value = v; };
+      cache("somme", Math.round(c.somme)); cache("formule", c.formule); cache("prime_menage", c.taux ? c.primeMenage.toFixed(2) : "sur mesure"); cache("prime_totale", c.total.toFixed(2));
+    };
+    var montrer = function (n, enArriere) {
+      etapesF.forEach(function (e, k) { e.hidden = k !== n; });
+      courante = n;
+      barreF.style.width = ((n + 1) / etapesF.length * 100) + "%";
+      var finale = etapesF[etapesF.length - 1].hasAttribute("data-fe-final");
+      var total = finale ? etapesF.length - 1 : etapesF.length;
+      compteurF.textContent = finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (n + 1) + " sur " + total;
+      retourF.hidden = n === 0 || (finale && n === etapesF.length - 1);
+      afficher();
+      etapesF[n].classList.remove("fe--entree", "fe--retour");
+      void etapesF[n].offsetWidth;
+      etapesF[n].classList.add(enArriere ? "fe--retour" : "fe--entree");
+      var top = funnel.getBoundingClientRect().top + window.scrollY - 90;
+      if (window.scrollY > top) window.scrollTo({ top: top, behavior: "smooth" });
+      var champ = etapesF[n].querySelector("input:not([type=hidden]):not([type=radio]):not([readonly])");
+      if (champ && !enArriere) champ.focus({ preventScroll: true });
+    };
+    var sauter = {};
+    var avancer = function () {
+      if (!verifier(etapesF[courante])) return;
+      historique.push(courante);
+      var suivante = Math.min(courante + 1, etapesF.length - 1);
+      while (sauter[suivante] && suivante < etapesF.length - 1) { delete sauter[suivante]; suivante++; }
+      montrer(suivante);
+    };
+    var encoder = function () {
+      var donnees = new FormData(formF), paires = [];
+      donnees.forEach(function (v, k) { paires.push(encodeURIComponent(k) + "=" + encodeURIComponent(v)); });
+      return paires.join("&");
+    };
+    funnel.querySelectorAll("[data-fe-suivant]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.hasAttribute("data-fe-envoi")) {
+          if (!verifier(etapesF[courante])) return;
+          afficher();
+          funnel.querySelector("[data-funnel-etat]").value = "prime affichée";
+          // Le lead est enregistré dès que la prime est affichée ; on continue même hors ligne.
+          try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: encoder() }).catch(function () {}); } catch (e) {}
+          historique.push(courante);
+          montrer(courante + 1);
+          return;
+        }
+        avancer();
+      });
+    });
+    funnel.querySelectorAll("[data-fe-auto]").forEach(function (r) {
+      r.addEventListener("change", function () { setTimeout(avancer, 250); });
+    });
+    retourF.addEventListener("click", function () { if (historique.length) montrer(historique.pop(), true); });
+    funnel.querySelectorAll("[data-fe-modifier]").forEach(function (b) {
+      b.addEventListener("click", function () { historique = []; for (var k = 0; k < Number(b.getAttribute("data-fe-modifier")) - 1; k++) historique.push(k); montrer(Number(b.getAttribute("data-fe-modifier")) - 1, true); });
+    });
+    funnel.querySelectorAll("[data-fe-action]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        funnel.querySelector("[data-funnel-action]").value = b.getAttribute("data-fe-action") === "souscription" ? "Demande de souscription" : "Être recontacté";
+        funnel.querySelector("[data-funnel-etat]").value = "demande envoyée";
+      });
+    });
+    // Choix qui montrent une question complémentaire
+    formF.querySelectorAll('[name="statut"]').forEach(function (r) {
+      r.addEventListener("change", function () { formF.querySelector("[data-si-proprietaire]").hidden = r.value !== "Propriétaire"; });
+    });
+    formF.querySelectorAll('[name="somme_ok"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        var bloc = formF.querySelector("[data-si-correction]");
+        bloc.hidden = r.value !== "non";
+        bloc.querySelector("input").required = r.value === "non";
+        if (r.value === "non") bloc.querySelector("input").focus();
+      });
+    });
+    // Blocs affichés selon une réponse : data-montre-si="nom=valeur" ou "nom!=valeur"
+    var majConditions = function () {
+      formF.querySelectorAll("[data-montre-si]").forEach(function (bloc) {
+        var regle = bloc.getAttribute("data-montre-si"), neg = regle.indexOf("!=") > -1;
+        var parts = regle.split(neg ? "!=" : "="), nom = parts[0], attendu = parts[1];
+        var el = formF.querySelector('[name="' + nom + '"]:checked');
+        var v = el ? el.value : "";
+        bloc.hidden = neg ? v === attendu : v !== attendu;
+      });
+    };
+    formF.addEventListener("change", majConditions);
+    majConditions();
+    // Compteurs + / −
+    funnel.querySelectorAll("[data-compteur]").forEach(function (c) {
+      var champ = c.querySelector("input"), pas = Number(c.getAttribute("data-pas")) || 1;
+      var regler = function (d) {
+        var v = Math.min(Math.max(Number(champ.value) + d, Number(champ.min)), Number(champ.max));
+        champ.value = v;
+        c.classList.remove("compteur--pulse"); void c.offsetWidth; c.classList.add("compteur--pulse");
+      };
+      c.querySelector("[data-compteur-moins]").addEventListener("click", function () { regler(-pas); });
+      c.querySelector("[data-compteur-plus]").addEventListener("click", function () { regler(pas); });
+    });
+    // Entrée directe depuis la page produit (?logement=Appartement)
+    var log = params.get("logement");
+    montrer(0);
+    if (log) {
+      var r = formF.querySelector('[name="logement"][value="' + CSS.escape(log) + '"]');
+      if (r) { r.checked = true; sauter[etapesF.indexOf(r.closest("[data-fe]"))] = true; }
+    }
+  }
+
+  // 4d. Garantie de loyer : comparaison des offres (tarifs publiés par les assureurs) et récapitulatif
+  var gar = document.querySelector("[data-garantie]");
+  if (gar) {
+    var TIMBRE = 0.05;
+    var OFFRES_GL = [
+      { id: "helvetia", nom: "Helvetia", taux: 0.04, min: 120, frais: 0, plafond: 18000, reco: true },
+      { id: "swisscaution", nom: "SwissCaution", taux: 0.05, min: 0, frais: 20, plafond: null },
+      { id: "firstcaution", nom: "Firstcaution", taux: 0.05, min: 0, frais: 20, plafond: null, surDemande: 15000, mensuel: 0.055 }
+    ];
+    var chf5 = function (n) {
+      var r = Math.round(n * 20) / 20;
+      return Math.abs(r - Math.round(r)) < 0.001 ? chf(r) : "CHF " + r.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    };
+    var calcGL = function (o, g) {
+      if (!(g > 0)) return null;
+      if (o.plafond && g > o.plafond) return { dispo: false };
+      var prime = Math.max(g * o.taux, o.min || 0);
+      return { dispo: true, total: (prime + o.frais) * (1 + TIMBRE), mensuel: o.mensuel ? ((g * o.mensuel + o.frais) * (1 + TIMBRE)) / 12 : null, surDemande: !!(o.surDemande && g > o.surDemande) };
+    };
+    var gLoyer = gar.querySelector('[data-gl="loyer"]'), gMontant = gar.querySelector('[data-gl="montant"]');
+    var liste = gar.querySelector("[data-gl-offres]"), recap = gar.querySelector("[data-gl-recap]");
+    var montantTouche = false;
+    var rendre = function () {
+      var g = Number(gMontant.value) || 0, l = Number(gLoyer.value) || 0;
+      var alerte = gar.querySelector("[data-gl-alerte]");
+      alerte.hidden = !(l > 0 && g > l * 3 + 0.5);
+      alerte.textContent = "Ce montant dépasse 3 mois de loyer, le maximum légal pour un logement d'habitation.";
+      gar.querySelector("[data-gl-comparaison]").hidden = !(g > 0);
+      gar.querySelector("[data-gl-titre-offres]").hidden = !(g > 0);
+      gar.querySelector('[data-gl-sortie="bloque"]').textContent = chf(g) + " bloqués";
+      var res = OFFRES_GL.map(function (o) { return { o: o, r: calcGL(o, g) }; });
+      var chiffrables = res.filter(function (x) { return x.r && x.r.dispo && !x.r.surDemande; });
+      var min = chiffrables.length ? Math.min.apply(null, chiffrables.map(function (x) { return x.r.total; })) : null;
+      res.sort(function (a, b) {
+        var da = a.r && a.r.dispo, db = b.r && b.r.dispo;
+        if (da !== db) return da ? -1 : 1;
+        if (!da) return 0;
+        if (!!a.o.reco !== !!b.o.reco) return a.o.reco ? -1 : 1;
+        return a.r.total - b.r.total;
+      });
+      // Réordonner seulement si l'ordre change (déplacer une carte pendant un clic ferait perdre le clic)
+      var ordreVoulu = res.map(function (x) { return x.o.id; }).join();
+      var ordreActuel = Array.prototype.map.call(liste.querySelectorAll("[data-offre]:not([data-offre=conseil])"), function (c) { return c.getAttribute("data-offre"); }).join();
+      if (ordreVoulu !== ordreActuel) {
+        res.forEach(function (x) { liste.insertBefore(liste.querySelector('[data-offre="' + x.o.id + '"]'), liste.querySelector('[data-offre="conseil"]')); });
+      }
+      var rang = 0;
+      res.forEach(function (x) {
+        var carte = liste.querySelector('[data-offre="' + x.o.id + '"]'), r = x.r;
+        var radio = carte.querySelector("input"), prix = carte.querySelector("[data-prix]"), detail = carte.querySelector("[data-prix-detail]");
+        var dispo = r && r.dispo;
+        radio.disabled = !!r && !dispo;
+        carte.classList.toggle("offre-gl--off", !!r && !dispo);
+        carte.querySelector(".offre-gl__rang").textContent = dispo ? ++rang : "–";
+        carte.querySelector("[data-badge]").hidden = !(dispo && !r.surDemande && min !== null && Math.abs(r.total - min) < 0.01);
+        var eco = carte.querySelector("[data-economie]");
+        eco.hidden = true;
+        if (!r) { prix.textContent = "—"; detail.textContent = "Indiquez le montant"; return; }
+        if (!dispo) { prix.textContent = "Non disponible"; detail.textContent = "Au-delà de " + chf(x.o.plafond); return; }
+        if (r.surDemande) { prix.textContent = "Sur demande"; detail.textContent = "Au-delà de " + chf(x.o.surDemande); return; }
+        prix.textContent = chf5(r.total);
+        detail.textContent = "par an, timbre compris · " + (r.mensuel ? "ou " + chf5(r.mensuel) + " par mois" : "soit " + chf5(r.total / 12) + " par mois");
+        if (x.o.reco) {
+          var autres = chiffrables.filter(function (y) { return y.o !== x.o; }).map(function (y) { return y.r.total; });
+          var m = autres.length ? Math.min.apply(null, autres) : null;
+          if (m !== null && m - r.total >= 1) { eco.hidden = false; eco.innerHTML = "Vous économisez <strong>" + chf5(m - r.total) + " par an</strong> par rapport à la meilleure alternative."; }
+        }
+      });
+      // Récapitulatif
+      var choix = gar.querySelector('[name="offre"]:checked');
+      var o = choix && OFFRES_GL.filter(function (y) { return y.id === choix.value; })[0];
+      var r2 = o ? calcGL(o, g) : null;
+      var prime = r2 && r2.dispo && !r2.surDemande ? chf5(r2.total) + " / an" : (choix && choix.value === "conseil" ? "selon l'offre conseillée" : "–");
+      gar.querySelector('[data-recap="offre"]').textContent = o ? o.nom : (choix ? "Conseil demandé" : "–");
+      gar.querySelector('[data-recap="montant"]').textContent = g > 0 ? chf(g) : "–";
+      gar.querySelector('[data-recap="prime"]').textContent = prime;
+      gar.querySelector('[data-recap="libre"]').textContent = g > 0 ? chf(g) : "CHF 0";
+      gar.querySelector('[data-gl-cache="prime"]').value = prime;
+      gar.querySelector('[data-gl-cache="offre"]').value = o ? o.nom : (choix ? "Conseil demandé" : "");
+      recap.hidden = !(g > 0 && choix);
+    };
+    gLoyer.addEventListener("input", function () {
+      var l = Number(gLoyer.value) || 0;
+      if (!montantTouche) gMontant.value = l > 0 ? Math.round(l * 3) : "";
+      rendre();
+    });
+    gMontant.addEventListener("input", function () { montantTouche = true; rendre(); });
+    gar.addEventListener("change", rendre);
+    // Date de début : entre aujourd'hui et dans 12 mois
+    var debut = gar.querySelector("[data-gl-debut]");
+    if (debut) {
+      var auj = new Date(), dans12 = new Date(); dans12.setFullYear(auj.getFullYear() + 1);
+      var iso = function (d) { return d.toISOString().slice(0, 10); };
+      debut.min = iso(auj); debut.max = iso(dans12);
+    }
+    // Valeurs venant de l'URL (?loyer=2100, ?montant=6300, ?offre=helvetia)
+    var qL = Number(params.get("loyer")) || 0, qG = Number(params.get("montant")) || 0;
+    if (qL > 0) gLoyer.value = Math.round(qL);
+    if (qG > 0) { gMontant.value = Math.round(qG); montantTouche = true; } else if (qL > 0) gMontant.value = Math.round(qL * 3);
+    rendre();
+  }
+
+  // 4e. Recherche d'adresse suisse (service public de la Confédération, geo.admin.ch)
+  document.querySelectorAll("[data-adresse]").forEach(function (bloc) {
+    var champ = bloc.querySelector("[data-adresse-recherche]"), liste = bloc.querySelector("[data-adresse-resultats]");
+    var minuterie = null;
+    var nettoyer = function (t) { return t.replace(/<[^>]+>/g, ""); };
+    var remplir = function (label) {
+      // Format geo.admin : « Avenue de la Gare 12 1003 Lausanne »
+      var m = label.match(/^(.*?)\s+(\d+\w*)\s+(\d{4})\s+(.+)$/);
+      if (m) {
+        bloc.querySelector("[data-adresse-rue]").value = m[1];
+        bloc.querySelector("[data-adresse-no]").value = m[2];
+        bloc.querySelector("[data-adresse-npa]").value = m[3];
+        bloc.querySelector("[data-adresse-localite]").value = m[4];
+      }
+      champ.value = label;
+      liste.hidden = true;
+    };
+    champ.addEventListener("input", function () {
+      clearTimeout(minuterie);
+      var q = champ.value.trim();
+      if (q.length < 4) { liste.hidden = true; return; }
+      minuterie = setTimeout(function () {
+        fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=6&searchText=" + encodeURIComponent(q))
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            liste.innerHTML = "";
+            (j.results || []).forEach(function (res) {
+              var label = nettoyer(res.attrs.label || "");
+              var li = document.createElement("li");
+              var b = document.createElement("button");
+              b.type = "button"; b.textContent = label;
+              b.addEventListener("click", function () { remplir(label); });
+              li.appendChild(b); liste.appendChild(li);
+            });
+            liste.hidden = !liste.children.length;
+          })
+          .catch(function () { liste.hidden = true; });
+      }, 280);
+    });
+  });
 
   // 4. Simulateur 3e pilier
   // Taux marginaux indicatifs (impôt fédéral + cantonal + communal au chef-lieu, personne seule).

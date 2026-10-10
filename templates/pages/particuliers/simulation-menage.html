@@ -1,0 +1,229 @@
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurance ménage : calculez votre prime en 2 minutes | Assuravia{% endblock %}
+{% block description %}Simulez votre assurance ménage et RC privée : somme d'assurance selon votre logement, choix de la formule, options protection juridique et cyber. Estimation immédiate.{% endblock %}
+{% block content %}
+<section class="funnel-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/rc-menage/">RC privée et ménage</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("maison", "icone icone--petite") }} Simulation assurance ménage</p>
+
+    <div class="funnel" data-funnel>
+      <div class="funnel__haut">
+        <button type="button" class="funnel__retour" data-funnel-retour hidden>{{ i.icone("fleche", "icone icone--petite carrousel__retour") }} Retour</button>
+        <p class="funnel__etape-num" data-funnel-compteur>Étape 1</p>
+      </div>
+      <div class="funnel__progression" aria-hidden="true"><span data-funnel-barre></span></div>
+
+      {{ f.ouvrir("simulation-menage", "rc-menage") }}
+        <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
+        <input type="hidden" name="somme_assuree" data-calc="somme">
+        <input type="hidden" name="formule_choisie" data-calc="formule">
+        <input type="hidden" name="prime_menage" data-calc="prime_menage">
+        <input type="hidden" name="prime_totale" data-calc="prime_totale">
+        <input type="hidden" name="suite_souhaitee" value="" data-funnel-action>
+
+        <fieldset class="fe" data-fe="1">
+          <legend class="fe__question">Commençons : comment vous appelez-vous ?</legend>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-sm">Prénom</label><input id="prenom-sm" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-sm">Nom</label><input id="nom-sm" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+          </div>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="2" hidden>
+          <legend class="fe__question">Où habitez-vous ?</legend>
+          <div class="choix-cartes">
+            <label class="choix-carte"><input type="radio" name="logement" value="Appartement" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("batiment") }}</span><span>Appartement</span></label>
+            <label class="choix-carte"><input type="radio" name="logement" value="Maison" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Maison</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="3" hidden>
+          <legend class="fe__question">Vous êtes…</legend>
+          <div class="choix-cartes">
+            <label class="choix-carte"><input type="radio" name="statut" value="Locataire" required><span class="choix-carte__icone">{{ i.icone("cle") }}</span><span>Locataire</span></label>
+            <label class="choix-carte"><input type="radio" name="statut" value="Propriétaire" required><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Propriétaire</span></label>
+          </div>
+          <div class="consentement fe__option" data-si-proprietaire hidden>
+            <input id="batiment-sm" name="revoir_batiment" type="checkbox" value="oui">
+            <label for="batiment-sm">Je souhaite aussi revoir mon assurance bâtiment.</label>
+          </div>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="4" hidden>
+          <legend class="fe__question">Quelle est l'adresse du logement ?</legend>
+          <div class="grille-champs">
+            <div class="champ champ--large"><label for="rue-sm">Rue et numéro</label><input id="rue-sm" name="rue" required autocomplete="address-line1" placeholder="Avenue de la Gare 12"></div>
+            <div class="champ"><label for="npa-sm">NPA</label><input id="npa-sm" name="npa" required inputmode="numeric" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="1003"></div>
+            <div class="champ"><label for="localite-sm">Localité</label><input id="localite-sm" name="localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
+          </div>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="5" hidden>
+          <legend class="fe__question">Combien de personnes vivent dans le ménage ?</legend>
+          <div class="compteurs">
+            <div class="compteur" data-compteur>
+              <span class="compteur__label">Adultes</span>
+              <button type="button" class="compteur__bouton" data-compteur-moins aria-label="Un adulte de moins">−</button>
+              <input class="compteur__valeur" name="adultes" type="number" min="1" max="10" value="1" readonly aria-label="Nombre d'adultes">
+              <button type="button" class="compteur__bouton" data-compteur-plus aria-label="Un adulte de plus">+</button>
+            </div>
+            <div class="compteur" data-compteur>
+              <span class="compteur__label">Enfants <small>(moins de 14 ans)</small></span>
+              <button type="button" class="compteur__bouton" data-compteur-moins aria-label="Un enfant de moins">−</button>
+              <input class="compteur__valeur" name="enfants" type="number" min="0" max="10" value="0" readonly aria-label="Nombre d'enfants">
+              <button type="button" class="compteur__bouton" data-compteur-plus aria-label="Un enfant de plus">+</button>
+            </div>
+          </div>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="6" hidden>
+          <legend class="fe__question">Combien de pièces compte votre logement ?</legend>
+          <div class="compteurs">
+            <div class="compteur compteur--grand" data-compteur data-pas="0.5">
+              <span class="compteur__label">Pièces</span>
+              <button type="button" class="compteur__bouton" data-compteur-moins aria-label="Une demi-pièce de moins">−</button>
+              <input class="compteur__valeur" name="pieces" type="number" min="1" max="15" step="0.5" value="3.5" readonly aria-label="Nombre de pièces">
+              <button type="button" class="compteur__bouton" data-compteur-plus aria-label="Une demi-pièce de plus">+</button>
+            </div>
+          </div>
+          <p class="fe__aide">Comptez les pièces comme dans l'annonce de location : un 3,5 pièces a 3,5 pièces.</p>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="7" hidden>
+          <legend class="fe__question">Comment décririez-vous vos affaires ?</legend>
+          <p class="fe__aide">L'inventaire comprend vos vêtements, bijoux, meubles, électroménager, vélos, téléphones…</p>
+          <div class="choix-cartes choix-cartes--3">
+            <label class="choix-carte"><input type="radio" name="inventaire" value="Entrée de gamme" data-valeur="10000" required data-fe-auto><span class="choix-carte__titre">Entrée de gamme</span><span class="choix-carte__detail">Environ CHF 10'000 par pièce</span></label>
+            <label class="choix-carte"><input type="radio" name="inventaire" value="Moyenne gamme" data-valeur="20000" required data-fe-auto><span class="choix-carte__titre">Moyenne gamme</span><span class="choix-carte__detail">Environ CHF 20'000 par pièce</span></label>
+            <label class="choix-carte"><input type="radio" name="inventaire" value="Haut de gamme" data-valeur="25000" required data-fe-auto><span class="choix-carte__titre">Haut de gamme</span><span class="choix-carte__detail">Environ CHF 25'000 par pièce</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="8" hidden>
+          <legend class="fe__question">Votre somme d'assurance</legend>
+          <div class="somme-proposee">
+            <p>D'après vos réponses, vos affaires valent environ</p>
+            <p class="somme-proposee__montant" data-affiche="somme_calculee">CHF 0</p>
+            <p class="fe__aide">Une somme trop basse réduit l'indemnité en cas de sinistre (sous-assurance).</p>
+          </div>
+          <p class="fe__sous-question">Ce montant vous convient-il ?</p>
+          <div class="choix-cartes">
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="somme_ok" value="oui" required><span>Oui, c'est juste</span></label>
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="somme_ok" value="non" required><span>Non, je corrige</span></label>
+          </div>
+          <div class="champ fe__option" data-si-correction hidden>
+            <label for="somme-corrigee">Somme d'assurance souhaitée (CHF)</label>
+            <input id="somme-corrigee" name="somme_corrigee" type="number" inputmode="numeric" min="5000" step="1000" placeholder="Ex. 60000">
+          </div>
+          <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="9" hidden>
+          <legend class="fe__question">Choisissez votre formule</legend>
+          <div class="formules">
+            <label class="formule"><input type="radio" name="formule" value="Essentiel" data-taux="5" required data-fe-auto>
+              <span class="formule__nom">Essentiel</span><span class="formule__prix floute" data-prix-formule="5">CHF 000 / an</span>
+              <ul><li>Incendie et événements naturels</li><li>Vol au domicile</li><li>Vol simple hors du domicile jusqu'à CHF 1'000</li><li>Dégâts d'eau</li><li>Faute grave couverte</li></ul></label>
+            <label class="formule formule--conseil"><input type="radio" name="formule" value="Confort" data-taux="6" required data-fe-auto>
+              <span class="formule__badge">Le plus choisi</span>
+              <span class="formule__nom">Confort</span><span class="formule__prix floute" data-prix-formule="6">CHF 000 / an</span>
+              <ul><li>Incendie et événements naturels</li><li>Vol au domicile</li><li>Vol simple hors du domicile jusqu'à CHF 3'000</li><li>Dégâts d'eau</li><li>Faute grave couverte</li></ul></label>
+            <label class="formule"><input type="radio" name="formule" value="Premium" data-taux="9" required data-fe-auto>
+              <span class="formule__nom">Premium</span><span class="formule__prix floute" data-prix-formule="9">CHF 000 / an</span>
+              <ul><li>Incendie et événements naturels</li><li>Vol au domicile</li><li>Vol simple hors du domicile jusqu'à CHF 4'000</li><li>Dégâts d'eau</li><li>Faute grave couverte</li><li>Électroménager jusqu'à CHF 2'000</li></ul></label>
+            <label class="formule"><input type="radio" name="formule" value="Sur mesure" data-taux="0" required data-fe-auto>
+              <span class="formule__nom">Sur mesure</span><span class="formule__prix">Offre personnalisée</span>
+              <ul><li>Vous choisissez chaque couverture</li><li>Objets de valeur, vélos électriques, besoins particuliers</li><li>Un spécialiste construit l'offre avec vous</li></ul></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="10" hidden>
+          <legend class="fe__question">Ajouter la responsabilité civile privée ?</legend>
+          <p class="fe__aide">Elle paie les dommages que vous causez à d'autres personnes ou à leurs biens. La plupart des régies la demandent.</p>
+          <div class="choix-cartes">
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_rc" value="oui" data-prix="110" required data-fe-auto><span>Oui <small>+ CHF 110 / an</small></span></label>
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_rc" value="non" data-prix="0" required data-fe-auto><span>Non, j'en ai déjà une</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="11" hidden>
+          <legend class="fe__question">Ajouter une protection juridique ?</legend>
+          <p class="fe__aide">Litige avec votre bailleur, votre employeur ou un vendeur : les frais d'avocat et de procédure sont pris en charge.</p>
+          <div class="choix-cartes">
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_pj" value="oui" data-prix="250" required data-fe-auto><span>Oui <small>+ CHF 250 / an</small></span></label>
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_pj" value="non" data-prix="0" required data-fe-auto><span>Non merci</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="12" hidden>
+          <legend class="fe__question">Ajouter une cyberassurance ?</legend>
+          <p class="fe__aide">Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.</p>
+          <div class="choix-cartes">
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_cyber" value="oui" data-prix="50" required data-fe-auto><span>Oui <small>+ CHF 50 / an</small></span></label>
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="option_cyber" value="non" data-prix="0" required data-fe-auto><span>Non merci</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="13" hidden>
+          <legend class="fe__question">Souhaitez-vous aussi payer moins d'impôts ?</legend>
+          <p class="fe__aide">Un spécialiste peut vous montrer ce que le 3e pilier ou votre déclaration peuvent vous faire gagner.</p>
+          <div class="choix-cartes">
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="economiser_impots" value="oui" required data-fe-auto><span>Oui, ça m'intéresse</span></label>
+            <label class="choix-carte choix-carte--compact"><input type="radio" name="economiser_impots" value="non" required data-fe-auto><span>Non merci</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="14" hidden>
+          <legend class="fe__question">Votre prime est prête</legend>
+          <div class="apercu-prime">
+            <p class="apercu-prime__label">Votre prime annuelle estimée</p>
+            <p class="apercu-prime__montant floute" data-affiche="total_floute">CHF 000.00</p>
+            <p class="fe__aide">Indiquez où vous joindre pour l'afficher et recevoir votre récapitulatif.</p>
+          </div>
+          <div class="grille-champs">
+            {{ f.telephone("sm") }}
+            <div class="champ"><label for="email-sm">E-mail</label><input id="email-sm" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+            {{ f.naissance("sm") }}
+          </div>
+          <div class="consentement">
+            <input id="consentement-sm" name="consentement" type="checkbox" value="oui" required>
+            <label for="consentement-sm">J'accepte d'être contacté par téléphone ou e-mail au sujet de ma demande, par un conseiller Assuravia ou par un partenaire spécialisé à qui elle peut être transmise. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+          </div>
+          <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Afficher ma prime</button>
+        </fieldset>
+
+        <fieldset class="fe" data-fe="15" data-fe-final hidden>
+          <legend class="fe__question"><span data-affiche="prenom"></span>, voici votre estimation</legend>
+          <div class="resultat-prime">
+            <p class="resultat-prime__label">Prime annuelle estimée</p>
+            <p class="resultat-prime__montant" data-affiche="total">CHF 0</p>
+            <p class="resultat-prime__mois" data-affiche="mois"></p>
+            <ul class="resultat-prime__detail" data-affiche="detail"></ul>
+            <p class="resultat__avertissement">Estimation indicative selon les informations fournies. L'offre définitive, les conditions et la prime exacte sont établies par l'assureur.</p>
+          </div>
+          <div class="resultat-actions">
+            <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Envoyer ma demande de souscription</button>
+            <button type="submit" class="bouton bouton--prive" data-fe-action="rappel">Être recontacté par un conseiller</button>
+            <button type="button" class="bouton bouton--secondaire" data-fe-modifier="7">Modifier ma simulation</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

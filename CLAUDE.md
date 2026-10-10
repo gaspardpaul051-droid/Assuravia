@@ -13,7 +13,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - `templates/pages/lp/` : pages publicitaires (Google Ads), sans menu, `noindex`. Ne jamais les lier depuis le site.
 - `content/articles/*.md` : articles du blog, publiés sous `/blog/<nom-du-fichier>/`.
 - Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
-  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`), sinon Netlify crée un nouveau formulaire.
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`), sinon Netlify crée un nouveau formulaire.
 
 ## Article hebdomadaire
 Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :

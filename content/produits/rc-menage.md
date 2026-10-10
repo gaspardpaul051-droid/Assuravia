@@ -10,7 +10,8 @@ description: Assurance ménage et RC privée : ce qui est couvert (vol, incendie
 desc: Dommages causés à autrui, vol, incendie, dégâts d'eau : protégez votre logement et votre responsabilité.
 points: Responsabilité civile privée | Vol, incendie et dégâts d'eau | Valeur à neuf de vos biens
 badge: Offre gratuite
-bouton: Comparer les offres ménage
+bouton: Calculer ma prime ménage
+simulateur: /particuliers/simulation-menage/
 h1: RC privée et assurance ménage : les deux assurances de base de votre logement
 chapeau: Une seule maladresse peut coûter très cher, et un dégât d'eau peut détruire une partie de vos affaires. Ces deux assurances se combinent souvent dans un même contrat, qu'il vaut la peine de construire avec soin.
 retenir: La RC privée paie les dommages que vous causez à d'autres personnes ou à leurs biens. | L'assurance ménage protège vos propres affaires contre le vol, l'incendie, les dégâts d'eau et les éléments naturels. | Une somme d'assurance trop basse réduit l'indemnité, même pour un petit sinistre. | Dans certains cantons, comme Vaud, l'assurance du mobilier contre l'incendie est obligatoire.

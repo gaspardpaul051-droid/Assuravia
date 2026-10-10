@@ -31,23 +31,50 @@
 </div>
 {%- endmacro %}
 
-{% macro telephone(id="f", libelle="Téléphone") -%}
+{% macro telephone(id="f", libelle="Téléphone", nom="telephone", requis=True) -%}
 <div class="champ">
-  <label for="telephone-{{ id }}">{{ libelle }}</label>
+  <label for="telephone-{{ id }}">{{ libelle }}{% if not requis %} <span class="facultatif">(facultatif)</span>{% endif %}</label>
   <div class="tel" data-tel>
-    <select class="tel__indicatif" name="indicatif" aria-label="Indicatif du pays" data-tel-indicatif>
-      {% for g in indicatifs %}<optgroup label="{{ g.groupe }}">{% for x in g.liste %}<option value="{{ x.code }}"{% if loop.first and loop.index0 == 0 and g.groupe == "Pays fréquents" %} selected{% endif %}>{{ x.code }} {{ x.pays }}</option>{% endfor %}</optgroup>{% endfor %}
+    <select class="tel__indicatif" name="{{ 'indicatif' if nom == 'telephone' else nom ~ '_indicatif' }}" aria-label="Indicatif du pays" data-tel-indicatif>
+      {% for g in indicatifs %}<optgroup label="{{ g.groupe }}">{% for x in g.liste %}<option value="{{ x.code }}"{% if loop.first and g.groupe == "Pays fréquents" %} selected{% endif %}>{{ x.code }} {{ x.pays }}</option>{% endfor %}</optgroup>{% endfor %}
     </select>
-    <input id="telephone-{{ id }}" name="telephone" type="tel" required autocomplete="tel-national" inputmode="tel" placeholder="79 123 45 67" data-tel-numero>
-    <input type="hidden" name="telephone_complet" data-tel-complet>
+    <input id="telephone-{{ id }}" name="{{ nom }}" type="tel"{% if requis %} required{% endif %} autocomplete="tel-national" inputmode="tel" placeholder="79 123 45 67" data-tel-numero>
+    <input type="hidden" name="{{ nom }}_complet" data-tel-complet>
   </div>
 </div>
 {%- endmacro %}
 
-{% macro naissance(id="f") -%}
+{% macro naissance(id="f", nom="date_naissance", requis=True) -%}
 <div class="champ">
   <label for="naissance-{{ id }}">Date de naissance</label>
-  <input id="naissance-{{ id }}" name="date_naissance" type="date" required min="1920-01-01" max="{{ annee - 16 }}-12-31" autocomplete="bday">
+  <input id="naissance-{{ id }}" name="{{ nom }}" type="date"{% if requis %} required{% endif %} min="1920-01-01" max="{{ annee - 16 }}-12-31" autocomplete="bday">
+</div>
+{%- endmacro %}
+
+{% macro pays(id, nom, libelle, requis=True, defaut="Suisse") -%}
+<div class="champ">
+  <label for="{{ id }}">{{ libelle }}</label>
+  <select id="{{ id }}" name="{{ nom }}"{% if requis %} required{% endif %}>
+    <option value="Suisse"{% if defaut == "Suisse" %} selected{% endif %}>Suisse</option>
+    {% for x in indicatifs[1].liste if x.pays != "Suisse" %}<option value="{{ x.pays }}"{% if defaut == x.pays %} selected{% endif %}>{{ x.pays }}</option>{% endfor %}
+  </select>
+</div>
+{%- endmacro %}
+
+{% macro adresse(prefixe, requis=True) -%}
+<div class="adresse" data-adresse>
+  <div class="champ champ--large adresse__recherche">
+    <label for="{{ prefixe }}-recherche">Cherchez l'adresse</label>
+    <input id="{{ prefixe }}-recherche" type="search" autocomplete="off" placeholder="Ex. Avenue de la Gare 12, Lausanne" data-adresse-recherche>
+    <ul class="adresse__resultats" data-adresse-resultats hidden></ul>
+    <p class="champ__aide">Ou remplissez les champs ci-dessous.</p>
+  </div>
+  <div class="grille-champs adresse__champs">
+    <div class="champ"><label for="{{ prefixe }}-rue">Rue</label><input id="{{ prefixe }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" data-adresse-rue placeholder="Avenue de la Gare"></div>
+    <div class="champ"><label for="{{ prefixe }}-no">N°</label><input id="{{ prefixe }}-no" name="{{ prefixe }}_numero"{% if requis %} required{% endif %} data-adresse-no placeholder="12"></div>
+    <div class="champ"><label for="{{ prefixe }}-npa">NPA</label><input id="{{ prefixe }}-npa" name="{{ prefixe }}_npa"{% if requis %} required{% endif %} inputmode="numeric" autocomplete="postal-code" data-adresse-npa placeholder="1003"></div>
+    <div class="champ"><label for="{{ prefixe }}-localite">Localité</label><input id="{{ prefixe }}-localite" name="{{ prefixe }}_localite"{% if requis %} required{% endif %} autocomplete="address-level2" data-adresse-localite placeholder="Lausanne"></div>
+  </div>
 </div>
 {%- endmacro %}
 

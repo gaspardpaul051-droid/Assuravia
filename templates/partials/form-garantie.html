@@ -1,74 +1,192 @@
+{# Garantie de loyer : calcul, comparaison des offres et demande en plusieurs écrans (même parcours que l'ancien site). #}
 {% import "partials/form.html" as f %}
-<div class="calcul-loyer" data-calcul-loyer>
-  <div class="champ">
-    <label for="gl-loyer">Loyer mensuel net (CHF)</label>
-    <input id="gl-loyer" type="number" inputmode="numeric" min="0" step="10" value="2100" data-gl="loyer">
+{% import "partials/icones.html" as i %}
+<div class="funnel funnel--garantie" data-funnel data-garantie>
+  <div class="funnel__haut">
+    <button type="button" class="funnel__retour" data-funnel-retour hidden>{{ i.icone("fleche", "icone icone--petite carrousel__retour") }} Retour</button>
+    <p class="funnel__etape-num" data-funnel-compteur>Étape 1</p>
   </div>
-  <div class="calcul-loyer__comparaison" aria-live="polite">
-    <div><p class="calcul-loyer__label">Avec un dépôt bancaire</p><p class="calcul-loyer__chiffre" data-gl-sortie="depot">CHF 6'300</p><p>bloqués pendant tout le bail</p></div>
-    <div class="calcul-loyer__solution"><p class="calcul-loyer__label">Avec une garantie de loyer</p><p class="calcul-loyer__chiffre">CHF 0</p><p>bloqué, et une prime dès <span data-gl-sortie="prime">CHF 252</span> par an</p></div>
-  </div>
-  <p class="champ__aide">Prime indicative à partir de 4 % du montant garanti par an, hors timbre fédéral. Le prix exact dépend de l'assureur et de votre dossier.</p>
-</div>
+  <div class="funnel__progression" aria-hidden="true"><span data-funnel-barre></span></div>
 
-{{ f.ouvrir("garantie-loyer", "garantie-de-loyer") }}
-  <input type="hidden" name="loyer_mensuel" data-gl-cache="loyer">
-  <h2 class="form-titre">Faire ma demande de garantie</h2>
-  <div class="grille-champs">
-    <div class="champ">
-      <label for="montant-gl">Montant de la garantie (CHF)</label>
-      <input id="montant-gl" name="montant_garantie" type="number" inputmode="numeric" min="0" required data-gl="montant" placeholder="Ex. 6300">
-      <p class="champ__aide">En général 3 mois de loyer, indiqué dans votre bail.</p>
-    </div>
-    <div class="champ">
-      <label for="entree-gl">Date d'entrée dans le logement</label>
-      <input id="entree-gl" name="date_entree" type="date" required>
-    </div>
-    <div class="champ">
-      <label for="type-gl">Type de bail</label>
-      <select id="type-gl" name="type_bail" required>
-        <option value="">Choisir…</option>
-        <option value="logement">Logement</option>
-        <option value="commercial">Local commercial</option>
-      </select>
-    </div>
-    <div class="champ">
-      <label for="situation-gl">Situation professionnelle</label>
-      <select id="situation-gl" name="situation_pro" required>
-        <option value="">Choisir…</option>
-        <option value="salarie-cdi">Salarié (contrat à durée indéterminée)</option>
-        <option value="salarie-cdd">Salarié (contrat à durée déterminée)</option>
-        <option value="independant">Indépendant</option>
-        <option value="etudiant">Étudiant</option>
-        <option value="retraite">Retraité</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
-    <div class="champ">
-      <label for="poursuites-gl">Avez-vous des poursuites en cours ?</label>
-      <select id="poursuites-gl" name="poursuites" required>
-        <option value="">Choisir…</option>
-        <option value="non">Non</option>
-        <option value="oui">Oui</option>
-      </select>
-    </div>
-    <div class="champ">
-      <label for="coloc-gl">Co-titulaire du bail ?</label>
-      <select id="coloc-gl" name="cotitulaire">
-        <option value="non">Non, je suis seul</option>
-        <option value="oui">Oui (conjoint ou colocataire)</option>
-      </select>
-    </div>
-    <div class="champ champ--large">
-      <label for="adresse-gl">Adresse du logement</label>
-      <input id="adresse-gl" name="adresse_logement" required autocomplete="street-address" placeholder="Rue, numéro, NPA, localité">
-    </div>
+  <div class="funnel__grille">
+  {{ f.ouvrir("garantie-loyer", "garantie-de-loyer") }}
+    <input type="hidden" name="prime_estimee" data-gl-cache="prime">
+    <input type="hidden" name="offre_nom" data-gl-cache="offre">
+    <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
+
+    <fieldset class="fe" data-fe="1">
+      <legend class="fe__question">Calculez votre garantie de loyer</legend>
+      <div class="grille-champs">
+        <div class="champ">
+          <label for="gl-loyer">Loyer mensuel net (CHF)</label>
+          <input id="gl-loyer" name="loyer_net" type="number" inputmode="numeric" min="0" step="10" placeholder="Ex. 2100" data-gl="loyer">
+        </div>
+        <div class="champ">
+          <label for="gl-montant">Montant de la garantie (CHF)</label>
+          <input id="gl-montant" name="montant_garantie" type="number" inputmode="numeric" min="500" step="10" required placeholder="Ex. 6300" data-gl="montant">
+          <p class="champ__aide">Indiqué dans votre bail, au maximum 3 loyers.</p>
+        </div>
+      </div>
+      <p class="gl-alerte" data-gl-alerte hidden></p>
+      <div class="gl-comparaison" data-gl-comparaison hidden>
+        <div><small>Avec un dépôt bancaire</small><strong data-gl-sortie="bloque">CHF 0 bloqués</strong></div>
+        <span aria-hidden="true">{{ i.icone("fleche") }}</span>
+        <div class="gl-comparaison__ok"><small>Avec une garantie de loyer</small><strong>CHF 0 bloqué</strong></div>
+      </div>
+      <p class="fe__sous-question" data-gl-titre-offres hidden>Choisissez votre offre</p>
+      <div class="offres-gl" data-gl-offres>
+        <label class="offre-gl" data-offre="helvetia"><input type="radio" name="offre" value="helvetia" required data-fe-auto>
+          <span class="offre-gl__rang">1</span>
+          <span class="offre-gl__corps"><span class="offre-gl__nom">Helvetia <span class="offre-gl__badge" data-badge hidden>Prime la plus basse</span></span><span class="offre-gl__tag">Prime de 4 % par an</span>
+            <span class="offre-gl__points"><span>Aucun frais de gestion</span><span>Garantie jusqu'à CHF 18'000</span><span>Contrat d'un an, reconduit chaque année</span></span>
+            <span class="offre-gl__economie" data-economie hidden></span></span>
+          <span class="offre-gl__prix"><strong data-prix>—</strong><small data-prix-detail>par an, timbre compris</small><span class="offre-gl__choisir">Choisir</span></span></label>
+        <label class="offre-gl" data-offre="swisscaution"><input type="radio" name="offre" value="swisscaution" required data-fe-auto>
+          <span class="offre-gl__rang">2</span>
+          <span class="offre-gl__corps"><span class="offre-gl__nom">SwissCaution <span class="offre-gl__badge" data-badge hidden>Prime la plus basse</span></span><span class="offre-gl__tag">Prime de 5 % par an</span>
+            <span class="offre-gl__points"><span>CHF 20 de frais de gestion par an</span><span>Garantie illimitée</span><span>Rabais de 10 % pour les 18–25 ans</span></span>
+            <span class="offre-gl__economie" data-economie hidden></span></span>
+          <span class="offre-gl__prix"><strong data-prix>—</strong><small data-prix-detail>par an, timbre compris</small><span class="offre-gl__choisir">Choisir</span></span></label>
+        <label class="offre-gl" data-offre="firstcaution"><input type="radio" name="offre" value="firstcaution" required data-fe-auto>
+          <span class="offre-gl__rang">3</span>
+          <span class="offre-gl__corps"><span class="offre-gl__nom">Firstcaution <span class="offre-gl__badge" data-badge hidden>Prime la plus basse</span></span><span class="offre-gl__tag">Prime de 5 % par an</span>
+            <span class="offre-gl__points"><span>CHF 20 de frais de gestion par an</span><span>1re facture au forfait (env. CHF 50 à 180)</span><span>Paiement annuel ou mensuel</span></span>
+            <span class="offre-gl__economie" data-economie hidden></span></span>
+          <span class="offre-gl__prix"><strong data-prix>—</strong><small data-prix-detail>par an, timbre compris</small><span class="offre-gl__choisir">Choisir</span></span></label>
+        <label class="offre-gl offre-gl--conseil" data-offre="conseil"><input type="radio" name="offre" value="conseil" required data-fe-auto>
+          <span class="offre-gl__rang">?</span>
+          <span class="offre-gl__corps"><span class="offre-gl__nom">Je ne sais pas, conseillez-moi</span><span class="offre-gl__tag">Un spécialiste vous aide à choisir l'offre adaptée à votre situation.</span></span>
+          <span class="offre-gl__prix"><span class="offre-gl__choisir">Choisir</span></span></label>
+      </div>
+      <p class="resultat__avertissement">Estimation : la prime peut légèrement différer de la proposition finale de l'assureur.</p>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="2" hidden>
+      <legend class="fe__question">Où allez-vous habiter ?</legend>
+      <p class="fe__aide">Cette adresse figure sur l'attestation remise à la régie.</p>
+      {{ f.adresse("logement") }}
+      <div class="grille-champs">
+        <div class="champ">
+          <label for="gl-debut">Début de la location</label>
+          <input id="gl-debut" name="date_entree" type="date" required data-gl-debut>
+          <p class="champ__aide">Entre aujourd'hui et dans 12 mois.</p>
+        </div>
+        <div class="champ">
+          <label for="gl-loyer-brut">Loyer mensuel, charges comprises (CHF)</label>
+          <input id="gl-loyer-brut" name="loyer_mensuel" type="number" inputmode="numeric" min="0" step="10" required placeholder="Ex. 2300">
+        </div>
+      </div>
+      <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="3" hidden>
+      <legend class="fe__question">Parlons de vous</legend>
+      <div class="choix-cartes choix-cartes--petit">
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="civilite" value="Madame" required><span>Madame</span></label>
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="civilite" value="Monsieur" required><span>Monsieur</span></label>
+      </div>
+      <div class="grille-champs">
+        <div class="champ"><label for="gl-prenom">Prénom</label><input id="gl-prenom" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+        <div class="champ"><label for="gl-nom">Nom</label><input id="gl-nom" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+        {{ f.naissance("gl") }}
+        {{ f.pays("gl-nationalite", "nationalite", "Nationalité") }}
+        {{ f.telephone("gl") }}
+        <div class="champ"><label for="gl-email">E-mail</label><input id="gl-email" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+        {{ f.pays("gl-pays", "pays_residence", "Où habitez-vous actuellement ?") }}
+        <div class="champ">
+          <label for="gl-langue">Langue de correspondance</label>
+          <select id="gl-langue" name="langue" required><option>Français</option><option>Deutsch</option><option>Italiano</option><option>English</option></select>
+        </div>
+      </div>
+      <p class="fe__sous-question">Votre adresse actuelle</p>
+      {{ f.adresse("actuelle") }}
+      <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="4" hidden>
+      <legend class="fe__question">Une autre personne figure-t-elle sur le bail ?</legend>
+      <p class="fe__aide">Conjoint ou colocataire : s'il signe aussi le bail, il donne les mêmes informations.</p>
+      <div class="choix-cartes">
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="colocataire" value="non" required data-fe-auto><span>Non, je suis seul</span></label>
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="colocataire" value="oui" required><span>Oui, ajouter une personne</span></label>
+      </div>
+      <div class="fe__bloc" data-montre-si="colocataire=oui" hidden>
+        <div class="choix-cartes choix-cartes--petit">
+          <label class="choix-carte choix-carte--compact"><input type="radio" name="l2_civilite" value="Madame" required><span>Madame</span></label>
+          <label class="choix-carte choix-carte--compact"><input type="radio" name="l2_civilite" value="Monsieur" required><span>Monsieur</span></label>
+        </div>
+        <div class="grille-champs">
+          <div class="champ"><label for="l2-prenom">Prénom</label><input id="l2-prenom" name="l2_prenom" required placeholder="Marie"></div>
+          <div class="champ"><label for="l2-nom">Nom</label><input id="l2-nom" name="l2_nom" required placeholder="Dupont"></div>
+          {{ f.naissance("l2", "l2_naissance") }}
+          {{ f.pays("l2-nationalite", "l2_nationalite", "Nationalité") }}
+          {{ f.telephone("l2", nom="l2_telephone") }}
+          <div class="champ"><label for="l2-email">E-mail</label><input id="l2-email" name="l2_email" type="email" required placeholder="marie.dupont@gmail.com"></div>
+        </div>
+        <div class="consentement">
+          <input id="l2-meme" name="l2_meme_adresse" type="checkbox" value="oui" checked>
+          <label for="l2-meme">Cette personne habite actuellement à la même adresse que moi.</label>
+        </div>
+        <div data-montre-si="l2_meme_adresse!=oui" hidden>{{ f.adresse("l2") }}</div>
+        <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="5" hidden>
+      <legend class="fe__question">Et votre bailleur ?</legend>
+      <p class="fe__sous-question">L'immeuble est-il géré par le propriétaire lui-même ?</p>
+      <div class="choix-cartes">
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="gestion" value="Propriétaire" required><span>Oui, il gère lui-même</span></label>
+        <label class="choix-carte choix-carte--compact"><input type="radio" name="gestion" value="Gérance" required><span>Non, il y a une gérance</span></label>
+      </div>
+      <div class="consentement">
+        <input id="bailleur-plus-tard" name="bailleur_plus_tard" type="checkbox" value="oui">
+        <label for="bailleur-plus-tard">Je n'ai pas encore ces informations, je les enverrai plus tard.</label>
+      </div>
+      <div class="fe__bloc" data-montre-si="bailleur_plus_tard!=oui">
+        <div class="grille-champs">
+          <div class="champ">
+            <label for="b-titre">Titre</label>
+            <select id="b-titre" name="bailleur_titre"><option>Société</option><option>Madame</option><option>Monsieur</option></select>
+          </div>
+          <div class="champ"><label for="b-nom">Nom ou raison sociale</label><input id="b-nom" name="bailleur_nom" required placeholder="Ex. Régie du Lac SA"></div>
+          {{ f.telephone("b", libelle="Téléphone", nom="bailleur_telephone", requis=False) }}
+          <div class="champ"><label for="b-email">E-mail <span class="facultatif">(facultatif)</span></label><input id="b-email" name="bailleur_email" type="email" placeholder="location@regie.ch"><p class="champ__aide">Pour lui envoyer l'attestation.</p></div>
+        </div>
+        {{ f.adresse("bailleur") }}
+      </div>
+      <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="6" hidden>
+      <legend class="fe__question">Dernier coup d'œil</legend>
+      <p class="fe__sous-question">Un coup de pouce en plus ? <span class="facultatif">(facultatif)</span></p>
+      <div class="choix-cartes">
+        <label class="choix-carte choix-carte--option"><input type="checkbox" name="option_impots" value="oui"><span class="choix-carte__icone">{{ i.icone("calcul") }}</span><span>Payer moins d'impôts<small>Un spécialiste me conseille</small></span></label>
+        <label class="choix-carte choix-carte--option"><input type="checkbox" name="option_menage" value="oui"><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Revoir mon assurance ménage<small>Pour mon nouveau logement</small></span></label>
+      </div>
+      <div class="champ">
+        <label for="gl-message">Un message pour nous ? <span class="facultatif">(facultatif)</span></label>
+        <textarea id="gl-message" name="message" rows="3" placeholder="Ex. La régie souhaite recevoir l'attestation avant le 15 du mois."></textarea>
+      </div>
+      <div class="consentement">
+        <input id="consentement-gl" name="consentement" type="checkbox" value="oui" required>
+        <label for="consentement-gl">J'accepte que mes données (et celles de la personne que j'ai ajoutée, qui en est informée) soient traitées pour étudier ma demande et transmises à l'assureur choisi. Si j'ai coché une option ci-dessus, j'accepte aussi d'être contacté à ce sujet. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+      </div>
+      <p class="fe__aide">L'envoi ne vous engage pas. Le contrat n'existe qu'après acceptation et signature de l'offre.</p>
+      <button type="submit" class="bouton bouton--action fe__suivant">Envoyer ma demande</button>
+    </fieldset>
+  </form>
+
+  <aside class="recap-gl" data-gl-recap hidden>
+    <p class="recap-gl__titre">Votre garantie</p>
+    <dl>
+      <div><dt>Offre</dt><dd data-recap="offre">–</dd></div>
+      <div><dt>Montant garanti</dt><dd data-recap="montant">–</dd></div>
+      <div><dt>Coût estimé</dt><dd data-recap="prime">–</dd></div>
+      <div class="recap-gl__libre"><dt>Argent qui reste à vous</dt><dd data-recap="libre">CHF 0</dd></div>
+    </dl>
+    <button type="button" class="bouton bouton--discret" data-fe-modifier="1">Modifier mon calcul</button>
+  </aside>
   </div>
-  {{ f.naissance("gl") }}
-  {{ f.contact("gl") }}
-  <div class="consentement">
-    <input id="autres-gl" name="interet_autres" type="checkbox" value="oui">
-    <label for="autres-gl">Je souhaite aussi un conseil pour réduire mes impôts ou mon assurance ménage.</label>
-  </div>
-{{ f.fermer("Envoyer ma demande", "gl") }}
-</form>
+</div>
