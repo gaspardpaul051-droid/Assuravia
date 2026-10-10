@@ -1024,3 +1024,45 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .adresse--ok .adresse__recherche .champ__aide { color: var(--succes); font-weight: 700; }
 .adresse__statut--alerte { color: #9B1C1C !important; }
 .adresse--ok .adresse__recherche input { border-color: var(--succes); }
+/* Simulations : éléments communs */
+.funnel-page__titre { margin: var(--e-3) 0 0; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.funnel--pro { border-top-color: var(--marine); }
+.funnel--pro .funnel__progression span { background: linear-gradient(90deg, var(--or-clair), var(--or)); }
+.funnel--pro .funnel__retour { color: var(--marine); }
+.funnel-page--pro { background: radial-gradient(900px 400px at 100% 0%, var(--or-pale), transparent 70%), var(--fond); }
+.funnel--pro .choix-carte:has(input:checked), .funnel--pro .formule:has(input:checked) { border-color: var(--marine); background: #EEF2F8; }
+.funnel--pro .choix-carte__icone { background: #EEF2F8; color: var(--marine); }
+.funnel--pro .choix-carte:has(input:checked) .choix-carte__icone { background: var(--marine); color: var(--or-clair); }
+.funnel--pro .compteur__bouton { border-color: var(--marine); color: var(--marine); }
+.funnel--pro .compteur__bouton:hover { background: var(--marine); color: var(--or-clair); }
+.funnel--pro .apercu-prime, .funnel--pro .somme-proposee { background: var(--or-pale); }
+.funnel--pro .apercu-prime__montant { color: var(--marine); }
+.funnel__note { margin: var(--e-4) auto 0; max-width: 640px; text-align: center; font-size: var(--t-s); color: var(--texte-doux); }
+.choix-cartes--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.objets { display: grid; gap: var(--e-4); }
+.objet { padding: var(--e-4) var(--e-5); border: 1px solid var(--bordure); border-radius: var(--r-l); background: var(--fond); animation: fe-entree .35s ease; }
+.objet__entete { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--e-3); color: var(--marine); }
+.objet__retirer { border: 0; background: none; color: #9B1C1C; font: inherit; font-weight: 700; cursor: pointer; text-decoration: underline; }
+.objets__ajouter { justify-self: start; }
+.objets__total { margin: 0; font-size: var(--t-l); color: var(--marine); }
+.entree-simulation__points { list-style: none; margin: var(--e-4) 0; padding: 0; display: grid; gap: var(--e-3); font-weight: 600; color: var(--marine); }
+.entree-simulation__points li { display: flex; gap: var(--e-2); align-items: center; }
+.entree-simulation__points .icone { color: var(--succes); }
+.cta-simulation { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-4); margin-top: var(--e-5); padding: var(--e-4) var(--e-5); border-radius: var(--r-l); background: var(--or-pale); border: 1px solid #EBDDAE; }
+.cta-simulation div { flex: 1; min-width: 220px; display: grid; gap: 2px; }
+.cta-simulation strong { color: var(--marine); font-size: var(--t-l); }
+.cta-simulation span { font-size: var(--t-s); color: var(--texte-doux); }
+/* Volet de produits à cocher */
+.champ__label { margin: 0 0 6px; font-weight: 700; color: var(--marine); }
+.volet { border: 1.5px solid var(--bordure); border-radius: var(--r-m); background: var(--fond); }
+.volet summary { cursor: pointer; padding: 14px 16px; font-weight: 600; color: var(--marine); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.volet summary::-webkit-details-marker { display: none; }
+.volet summary::after { content: ""; width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .2s; }
+.volet[open] summary::after { transform: rotate(-135deg); }
+.volet__liste { max-height: 340px; overflow-y: auto; padding: 0 16px 14px; display: grid; gap: 4px; border-top: 1px solid var(--bordure); }
+.volet__groupe { margin: 12px 0 2px; font-size: var(--t-xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--bleu); }
+.volet__case { display: flex; gap: 10px; align-items: center; padding: 6px 8px; border-radius: var(--r-s); cursor: pointer; }
+.volet__case:hover { background: var(--bleu-pale); }
+.volet__case input { width: 18px; height: 18px; accent-color: var(--bleu); }
+.volet .volet__case { margin: 0; font-weight: 500; color: var(--texte); }
+.volet .volet__case span { line-height: 1.35; }

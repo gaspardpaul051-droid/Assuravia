@@ -1,0 +1,46 @@
+{% set sim = {"id": "ov", "theme": "prive", "groupe": "particuliers", "form": "simulation-objets-de-valeur", "produit": "objets-de-valeur", "produit_nom": "Objets de valeur", "page": "/particuliers/objets-de-valeur/", "icone": "diamant",
+  "titre": "Objets de valeur : calculez votre prime en 2 minutes", "h1": "Calculez l'assurance de vos objets de valeur",
+  "description": "Montres, bijoux, tableaux : listez vos objets et obtenez une estimation immédiate de la prime. Options protection juridique et cyber.",
+  "attrs": {"taux-fixe": 9, "prime-nom": "Objets de valeur"}} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% import "partials/icones.html" as i %}
+{% block etapes %}
+{{ e.identite() }}
+{{ e.logement() }}
+{{ e.statut() }}
+{{ e.adresse() }}
+{{ e.ouvrir("categories", "Que souhaitez-vous assurer ?", "Plusieurs choix possibles.") }}
+  <div class="choix-cartes choix-cartes--4">
+    {% for c, ic in [("Montres", "horloge"), ("Bijoux", "diamant"), ("Tableaux et objets d'art", "livre"), ("Autre", "colis")] %}
+    <label class="choix-carte choix-carte--option"><input type="checkbox" name="categories" value="{{ c }}" data-groupe-requis="categories"><span class="choix-carte__icone">{{ i.icone(ic) }}</span><span>{{ c }}</span></label>
+    {% endfor %}
+  </div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.ouvrir("objets", "Listez vos objets", "Ajoutez autant d'objets que vous le souhaitez. La valeur est le prix d'achat ou la valeur d'expertise.") }}
+  <input type="hidden" name="liste_objets" data-objets-texte>
+  <div class="objets" data-objets>
+    <template data-objet-modele>
+      <div class="objet" data-objet>
+        <div class="objet__entete"><strong>Objet <span data-objet-num>1</span></strong><button type="button" class="bouton--discret objet__retirer" data-objet-retirer>Retirer</button></div>
+        <div class="grille-champs">
+          <div class="champ"><label>Marque</label><input data-objet-champ="marque" required placeholder="Ex. Omega"></div>
+          <div class="champ"><label>Modèle</label><input data-objet-champ="modele" placeholder="Ex. Seamaster"></div>
+          <div class="champ"><label>Description</label><input data-objet-champ="description" placeholder="Ex. montre en acier, 2021"></div>
+          <div class="champ"><label>Valeur (CHF)</label><input data-objet-champ="prix" type="number" inputmode="numeric" min="100" step="50" required placeholder="Ex. 6500" data-somme></div>
+        </div>
+      </div>
+    </template>
+  </div>
+  <button type="button" class="bouton bouton--secondaire objets__ajouter" data-objet-ajouter>+ Ajouter un objet</button>
+  <p class="objets__total">Valeur totale : <strong data-affiche="somme_objets">CHF 0</strong></p>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.impots() }}
+{{ e.option_pj() }}
+{{ e.option_cyber() }}
+{{ e.interet_menage() }}
+{{ e.coordonnees() }}
+{{ e.resultat("objets") }}
+{% endblock %}

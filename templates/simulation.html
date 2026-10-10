@@ -1,0 +1,42 @@
+{# Base commune à toutes les simulations. La page définit `sim` avant extends, puis le bloc `etapes`. #}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block theme %}{{ sim.theme }}{% endblock %}
+{% block title %}{{ sim.titre }} | Assuravia{% endblock %}
+{% block description %}{{ sim.description }}{% endblock %}
+{% block content %}
+{% set g = groupes[sim.groupe] %}
+<section class="funnel-page funnel-page--{{ sim.theme }}">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="{{ g.url }}">{{ g.nom }}</a> <span aria-hidden="true">/</span> <a href="{{ sim.page }}">{{ sim.produit_nom }}</a></nav>
+    <p class="etiquette etiquette--{{ sim.theme }}">{{ i.icone(sim.icone, "icone icone--petite") }} Simulation {{ sim.produit_nom|lower if sim.theme == "prive" else sim.produit_nom }}</p>
+    <h1 class="funnel-page__titre">{{ sim.h1 }}</h1>
+
+    <div class="funnel funnel--{{ sim.theme }}" data-funnel{% for k, v in (sim.attrs or {}).items() %} data-{{ k }}="{{ v }}"{% endfor %}>
+      <div class="funnel__haut">
+        <button type="button" class="funnel__retour" data-funnel-retour hidden>{{ i.icone("fleche", "icone icone--petite carrousel__retour") }} Retour</button>
+        <p class="funnel__etape-num" data-funnel-compteur>Étape 1</p>
+      </div>
+      <div class="funnel__progression" aria-hidden="true"><span data-funnel-barre></span></div>
+
+      {{ f.ouvrir(sim.form, sim.produit) }}
+        <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
+        <input type="hidden" name="somme_assuree" data-calc="somme">
+        <input type="hidden" name="formule_choisie" data-calc="formule">
+        <input type="hidden" name="prime_principale" data-calc="prime_principale">
+        <input type="hidden" name="prime_totale" data-calc="prime_totale">
+        <input type="hidden" name="suite_souhaitee" value="" data-funnel-action>
+        {% block etapes %}{% endblock %}
+      </form>
+    </div>
+
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+    {% if sim.note %}<p class="funnel__note">{{ sim.note }}</p>{% endif %}
+  </div>
+</section>
+{% endblock %}

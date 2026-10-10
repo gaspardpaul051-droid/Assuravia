@@ -9,11 +9,12 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
   et page produit générée avec `templates/produit.html`). Un produit avec un champ `url` a une page fixe.
   Groupes et catégories autorisées : `GROUPES` dans `build.py`.
 - `templates/pages/` : pages fixes ; le chemin donne l'URL.
+- Simulations (parcours en plusieurs écrans) : toutes héritent de `templates/simulation.html` et utilisent les écrans de `templates/partials/etapes.html`. Tarifs : attributs `data-prime-base`, `data-taux-fixe`, `data-taux` (formules), `data-prix-base` × `data-facteur`, options `data-prix`. Un produit pointe vers sa simulation avec le champ `simulateur:` (et `entree: logement` pour commencer par appartement ou maison).
 - Charte graphique : `design-system/assuravia/MASTER.md` (couleurs Privé bleu clair, Pro marine et or).
 - `templates/pages/lp/` : pages publicitaires (Google Ads), sans menu, `noindex`. Ne jamais les lier depuis le site.
 - `content/articles/*.md` : articles du blog, publiés sous `/blog/<nom-du-fichier>/`.
 - Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
-  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`), sinon Netlify crée un nouveau formulaire.
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`), sinon Netlify crée un nouveau formulaire.
 
 ## Article hebdomadaire
 Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :

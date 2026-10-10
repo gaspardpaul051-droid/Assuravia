@@ -1,0 +1,162 @@
+{# Écrans réutilisables des simulations. À importer « with context » : utilise `sim` (theme, id). #}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+
+{% macro continuer() -%}
+<button type="button" class="bouton bouton--{{ sim.theme }} fe__suivant" data-fe-suivant>Continuer</button>
+{%- endmacro %}
+
+{% macro ouvrir(cle, question, aide=None, premier=False, final=False) -%}
+<fieldset class="fe" data-fe="{{ cle }}"{% if final %} data-fe-final{% endif %}{% if not premier %} hidden{% endif %}>
+  <legend class="fe__question">{{ question|safe }}</legend>
+  {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
+{%- endmacro %}
+
+{% macro identite(premier=True) -%}
+{{ ouvrir("identite", "Commençons : comment vous appelez-vous ?", premier=premier) }}
+  <div class="grille-champs">
+    <div class="champ"><label for="prenom-{{ sim.id }}">Prénom</label><input id="prenom-{{ sim.id }}" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+    <div class="champ"><label for="nom-{{ sim.id }}">Nom</label><input id="nom-{{ sim.id }}" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+  </div>
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{% macro logement() -%}
+{{ ouvrir("logement", "Où habitez-vous ?") }}
+  <div class="choix-cartes">
+    <label class="choix-carte"><input type="radio" name="logement" value="Appartement" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("batiment") }}</span><span>Appartement</span></label>
+    <label class="choix-carte"><input type="radio" name="logement" value="Maison" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Maison</span></label>
+  </div>
+</fieldset>
+{%- endmacro %}
+
+{% macro statut(batiment=True) -%}
+{{ ouvrir("statut", "Vous êtes…") }}
+  <div class="choix-cartes">
+    <label class="choix-carte"><input type="radio" name="statut" value="Locataire" required{% if not batiment %} data-fe-auto{% endif %}><span class="choix-carte__icone">{{ i.icone("cle") }}</span><span>Locataire</span></label>
+    <label class="choix-carte"><input type="radio" name="statut" value="Propriétaire" required{% if not batiment %} data-fe-auto{% endif %}><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Propriétaire</span></label>
+  </div>
+  {% if batiment %}
+  <div class="consentement fe__option" data-montre-si="statut=Propriétaire" hidden>
+    <input id="batiment-{{ sim.id }}" name="revoir_batiment" type="checkbox" value="oui">
+    <label for="batiment-{{ sim.id }}">Je souhaite aussi revoir mon assurance bâtiment.</label>
+  </div>
+  {{ continuer() }}
+  {% endif %}
+</fieldset>
+{%- endmacro %}
+
+{% macro adresse(question="Quelle est l'adresse du logement ?", aide=None) -%}
+{{ ouvrir("adresse", question, aide) }}
+  {{ f.adresse("logement") }}
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{% macro personnes() -%}
+{{ ouvrir("personnes", "Combien de personnes vivent dans le ménage ?") }}
+  <div class="compteurs">
+    {{ compteur("adultes", "Adultes", 1, 1, 10) }}
+    {{ compteur("enfants", "Enfants <small>(moins de 14 ans)</small>", 0, 0, 10) }}
+  </div>
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{% macro compteur(nom, libelle, valeur, min, max, pas=1, grand=False) -%}
+<div class="compteur{% if grand %} compteur--grand{% endif %}" data-compteur{% if pas != 1 %} data-pas="{{ pas }}"{% endif %}>
+  <span class="compteur__label">{{ libelle|safe }}</span>
+  <button type="button" class="compteur__bouton" data-compteur-moins aria-label="Moins">−</button>
+  <input class="compteur__valeur" name="{{ nom }}" type="number" min="{{ min }}" max="{{ max }}" step="{{ pas }}" value="{{ valeur }}" readonly aria-label="{{ libelle|striptags }}">
+  <button type="button" class="compteur__bouton" data-compteur-plus aria-label="Plus">+</button>
+</div>
+{%- endmacro %}
+
+{# Question oui / non. Avec `prix`, le oui ajoute une option payante au total. #}
+{% macro oui_non(cle, question, aide=None, oui="Oui", non="Non merci", prix=0, option=None) -%}
+{{ ouvrir(cle, question, aide) }}
+  <div class="choix-cartes">
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="{{ cle }}" value="oui" required data-fe-auto{% if prix %} data-prix="{{ prix }}" data-option-nom="{{ option }}"{% endif %}><span>{{ oui }}{% if prix %} <small>+ CHF {{ prix }} / an</small>{% endif %}</span></label>
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="{{ cle }}" value="non" required data-fe-auto><span>{{ non }}</span></label>
+  </div>
+</fieldset>
+{%- endmacro %}
+
+{# Options standard du parcours (protection juridique, cyber, voyage, ménage, impôts) #}
+{% macro option_pj() -%}{{ oui_non("option_pj", "Ajouter une protection juridique ?", "Litige avec votre bailleur, votre employeur ou un vendeur : les frais d'avocat et de procédure sont pris en charge.", prix=250, option="Protection juridique") }}{%- endmacro %}
+{% macro option_cyber() -%}{{ oui_non("option_cyber", "Ajouter une cyberassurance ?", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", prix=50, option="Cyberassurance") }}{%- endmacro %}
+{% macro option_voyage() -%}{{ oui_non("option_voyage", "Ajouter une assurance voyage ?", "Frais de guérison à l'étranger, rapatriement, annulation de voyage : pour toute la famille, toute l'année.", prix=210, option="Assurance voyage") }}{%- endmacro %}
+{% macro option_rc() -%}{{ oui_non("option_rc", "Ajouter la responsabilité civile privée ?", "Elle paie les dommages que vous causez à d'autres personnes ou à leurs biens, et la plupart des régies la demandent. Ménage et RC privée se combinent dans un même contrat : une seule police, une seule échéance.", oui="Oui", non="Non, j'en ai déjà une", prix=110, option="Responsabilité civile privée") }}{%- endmacro %}
+{% macro interet_menage(question="Souhaitez-vous aussi revoir votre assurance ménage ?") -%}{{ oui_non("interet_menage", question, "Un spécialiste compare votre assurance ménage actuelle et vous montre ce qui peut être amélioré.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
+{% macro impots() -%}{{ oui_non("economiser_impots", "Souhaitez-vous aussi payer moins d'impôts ?", "Un spécialiste peut vous montrer ce que le 3e pilier ou votre déclaration peuvent vous faire gagner.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
+
+{# Coordonnées : la prime reste floutée jusqu'à l'envoi #}
+{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True) -%}
+{{ ouvrir("coordonnees", "Votre prime est prête") }}
+  <div class="apercu-prime">
+    <p class="apercu-prime__label">Votre prime annuelle estimée</p>
+    <p class="apercu-prime__montant floute" data-affiche="total_floute">CHF 000.00</p>
+    <p class="fe__aide">Indiquez où vous joindre pour l'afficher et recevoir votre récapitulatif.</p>
+  </div>
+  <div class="grille-champs">
+    {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{% endif %}
+    {% if nom_prenom %}
+    <div class="champ"><label for="prenom-{{ sim.id }}">Prénom</label><input id="prenom-{{ sim.id }}" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+    <div class="champ"><label for="nom-{{ sim.id }}">Nom</label><input id="nom-{{ sim.id }}" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+    {% endif %}
+    {{ f.telephone(sim.id) }}
+    <div class="champ"><label for="email-{{ sim.id }}">E-mail</label><input id="email-{{ sim.id }}" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+    {% if naissance %}{{ f.naissance(sim.id) }}{% endif %}
+  </div>
+  <div class="consentement">
+    <input id="consentement-{{ sim.id }}" name="consentement" type="checkbox" value="oui" required>
+    <label for="consentement-{{ sim.id }}">J'accepte d'être contacté par téléphone ou e-mail au sujet de ma demande, par un conseiller Assuravia ou par un partenaire spécialisé à qui elle peut être transmise. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
+  </div>
+  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Afficher ma prime</button>
+</fieldset>
+{%- endmacro %}
+
+{% macro resultat(modifier) -%}
+{{ ouvrir("resultat", '<span data-affiche="prenom"></span>, voici votre estimation', final=True) }}
+  <div class="resultat-prime">
+    <p class="resultat-prime__label">Prime annuelle estimée</p>
+    <p class="resultat-prime__montant" data-affiche="total">CHF 0</p>
+    <p class="resultat-prime__mois" data-affiche="mois"></p>
+    <ul class="resultat-prime__detail" data-affiche="detail"></ul>
+    <p class="resultat__avertissement">Estimation indicative selon les informations fournies. L'offre définitive, les conditions et la prime exacte sont établies par l'assureur.</p>
+  </div>
+  <div class="resultat-actions">
+    <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Envoyer ma demande de souscription</button>
+    <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être recontacté par un conseiller</button>
+    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+  </div>
+</fieldset>
+{%- endmacro %}
+
+{# Choix de formule : `formules` = liste de dicts {nom, taux, points, badge} #}
+{% macro formules(liste, question="Choisissez votre formule") -%}
+{{ ouvrir("formule", question) }}
+  <div class="formules">
+    {% for x in liste %}
+    <label class="formule{% if x.badge %} formule--conseil{% endif %}"><input type="radio" name="formule" value="{{ x.nom }}" data-taux="{{ x.taux }}" required data-fe-auto>
+      {% if x.badge %}<span class="formule__badge">{{ x.badge }}</span>{% endif %}
+      <span class="formule__nom">{{ x.nom }}</span>
+      {% if x.taux %}<span class="formule__prix floute" data-prix-formule="{{ x.taux }}">CHF 000 / an</span>{% else %}<span class="formule__prix">Offre personnalisée</span>{% endif %}
+      <ul>{% for p in x.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
+    {% endfor %}
+  </div>
+</fieldset>
+{%- endmacro %}
+
+{# Choix en cartes : `choix` = liste de dicts {valeur, titre, detail, icone, attrs} #}
+{% macro cartes(cle, question, choix, aide=None, auto=True, colonnes=2) -%}
+{{ ouvrir(cle, question, aide) }}
+  <div class="choix-cartes{% if colonnes == 3 %} choix-cartes--3{% endif %}">
+    {% for c in choix %}
+    <label class="choix-carte{% if not c.icone and not c.detail %} choix-carte--compact{% endif %}"><input type="radio" name="{{ cle }}" value="{{ c.valeur }}" required{% if auto %} data-fe-auto{% endif %} {{ (c.attrs or '')|safe }}>{% if c.icone %}<span class="choix-carte__icone">{{ i.icone(c.icone) }}</span>{% endif %}<span class="choix-carte__titre">{{ c.titre or c.valeur }}</span>{% if c.detail %}<span class="choix-carte__detail">{{ c.detail }}</span>{% endif %}</label>
+    {% endfor %}
+  </div>
+  {% if not auto %}{{ continuer() }}{% endif %}
+</fieldset>
+{%- endmacro %}

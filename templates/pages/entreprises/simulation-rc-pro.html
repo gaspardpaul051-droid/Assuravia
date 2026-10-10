@@ -1,0 +1,33 @@
+{% set sim = {"id": "rp", "theme": "pro", "groupe": "entreprises", "form": "simulation-rc-pro", "produit": "rc-pro", "produit_nom": "RC professionnelle", "page": "/entreprises/rc-professionnelle/", "icone": "bouclier",
+  "titre": "RC professionnelle : calculez votre prime en 2 minutes", "h1": "Calculez votre RC professionnelle",
+  "description": "Indépendants et PME : estimez votre prime de RC professionnelle selon votre chiffre d'affaires et votre secteur. Estimation immédiate, gratuite et sans engagement.",
+  "attrs": {"prime-nom": "RC professionnelle"}} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% block etapes %}
+<fieldset class="fe" data-fe="statut_juridique">
+  <legend class="fe__question">Quelle est la forme juridique de votre entreprise ?</legend>
+  <div class="choix-cartes choix-cartes--3">
+    {% for v in ["Raison individuelle", "Sàrl", "SA", "SNC", "Association", "Autre"] %}
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="statut_juridique" value="{{ v }}" required data-fe-auto><span>{{ v }}</span></label>
+    {% endfor %}
+  </div>
+</fieldset>
+{{ e.adresse("Quelle est l'adresse de l'entreprise ?") }}
+{{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
+  <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.cartes("chiffre_affaires", "Quel est votre chiffre d'affaires annuel ?", [
+  {"valeur": "Jusqu'à CHF 100'000", "attrs": 'data-prix-base="400"'},
+  {"valeur": "CHF 100'000 à 500'000", "attrs": 'data-prix-base="900"'},
+  {"valeur": "CHF 500'000 à 1 million", "attrs": 'data-prix-base="1800"'},
+  {"valeur": "Plus de CHF 1 million", "attrs": 'data-prix-base="2600"'}]) }}
+{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
+  {"valeur": "Médical", "icone": "croix", "attrs": 'data-facteur="2"'},
+  {"valeur": "Construction", "icone": "batiment", "attrs": 'data-facteur="2"'},
+  {"valeur": "Service", "icone": "groupe", "attrs": 'data-facteur="1.1"'},
+  {"valeur": "Vente de biens", "icone": "colis", "attrs": 'data-facteur="1.1"'}]) }}
+{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
+{{ e.resultat("chiffre_affaires") }}
+{% endblock %}

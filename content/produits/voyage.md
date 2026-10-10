@@ -16,6 +16,7 @@ chapeau: Une maladie avant le départ, une hospitalisation aux États-Unis ou un
 retenir: À l'étranger, la LAMal paie les urgences au maximum au double du tarif suisse. | L'assurance de base ne paie pas le rapatriement. | Une assurance voyage combine annulation, assistance et frais médicaux. | Vérifiez votre carte de crédit et vos complémentaires pour éviter les doublons.
 pour_qui: Vous partez aux États-Unis, au Canada ou en Australie | Vous réservez vos voyages plusieurs mois à l'avance | Vous voyagez plusieurs fois par an | Vous pratiquez un sport comme la plongée ou la randonnée en montagne
 quiz: En cas d'urgence à l'étranger, l'assurance de base rembourse tous les frais, quel que soit le pays. | faux | Elle paie au maximum le double de ce que le même traitement aurait coûté en Suisse. Dans les pays où les soins sont chers, la différence reste à votre charge. ;; L'assurance de base paie un rapatriement en Suisse après un accident à l'étranger. | faux | L'assurance de base ne prend pas en charge le transport, le sauvetage ni le rapatriement depuis l'étranger. ;; Une maladie connue au moment de la réservation peut être exclue de la garantie annulation. | vrai | Beaucoup de contrats excluent ou limitent les maladies préexistantes. Lisez les conditions avant de réserver.
+simulateur: /particuliers/simulation-voyage/
 ---
 
 ## Ce que la LAMal couvre à l'étranger

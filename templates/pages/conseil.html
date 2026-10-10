@@ -17,103 +17,114 @@
       <div data-univers="prive">
         <input type="hidden" name="univers" value="Privé">
         <div class="champ">
-          <label for="choix-produit">Votre demande concerne</label>
-          <select id="choix-produit" name="produit_choisi" required data-choix-produit>
-            <option value="bilan-complet-prive">Bilan complet de mes assurances et de ma prévoyance</option>
-            {% for cat in groupes.particuliers.categories %}
-            <optgroup label="{{ cat }}">
-              {% for p in produits.particuliers if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
-            </optgroup>
-            {% endfor %}
-            <option value="autre-prive">Autre ou plusieurs besoins</option>
-          </select>
+          <p class="champ__label" id="vp-label">Votre demande concerne <span class="facultatif">(plusieurs choix possibles)</span></p>
+          <details class="volet" data-volet open>
+            <summary><span data-volet-resume>Choisissez une ou plusieurs assurances</span></summary>
+            <div class="volet__liste" role="group" aria-labelledby="vp-label">
+              <p class="volet__groupe">Bilan</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Bilan complet de mes assurances et de ma prévoyance" data-groupe-requis="produits_prive" data-slug="bilan-complet-prive"> <span>Bilan complet de mes assurances et de ma prévoyance</span></label>
+              <p class="volet__groupe">Santé</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance maladie de base (LAMal)" data-groupe-requis="produits_prive" data-slug="lamal"> <span>Assurance maladie de base (LAMal)</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance complémentaire" data-groupe-requis="produits_prive" data-slug="complementaire-maladie"> <span>Assurance complémentaire</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Hospitalisation, médecines alternatives, dentaire" data-groupe-requis="produits_prive"> <span>Hospitalisation, médecines alternatives, dentaire</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Indemnité journalière maladie" data-groupe-requis="produits_prive"> <span>Indemnité journalière maladie</span></label>
+              <p class="volet__groupe">Personnes</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance vie" data-groupe-requis="produits_prive"> <span>Assurance vie</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance accidents" data-groupe-requis="produits_prive"> <span>Assurance accidents</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance risque décès" data-groupe-requis="produits_prive"> <span>Assurance risque décès</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance invalidité" data-groupe-requis="produits_prive"> <span>Assurance invalidité</span></label>
+              <p class="volet__groupe">Véhicules</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance auto" data-groupe-requis="produits_prive" data-slug="vehicule"> <span>Assurance auto</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance moto" data-groupe-requis="produits_prive"> <span>Assurance moto</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Véhicule électrique" data-groupe-requis="produits_prive"> <span>Véhicule électrique</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Scooter" data-groupe-requis="produits_prive"> <span>Scooter</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Voiture ancienne ou de collection" data-groupe-requis="produits_prive"> <span>Voiture ancienne ou de collection</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Camping-car ou van" data-groupe-requis="produits_prive"> <span>Camping-car ou van</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Bateau" data-groupe-requis="produits_prive"> <span>Bateau</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Leasing" data-groupe-requis="produits_prive"> <span>Leasing</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Casco complète" data-groupe-requis="produits_prive"> <span>Casco complète</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Casco partielle" data-groupe-requis="produits_prive"> <span>Casco partielle</span></label>
+              <p class="volet__groupe">Prévoyance et placement</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="3e pilier et assurance vie 3e pilier" data-groupe-requis="produits_prive" data-slug="3e-pilier"> <span>3e pilier et assurance vie 3e pilier</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Prévoyance et planification de la retraite" data-groupe-requis="produits_prive"> <span>Prévoyance et planification de la retraite</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Compte de libre passage" data-groupe-requis="produits_prive" data-slug="libre-passage"> <span>Compte de libre passage</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Gestion de capitaux de prévoyance" data-groupe-requis="produits_prive"> <span>Gestion de capitaux de prévoyance</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Placements et fonds" data-groupe-requis="produits_prive" data-slug="placements"> <span>Placements et fonds</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Gestion de fortune et banquier privé" data-groupe-requis="produits_prive"> <span>Gestion de fortune et banquier privé</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Conseil financier" data-groupe-requis="produits_prive"> <span>Conseil financier</span></label>
+              <p class="volet__groupe">Impôts</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Déclaration d'impôts" data-groupe-requis="produits_prive" data-slug="declaration-impots"> <span>Déclaration d'impôts</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Déduction et optimisation fiscale" data-groupe-requis="produits_prive"> <span>Déduction et optimisation fiscale</span></label>
+              <p class="volet__groupe">Logement et biens</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance ménage" data-groupe-requis="produits_prive" data-slug="assurance-menage"> <span>Assurance ménage</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="RC privée" data-groupe-requis="produits_prive" data-slug="rc-privee"> <span>RC privée</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance bâtiment" data-groupe-requis="produits_prive" data-slug="assurance-batiment"> <span>Assurance bâtiment</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance construction" data-groupe-requis="produits_prive"> <span>Assurance construction</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance technique" data-groupe-requis="produits_prive"> <span>Assurance technique</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Objets de valeur" data-groupe-requis="produits_prive" data-slug="objets-de-valeur"> <span>Objets de valeur</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Garantie de loyer" data-groupe-requis="produits_prive" data-slug="garantie-de-loyer"> <span>Garantie de loyer</span></label>
+              <p class="volet__groupe">Protection</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Protection juridique" data-groupe-requis="produits_prive" data-slug="protection-juridique"> <span>Protection juridique</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance voyage" data-groupe-requis="produits_prive" data-slug="voyage"> <span>Assurance voyage</span></label>
+            </div>
+          </details>
         </div>
-        <div class="grille-champs">
-          <div class="champ">
-            <label for="situation-d">Situation professionnelle</label>
-            <select id="situation-d" name="situation" required>
-              <option value="">Choisir…</option>
-              <option value="salarie">Salarié</option>
-              <option value="independant">Indépendant</option>
-              <option value="retraite">Retraité</option>
-              <option value="etudiant">Étudiant ou en formation</option>
-              <option value="sans-activite">Sans activité lucrative</option>
-            </select>
-          </div>
-          {{ f.naissance("d") }}
-          <div class="champ">
-            <label for="foyer-d">Votre foyer</label>
-            <select id="foyer-d" name="foyer" required>
-              <option value="">Choisir…</option>
-              <option value="seul">Seul</option>
-              <option value="couple">En couple</option>
-              <option value="famille">Famille avec enfants</option>
-              <option value="monoparental">Parent seul avec enfants</option>
-            </select>
-          </div>
-          <div class="champ">
-            <label for="logement-d">Votre logement</label>
-            <select id="logement-d" name="logement" required>
-              <option value="">Choisir…</option>
-              <option value="locataire">Locataire</option>
-              <option value="proprietaire">Propriétaire</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
-        </div>
+        {{ f.adresse("client") }}
+        <div class="grille-champs">{{ f.naissance("d") }}</div>
         <div class="champ">
-          <label for="message-d">Votre situation en quelques mots</label>
-          <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Famille de 4 personnes à Lausanne, nous voulons vérifier nos couvertures et ouvrir un 3e pilier."></textarea>
+          <label for="message-d">Un commentaire ? <span class="facultatif">(facultatif)</span></label>
+          <textarea id="message-d" name="message" rows="3" placeholder="Ex. Je déménage le mois prochain et je veux vérifier mes assurances."></textarea>
         </div>
       </div>
       <div data-univers="pro" hidden>
         <input type="hidden" name="univers" value="Professionnel">
-        <div class="champ">
-          <label for="choix-produit-pro">Votre demande concerne</label>
-          <select id="choix-produit-pro" name="produit_choisi" required data-choix-produit>
-            <option value="bilan-complet-entreprise">Bilan complet des assurances et de la prévoyance de l'entreprise</option>
-            {% for cat in groupes.entreprises.categories %}
-            <optgroup label="{{ cat }}">
-              {% for p in produits.entreprises if p.categorie == cat %}<option value="{{ p.slug }}">{{ p.nom }}</option>{% endfor %}
-            </optgroup>
-            {% endfor %}
-            <option value="autre-pro">Autre ou plusieurs besoins</option>
-          </select>
-        </div>
         <div class="grille-champs">
+          <div class="champ"><label for="entreprise-d">Nom de la société</label><input id="entreprise-d" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>
           <div class="champ">
-            <label for="entreprise-d">Nom de l'entreprise</label>
-            <input id="entreprise-d" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl">
-          </div>
-          <div class="champ">
-            <label for="activite-d">Activité</label>
-            <input id="activite-d" name="activite" required placeholder="Ex. menuiserie, fiduciaire, commerce de détail">
-          </div>
-          <div class="champ">
-            <label for="employes-d">Nombre de personnes, vous compris</label>
-            <select id="employes-d" name="nb_personnes" required>
+            <label for="statut-d">Statut</label>
+            <select id="statut-d" name="statut_juridique" required>
               <option value="">Choisir…</option>
-              <option value="1">Indépendant seul</option>
-              <option value="2-5">2 à 5</option>
-              <option value="6-20">6 à 20</option>
-              <option value="21-50">21 à 50</option>
-              <option value="51+">Plus de 50</option>
+              <option>Raison individuelle</option><option>Sàrl</option><option>SA</option><option>SNC</option><option>Association</option><option>Autre</option>
             </select>
           </div>
-          <div class="champ">
-            <label for="fonction-d">Votre fonction</label>
-            <select id="fonction-d" name="fonction" required>
-              <option value="">Choisir…</option>
-              <option value="dirigeant">Dirigeant ou associé</option>
-              <option value="independant">Indépendant</option>
-              <option value="rh-finance">RH ou finances</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
+          <div class="champ"><label for="activite-d">Activité</label><input id="activite-d" name="activite" required placeholder="Ex. menuiserie, fiduciaire, commerce de détail"></div>
+          <div class="champ"><label for="ca-d">Chiffre d'affaires annuel (CHF)</label><input id="ca-d" name="chiffre_affaires" type="number" inputmode="numeric" min="0" step="1000" required placeholder="Ex. 450000"></div>
         </div>
         <div class="champ">
-          <label for="message-dpro">Votre situation en quelques mots</label>
-          <textarea id="message-dpro" name="message" rows="4" required placeholder="Ex. Nous engageons deux personnes en janvier et notre RC professionnelle arrive à échéance en mars."></textarea>
+          <p class="champ__label" id="vpro-label">Votre demande concerne <span class="facultatif">(plusieurs choix possibles)</span></p>
+          <details class="volet" data-volet open>
+            <summary><span data-volet-resume>Choisissez une ou plusieurs assurances</span></summary>
+            <div class="volet__liste" role="group" aria-labelledby="vpro-label">
+              <p class="volet__groupe">Bilan</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Bilan complet des assurances et de la prévoyance de l'entreprise" data-groupe-requis="produits_pro" data-slug="bilan-complet-entreprise"> <span>Bilan complet des assurances et de la prévoyance de l'entreprise</span></label>
+              <p class="volet__groupe">Responsabilité et risques</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance entreprise (RC professionnelle)" data-groupe-requis="produits_pro" data-slug="rc-pro"> <span>Assurance entreprise (RC professionnelle)</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Protection juridique" data-groupe-requis="produits_pro" data-slug="protection-juridique-entreprise"> <span>Protection juridique</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Cyberassurance" data-groupe-requis="produits_pro" data-slug="cyberassurance"> <span>Cyberassurance</span></label>
+              <p class="volet__groupe">Biens et exploitation</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance chose et inventaire" data-groupe-requis="produits_pro" data-slug="commerce-inventaire"> <span>Assurance chose et inventaire</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance bâtiment professionnel" data-groupe-requis="produits_pro"> <span>Assurance bâtiment professionnel</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance construction" data-groupe-requis="produits_pro"> <span>Assurance construction</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurances techniques" data-groupe-requis="produits_pro" data-slug="techniques"> <span>Assurances techniques</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Transport" data-groupe-requis="produits_pro" data-slug="transport"> <span>Transport</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Véhicules d'entreprise" data-groupe-requis="produits_pro" data-slug="vehicules-entreprise"> <span>Véhicules d'entreprise</span></label>
+              <p class="volet__groupe">Personnel</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance LAA" data-groupe-requis="produits_pro" data-slug="laa"> <span>Assurance LAA</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance accident complémentaire" data-groupe-requis="produits_pro"> <span>Assurance accident complémentaire</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Perte de gain maladie" data-groupe-requis="produits_pro" data-slug="pgm"> <span>Perte de gain maladie</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Perte de gain accident" data-groupe-requis="produits_pro"> <span>Perte de gain accident</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Indemnité journalière maladie" data-groupe-requis="produits_pro"> <span>Indemnité journalière maladie</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Assurance de personnes pour l'entreprise" data-groupe-requis="produits_pro"> <span>Assurance de personnes pour l'entreprise</span></label>
+              <p class="volet__groupe">Prévoyance</p>
+              <label class="volet__case"><input type="checkbox" name="produits" value="LPP et 2e pilier" data-groupe-requis="produits_pro" data-slug="lpp"> <span>LPP et 2e pilier</span></label>
+              <label class="volet__case"><input type="checkbox" name="produits" value="Prévoyance professionnelle et de l'employeur" data-groupe-requis="produits_pro"> <span>Prévoyance professionnelle et de l'employeur</span></label>
+            </div>
+          </details>
+        </div>
+        {{ f.adresse("entreprise") }}
+        <div class="champ">
+          <label for="message-dpro">Un commentaire ? <span class="facultatif">(facultatif)</span></label>
+          <textarea id="message-dpro" name="message" rows="3" placeholder="Ex. Nous engageons deux personnes en janvier et notre RC professionnelle arrive à échéance en mars."></textarea>
         </div>
       </div>
       {{ f.contact("d") }}

@@ -16,6 +16,7 @@ chapeau: L'assurance ménage limite souvent l'indemnisation des objets précieux
 retenir: L'assurance ménage prévoit souvent un plafond pour les bijoux et couvre rarement la simple perte. | Une assurance objets de valeur couvre en général la perte, le vol et la casse, en Suisse et à l'étranger. | La valeur convenue à l'avance évite les discussions sur le montant après un sinistre. | Factures, certificats, photos et estimations à jour facilitent le règlement d'un sinistre.
 pour_qui: Vous portez tous les jours une montre ou une bague de valeur. | Vous avez hérité de bijoux ou d'une œuvre d'art dont vous ignorez la valeur exacte. | Vous jouez d'un instrument de musique de qualité et le transportez souvent. | Vous partez en voyage avec du matériel photo ou des bijoux.
 quiz: Une bague perdue lors d'une baignade est en général bien couverte par l'assurance ménage de base. | faux | La simple perte est rarement couverte par l'assurance ménage. Une assurance objets de valeur tous risques peut la prendre en charge. ;; Avec la valeur convenue, le montant de l'indemnité est fixé avant le sinistre. | vrai | La valeur est déterminée à la conclusion du contrat, sur la base d'une facture ou d'une expertise. ;; Une fois la police conclue, il n'est jamais nécessaire de réestimer ses objets. | faux | La valeur de l'or, des montres de collection ou de l'art évolue. Une réestimation régulière évite une couverture trop basse.
+simulateur: /particuliers/simulation-objets-de-valeur/
 ---
 
 ## Pourquoi l'assurance ménage ne suffit pas

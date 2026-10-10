@@ -17,6 +17,7 @@ chapeau: Un verre renversé sur l'ordinateur d'un ami, un dégât d'eau chez le 
 retenir: La RC privée paie les dommages que vous causez à d'autres personnes ou à leurs biens. | Elle vous défend aussi si on vous réclame de l'argent à tort. | La plupart des régies demandent une attestation de RC pour louer un logement. | Elle se combine facilement avec l'assurance ménage dans un même contrat.
 pour_qui: Vous emménagez et la régie demande une attestation de RC privée. | Vous avez des enfants ou un animal de compagnie. | Vous faites du vélo, du ski ou du sport en Suisse ou à l'étranger. | Vous empruntez ou louez parfois du matériel, une voiture ou un logement de vacances.
 quiz: La RC privée paie aussi les dommages à vos propres affaires. | faux | Elle couvre uniquement les dommages causés aux autres. Vos propres affaires relèvent de l'assurance ménage. ;; La RC privée peut couvrir toute la famille vivant sous le même toit. | vrai | La plupart des contrats couvrent toutes les personnes du ménage, enfants compris, à condition de le choisir. ;; Si une personne vous réclame de l'argent à tort, la RC privée ne fait rien. | faux | Elle examine la demande et vous défend contre les prétentions injustifiées.
+entree: logement
 ---
 
 ## Ce que couvre la RC privée

@@ -24,12 +24,21 @@
     </div>
     <aside class="panneau-form" id="demande">
       {% if produit.simulateur %}
-      <h2 class="form-titre">{{ produit.bouton }}</h2>
-      <p class="form-sous-titre">Votre estimation en 2 minutes, gratuite et sans engagement. Pour commencer : où habitez-vous ?</p>
+      <h2 class="form-titre">Calculez votre prime en 2 minutes</h2>
+      {% if produit.entree == "logement" %}
+      <p class="form-sous-titre">Votre estimation immédiate, gratuite et sans engagement. Pour commencer : où habitez-vous ?</p>
       <div class="entree-simulation">
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
       </div>
+      {% else %}
+      <p class="form-sous-titre">Quelques questions simples, et votre prime s'affiche tout de suite.</p>
+      <ul class="entree-simulation__points">
+        <li>{{ i.icone("valide", "icone icone--petite") }} Estimation immédiate</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Un spécialiste à votre écoute si besoin</li>
+      </ul>
+      {% endif %}
       <a class="bouton bouton--action" href="{{ produit.simulateur }}">Lancer la simulation</a>
       {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>

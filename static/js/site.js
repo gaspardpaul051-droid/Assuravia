@@ -121,6 +121,20 @@
           : "Vérifiez cette valeur.";
       }
     });
+    // Groupes de cases à cocher : au moins une case (data-groupe-requis="nom")
+    var groupes = {};
+    conteneur.querySelectorAll("[data-groupe-requis]").forEach(function (c) { if (!c.closest("[hidden]")) groupes[c.getAttribute("data-groupe-requis")] = true; });
+    Object.keys(groupes).forEach(function (g) {
+      var cases = conteneur.querySelectorAll('[data-groupe-requis="' + g + '"]');
+      var zone = cases[0].closest(".choix-cartes, .volet") || cases[0].parentElement;
+      var msg = zone.nextElementSibling && zone.nextElementSibling.classList.contains("champ__erreur") ? zone.nextElementSibling : null;
+      var coche = Array.prototype.some.call(cases, function (c) { return c.checked; });
+      if (coche) { if (msg) msg.remove(); return; }
+      ok = false;
+      if (!premier) premier = cases[0];
+      if (!msg) { msg = document.createElement("p"); msg.className = "champ__erreur"; zone.insertAdjacentElement("afterend", msg); }
+      msg.textContent = "Cochez au moins une réponse pour continuer.";
+    });
     if (premier) premier.focus();
     return ok;
   }
@@ -273,48 +287,56 @@
     var arrondi = function (x) { return Math.round(x * 20) / 20; };
     var chf2 = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
     var calculer = function () {
-      var inv = valeur("inventaire");
-      var parPiece = inv ? Number(inv.getAttribute("data-valeur")) : 0;
-      var sommeCalc = nombre("pieces") * parPiece;
+      // Somme assurée : ménage (pièces × inventaire) ou somme des champs [data-somme] (valeur du bâtiment, objets…)
+      var inv = valeur("inventaire"), sommeCalc = 0;
+      if (inv) sommeCalc = nombre("pieces") * Number(inv.getAttribute("data-valeur"));
+      else formF.querySelectorAll("[data-somme]").forEach(function (el) { if (!el.closest("template")) sommeCalc += Number(el.value) || 0; });
       var ok = valeur("somme_ok");
       var somme = ok && ok.value === "non" && nombre("somme_corrigee") > 0 ? nombre("somme_corrigee") : sommeCalc;
       var form = valeur("formule");
-      var taux = form ? Number(form.getAttribute("data-taux")) : 0;
-      var primeMenage = taux ? arrondi(somme / 1000 * taux) : 0;
-      // Produit à prime fixe (ex. RC privée) : data-prime-base sur le bloc de simulation
+      var taux = form ? Number(form.getAttribute("data-taux")) : Number(funnel.getAttribute("data-taux-fixe")) || 0;
+      var surMesure = !!form && !taux;
+      var principale = 0;
       var base = Number(funnel.getAttribute("data-prime-base")) || 0;
-      if (base) { taux = 1; primeMenage = base; form = { value: funnel.getAttribute("data-prime-nom") }; }
+      var prixBase = formF.querySelector("[data-prix-base]:checked");
+      if (base) principale = base;
+      else if (prixBase) {
+        principale = Number(prixBase.getAttribute("data-prix-base"));
+        formF.querySelectorAll("[data-facteur]:checked").forEach(function (el) { principale *= Number(el.getAttribute("data-facteur")); });
+        principale = arrondi(principale);
+      } else if (taux) principale = arrondi(somme / 1000 * taux);
       var options = [];
-      [["option_rc", "Responsabilité civile privée"], ["option_pj", "Protection juridique"], ["option_cyber", "Cyberassurance"], ["option_voyage", "Assurance voyage"]].forEach(function (o) {
-        var el = valeur(o[0]);
-        if (el && el.value === "oui") options.push({ nom: o[1], prix: Number(el.getAttribute("data-prix")) });
+      formF.querySelectorAll("[data-option-nom]:checked").forEach(function (el) {
+        options.push({ nom: el.getAttribute("data-option-nom"), prix: Number(el.getAttribute("data-prix")) || 0 });
       });
-      var total = primeMenage + options.reduce(function (t, o) { return t + o.prix; }, 0);
-      return { sommeCalc: sommeCalc, somme: somme, formule: form ? form.value : "", taux: taux, primeMenage: primeMenage, options: options, total: total, base: base };
+      var total = principale + options.reduce(function (t, o) { return t + o.prix; }, 0);
+      var nom = funnel.getAttribute("data-prime-nom") || "Prime";
+      return { sommeCalc: sommeCalc, somme: somme, formule: form ? form.value : "", nom: nom, surMesure: surMesure, principale: principale, options: options, total: total };
     };
     var afficher = function () {
       var c = calculer();
       var set = function (cle, html) { funnel.querySelectorAll('[data-affiche="' + cle + '"]').forEach(function (el) { el.innerHTML = html; }); };
       set("somme_calculee", chf(c.sommeCalc));
+      set("somme_objets", chf(c.sommeCalc));
       funnel.querySelectorAll("[data-prix-formule]").forEach(function (el) {
         el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")))) + " / an";
       });
       set("total_floute", chf2(c.total || 999));
       var prenom = valeur("prenom");
       set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
-      if (c.taux) {
+      if (!c.surMesure) {
         set("total", chf2(c.total));
         set("mois", "soit environ " + chf2(c.total / 12) + " par mois");
       } else {
         set("total", "Sur mesure");
-        set("mois", c.options.length ? "Options choisies : " + chf2(c.total) + " par an, plus votre offre ménage personnalisée" : "Un spécialiste construit votre offre avec vous");
+        set("mois", c.options.length ? "Options choisies : " + chf2(c.total) + " par an, plus votre offre personnalisée" : "Un spécialiste construit votre offre avec vous");
       }
-      var lignes = [c.base ? "<li><span>" + c.formule + "</span><strong>" + chf2(c.primeMenage) + "</strong></li>"
-        : "<li><span>Ménage, formule " + c.formule + " <small>somme assurée " + chf(c.somme) + "</small></span><strong>" + (c.taux ? chf2(c.primeMenage) : "sur mesure") + "</strong></li>"];
+      var libelle = c.nom + (c.formule ? ", formule " + c.formule : "") + (c.somme ? " <small>somme assurée " + chf(c.somme) + "</small>" : "");
+      var lignes = ["<li><span>" + libelle + "</span><strong>" + (c.surMesure ? "sur mesure" : chf2(c.principale)) + "</strong></li>"];
       c.options.forEach(function (o) { lignes.push("<li><span>" + o.nom + "</span><strong>" + chf2(o.prix) + "</strong></li>"); });
       set("detail", lignes.join(""));
       var cache = function (k, v) { var el = formF.querySelector('[data-calc="' + k + '"]'); if (el) el.value = v; };
-      cache("somme", Math.round(c.somme)); cache("formule", c.formule); cache("prime_menage", c.taux ? c.primeMenage.toFixed(2) : "sur mesure"); cache("prime_totale", c.total.toFixed(2));
+      cache("somme", Math.round(c.somme)); cache("formule", c.formule); cache("prime_principale", c.surMesure ? "sur mesure" : c.principale.toFixed(2)); cache("prime_totale", c.total.toFixed(2));
     };
     var montrer = function (n, enArriere) {
       etapesF.forEach(function (e, k) { e.hidden = k !== n; });
@@ -368,24 +390,45 @@
     // Un autre bloc de la page peut faire avancer la simulation (ex. calculateur du haut de page)
     funnel.addEventListener("funnel:suivant", avancer);
     funnel.querySelectorAll("[data-fe-modifier]").forEach(function (b) {
-      b.addEventListener("click", function () { historique = []; for (var k = 0; k < Number(b.getAttribute("data-fe-modifier")) - 1; k++) historique.push(k); montrer(Number(b.getAttribute("data-fe-modifier")) - 1, true); });
+      b.addEventListener("click", function () {
+        var cle = b.getAttribute("data-fe-modifier");
+        var cible = etapesF.findIndex(function (e) { return e.getAttribute("data-fe") === cle; });
+        if (cible < 0) cible = 0;
+        historique = []; for (var k = 0; k < cible; k++) historique.push(k);
+        montrer(cible, true);
+      });
     });
+    // Liste d'objets (objets de valeur) : ajout, retrait, texte récapitulatif envoyé avec la demande
+    var zoneObjets = funnel.querySelector("[data-objets]");
+    if (zoneObjets) {
+      var modele = zoneObjets.querySelector("[data-objet-modele]");
+      var texteObjets = formF.querySelector("[data-objets-texte]");
+      var majObjets = function () {
+        var lignes = [];
+        zoneObjets.querySelectorAll("[data-objet]").forEach(function (o, k) {
+          o.querySelector("[data-objet-num]").textContent = k + 1;
+          o.querySelector("[data-objet-retirer]").hidden = zoneObjets.querySelectorAll("[data-objet]").length < 2;
+          var v = function (c) { return o.querySelector('[data-objet-champ="' + c + '"]').value.trim(); };
+          lignes.push((k + 1) + ". " + [v("marque"), v("modele"), v("description")].filter(Boolean).join(", ") + " : CHF " + (v("prix") || "?"));
+        });
+        texteObjets.value = lignes.join("\n");
+        afficher();
+      };
+      var ajouterObjet = function () {
+        zoneObjets.appendChild(modele.content.cloneNode(true));
+        var dernier = zoneObjets.querySelector("[data-objet]:last-of-type");
+        dernier.querySelectorAll("input").forEach(function (c, k) { c.id = "objet-" + Date.now() + "-" + k; var l = c.parentElement.querySelector("label"); if (l) l.setAttribute("for", c.id); });
+        dernier.querySelector("[data-objet-retirer]").addEventListener("click", function () { dernier.remove(); majObjets(); });
+        majObjets();
+      };
+      funnel.querySelector("[data-objet-ajouter]").addEventListener("click", function () { ajouterObjet(); zoneObjets.querySelector("[data-objet]:last-of-type input").focus(); });
+      zoneObjets.addEventListener("input", majObjets);
+      ajouterObjet();
+    }
     funnel.querySelectorAll("[data-fe-action]").forEach(function (b) {
       b.addEventListener("click", function () {
         funnel.querySelector("[data-funnel-action]").value = b.getAttribute("data-fe-action") === "souscription" ? "Demande de souscription" : "Être recontacté";
         funnel.querySelector("[data-funnel-etat]").value = "demande envoyée";
-      });
-    });
-    // Choix qui montrent une question complémentaire
-    formF.querySelectorAll('[name="statut"]').forEach(function (r) {
-      r.addEventListener("change", function () { formF.querySelector("[data-si-proprietaire]").hidden = r.value !== "Propriétaire"; });
-    });
-    formF.querySelectorAll('[name="somme_ok"]').forEach(function (r) {
-      r.addEventListener("change", function () {
-        var bloc = formF.querySelector("[data-si-correction]");
-        bloc.hidden = r.value !== "non";
-        bloc.querySelector("input").required = r.value === "non";
-        if (r.value === "non") bloc.querySelector("input").focus();
       });
     });
     // Blocs affichés selon une réponse : data-montre-si="nom=valeur" ou "nom!=valeur"
@@ -767,6 +810,17 @@
   });
 
   // 9a. Accueil : choix Particulier / Professionnel (titre, texte, bilan, questions, bandeau)
+  // Volet de produits à cocher (formulaire de demande) : résumé et champ « produit » envoyé avec le lead
+  var majVolets = function () {
+    document.querySelectorAll("[data-volet]").forEach(function (v) {
+      var coches = Array.prototype.filter.call(v.querySelectorAll("input[type=checkbox]"), function (c) { return c.checked && !c.disabled; }).map(function (c) { return c.value; });
+      v.querySelector("[data-volet-resume]").textContent = coches.length ? coches.length + (coches.length > 1 ? " assurances choisies" : " assurance choisie") + " : " + coches.slice(0, 2).join(", ") + (coches.length > 2 ? "…" : "") : "Choisissez une ou plusieurs assurances";
+      var cache = v.closest("form") && v.closest("form").querySelector("[data-produit]");
+      if (cache && !v.querySelector("input").disabled) cache.value = coches.join(" ; ");
+    });
+  };
+  document.addEventListener("change", function (e) { if (e.target.closest && e.target.closest("[data-volet]")) majVolets(); });
+
   var choixUnivers = document.querySelectorAll("[data-choix-univers]");
   var definirUnivers = function (u, memoriser) {
     document.querySelectorAll("[data-univers]").forEach(function (el) {
@@ -774,9 +828,7 @@
       // Les champs d'un univers masqué ne sont ni vérifiés ni envoyés
       el.querySelectorAll("input, select, textarea").forEach(function (c) { c.disabled = el.hidden; });
     });
-    document.querySelectorAll("[data-choix-produit]").forEach(function (c) {
-      if (!c.disabled) c.form.querySelector("[data-produit]").value = c.value;
-    });
+    majVolets();
     choixUnivers.forEach(function (b) {
       var actif = b.getAttribute("data-choix-univers") === u;
       if (b.getAttribute("role") === "tab") {
@@ -796,15 +848,12 @@
     var param = new URLSearchParams(location.search).get("univers");
     if (param === "pro" || param === "prive") depart = param;
     if (!depart) { try { depart = localStorage.getItem("assuravia-univers"); } catch (e) {} }
-    // Formulaire de demande : produit présélectionné depuis l'URL (?produit=...)
+    // Formulaire de demande : produit coché d'avance depuis l'URL (?produit=...)
     var produitDemande = params.get("produit");
-    document.querySelectorAll("[data-choix-produit]").forEach(function (c) {
-      if (produitDemande && c.querySelector('option[value="' + CSS.escape(produitDemande) + '"]')) {
-        c.value = produitDemande;
-        depart = c.closest("[data-univers]").getAttribute("data-univers");
-      }
-      c.addEventListener("change", function () { c.form.querySelector("[data-produit]").value = c.value; });
-    });
+    if (produitDemande) {
+      var caseProduit = document.querySelector('[data-volet] input[data-slug="' + CSS.escape(produitDemande) + '"]');
+      if (caseProduit) { caseProduit.checked = true; depart = caseProduit.closest("[data-univers]").getAttribute("data-univers"); }
+    }
     definirUnivers(depart === "pro" ? "pro" : "prive", false);
     choixUnivers.forEach(function (b) {
       if (b.getAttribute("role") !== "tab") {

@@ -1,0 +1,33 @@
+{% set sim = {"id": "bt", "theme": "prive", "groupe": "particuliers", "form": "simulation-batiment", "produit": "assurance-batiment", "produit_nom": "Assurance bâtiment", "page": "/particuliers/assurance-batiment/", "icone": "maison",
+  "titre": "Assurance bâtiment : calculez votre prime en 2 minutes", "h1": "Calculez votre assurance bâtiment",
+  "description": "Villa, chalet ou maison de vacances : estimez la prime de votre assurance bâtiment selon la valeur de construction et la formule choisie.",
+  "attrs": {"prime-nom": "Bâtiment"},
+  "note": "Dans les cantons de Vaud, Fribourg, Neuchâtel et du Jura, l'incendie et les éléments naturels des bâtiments sont assurés obligatoirement auprès de l'établissement cantonal. Le spécialiste adapte l'offre à votre canton."} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% block etapes %}
+{{ e.identite() }}
+{{ e.adresse("Quelle est l'adresse du bien ?") }}
+{{ e.cartes("type_bien", "Quel type de bien ?", [
+  {"valeur": "Villa", "icone": "maison"},
+  {"valeur": "Chalet", "icone": "maison"},
+  {"valeur": "Maison de vacances", "icone": "cle"}], colonnes=3) }}
+{{ e.ouvrir("valeur", "Quelle est la valeur de construction du bien ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure souvent sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}
+  <div class="champ">
+    <label for="valeur-bt">Valeur de construction (CHF)</label>
+    <input id="valeur-bt" name="valeur_construction" type="number" inputmode="numeric" min="50000" step="10000" required placeholder="Ex. 850000" data-somme>
+  </div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.formules([
+  {"nom": "Essentiel", "taux": 0.65, "points": ["Incendie et événements naturels", "Dégâts d'eau", "Bris de glace jusqu'à CHF 10'000", "Faute grave couverte"]},
+  {"nom": "Confort", "taux": 0.78, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 15'000", "Dégâts d'eau", "Faute grave couverte"]},
+  {"nom": "Premium", "taux": 1, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 20'000", "Installations techniques jusqu'à CHF 50'000", "Dégâts d'eau", "Faute grave couverte"]},
+  {"nom": "Sur mesure", "taux": 0, "points": ["Vous choisissez chaque couverture", "Piscine, panneaux solaires, dépendances", "Un spécialiste construit l'offre avec vous"]}]) }}
+{{ e.impots() }}
+{{ e.option_pj() }}
+{{ e.option_cyber() }}
+{{ e.interet_menage() }}
+{{ e.coordonnees() }}
+{{ e.resultat("valeur") }}
+{% endblock %}
