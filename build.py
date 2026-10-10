@@ -172,6 +172,22 @@ def lire_glossaire(path: Path) -> list[dict]:
     return termes
 
 
+def lire_indicatifs(path: Path) -> list[dict]:
+    """Indicatifs téléphoniques : les pays favoris, puis « -- », puis tous les pays."""
+    favoris, tous, cible = [], [], None
+    cible = favoris
+    for ligne in path.read_text(encoding="utf-8").splitlines():
+        ligne = ligne.strip()
+        if not ligne or ligne.startswith("#"):
+            continue
+        if ligne == "--":
+            cible = tous
+            continue
+        code, pays = [x.strip() for x in ligne.split("|")]
+        cible.append({"code": code, "pays": pays})
+    return [{"groupe": "Pays fréquents", "liste": favoris}, {"groupe": "Tous les pays", "liste": tous}]
+
+
 def lire_cas(path: Path) -> dict:
     """Lit content/cas.txt : cas types illustratifs, groupés par « particuliers » / « entreprises »."""
     cas = {g: [] for g in GROUPES}
@@ -275,6 +291,7 @@ def main() -> None:
         articles=articles,
         glossaire=lire_glossaire(ROOT / "content" / "glossaire.txt"),
         cas=lire_cas(ROOT / "content" / "cas.txt"),
+        indicatifs=lire_indicatifs(ROOT / "content" / "indicatifs.txt"),
         annee=aujourd_hui.year,
     )
 

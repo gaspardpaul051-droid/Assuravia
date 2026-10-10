@@ -40,10 +40,7 @@
             <label for="email-c">E-mail</label>
             <input id="email-c" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com">
           </div>
-          <div class="champ">
-            <label for="telephone-c">Téléphone</label>
-            <input id="telephone-c" name="telephone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="079 123 45 67">
-          </div>
+          {{ f.telephone("c") }}
           <div class="champ champ--large">
             <label for="message-c">Message</label>
             <textarea id="message-c" name="message" rows="5" required placeholder="Ex. J'aimerais savoir si mon assurance ménage couvre le vol de mon vélo."></textarea>

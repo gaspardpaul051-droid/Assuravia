@@ -842,3 +842,7 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .widget-article .capital { grid-template-columns: 1fr; }
 .article__corps .capital__barres, .article__corps .pour-qui__liste, .texte-long .pour-qui__liste { padding-left: 0; }
 .article__corps .capital__barres li, .article__corps .pour-qui__liste li, .texte-long .pour-qui__liste li { margin: 0; }
+/* Téléphone avec indicatif */
+.tel { display: grid; grid-template-columns: minmax(96px, 128px) minmax(0, 1fr); gap: var(--e-2); }
+.tel__indicatif { width: 100%; min-width: 0; text-overflow: ellipsis; }
+.grille-champs .champ:has(.tel) { grid-column: 1 / -1; }

@@ -31,6 +31,26 @@
 </div>
 {%- endmacro %}
 
+{% macro telephone(id="f", libelle="Téléphone") -%}
+<div class="champ">
+  <label for="telephone-{{ id }}">{{ libelle }}</label>
+  <div class="tel" data-tel>
+    <select class="tel__indicatif" name="indicatif" aria-label="Indicatif du pays" data-tel-indicatif>
+      {% for g in indicatifs %}<optgroup label="{{ g.groupe }}">{% for x in g.liste %}<option value="{{ x.code }}"{% if loop.first and loop.index0 == 0 and g.groupe == "Pays fréquents" %} selected{% endif %}>{{ x.code }} {{ x.pays }}</option>{% endfor %}</optgroup>{% endfor %}
+    </select>
+    <input id="telephone-{{ id }}" name="telephone" type="tel" required autocomplete="tel-national" inputmode="tel" placeholder="79 123 45 67" data-tel-numero>
+    <input type="hidden" name="telephone_complet" data-tel-complet>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro naissance(id="f") -%}
+<div class="champ">
+  <label for="naissance-{{ id }}">Date de naissance</label>
+  <input id="naissance-{{ id }}" name="date_naissance" type="date" required min="1920-01-01" max="{{ annee - 16 }}-12-31" autocomplete="bday">
+</div>
+{%- endmacro %}
+
 {% macro contact(id="f", societe=False) -%}
 <div class="grille-champs">
   <div class="champ">
@@ -41,10 +61,7 @@
     <label for="nom-{{ id }}">Nom</label>
     <input id="nom-{{ id }}" name="nom" required autocomplete="family-name" placeholder="Dupont">
   </div>
-  <div class="champ">
-    <label for="telephone-{{ id }}">Téléphone</label>
-    <input id="telephone-{{ id }}" name="telephone" type="tel" required autocomplete="tel" inputmode="tel" pattern="[0-9 +().\-]{9,20}" placeholder="079 123 45 67">
-  </div>
+  {{ telephone(id) }}
   <div class="champ">
     <label for="email-{{ id }}">E-mail</label>
     <input id="email-{{ id }}" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com">

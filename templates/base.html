@@ -108,10 +108,7 @@
           <input id="cv-prenom" name="prenom" required autocomplete="given-name" placeholder="Jean">
         </div>
       </div>
-      <div class="champ">
-        <label for="cv-telephone">Téléphone</label>
-        <input id="cv-telephone" name="telephone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="079 123 45 67">
-      </div>
+      {{ f.telephone("cv") }}
       <div class="champ">
         <label for="cv-email">E-mail</label>
         <input id="cv-email" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com">

@@ -55,18 +55,32 @@
   // 2. Validation lisible : message sous le champ plutôt que la bulle du navigateur.
   // E-mail : nom@domaine.ch (extension d'au moins 2 lettres). Téléphone : 0XX XXX XX XX ou +41 / 0041, +33…
   var RE_EMAIL = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9](?:[A-Za-z0-9\-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9\-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
-  var telValide = function (v) {
+  // Numéro saisi sans indicatif (l'indicatif est choisi dans la liste), ou avec +.. / 00.. qui prime.
+  var telValide = function (v, indicatif) {
     var n = v.replace(/[\s.\-()\/]/g, "");
-    if (/^0[1-9]\d{8}$/.test(n)) return true;                 // Suisse : 079 123 45 67
-    if (/^(\+|00)41[1-9]\d{8}$/.test(n)) return true;         // +41 79 123 45 67
-    return /^(\+|00)(?!41)[1-9]\d{7,13}$/.test(n);            // international : +33 6 12 34 56 78
+    if (/^(\+|00)41/.test(n)) return /^(\+|00)41[1-9]\d{8}$/.test(n);   // +41 79 123 45 67
+    if (/^(\+|00)/.test(n)) return /^(\+|00)[1-9]\d{7,13}$/.test(n);    // autre pays saisi en entier
+    if ((indicatif || "+41") === "+41") return /^0?[1-9]\d{8}$/.test(n);  // 079 123 45 67 ou 79 123 45 67
+    return /^0?\d{4,14}$/.test(n);                                          // numéro national d'un autre pays
+  };
+  var telComplet = function (bloc) {
+    var ind = bloc.querySelector("[data-tel-indicatif]").value;
+    var n = bloc.querySelector("[data-tel-numero]").value.replace(/[\s.\-()\/]/g, "");
+    if (!n) return "";
+    if (/^(\+|00)/.test(n)) return n.replace(/^00/, "+");
+    return ind + n.replace(/^0/, "");
   };
   function controleFormat(el) {
     if (!el.setCustomValidity) return;
     var v = (el.value || "").trim();
     var erreur = "";
     if (v && el.type === "email" && !RE_EMAIL.test(v)) erreur = "email";
-    if (v && el.type === "tel" && !telValide(v)) erreur = "tel";
+    if (v && el.type === "tel") {
+      var bloc = el.closest("[data-tel]");
+      var ind = bloc ? bloc.querySelector("[data-tel-indicatif]").value : "+41";
+      if (!telValide(v, ind)) erreur = "tel";
+      if (bloc) bloc.querySelector("[data-tel-complet]").value = telComplet(bloc);
+    }
     el.setCustomValidity(erreur);
   }
 
@@ -75,7 +89,7 @@
     conteneur.querySelectorAll("input, select, textarea").forEach(function (el) {
       if (el.type === "hidden" || el.closest("[hidden]")) return;
       controleFormat(el);
-      var msg = el.parentElement.querySelector(".champ__erreur");
+      var msg = (el.closest(".champ") || el.parentElement).querySelector(".champ__erreur");
       if (el.checkValidity()) {
         el.removeAttribute("aria-invalid");
         if (msg) msg.remove();
@@ -89,12 +103,12 @@
         msg.className = "champ__erreur";
         msg.id = (el.id || el.name) + "-erreur";
         el.setAttribute("aria-describedby", msg.id);
-        el.insertAdjacentElement("afterend", msg);
+        (el.closest("[data-tel]") || el).insertAdjacentElement("afterend", msg);
       }
       if (msg) {
         msg.textContent = el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
-          : el.type === "tel" ? "Numéro non valide. Exemple : 079 123 45 67 ou +41 79 123 45 67"
+          : el.type === "tel" ? "Numéro non valide. Choisissez l'indicatif du pays, puis le numéro, par exemple 79 123 45 67."
           : "Vérifiez cette valeur.";
       }
     });
@@ -119,7 +133,7 @@
       controleFormat(el);
       if (el.getAttribute && el.getAttribute("aria-invalid") === "true" && el.checkValidity()) {
         el.removeAttribute("aria-invalid");
-        var msg = el.parentElement.querySelector(".champ__erreur");
+        var msg = (el.closest(".champ") || el.parentElement).querySelector(".champ__erreur");
         if (msg) msg.remove();
       }
     });
@@ -148,6 +162,17 @@
         });
       });
     }
+  });
+
+  // 2a. Téléphone : exemple adapté à l'indicatif choisi
+  document.querySelectorAll("[data-tel]").forEach(function (bloc) {
+    var ind = bloc.querySelector("[data-tel-indicatif]"), num = bloc.querySelector("[data-tel-numero]");
+    var maj = function () {
+      num.placeholder = ind.value === "+41" ? "79 123 45 67" : "Numéro sans l'indicatif";
+      bloc.querySelector("[data-tel-complet]").value = telComplet(bloc);
+    };
+    ind.addEventListener("change", function () { maj(); if (num.value) controleFormat(num); });
+    num.addEventListener("input", maj);
   });
 
   // 2b. Démarreur de demande (accueil) : filtre les besoins selon « pour qui », puis ouvre la bonne page

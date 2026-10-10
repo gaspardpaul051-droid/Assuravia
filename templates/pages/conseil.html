@@ -40,10 +40,7 @@
               <option value="sans-activite">Sans activité lucrative</option>
             </select>
           </div>
-          <div class="champ">
-            <label for="age-d">Votre âge</label>
-            <input id="age-d" name="age" type="number" inputmode="numeric" min="16" max="99" required placeholder="Ex. 42">
-          </div>
+          {{ f.naissance("d") }}
           <div class="champ">
             <label for="foyer-d">Votre foyer</label>
             <select id="foyer-d" name="foyer" required>
@@ -66,7 +63,7 @@
         </div>
         <div class="champ">
           <label for="message-d">Votre situation en quelques mots</label>
-          <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Famille de 4 personnes à Lausanne, je trouve nos primes trop chères et je n'ai pas encore de 3e pilier."></textarea>
+          <textarea id="message-d" name="message" rows="4" required placeholder="Ex. Famille de 4 personnes à Lausanne, nous voulons vérifier nos couvertures et ouvrir un 3e pilier."></textarea>
         </div>
       </div>
       <div data-univers="pro" hidden>
