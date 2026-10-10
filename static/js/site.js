@@ -240,7 +240,7 @@
       });
       var verse = c0 + v * annees;
       capSortie("verse").innerHTML = "Vous aurez versé <strong>" + chf(verse) + "</strong> en " + annees + " ans.";
-      capSortie("ecart").innerHTML = "Écart entre le compte épargne et la stratégie dynamique : <strong>" + chf(resultats[3] - resultats[0]) + "</strong>, dans cette hypothèse.";
+      capSortie("ecart").innerHTML = "Écart entre le compte épargne et la profil dynamique : <strong>" + chf(resultats[3] - resultats[0]) + "</strong>, dans cette hypothèse.";
     };
     cap.querySelectorAll("[data-cap]").forEach(function (el) { el.addEventListener("input", majCapital); });
     majCapital();

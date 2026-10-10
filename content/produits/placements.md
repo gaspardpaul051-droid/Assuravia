@@ -15,7 +15,7 @@ h1: Placements et gestion de fortune : faites travailler votre épargne
 chapeau: Laisser son épargne sur un compte, c'est accepter qu'elle perde du pouvoir d'achat avec le temps. Placer, c'est choisir un équilibre entre rendement espéré, risque et disponibilité, avec une stratégie que vous comprenez.
 retenir: Votre horizon de placement décide de la part que vous pouvez investir en actions. | Gardez une réserve disponible avant de placer. | Comparez le coût total, pas seulement les frais de gestion. | Aucun rendement n'est garanti sur les placements en titres.
 pour_qui: Vous avez une épargne qui dort sur un compte depuis plusieurs années | Vous préparez un projet à plus de cinq ans, comme la retraite | Vous avez reçu un héritage ou un capital | Vous voulez comprendre les frais de vos placements actuels
-quiz: Un placement diversifié en actions ne peut pas perdre de valeur. | faux | La diversification réduit le risque sans le supprimer. Les marchés peuvent baisser fortement, parfois pendant plusieurs années. ;; Les dépôts sur un compte bancaire suisse sont garantis jusqu'à CHF 100'000 par client et par banque. | vrai | C'est la garantie des dépôts organisée par esisuisse en cas de faillite d'une banque. Elle concerne les avoirs en compte, pas la valeur de vos placements. ;; Le 3e pilier en titres reste librement disponible comme un placement ordinaire. | faux | L'avoir du 3e pilier A est bloqué jusqu'à la retraite, sauf cas prévus par la loi comme l'achat du logement principal.
+quiz: Un placement diversifié en actions ne peut pas perdre de valeur. | faux | La diversification réduit le risque sans le supprimer. Les marchés peuvent baisser fortement, parfois pendant plusieurs années. ;; Les dépôts sur un compte bancaire suisse sont garantis jusqu'à CHF 100'000 par client et par banque. | vrai | C'est la garantie des dépôts organisée par esisuisse en cas de faillite d'une banque. Elle concerne les avoirs en compte, pas la valeur de vos placements. ;; Le 3e pilier en fonds reste librement disponible comme un placement ordinaire. | faux | L'avoir du 3e pilier A est bloqué jusqu'à la retraite, sauf cas prévus par la loi comme l'achat du logement principal.
 ---
 
 ## Les trois questions avant de placer
@@ -34,7 +34,7 @@ Ces trois réponses forment votre **profil investisseur**. Un conseiller sérieu
 | Plan d'épargne en fonds | Un versement mensuel automatique dans un ou plusieurs fonds | Personnes qui veulent investir petit à petit |
 | Mandat de gestion | Un professionnel gère votre portefeuille selon une stratégie définie avec vous | Capital plus important, peu de temps à y consacrer |
 | Conseil en placement | Vous gardez la décision, le conseiller propose des investissements adaptés | Personnes qui veulent garder la main |
-| Prévoyance | [3e pilier](/particuliers/3e-pilier/) en titres, rachats dans le 2e pilier | Préparer la retraite tout en réduisant vos impôts |
+| Prévoyance | [3e pilier](/particuliers/3e-pilier/) en fonds, rachats dans le 2e pilier | Préparer la retraite tout en réduisant vos impôts |
 
 Ces solutions se combinent souvent. Une répartition fréquente consiste à garder une réserve sur un compte, à utiliser le 3e pilier pour la retraite et à placer le reste librement.
 
@@ -76,10 +76,10 @@ Le spécialiste fait le point sur votre situation : revenus, charges, épargne, 
 Il n'y a pas de minimum unique : on peut investir de petites sommes chaque mois dans des fonds, alors qu'un mandat de gestion demande en général un capital plus important.
 
 ### Le rendement est-il garanti ?
-Non. Les placements en titres comportent un risque de perte. Les performances passées ne garantissent pas les résultats futurs, et une diversification adaptée réduit le risque sans le supprimer.
+Non. Les placements en fonds comportent un risque de perte. Les performances passées ne garantissent pas les résultats futurs, et une diversification adaptée réduit le risque sans le supprimer.
 
-### Quelle différence avec un 3e pilier en titres ?
-Le 3e pilier en titres offre une déduction fiscale mais bloque l'argent jusqu'à la retraite, sauf exceptions. Un placement libre reste disponible. Les deux se combinent souvent.
+### Quelle différence avec un 3e pilier en fonds ?
+Le 3e pilier en fonds offre une déduction fiscale mais bloque l'argent jusqu'à la retraite, sauf exceptions. Un placement libre reste disponible. Les deux se combinent souvent.
 
 ### Puis-je récupérer mon argent à tout moment ?
 Pour la plupart des fonds et des titres cotés, oui, en quelques jours. Mais le prix de vente dépend du marché au moment de la vente. C'est pourquoi l'argent dont vous aurez besoin bientôt ne doit pas être placé en actions.

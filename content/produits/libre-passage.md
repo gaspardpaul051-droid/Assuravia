@@ -8,7 +8,7 @@ ordre: 9
 titre_seo: Compte de libre passage : votre 2e pilier entre deux emplois
 description: Chômage, pause, indépendance, départ de Suisse : où placer votre 2e pilier quand vous quittez votre caisse de pension, et les erreurs à éviter.
 desc: Placez votre 2e pilier entre deux emplois, sans le laisser dormir ni perdre de rendement.
-points: Compte ou police de libre passage | Placement en titres possible | Accompagnement en cas de départ de Suisse
+points: Compte ou police de libre passage | Placement en fonds possible | Accompagnement en cas de départ de Suisse
 badge: Offre gratuite
 bouton: Placer mon libre passage
 h1: Libre passage : que faire de votre 2e pilier quand vous quittez votre emploi ?
@@ -38,16 +38,16 @@ Si vous ne donnez pas d'instructions, votre ancienne caisse de pension transfèr
 
 | Solution | Ce qu'elle offre | Points d'attention |
 |---|---|---|
-| Compte de libre passage bancaire | Placement souple, en épargne ou en titres selon votre horizon | En titres, la valeur peut baisser |
+| Compte de libre passage bancaire | Placement souple, en épargne ou en fonds selon votre horizon | En fonds, la valeur peut baisser |
 | Police de libre passage d'assurance | Capital garanti, avec en option une couverture décès ou invalidité | Moins souple, conditions de rachat à vérifier |
 
 Votre prestation de sortie peut être transférée à **deux institutions de libre passage au maximum**. Cette répartition permet ensuite d'échelonner les retraits sur plusieurs années, ce qui peut alléger l'impôt sur le capital selon votre canton.
 
 ## Comment bien choisir
 
-- **Selon votre horizon.** Si vous retrouverez sans doute un emploi dans quelques mois, un compte en épargne suffit souvent. Si l'argent restera là jusqu'à la retraite, une part en titres peut se justifier.
+- **Selon votre horizon.** Si vous retrouverez sans doute un emploi dans quelques mois, un compte en épargne suffit souvent. Si l'argent restera là jusqu'à la retraite, une part en fonds, selon un profil prudent ou équilibré, peut se justifier.
 - **Selon votre besoin de protection.** Sans caisse de pension, vous perdez la couverture invalidité et décès du 2e pilier. Une police de libre passage avec couverture de risque, ou une solution séparée, peut combler ce manque.
-- **Selon les frais.** Comparez les frais de gestion et les frais des fonds proposés, surtout pour un placement en titres.
+- **Selon les frais.** Comparez les frais de gestion et les frais des fonds proposés, surtout pour un placement en fonds.
 - **Selon vos projets.** Achat d'un logement, départ à l'étranger, indépendance : chaque projet a ses propres règles de retrait.
 
 Si vous souhaitez aussi placer une épargne libre en parallèle, nos spécialistes en [placements](/particuliers/placements/) peuvent vous accompagner.
@@ -76,7 +76,7 @@ Le capital retiré est imposé séparément du revenu, selon les règles de votr
 ## Questions fréquentes
 
 ### Puis-je placer mon libre passage en actions ?
-Oui, de nombreuses fondations de libre passage proposent des solutions en titres. C'est une option pour un horizon long, mais la valeur peut baisser. Le conseiller adapte la solution à votre âge et à votre situation.
+Oui, de nombreuses fondations de libre passage proposent des solutions en fonds, selon votre profil. C'est une option pour un horizon long, mais la valeur peut baisser. Le conseiller adapte la solution à votre âge et à votre situation.
 
 ### Je retrouve un emploi, que devient mon libre passage ?
 Il doit être transféré à la caisse de pension de votre nouvel employeur. Pensez à donner ses coordonnées à votre fondation de libre passage.
