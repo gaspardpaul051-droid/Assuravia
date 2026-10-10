@@ -983,3 +983,36 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .entree-simulation .choix-carte { text-decoration: none; min-height: 110px; }
 .entree-simulation .choix-carte .icone { width: 30px; height: 30px; color: var(--bleu); }
 .panneau-form > .bouton--action { width: 100%; }
+/* ---------- Page garantie de loyer (reprise de l'ancien site) ---------- */
+.gl-hero { padding-block: var(--e-6) var(--e-8); background: radial-gradient(1000px 420px at 0% 0%, var(--bleu-pale), transparent 70%), radial-gradient(800px 360px at 100% 0%, var(--or-pale), transparent 70%), var(--fond); }
+.gl-hero__grille { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+@media (max-width: 900px) { .gl-hero__grille { grid-template-columns: 1fr; } }
+.gl-mini { display: grid; gap: var(--e-3); padding: var(--e-6); border-radius: var(--r-l); background: var(--fond); border: 1px solid var(--bordure); border-top: 6px solid var(--bleu); box-shadow: var(--ombre-2); }
+.gl-mini__titre { margin: 0; font-size: var(--t-l); font-weight: 800; color: var(--marine); }
+.gl-mini label { font-weight: 700; color: var(--marine); }
+.gl-mini__champ { display: flex; align-items: center; gap: var(--e-2); border: 1.5px solid var(--bordure); border-radius: var(--r-m); padding: 0 var(--e-4); }
+.gl-mini__champ span { font-weight: 700; color: var(--texte-doux); }
+.gl-mini__champ input { flex: 1; border: 0; min-height: 56px; font: inherit; font-size: 1.5rem; font-weight: 800; color: var(--marine); background: none; outline: none; }
+.gl-mini__compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
+.gl-mini__compare > div { display: grid; gap: 2px; padding: var(--e-4); border-radius: var(--r-m); }
+.gl-mini__compare small { font-weight: 700; font-size: var(--t-xs); }
+.gl-mini__compare strong { font-size: var(--t-l); }
+.gl-mini__compare span { font-size: var(--t-xs); color: var(--texte-doux); }
+.gl-mini__depot { background: #FDECEC; } .gl-mini__depot strong { color: #9B1C1C; }
+.gl-mini__ok { background: #E7F5EC; } .gl-mini__ok strong { color: var(--succes); }
+.gl-chiffres { background: var(--marine); color: #fff; }
+.gl-chiffres__liste { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--e-4); padding-block: var(--e-6); text-align: center; }
+@media (max-width: 700px) { .gl-chiffres__liste { grid-template-columns: 1fr 1fr; } }
+.gl-chiffres strong { display: block; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--or-clair); }
+.gl-chiffres span { font-size: var(--t-s); color: #DCE4EF; }
+.gl-deux { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-5); }
+@media (max-width: 760px) { .gl-deux { grid-template-columns: 1fr; } }
+.gl-deux__carte { position: relative; padding: var(--e-6); border-radius: var(--r-l); border: 1px solid var(--bordure); background: var(--fond); box-shadow: var(--ombre-1); }
+.gl-deux__carte--ok { border: 2px solid var(--bleu); background: var(--bleu-pale); }
+.gl-deux__badge { position: absolute; top: -12px; left: 24px; padding: 2px 12px; border-radius: var(--r-plein); background: var(--bleu); color: #fff; font-size: var(--t-xs); font-weight: 800; }
+.gl-deux__nom { margin: 0; font-weight: 800; color: var(--marine); font-size: var(--t-l); }
+.gl-deux__montant { margin: var(--e-2) 0 var(--e-4); font-size: 1.8rem; font-weight: 800; color: var(--succes); }
+.gl-deux__montant--rouge { color: #9B1C1C; }
+.gl-deux ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--texte-doux); }
+.surtitre { margin: 0; font-size: var(--t-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--bleu); }
+.centre { text-align: center; }

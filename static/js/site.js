@@ -365,6 +365,8 @@
       r.addEventListener("change", function () { setTimeout(avancer, 250); });
     });
     retourF.addEventListener("click", function () { if (historique.length) montrer(historique.pop(), true); });
+    // Un autre bloc de la page peut faire avancer la simulation (ex. calculateur du haut de page)
+    funnel.addEventListener("funnel:suivant", avancer);
     funnel.querySelectorAll("[data-fe-modifier]").forEach(function (b) {
       b.addEventListener("click", function () { historique = []; for (var k = 0; k < Number(b.getAttribute("data-fe-modifier")) - 1; k++) historique.push(k); montrer(Number(b.getAttribute("data-fe-modifier")) - 1, true); });
     });
@@ -446,7 +448,8 @@
       alerte.hidden = !(l > 0 && g > l * 3 + 0.5);
       alerte.textContent = "Ce montant dépasse 3 mois de loyer, le maximum légal pour un logement d'habitation.";
       gar.querySelector("[data-gl-comparaison]").hidden = !(g > 0);
-      gar.querySelector("[data-gl-titre-offres]").hidden = !(g > 0);
+      var nbDispo = OFFRES_GL.filter(function (o) { var r = calcGL(o, g); return r && r.dispo; }).length;
+      gar.querySelector("[data-gl-titre-offres]").textContent = g > 0 ? nbDispo + (nbDispo > 1 ? " offres" : " offre") + " pour " + chf(g) : "Vos offres de garantie de loyer";
       gar.querySelector('[data-gl-sortie="bloque"]').textContent = chf(g) + " bloqués";
       var res = OFFRES_GL.map(function (o) { return { o: o, r: calcGL(o, g) }; });
       var chiffrables = res.filter(function (x) { return x.r && x.r.dispo && !x.r.surDemande; });
@@ -518,6 +521,22 @@
     if (qL > 0) gLoyer.value = Math.round(qL);
     if (qG > 0) { gMontant.value = Math.round(qG); montantTouche = true; } else if (qL > 0) gMontant.value = Math.round(qL * 3);
     rendre();
+  }
+
+  // 4d-bis. Mini-calculateur du haut de page garantie de loyer
+  var mini = document.querySelector("[data-gl-mini]");
+  if (mini) {
+    var mLoyer = mini.querySelector("[data-gl-mini-loyer]");
+    var majMini = function () { mini.querySelector("[data-gl-mini-depot]").textContent = chf((Number(mLoyer.value) || 0) * 3); };
+    mLoyer.addEventListener("input", majMini); majMini();
+    mini.querySelector("[data-gl-mini-bouton]").addEventListener("click", function () {
+      var cible = document.querySelector('[data-gl="loyer"]'), f = document.querySelector("[data-funnel]");
+      if (!cible || !f) return;
+      cible.value = mLoyer.value;
+      cible.dispatchEvent(new Event("input", { bubbles: true }));
+      f.dispatchEvent(new Event("funnel:suivant"));
+      document.getElementById("calcul").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   // 4e. Recherche d'adresse suisse (service public de la Confédération, geo.admin.ch)

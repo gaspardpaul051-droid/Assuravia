@@ -1,30 +1,114 @@
+{% import "partials/icones.html" as i %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
 {% block title %}Garantie de loyer sans dépôt en Suisse romande | Assuravia{% endblock %}
-{% block description %}Gardez vos 3 mois de loyer sur votre compte : remplacez le dépôt bancaire par une garantie de loyer. Calcul immédiat et demande en ligne en 3 minutes.{% endblock %}
+{% block description %}Gardez vos 3 mois de loyer sur votre compte : remplacez le dépôt bancaire par une garantie de loyer. 3 assureurs comparés, demande en ligne en 3 minutes.{% endblock %}
 {% block content %}
-<section class="produit produit--simple">
+<section class="gl-hero">
+  <div class="cadre gl-hero__grille">
+    <div>
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a></nav>
+      <p class="etiquette etiquette--prive">{{ i.icone("cle", "icone icone--petite") }} Garantie de loyer · Suisse romande</p>
+      <h1>Gardez vos 3&nbsp;mois de loyer sur votre compte.</h1>
+      <p class="chapeau">Remplacez le dépôt bancaire exigé par la régie par une assurance : vous payez une petite prime, et votre argent reste disponible.</p>
+      <div class="accueil__actions">
+        <a class="bouton bouton--prive" href="#calcul">Calculer ma garantie</a>
+        <a class="bouton bouton--secondaire" href="#comment">Comment ça marche</a>
+      </div>
+      <ul class="pastilles">
+        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+        <li>{{ i.icone("balance", "icone icone--petite") }} 3 assureurs comparés</li>
+        <li>{{ i.icone("horloge", "icone icone--petite") }} Demande en 3 minutes</li>
+      </ul>
+    </div>
+    <div class="gl-mini" data-gl-mini>
+      <p class="gl-mini__titre">Votre économie en 10 secondes</p>
+      <label for="gl-mini-loyer">Votre loyer mensuel</label>
+      <div class="gl-mini__champ"><span>CHF</span><input id="gl-mini-loyer" type="number" inputmode="numeric" min="0" step="10" value="2100" data-gl-mini-loyer></div>
+      <div class="gl-mini__compare">
+        <div class="gl-mini__depot"><small>Avec un dépôt bancaire</small><strong data-gl-mini-depot>CHF 6'300</strong><span>bloqués pendant tout le bail</span></div>
+        <div class="gl-mini__ok"><small>Avec une assurance</small><strong>CHF 0 bloqué</strong><span>vous payez une petite prime annuelle</span></div>
+      </div>
+      <button type="button" class="bouton bouton--action" data-gl-mini-bouton>Calculer mes offres</button>
+    </div>
+  </div>
+</section>
+
+<section class="gl-chiffres" aria-label="En bref">
+  <div class="cadre gl-chiffres__liste">
+    <div><strong>CHF 0</strong><span>bloqué à la signature du bail</span></div>
+    <div><strong>Dès 4 %</strong><span>du montant garanti, par an</span></div>
+    <div><strong>3 min</strong><span>pour faire votre demande</span></div>
+    <div><strong>100 %</strong><span>en ligne, sans engagement</span></div>
+  </div>
+</section>
+
+<section class="bloc">
   <div class="cadre">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a></nav>
-    <h1>Garantie de loyer : gardez vos 3 mois de loyer sur votre compte</h1>
-    <p class="chapeau">Remplacez le dépôt bancaire exigé par la régie par une assurance. Vous payez une prime annuelle, votre argent reste disponible.</p>
+    <div class="bloc__entete"><h2>Bloquer votre argent, ou le garder ?</h2><p>Deux façons de fournir votre garantie de loyer.</p></div>
+    <div class="gl-deux">
+      <article class="gl-deux__carte">
+        <p class="gl-deux__nom">Dépôt bancaire</p>
+        <p class="gl-deux__montant gl-deux__montant--rouge">CHF 6'300 bloqués</p>
+        <ul><li>Jusqu'à 3 loyers immobilisés pendant tout le bail</li><li>Argent indisponible pour vos meubles, votre déménagement, vos projets</li><li>Pas de prime à payer</li></ul>
+      </article>
+      <article class="gl-deux__carte gl-deux__carte--ok">
+        <span class="gl-deux__badge">Notre solution</span>
+        <p class="gl-deux__nom">Assurance garantie de loyer</p>
+        <p class="gl-deux__montant">CHF 0 bloqué</p>
+        <ul><li>Votre argent reste sur votre compte</li><li>Une simple prime annuelle, dès 4 % du montant</li><li>Résiliable, prime non utilisée remboursée dès la 2e année (Helvetia)</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte" id="calcul">
+  <div class="cadre">
+    <div class="bloc__entete"><p class="surtitre">Comparateur</p><h2>Calculez votre garantie de loyer</h2></div>
     {% include "partials/form-garantie.html" %}
   </div>
 </section>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre texte-long">
-    <h2>Comment ça marche</h2>
-    <ol class="etapes etapes--compact">
-      <li><h3>Vous faites votre demande</h3><p>Le formulaire ci-dessus, en 3 minutes environ.</p></li>
-      <li><h3>L'assureur examine votre dossier</h3><p>Il vérifie notamment votre solvabilité, puis émet son offre.</p></li>
-      <li><h3>Vous remettez l'attestation à la régie</h3><p>L'acte de cautionnement remplace le dépôt bancaire.</p></li>
+<section class="bloc" id="comment">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Comment ça marche</h2></div>
+    <ol class="etapes">
+      <li><h3>Calculez</h3><p>Entrez votre loyer : le prix de chaque assureur s'affiche tout de suite.</p></li>
+      <li><h3>Faites votre demande</h3><p>Quelques étapes en ligne, environ 3 minutes, sans engagement.</p></li>
+      <li><h3>Remettez l'attestation</h3><p>Vous recevez l'acte de cautionnement à donner à la régie, à la place du dépôt.</p></li>
     </ol>
-    <h2>Questions fréquentes</h2>
-    <details><summary>La régie est-elle obligée d'accepter ?</summary><p>Non. La plupart des régies acceptent une garantie de loyer d'assurance, mais demandez-lui son accord avant de lancer votre demande.</p></details>
-    <details><summary>Que se passe-t-il si la régie fait appel à la garantie ?</summary><p>L'assureur paie la régie, puis vous demande le remboursement. Si vous payez votre loyer et rendez le logement en bon état, rien ne change pour vous.</p></details>
-    <details><summary>Quel est le montant maximum ?</summary><p>Pour un logement, la garantie ne peut pas dépasser 3 mois de loyer.</p></details>
-    <details><summary>Puis-je résilier quand je déménage ?</summary><p>Le contrat prend fin quand la régie libère la garantie, en général après l'état des lieux de sortie. Les conditions de remboursement de prime varient selon l'assureur.</p></details>
+    <p class="centre"><a class="bouton bouton--prive" href="#calcul">Calculer ma garantie</a></p>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Pourquoi choisir une garantie de loyer ?</h2></div>
+    <div class="atouts">
+      <div><span class="atout__icone">{{ i.icone("tirelire") }}</span><h3>Vos liquidités restent à vous</h3><p>Meubles, déménagement, imprévus : vous ne bloquez plus vos économies.</p></div>
+      <div><span class="atout__icone">{{ i.icone("horloge") }}</span><h3>Une demande en 3 minutes</h3><p>Quelques étapes en ligne, avec recherche d'adresse et sans paperasse.</p></div>
+      <div><span class="atout__icone">{{ i.icone("bouclier") }}</span><h3>Votre régie est protégée</h3><p>L'assureur s'engage auprès d'elle par un acte de cautionnement.</p></div>
+      <div><span class="atout__icone">{{ i.icone("cle") }}</span><h3>Résiliable, sans piège</h3><p>Contrat d'un an, reconduit. Prime non utilisée remboursée dès la 2e année chez Helvetia.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Vos questions, nos réponses</h2>
+      <p><a class="lien-fort" href="/contact/">Une autre question ? Écrivez-nous</a></p>
+    </div>
+    <div class="faq">
+      <details><summary>Qu'est-ce que je gagne avec une garantie de loyer sans dépôt ?</summary><div class="faq__reponse"><p><strong>Vos liquidités.</strong> Au lieu de bloquer jusqu'à trois loyers sur un compte pendant tout le bail, vous gardez cet argent disponible : meubles, déménagement, imprévus, épargne. Vous ne payez qu'une prime annuelle, à partir de 4 % du montant garanti.</p></div></details>
+      <details><summary>Combien ça me coûte, concrètement ?</summary><div class="faq__reponse"><p>La prime commence à <strong>4 % du montant garanti par an</strong>, timbre fédéral en plus. Entrez votre loyer dans le calculateur : le prix de chaque assureur s'affiche en quelques secondes, sans inscription.</p></div></details>
+      <details><summary>Est-ce que c'est rapide ?</summary><div class="faq__reponse"><p>Oui. La demande en ligne prend environ <strong>3 minutes</strong>. Nous transmettons ensuite votre dossier à l'assureur et revenons vers vous avec l'offre.</p></div></details>
+      <details><summary>Ma régie sera-t-elle rassurée ?</summary><div class="faq__reponse"><p>Oui : l'assureur s'engage auprès d'elle par un acte de cautionnement, avec la même sécurité qu'un dépôt, et il a déjà examiné votre solvabilité. Il suffit qu'elle soit d'accord : demandez-lui avant de commencer.</p></div></details>
+      <details><summary>Et si je déménage, suis-je bloqué ?</summary><div class="faq__reponse"><p>Non. Le contrat est résiliable. Chez Helvetia, la part de prime déjà payée et non utilisée vous est <strong>remboursée au prorata dès la 2e année</strong>. Pour votre nouveau logement, vous refaites une demande en quelques minutes.</p></div></details>
+      <details><summary>Puis-je ajouter mon conjoint ou mon colocataire ?</summary><div class="faq__reponse"><p>Bien sûr, directement dans le formulaire : il suffit de renseigner ses informations. Vous faites une seule demande pour tout le monde.</p></div></details>
+      <details><summary>Est-ce que ça m'engage à quelque chose ?</summary><div class="faq__reponse"><p>Non. Envoyer une demande ne vous engage à rien. Le contrat n'existe que si vous acceptez et signez l'offre.</p></div></details>
+      <details><summary>Y a-t-il des règles à connaître ?</summary><div class="faq__reponse"><p>Pour un logement, la garantie ne peut pas dépasser 3 loyers. Comme elle protège le bailleur, l'assureur peut se retourner contre le locataire s'il doit payer : si vous payez votre loyer et rendez le logement en bon état, rien ne change pour vous.</p></div></details>
+    </div>
   </div>
 </section>
 {% endblock %}

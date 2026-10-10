@@ -16,6 +16,7 @@
 
     <fieldset class="fe" data-fe="1">
       <legend class="fe__question">Calculez votre garantie de loyer</legend>
+      <p class="fe__aide">Indiquez votre loyer : nous calculons le montant de la garantie et comparons les assureurs pour vous.</p>
       <div class="grille-champs">
         <div class="champ">
           <label for="gl-loyer">Loyer mensuel net (CHF)</label>
@@ -33,7 +34,13 @@
         <span aria-hidden="true">{{ i.icone("fleche") }}</span>
         <div class="gl-comparaison__ok"><small>Avec une garantie de loyer</small><strong>CHF 0 bloqué</strong></div>
       </div>
-      <p class="fe__sous-question" data-gl-titre-offres hidden>Choisissez votre offre</p>
+      <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant>Calculer mes offres</button>
+      <p class="fe__aide">Gratuit, sans engagement et sans inscription. La garantie est de 3 mois de loyer au maximum : vous pouvez aussi saisir directement le montant de votre bail.</p>
+    </fieldset>
+
+    <fieldset class="fe" data-fe="2" hidden>
+      <legend class="fe__question" data-gl-titre-offres>Vos offres de garantie de loyer</legend>
+      <p class="fe__aide">Classement des assureurs pour votre montant. Pour changer de loyer, utilisez « Retour ».</p>
       <div class="offres-gl" data-gl-offres>
         <label class="offre-gl" data-offre="helvetia"><input type="radio" name="offre" value="helvetia" required data-fe-auto>
           <span class="offre-gl__rang">1</span>
@@ -61,7 +68,7 @@
       <p class="resultat__avertissement">Estimation : la prime peut légèrement différer de la proposition finale de l'assureur.</p>
     </fieldset>
 
-    <fieldset class="fe" data-fe="2" hidden>
+    <fieldset class="fe" data-fe="3" hidden>
       <legend class="fe__question">Où allez-vous habiter ?</legend>
       <p class="fe__aide">Cette adresse figure sur l'attestation remise à la régie.</p>
       {{ f.adresse("logement") }}
@@ -79,7 +86,7 @@
       <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
     </fieldset>
 
-    <fieldset class="fe" data-fe="3" hidden>
+    <fieldset class="fe" data-fe="4" hidden>
       <legend class="fe__question">Parlons de vous</legend>
       <div class="choix-cartes choix-cartes--petit">
         <label class="choix-carte choix-carte--compact"><input type="radio" name="civilite" value="Madame" required><span>Madame</span></label>
@@ -103,7 +110,7 @@
       <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
     </fieldset>
 
-    <fieldset class="fe" data-fe="4" hidden>
+    <fieldset class="fe" data-fe="5" hidden>
       <legend class="fe__question">Une autre personne figure-t-elle sur le bail ?</legend>
       <p class="fe__aide">Conjoint ou colocataire : s'il signe aussi le bail, il donne les mêmes informations.</p>
       <div class="choix-cartes">
@@ -132,7 +139,7 @@
       </div>
     </fieldset>
 
-    <fieldset class="fe" data-fe="5" hidden>
+    <fieldset class="fe" data-fe="6" hidden>
       <legend class="fe__question">Et votre bailleur ?</legend>
       <p class="fe__sous-question">L'immeuble est-il géré par le propriétaire lui-même ?</p>
       <div class="choix-cartes">
@@ -158,7 +165,7 @@
       <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
     </fieldset>
 
-    <fieldset class="fe" data-fe="6" hidden>
+    <fieldset class="fe" data-fe="7" hidden>
       <legend class="fe__question">Dernier coup d'œil</legend>
       <p class="fe__sous-question">Un coup de pouce en plus ? <span class="facultatif">(facultatif)</span></p>
       <div class="choix-cartes">
