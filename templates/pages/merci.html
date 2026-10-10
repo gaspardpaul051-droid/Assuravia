@@ -3,16 +3,27 @@
 {% block title %}Demande envoyée | Assuravia{% endblock %}
 {% block description %}Votre demande a bien été envoyée.{% endblock %}
 {% block content %}
-<section class="produit produit--simple">
+{% import "partials/icones.html" as i %}
+<section class="merci-page" data-celebration>
   <div class="cadre cadre--etroit merci">
-    <h1>Demande envoyée</h1>
-    <p class="chapeau">Merci. Un conseiller vous contacte au moment que vous avez indiqué. Gardez votre téléphone à portée de main : l'appel peut venir d'un numéro suisse que vous ne connaissez pas.</p>
-    <h2>En attendant</h2>
-    <ul>
-      <li>Préparez votre police d'assurance actuelle si vous en avez une : le conseiller pourra comparer plus précisément.</li>
-      <li>Pour le 3e pilier, ayez sous la main votre dernière déclaration d'impôts ou votre certificat de salaire.</li>
-    </ul>
-    <p><a class="lien-fort" href="/blog/">Lire nos articles</a></p>
+    <div class="merci__check" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><circle class="merci__cercle" cx="60" cy="60" r="52"/><path class="merci__coche" d="M38 62l15 15 30-34"/></svg>
+    </div>
+    <h1 class="merci__titre">Bravo, c'est envoyé !</h1>
+    <p class="chapeau" data-merci-texte>Votre demande est bien arrivée. Un spécialiste vous contacte au moment que vous avez indiqué. Gardez votre téléphone à portée de main : l'appel peut venir d'un numéro suisse que vous ne connaissez pas.</p>
+    <ol class="merci__suite">
+      <li class="merci__etape merci__etape--fait"><span>{{ i.icone("valide") }}</span><div><strong>Demande reçue</strong><small>À l'instant</small></div></li>
+      <li class="merci__etape merci__etape--encours"><span>{{ i.icone("horloge") }}</span><div><strong>Un spécialiste étudie votre situation</strong><small>Il prépare des propositions adaptées</small></div></li>
+      <li class="merci__etape"><span>{{ i.icone("telephone") }}</span><div><strong>Il vous recontacte</strong><small>Par téléphone ou par e-mail, comme vous préférez</small></div></li>
+    </ol>
+    <div class="merci__encart">
+      <p><strong>En attendant</strong></p>
+      <ul>
+        <li>Préparez votre police d'assurance actuelle si vous en avez une : le spécialiste pourra comparer plus précisément.</li>
+        <li>Pour le 3e pilier ou les impôts, ayez sous la main votre dernière déclaration ou votre certificat de salaire.</li>
+      </ul>
+    </div>
+    <p class="merci__actions"><a class="bouton bouton--prive" href="/">Retour à l'accueil</a> <a class="bouton bouton--secondaire" href="/blog/">Lire nos conseils</a></p>
   </div>
 </section>
 {% endblock %}

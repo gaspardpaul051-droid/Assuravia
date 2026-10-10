@@ -19,6 +19,42 @@
     }
   } catch (e) { /* navigateur ancien */ }
 
+  // 0a. Confettis aux couleurs de la marque (fin de formulaire, prime affichée)
+  var lancerConfettis = function (duree) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var c = document.createElement("canvas"), ctx = c.getContext("2d");
+    c.className = "confettis"; c.setAttribute("aria-hidden", "true");
+    document.body.appendChild(c);
+    var dpr = window.devicePixelRatio || 1;
+    var taille = function () { c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    taille();
+    var couleurs = ["#1565A8", "#3A9AE0", "#C9A227", "#E2BE52", "#0B2545", "#2E9E5B", "#FFFFFF"];
+    var parts = [];
+    for (var k = 0; k < 160; k++) {
+      var gauche = k % 2 === 0;
+      parts.push({ x: gauche ? -10 : innerWidth + 10, y: innerHeight * (0.55 + Math.random() * 0.3),
+        vx: (gauche ? 1 : -1) * (6 + Math.random() * 9), vy: -(10 + Math.random() * 12),
+        r: 4 + Math.random() * 6, a: Math.random() * 6.28, va: -0.2 + Math.random() * 0.4,
+        c: couleurs[k % couleurs.length], forme: k % 3 });
+    }
+    var t0 = performance.now(), fin = duree || 3200;
+    var pas = function (t) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      parts.forEach(function (p) {
+        p.vy += 0.35; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c;
+        ctx.globalAlpha = Math.max(0, 1 - (t - t0) / fin);
+        if (p.forme === 0) ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+        else if (p.forme === 1) { ctx.beginPath(); ctx.arc(0, 0, p.r / 1.6, 0, 6.28); ctx.fill(); }
+        else { ctx.beginPath(); ctx.moveTo(0, -p.r); ctx.lineTo(p.r, p.r); ctx.lineTo(-p.r, p.r); ctx.fill(); }
+        ctx.restore();
+      });
+      if (t - t0 < fin) requestAnimationFrame(pas); else c.remove();
+    };
+    requestAnimationFrame(pas);
+  };
+  if (document.querySelector("[data-celebration]")) setTimeout(function () { lancerConfettis(3600); }, 350);
+
   // 0b. Apparition douce des blocs au défilement
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var aAnimer = document.querySelectorAll(".bloc__entete, .carte, .domaine, .cas, .atouts > div, .etapes > li, .obligations li, .retenir, .encart, .pour-qui, .quiz, .encadre, .texte-long table, .faq details, .checkup, .illu-questions, .article-carte");
@@ -114,7 +150,8 @@
         (el.closest("[data-tel]") || (el.type === "radio" ? el.closest(".choix-cartes, .formules") : null) || el).insertAdjacentElement("afterend", msg);
       }
       if (msg) {
-        msg.textContent = el.validity.valueMissing && el.type === "radio" ? "Choisissez une réponse pour continuer."
+        msg.textContent = el.validity.valueMissing && el.hasAttribute("data-adresse-recherche") ? "Choisissez votre adresse dans la liste, ou saisissez-la à la main."
+          : el.validity.valueMissing && el.type === "radio" ? "Choisissez une réponse pour continuer."
           : el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
           : el.type === "tel" ? "Numéro non valide. Choisissez l'indicatif du pays, puis le numéro, par exemple 79 123 45 67."
@@ -378,6 +415,15 @@
           try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: encoder() }).catch(function () {}); } catch (e) {}
           historique.push(courante);
           montrer(courante + 1);
+          // Révélation de la prime : compteur qui monte et confettis
+          var cTot = calculer();
+          var elTot = funnel.querySelector('[data-affiche="total"]');
+          if (elTot && !cTot.surMesure && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            var t0 = null;
+            var monter = function (t) { if (!t0) t0 = t; var k = Math.min((t - t0) / 1200, 1); elTot.textContent = chf2(cTot.total * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(monter); };
+            requestAnimationFrame(monter);
+          }
+          setTimeout(function () { lancerConfettis(2600); }, 500);
           return;
         }
         avancer();
@@ -582,42 +628,78 @@
     });
   }
 
-  // 4e. Adresse suisse proposée au fil de la frappe (service public geo.admin.ch, comme l'ancien site)
+  // 4e. Recherche d'adresse comme sur une carte : suggestions au fil de la frappe.
+  //     Suisse et Liechtenstein : registre officiel des adresses (geo.admin.ch). Autres pays : OpenStreetMap (photon.komoot.io).
+  var CODES_PAYS = { "Suisse": "CH", "Liechtenstein": "LI", "France": "FR", "Allemagne": "DE", "Autriche": "AT", "Italie": "IT", "Espagne": "ES", "Portugal": "PT", "Royaume-Uni": "GB", "Belgique": "BE", "Luxembourg": "LU", "Pays-Bas": "NL" };
   var lireAdresse = function (res) {
     var label = String((res.attrs && res.attrs.label) || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").replace(/\s*\([A-Z]{2}\)\s*$/, "").trim();
     var m = /^(.*)\s+(\d{4})\s+([^\d].*)$/.exec(label);
     if (!m) return null;
     var mm = /^(.*?)\s+(\d+[a-zA-Z]?(?:\s?[-–\/]\s?\d+[a-zA-Z]?)?)$/.exec(m[1]);
-    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim() };
+    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim(), suisse: true };
+  };
+  var chercherSuisse = function (q, signal) {
+    return fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=8&searchText=" + encodeURIComponent(q), { signal: signal })
+      .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+      .then(function (j) { return (j.results || []).map(lireAdresse).filter(Boolean); });
+  };
+  var chercherMonde = function (q, code, signal) {
+    return fetch("https://photon.komoot.io/api/?limit=10&lang=fr&q=" + encodeURIComponent(q), { signal: signal })
+      .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+      .then(function (j) {
+        return (j.features || []).map(function (ft) {
+          var p = ft.properties || {}, ville = p.city || p.town || p.village || p.locality || p.district;
+          if (!p.street || !p.postcode || !ville) return null;
+          return { rue: p.street, no: p.housenumber || "", npa: String(p.postcode), localite: ville, code: String(p.countrycode || "").toUpperCase() };
+        }).filter(function (x) { return x && (!code || x.code === code); });
+      });
   };
   document.querySelectorAll("[data-adresse]").forEach(function (bloc, nBloc) {
     var champ = bloc.querySelector("[data-adresse-recherche]"), liste = bloc.querySelector("[data-adresse-resultats]");
-    var aide = bloc.querySelector(".adresse__recherche .champ__aide");
+    var aide = bloc.querySelector("[data-adresse-statut]"), zoneChamps = bloc.querySelector("[data-adresse-champs]");
+    var badge = bloc.querySelector("[data-adresse-badge]"), zoneRecherche = bloc.querySelector("[data-adresse-zone-recherche]");
+    var requis = champ.hasAttribute("data-adresse-requis");
     var f = { rue: bloc.querySelector("[data-adresse-rue]"), no: bloc.querySelector("[data-adresse-no]"), npa: bloc.querySelector("[data-adresse-npa]"), localite: bloc.querySelector("[data-adresse-localite]") };
     var minuterie = null, ctrl = null, items = [], actif = -1;
     champ.setAttribute("role", "combobox"); champ.setAttribute("aria-autocomplete", "list"); champ.setAttribute("aria-expanded", "false");
     liste.setAttribute("role", "listbox"); liste.id = "adresses-" + nBloc; champ.setAttribute("aria-controls", liste.id);
+    var codePays = function () {
+      var nom = bloc.getAttribute("data-adresse-pays");
+      if (!nom) return "CH";
+      var sel = bloc.closest("form").querySelector('[name="' + nom + '"]');
+      return sel ? (CODES_PAYS[sel.value] || "AUTRE") : "CH";
+    };
     var statut = function (t, alerte) { aide.textContent = t; aide.classList.toggle("adresse__statut--alerte", !!alerte); };
     var fermer = function () { liste.hidden = true; champ.setAttribute("aria-expanded", "false"); actif = -1; };
+    // Deux états : recherche (un seul champ) ou adresse détaillée (champs remplis, modifiables)
+    var montrerChamps = function (texteBadge) {
+      zoneChamps.hidden = false; zoneRecherche.hidden = true;
+      if (requis) champ.required = false;
+      badge.hidden = !texteBadge; badge.textContent = texteBadge || "";
+    };
+    var montrerRecherche = function () {
+      zoneChamps.hidden = true; zoneRecherche.hidden = false;
+      if (requis) champ.required = true;
+      [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.value = ""; });
+      champ.value = ""; fermer(); statut("Commencez à taper : les adresses s'affichent au fur et à mesure.");
+      champ.focus();
+    };
     var choisir = function (it) {
       f.rue.value = it.rue; f.no.value = it.no; f.npa.value = it.npa; f.localite.value = it.localite;
       [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.dispatchEvent(new Event("change", { bubbles: true })); });
-      champ.value = (it.rue + " " + it.no).trim() + ", " + it.npa + " " + it.localite;
-      fermer();
-      statut("✓ Adresse vérifiée. Vous pouvez la corriger ci-dessous si besoin.");
-      bloc.classList.add("adresse--ok");
+      montrerChamps(it.suisse ? "✓ Adresse vérifiée dans le registre suisse des adresses" : "✓ Adresse trouvée");
       if (!f.no.value) f.no.focus();
     };
     var afficherListe = function (res) {
       items = res; liste.innerHTML = "";
-      if (!res.length) { fermer(); statut("Aucune adresse trouvée : vérifiez l'orthographe ou remplissez les champs ci-dessous.", true); return; }
-      statut("Choisissez votre adresse dans la liste.");
+      if (!res.length) { fermer(); statut("Aucune adresse trouvée. Ajoutez le numéro ou la localité, ou saisissez-la à la main.", true); return; }
+      statut(res.length + (res.length > 1 ? " adresses trouvées" : " adresse trouvée") + " : choisissez la vôtre.");
       res.forEach(function (it, i) {
         var li = document.createElement("li");
         li.setAttribute("role", "option"); li.id = liste.id + "-" + i;
-        var b = document.createElement("strong"); b.textContent = (it.rue + " " + it.no).trim();
-        var sp = document.createElement("span"); sp.textContent = it.npa + " " + it.localite;
-        li.appendChild(b); li.appendChild(sp);
+        li.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span><strong></strong><small></small></span>';
+        li.querySelector("strong").textContent = (it.rue + " " + it.no).trim();
+        li.querySelector("small").textContent = it.npa + " " + it.localite;
         li.addEventListener("mousedown", function (e) { e.preventDefault(); choisir(it); });
         liste.appendChild(li);
       });
@@ -625,17 +707,21 @@
     };
     var chercher = function () {
       var q = champ.value.trim();
-      bloc.classList.remove("adresse--ok");
-      if (q.length < 3) { fermer(); statut("Commencez à taper, par exemple « rue du lac 12 ».") ; return; }
+      var err = zoneRecherche.querySelector(".champ__erreur"); if (err) err.remove(); champ.removeAttribute("aria-invalid");
+      if (q.length < 3) { fermer(); statut("Commencez à taper : les adresses s'affichent au fur et à mesure."); return; }
+      var code = codePays();
       if (ctrl) ctrl.abort();
       ctrl = window.AbortController ? new AbortController() : null;
+      var sig = ctrl ? ctrl.signal : undefined;
       statut("Recherche…");
-      fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=8&searchText=" + encodeURIComponent(q), { signal: ctrl ? ctrl.signal : undefined })
-        .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
-        .then(function (j) { afficherListe((j.results || []).map(lireAdresse).filter(Boolean)); })
-        .catch(function (err) { if (err && err.name === "AbortError") return; fermer(); statut("Les suggestions sont indisponibles pour le moment : remplissez les champs ci-dessous.", true); });
+      var p = code === "CH" || code === "LI" ? chercherSuisse(q, sig) : chercherMonde(q, code === "AUTRE" ? null : code, sig);
+      p.then(afficherListe).catch(function (err) {
+        if (err && err.name === "AbortError") return;
+        fermer(); statut("Les suggestions sont indisponibles pour le moment : saisissez l'adresse à la main.", true);
+        montrerChamps("");
+      });
     };
-    champ.addEventListener("input", function () { clearTimeout(minuterie); minuterie = setTimeout(chercher, 220); });
+    champ.addEventListener("input", function () { clearTimeout(minuterie); minuterie = setTimeout(chercher, 200); });
     champ.addEventListener("keydown", function (e) {
       var opts = liste.children;
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
@@ -644,12 +730,15 @@
         actif = (actif + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
         Array.prototype.forEach.call(opts, function (o, i) { o.classList.toggle("actif", i === actif); });
         champ.setAttribute("aria-activedescendant", opts[actif].id);
+        opts[actif].scrollIntoView({ block: "nearest" });
       } else if (e.key === "Enter") {
         e.preventDefault();
-        if (!liste.hidden && actif > -1) choisir(items[actif]);
+        if (!liste.hidden && opts.length) choisir(items[actif > -1 ? actif : 0]);
       } else if (e.key === "Escape") { fermer(); }
     });
     champ.addEventListener("blur", function () { setTimeout(fermer, 150); });
+    bloc.querySelector("[data-adresse-manuel]").addEventListener("click", function () { montrerChamps(""); f.rue.value = champ.value.replace(/\s*\d.*$/, ""); f.rue.focus(); });
+    bloc.querySelector("[data-adresse-changer]").addEventListener("click", montrerRecherche);
   });
 
   // 4. Simulateur 3e pilier
@@ -1014,7 +1103,7 @@
   if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");
     var texte = document.querySelector(".merci .chapeau");
-    if (titre) titre.textContent = "Message envoyé";
-    if (texte) texte.textContent = "Merci. Nous vous répondons par e-mail dans les meilleurs délais.";
+    if (titre) titre.textContent = "Bravo, votre message est envoyé !";
+    if (texte) texte.textContent = "Merci. Nous vous répondons dans les meilleurs délais, par téléphone ou par e-mail.";
   }
 })();

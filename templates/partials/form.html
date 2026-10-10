@@ -61,19 +61,29 @@
 </div>
 {%- endmacro %}
 
-{% macro adresse(prefixe, requis=True) -%}
-<div class="adresse" data-adresse>
-  <div class="champ champ--large adresse__recherche">
-    <label for="{{ prefixe }}-recherche">Tapez l'adresse, nous la trouvons pour vous</label>
-    <input id="{{ prefixe }}-recherche" type="search" autocomplete="off" placeholder="Ex. rue du lac 12, Lausanne" data-adresse-recherche>
+{% macro adresse(prefixe, requis=True, pays=None) -%}
+{# Recherche d'adresse comme sur une carte : suggestions au fil de la frappe, champs détaillés remplis automatiquement.
+   `pays` : nom d'un champ <select> de pays ; hors de Suisse, les suggestions viennent d'OpenStreetMap. #}
+<div class="adresse" data-adresse{% if pays %} data-adresse-pays="{{ pays }}"{% endif %}>
+  <div class="champ champ--large adresse__recherche" data-adresse-zone-recherche>
+    <label for="{{ prefixe }}-recherche">Cherchez l'adresse</label>
+    <div class="adresse__saisie">
+      <svg class="adresse__pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <input id="{{ prefixe }}-recherche" type="search" autocomplete="off" placeholder="Ex. rue du lac 12, Lausanne" data-adresse-recherche{% if requis %} required data-adresse-requis{% endif %}>
+    </div>
     <ul class="adresse__resultats" data-adresse-resultats hidden></ul>
-    <p class="champ__aide">Commencez à taper, par exemple « rue du lac 12 ». Ou remplissez les champs ci-dessous.</p>
+    <p class="champ__aide" data-adresse-statut>Commencez à taper : les adresses s'affichent au fur et à mesure.</p>
+    <button type="button" class="adresse__manuel" data-adresse-manuel>Je ne trouve pas mon adresse : la saisir à la main</button>
   </div>
-  <div class="grille-champs adresse__champs">
-    <div class="champ"><label for="{{ prefixe }}-rue">Rue</label><input id="{{ prefixe }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" data-adresse-rue placeholder="Avenue de la Gare"></div>
-    <div class="champ"><label for="{{ prefixe }}-no">N°</label><input id="{{ prefixe }}-no" name="{{ prefixe }}_numero"{% if requis %} required{% endif %} data-adresse-no placeholder="12"></div>
-    <div class="champ"><label for="{{ prefixe }}-npa">NPA</label><input id="{{ prefixe }}-npa" name="{{ prefixe }}_npa"{% if requis %} required{% endif %} inputmode="numeric" autocomplete="postal-code" data-adresse-npa placeholder="1003"></div>
-    <div class="champ"><label for="{{ prefixe }}-localite">Localité</label><input id="{{ prefixe }}-localite" name="{{ prefixe }}_localite"{% if requis %} required{% endif %} autocomplete="address-level2" data-adresse-localite placeholder="Lausanne"></div>
+  <div class="adresse__champs" data-adresse-champs hidden>
+    <p class="adresse__badge" data-adresse-badge hidden></p>
+    <div class="grille-champs">
+      <div class="champ"><label for="{{ prefixe }}-rue">Rue</label><input id="{{ prefixe }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" data-adresse-rue placeholder="Avenue de la Gare"></div>
+      <div class="champ"><label for="{{ prefixe }}-no">N°</label><input id="{{ prefixe }}-no" name="{{ prefixe }}_numero"{% if requis %} required{% endif %} data-adresse-no placeholder="12"></div>
+      <div class="champ"><label for="{{ prefixe }}-npa">NPA</label><input id="{{ prefixe }}-npa" name="{{ prefixe }}_npa"{% if requis %} required{% endif %} inputmode="numeric" autocomplete="postal-code" data-adresse-npa placeholder="1003"></div>
+      <div class="champ"><label for="{{ prefixe }}-localite">Localité</label><input id="{{ prefixe }}-localite" name="{{ prefixe }}_localite"{% if requis %} required{% endif %} autocomplete="address-level2" data-adresse-localite placeholder="Lausanne"></div>
+    </div>
+    <button type="button" class="adresse__manuel" data-adresse-changer>Changer d'adresse</button>
   </div>
 </div>
 {%- endmacro %}
