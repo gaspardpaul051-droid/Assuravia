@@ -64,10 +64,10 @@
 {% macro adresse(prefixe, requis=True) -%}
 <div class="adresse" data-adresse>
   <div class="champ champ--large adresse__recherche">
-    <label for="{{ prefixe }}-recherche">Cherchez l'adresse</label>
-    <input id="{{ prefixe }}-recherche" type="search" autocomplete="off" placeholder="Ex. Avenue de la Gare 12, Lausanne" data-adresse-recherche>
+    <label for="{{ prefixe }}-recherche">Tapez l'adresse, nous la trouvons pour vous</label>
+    <input id="{{ prefixe }}-recherche" type="search" autocomplete="off" placeholder="Ex. rue du lac 12, Lausanne" data-adresse-recherche>
     <ul class="adresse__resultats" data-adresse-resultats hidden></ul>
-    <p class="champ__aide">Ou remplissez les champs ci-dessous.</p>
+    <p class="champ__aide">Commencez à taper, par exemple « rue du lac 12 ». Ou remplissez les champs ci-dessous.</p>
   </div>
   <div class="grille-champs adresse__champs">
     <div class="champ"><label for="{{ prefixe }}-rue">Rue</label><input id="{{ prefixe }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" data-adresse-rue placeholder="Avenue de la Gare"></div>

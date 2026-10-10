@@ -539,45 +539,74 @@
     });
   }
 
-  // 4e. Recherche d'adresse suisse (service public de la Confédération, geo.admin.ch)
-  document.querySelectorAll("[data-adresse]").forEach(function (bloc) {
+  // 4e. Adresse suisse proposée au fil de la frappe (service public geo.admin.ch, comme l'ancien site)
+  var lireAdresse = function (res) {
+    var label = String((res.attrs && res.attrs.label) || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").replace(/\s*\([A-Z]{2}\)\s*$/, "").trim();
+    var m = /^(.*)\s+(\d{4})\s+([^\d].*)$/.exec(label);
+    if (!m) return null;
+    var mm = /^(.*?)\s+(\d+[a-zA-Z]?(?:\s?[-–\/]\s?\d+[a-zA-Z]?)?)$/.exec(m[1]);
+    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim() };
+  };
+  document.querySelectorAll("[data-adresse]").forEach(function (bloc, nBloc) {
     var champ = bloc.querySelector("[data-adresse-recherche]"), liste = bloc.querySelector("[data-adresse-resultats]");
-    var minuterie = null;
-    var nettoyer = function (t) { return t.replace(/<[^>]+>/g, ""); };
-    var remplir = function (label) {
-      // Format geo.admin : « Avenue de la Gare 12 1003 Lausanne »
-      var m = label.match(/^(.*?)\s+(\d+\w*)\s+(\d{4})\s+(.+)$/);
-      if (m) {
-        bloc.querySelector("[data-adresse-rue]").value = m[1];
-        bloc.querySelector("[data-adresse-no]").value = m[2];
-        bloc.querySelector("[data-adresse-npa]").value = m[3];
-        bloc.querySelector("[data-adresse-localite]").value = m[4];
-      }
-      champ.value = label;
-      liste.hidden = true;
+    var aide = bloc.querySelector(".adresse__recherche .champ__aide");
+    var f = { rue: bloc.querySelector("[data-adresse-rue]"), no: bloc.querySelector("[data-adresse-no]"), npa: bloc.querySelector("[data-adresse-npa]"), localite: bloc.querySelector("[data-adresse-localite]") };
+    var minuterie = null, ctrl = null, items = [], actif = -1;
+    champ.setAttribute("role", "combobox"); champ.setAttribute("aria-autocomplete", "list"); champ.setAttribute("aria-expanded", "false");
+    liste.setAttribute("role", "listbox"); liste.id = "adresses-" + nBloc; champ.setAttribute("aria-controls", liste.id);
+    var statut = function (t, alerte) { aide.textContent = t; aide.classList.toggle("adresse__statut--alerte", !!alerte); };
+    var fermer = function () { liste.hidden = true; champ.setAttribute("aria-expanded", "false"); actif = -1; };
+    var choisir = function (it) {
+      f.rue.value = it.rue; f.no.value = it.no; f.npa.value = it.npa; f.localite.value = it.localite;
+      [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.dispatchEvent(new Event("change", { bubbles: true })); });
+      champ.value = (it.rue + " " + it.no).trim() + ", " + it.npa + " " + it.localite;
+      fermer();
+      statut("✓ Adresse vérifiée. Vous pouvez la corriger ci-dessous si besoin.");
+      bloc.classList.add("adresse--ok");
+      if (!f.no.value) f.no.focus();
     };
-    champ.addEventListener("input", function () {
-      clearTimeout(minuterie);
+    var afficherListe = function (res) {
+      items = res; liste.innerHTML = "";
+      if (!res.length) { fermer(); statut("Aucune adresse trouvée : vérifiez l'orthographe ou remplissez les champs ci-dessous.", true); return; }
+      statut("Choisissez votre adresse dans la liste.");
+      res.forEach(function (it, i) {
+        var li = document.createElement("li");
+        li.setAttribute("role", "option"); li.id = liste.id + "-" + i;
+        var b = document.createElement("strong"); b.textContent = (it.rue + " " + it.no).trim();
+        var sp = document.createElement("span"); sp.textContent = it.npa + " " + it.localite;
+        li.appendChild(b); li.appendChild(sp);
+        li.addEventListener("mousedown", function (e) { e.preventDefault(); choisir(it); });
+        liste.appendChild(li);
+      });
+      liste.hidden = false; champ.setAttribute("aria-expanded", "true");
+    };
+    var chercher = function () {
       var q = champ.value.trim();
-      if (q.length < 4) { liste.hidden = true; return; }
-      minuterie = setTimeout(function () {
-        fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=6&searchText=" + encodeURIComponent(q))
-          .then(function (r) { return r.json(); })
-          .then(function (j) {
-            liste.innerHTML = "";
-            (j.results || []).forEach(function (res) {
-              var label = nettoyer(res.attrs.label || "");
-              var li = document.createElement("li");
-              var b = document.createElement("button");
-              b.type = "button"; b.textContent = label;
-              b.addEventListener("click", function () { remplir(label); });
-              li.appendChild(b); liste.appendChild(li);
-            });
-            liste.hidden = !liste.children.length;
-          })
-          .catch(function () { liste.hidden = true; });
-      }, 280);
+      bloc.classList.remove("adresse--ok");
+      if (q.length < 3) { fermer(); statut("Commencez à taper, par exemple « rue du lac 12 ».") ; return; }
+      if (ctrl) ctrl.abort();
+      ctrl = window.AbortController ? new AbortController() : null;
+      statut("Recherche…");
+      fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=8&searchText=" + encodeURIComponent(q), { signal: ctrl ? ctrl.signal : undefined })
+        .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+        .then(function (j) { afficherListe((j.results || []).map(lireAdresse).filter(Boolean)); })
+        .catch(function (err) { if (err && err.name === "AbortError") return; fermer(); statut("Les suggestions sont indisponibles pour le moment : remplissez les champs ci-dessous.", true); });
+    };
+    champ.addEventListener("input", function () { clearTimeout(minuterie); minuterie = setTimeout(chercher, 220); });
+    champ.addEventListener("keydown", function (e) {
+      var opts = liste.children;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        if (liste.hidden || !opts.length) return;
+        e.preventDefault();
+        actif = (actif + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
+        Array.prototype.forEach.call(opts, function (o, i) { o.classList.toggle("actif", i === actif); });
+        champ.setAttribute("aria-activedescendant", opts[actif].id);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (!liste.hidden && actif > -1) choisir(items[actif]);
+      } else if (e.key === "Escape") { fermer(); }
     });
+    champ.addEventListener("blur", function () { setTimeout(fermer, 150); });
   });
 
   // 4. Simulateur 3e pilier

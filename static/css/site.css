@@ -1016,3 +1016,11 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .gl-deux ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--texte-doux); }
 .surtitre { margin: 0; font-size: var(--t-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--bleu); }
 .centre { text-align: center; }
+.adresse__resultats { top: calc(100% - 34px); max-height: 320px; overflow-y: auto; }
+.adresse__resultats li { display: grid; padding: 10px 12px; border-radius: var(--r-s); cursor: pointer; }
+.adresse__resultats li strong { color: var(--marine); }
+.adresse__resultats li span { font-size: var(--t-s); color: var(--texte-doux); }
+.adresse__resultats li:hover, .adresse__resultats li.actif { background: var(--bleu-pale); }
+.adresse--ok .adresse__recherche .champ__aide { color: var(--succes); font-weight: 700; }
+.adresse__statut--alerte { color: #9B1C1C !important; }
+.adresse--ok .adresse__recherche input { border-color: var(--succes); }

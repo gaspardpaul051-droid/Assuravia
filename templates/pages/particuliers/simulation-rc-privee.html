@@ -54,11 +54,7 @@
         </fieldset>
         <fieldset class="fe" data-fe="4" hidden>
           <legend class="fe__question">Quelle est l'adresse du logement ?</legend>
-          <div class="grille-champs">
-            <div class="champ champ--large"><label for="rue-rc">Rue et numéro</label><input id="rue-rc" name="rue" required autocomplete="address-line1" placeholder="Avenue de la Gare 12"></div>
-            <div class="champ"><label for="npa-rc">NPA</label><input id="npa-rc" name="npa" required inputmode="numeric" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="1003"></div>
-            <div class="champ"><label for="localite-rc">Localité</label><input id="localite-rc" name="localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
-          </div>
+          {{ f.adresse("logement") }}
           <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
         </fieldset>
         <fieldset class="fe" data-fe="5" hidden>

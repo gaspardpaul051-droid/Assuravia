@@ -7,7 +7,7 @@
 {% block content %}
 <section class="funnel-page">
   <div class="cadre cadre--etroit">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/assurance-menage/">RC privée et ménage</a></nav>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/assurance-menage/">Assurance ménage</a></nav>
     <p class="etiquette etiquette--prive">{{ i.icone("maison", "icone icone--petite") }} Simulation assurance ménage</p>
 
     <div class="funnel" data-funnel>
@@ -57,11 +57,7 @@
 
         <fieldset class="fe" data-fe="4" hidden>
           <legend class="fe__question">Quelle est l'adresse du logement ?</legend>
-          <div class="grille-champs">
-            <div class="champ champ--large"><label for="rue-sm">Rue et numéro</label><input id="rue-sm" name="rue" required autocomplete="address-line1" placeholder="Avenue de la Gare 12"></div>
-            <div class="champ"><label for="npa-sm">NPA</label><input id="npa-sm" name="npa" required inputmode="numeric" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="1003"></div>
-            <div class="champ"><label for="localite-sm">Localité</label><input id="localite-sm" name="localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
-          </div>
+          {{ f.adresse("logement") }}
           <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>
         </fieldset>
 
@@ -99,7 +95,7 @@
         </fieldset>
 
         <fieldset class="fe" data-fe="7" hidden>
-          <legend class="fe__question">Comment décririez-vous vos affaires ?</legend>
+          <legend class="fe__question">Quel est le niveau de votre inventaire ?</legend>
           <p class="fe__aide">L'inventaire comprend vos vêtements, bijoux, meubles, électroménager, vélos, téléphones…</p>
           <div class="choix-cartes choix-cartes--3">
             <label class="choix-carte"><input type="radio" name="inventaire" value="Entrée de gamme" data-valeur="10000" required data-fe-auto><span class="choix-carte__titre">Entrée de gamme</span><span class="choix-carte__detail">Environ CHF 10'000 par pièce</span></label>
@@ -111,7 +107,7 @@
         <fieldset class="fe" data-fe="8" hidden>
           <legend class="fe__question">Votre somme d'assurance</legend>
           <div class="somme-proposee">
-            <p>D'après vos réponses, vos affaires valent environ</p>
+            <p>D'après vos réponses, la somme assurée proposée est de</p>
             <p class="somme-proposee__montant" data-affiche="somme_calculee">CHF 0</p>
             <p class="fe__aide">Une somme trop basse réduit l'indemnité en cas de sinistre (sous-assurance).</p>
           </div>
