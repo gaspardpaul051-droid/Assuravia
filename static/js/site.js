@@ -235,6 +235,43 @@
     num.addEventListener("input", maj);
   });
 
+  // 2c. Avancée en pourcentage des formulaires d'une seule page (les simulations ont la leur)
+  document.querySelectorAll("form[data-lead]").forEach(function (form) {
+    if (form.closest("[data-funnel]")) return;
+    var bloc = document.createElement("div");
+    bloc.className = "avancee";
+    bloc.innerHTML = '<div class="avancee__texte"><span data-avancee-libelle>Votre demande</span><strong class="avancee__pct" data-avancee-pct>0 %</strong></div>' +
+      '<div class="avancee__barre" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Avancée du formulaire"><span></span></div>';
+    var premier = form.querySelector(":scope > :not([type=hidden]):not(.cache)");
+    form.insertBefore(bloc, premier);
+    var pctEl = bloc.querySelector("[data-avancee-pct]"), barre = bloc.querySelector(".avancee__barre"), libelle = bloc.querySelector("[data-avancee-libelle]");
+    var rempli = function (el) {
+      if (el.type === "radio" || el.type === "checkbox") return !!form.querySelector('[name="' + el.name + '"]:checked');
+      if (!el.value.trim()) return false;
+      if (el.matches("[data-tel-numero]")) { var b = el.closest("[data-tel]"); return telValide(el.value, b ? b.querySelector("[data-tel-indicatif]").value : "+41"); }
+      return el.checkValidity();
+    };
+    var maj = function () {
+      var vus = {}, total = 0, ok = 0;
+      form.querySelectorAll("input[required], select[required], textarea[required]").forEach(function (el) {
+        if (el.disabled || el.type === "hidden" || el.closest("[hidden], template, .cache")) return;
+        var cle = (el.type === "radio" || el.type === "checkbox") ? "n:" + el.name : el;
+        if (typeof cle === "string") { if (vus[cle]) return; vus[cle] = 1; }
+        total++; if (rempli(el)) ok++;
+      });
+      var pct = total ? Math.round(ok / total * 100) : 0;
+      pctEl.textContent = pct + " %";
+      barre.firstChild.style.width = pct + "%";
+      barre.setAttribute("aria-valuenow", pct);
+      libelle.textContent = pct === 100 ? "Tout est prêt, il ne reste qu'à envoyer" : pct >= 50 ? "Plus que quelques champs" : "Votre demande";
+      bloc.classList.toggle("avancee--complet", pct === 100);
+    };
+    form.addEventListener("input", maj);
+    form.addEventListener("change", maj);
+    document.addEventListener("click", function () { setTimeout(maj, 0); });
+    maj();
+  });
+
   // 2b. Démarreur de demande (accueil) : filtre les besoins selon « pour qui », puis ouvre la bonne page
   var demarreur = document.querySelector("[data-demarreur]");
   if (demarreur) {
@@ -381,7 +418,9 @@
       barreF.style.width = ((n + 1) / etapesF.length * 100) + "%";
       var finale = etapesF[etapesF.length - 1].hasAttribute("data-fe-final");
       var total = finale ? etapesF.length - 1 : etapesF.length;
-      compteurF.textContent = finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (n + 1) + " sur " + total;
+      var pctF = Math.round((n + 1) / etapesF.length * 100);
+      compteurF.innerHTML = (finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (n + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
+      barreF.parentNode.setAttribute("aria-valuenow", pctF);
       retourF.hidden = n === 0 || (finale && n === etapesF.length - 1);
       afficher();
       etapesF[n].classList.remove("fe--entree", "fe--retour");

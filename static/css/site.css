@@ -1108,3 +1108,16 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .merci__encart ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 .merci__actions { display: flex; flex-wrap: wrap; gap: var(--e-3); justify-content: center; }
 @media (prefers-reduced-motion: reduce) { .merci__cercle, .merci__coche { animation: none; stroke-dashoffset: 0; } .merci__check, .merci__etape, .merci__titre { animation: none; } }
+
+/* Avancée des formulaires en pourcentage */
+.avancee { display: grid; gap: var(--e-2); padding: var(--e-3) var(--e-4); border-radius: var(--r-m, 12px); background: var(--bleu-pale); }
+.avancee__texte { display: flex; justify-content: space-between; align-items: baseline; gap: var(--e-3); font-size: var(--t-s); font-weight: 600; color: var(--marine); }
+.avancee__pct { font-weight: 800; color: var(--bleu); font-variant-numeric: tabular-nums; }
+.funnel__etape-num .avancee__pct { margin-left: .4em; padding: .1em .55em; border-radius: var(--r-plein); background: var(--bleu-pale); }
+.avancee__barre { height: 8px; border-radius: var(--r-plein); background: #fff; overflow: hidden; }
+.avancee__barre span { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--bleu-vif), var(--bleu)); transition: width .4s cubic-bezier(.2,.8,.2,1); }
+.avancee--complet .avancee__pct { color: #1F8A4C; }
+.avancee--complet .avancee__barre span { background: linear-gradient(90deg, #34C77B, #1F8A4C); }
+.theme-pro .avancee, .funnel--pro .funnel__etape-num .avancee__pct { background: #EEF2F8; }
+.theme-pro .avancee__pct, .funnel--pro .avancee__pct { color: var(--marine); }
+.theme-pro .avancee__barre span { background: linear-gradient(90deg, var(--or-clair), var(--or)); }

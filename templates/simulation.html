@@ -18,7 +18,7 @@
         <button type="button" class="funnel__retour" data-funnel-retour hidden>{{ i.icone("fleche", "icone icone--petite carrousel__retour") }} Retour</button>
         <p class="funnel__etape-num" data-funnel-compteur>Étape 1</p>
       </div>
-      <div class="funnel__progression" aria-hidden="true"><span data-funnel-barre></span></div>
+      <div class="funnel__progression" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Avancée de la demande"><span data-funnel-barre></span></div>
 
       {{ f.ouvrir(sim.form, sim.produit) }}
         <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
