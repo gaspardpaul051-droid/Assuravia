@@ -1,6 +1,8 @@
 /* Comparateur LAMal : primes OFSP (static/data/lamal/), calcul dans le navigateur. */
 (function () {
   "use strict";
+  var script = document.currentScript;
+  var DONNEES = script && script.src ? new URL("../data/lamal/", script.src).href : "/data/lamal/";
   var racine = document.querySelector("[data-cmp]");
   if (!racine) return;
 
@@ -83,7 +85,7 @@
   var selCanton = $("[data-cmp-canton]"), selRegion = $("[data-cmp-region]"), blocRegion = $("[data-cmp-region-bloc]");
   var charger = function (canton) {
     if (cache[canton]) return Promise.resolve(cache[canton]);
-    return fetch("/data/lamal/" + canton + ".json").then(function (r) { return r.json(); }).then(function (d) { cache[canton] = d; return d; });
+    return fetch(DONNEES + canton + ".json").then(function (r) { return r.json(); }).then(function (d) { cache[canton] = d; return d; });
   };
   var choisirCanton = function (canton, region, extra) {
     if (!canton) { etat.donnees = null; etat.lieu = null; blocRegion.hidden = true; $("[data-cmp-region-aide]").hidden = true; calculer(); return; }
@@ -336,7 +338,7 @@
   });
 
   /* ---------- Démarrage ---------- */
-  fetch("/data/lamal/index.json").then(function (r) { return r.json(); }).then(function (idx) {
+  fetch(DONNEES + "index.json").then(function (r) { return r.json(); }).then(function (idx) {
     etat.index = idx;
     annee = idx.annee || annee;
     initRecherche();
