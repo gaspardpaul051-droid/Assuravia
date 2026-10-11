@@ -9,7 +9,11 @@ titre_seo: Caisse maladie LAMal : franchise, modèle et changement
 description: Assurance de base LAMal en Suisse romande : choisir sa franchise et son modèle, changer de caisse dans les délais et éviter les erreurs de résiliation.
 desc: Même couverture partout, mais pas le même prix : choisissez la bonne caisse, la bonne franchise et le bon modèle.
 points: Primes comparées entre caisses | Franchise adaptée à vos frais réels | Modèle médecin de famille, Telmed ou HMO
-badge: Offre gratuite
+badge: Comparateur 2027
+simulateur: /particuliers/comparateur-lamal/
+simulateur_titre: Comparez toutes les caisses en 1 minute
+simulateur_texte: Les primes 2027 de toutes les caisses maladie de votre région, selon votre âge, votre franchise et votre modèle.
+simulateur_bouton: Comparer les primes LAMal
 bouton: Comparer ma LAMal
 h1: Assurance de base LAMal : la bonne caisse, la bonne franchise, le bon modèle
 chapeau: Les prestations de l'assurance de base sont fixées par la loi et identiques chez toutes les caisses. Les primes, elles, varient. Le choix de la caisse, de la franchise et du modèle a un effet direct sur votre budget santé.

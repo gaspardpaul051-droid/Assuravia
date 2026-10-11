@@ -1,0 +1,132 @@
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Comparateur LAMal 2027 : toutes les caisses maladie | Assuravia{% endblock %}
+{% block description %}Comparez les primes LAMal 2027 de toutes les caisses maladie selon votre commune, votre âge, votre franchise et votre modèle. Données de l'OFSP, résultat immédiat.{% endblock %}
+{% block content %}
+<section class="cmp-page">
+  <div class="cadre">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Particuliers</a> <span aria-hidden="true">/</span> <a href="/particuliers/lamal/">Assurance de base (LAMal)</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("croix", "icone icone--petite") }} Comparateur assurance de base</p>
+    <h1 class="cmp-page__titre">Comparez les primes LAMal 2027 de toutes les caisses</h1>
+    <p class="chapeau">Indiquez votre lieu de domicile et les personnes à assurer : toutes les offres de votre région s'affichent, de la moins chère à la plus chère. Les prestations de base sont les mêmes partout ; un conseiller vous aide ensuite à choisir le bon modèle et le bon service.</p>
+  </div>
+
+  <div class="cadre cmp" data-cmp data-annee="2027">
+    <aside class="cmp__reglages" aria-label="Votre situation">
+      <div class="cmp__bloc">
+        <h2 class="cmp__titre">{{ i.icone("repere", "icone icone--petite") }} Lieu de domicile</h2>
+        <div class="champ cmp__lieu" data-cmp-lieu-recherche hidden>
+          <label for="cmp-lieu">NPA ou localité</label>
+          <input id="cmp-lieu" type="text" autocomplete="off" inputmode="search" placeholder="Ex. 1003 ou Lausanne" role="combobox" aria-expanded="false" aria-controls="cmp-lieu-liste" aria-autocomplete="list" data-cmp-lieu>
+          <ul class="cmp__suggestions" id="cmp-lieu-liste" role="listbox" hidden data-cmp-suggestions></ul>
+          <p class="cmp__lieu-choisi" data-cmp-lieu-choisi hidden></p>
+        </div>
+        <div class="grille-champs cmp__canton" data-cmp-manuel>
+          <div class="champ">
+            <label for="cmp-canton">Canton</label>
+            <select id="cmp-canton" data-cmp-canton>
+              <option value="">Choisir</option>
+              {% for c in ["VD","GE","FR","NE","VS","JU","BE","AG","AI","AR","BL","BS","GL","GR","LU","NW","OW","SG","SH","SO","SZ","TG","TI","UR","ZG","ZH"] %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="champ" data-cmp-region-bloc hidden>
+            <label for="cmp-region">Région de primes</label>
+            <select id="cmp-region" data-cmp-region></select>
+          </div>
+        </div>
+        <p class="fe__aide" data-cmp-region-aide hidden>Votre commune détermine la région de primes. Elle figure sur votre police d'assurance actuelle.</p>
+      </div>
+
+      <div class="cmp__bloc">
+        <h2 class="cmp__titre">{{ i.icone("groupe", "icone icone--petite") }} Personnes à assurer</h2>
+        <div class="cmp__personnes" data-cmp-personnes></div>
+        <button type="button" class="bouton bouton--secondaire cmp__ajouter" data-cmp-ajouter>+ Ajouter une personne</button>
+      </div>
+
+      <div class="cmp__bloc">
+        <h2 class="cmp__titre">{{ i.icone("bouclier", "icone icone--petite") }} Modèles d'assurance</h2>
+        <div class="cmp__modeles">
+          <label class="cmp__modele"><input type="checkbox" value="BASE" checked data-cmp-modele> <span><strong>Standard</strong> Libre choix du médecin</span></label>
+          <label class="cmp__modele"><input type="checkbox" value="PRAXIS" checked data-cmp-modele> <span><strong>Médecin de famille ou HMO</strong> Toujours d'abord votre médecin ou cabinet</span></label>
+          <label class="cmp__modele"><input type="checkbox" value="TEL_DIG" checked data-cmp-modele> <span><strong>Télémédecine</strong> D'abord un appel ou une application</span></label>
+          <label class="cmp__modele"><input type="checkbox" value="FLEX" checked data-cmp-modele> <span><strong>Mixte</strong> Plusieurs premiers points de contact au choix</span></label>
+        </div>
+      </div>
+
+      <div class="cmp__bloc">
+        <h2 class="cmp__titre">{{ i.icone("livre", "icone icone--petite") }} Votre caisse actuelle <span class="facultatif">(facultatif)</span></h2>
+        <div class="champ">
+          <label for="cmp-actuelle" class="cache">Caisse actuelle</label>
+          <select id="cmp-actuelle" data-cmp-actuelle><option value="">Je ne sais pas ou je n'en ai pas</option></select>
+        </div>
+      </div>
+    </aside>
+
+    <div class="cmp__resultats" aria-live="polite">
+      <div class="cmp__vide" data-cmp-vide>
+        {{ i.icone("repere") }}
+        <p><strong>Commencez par votre lieu de domicile.</strong> Les primes dépendent du canton et de la région de primes.</p>
+      </div>
+      <div class="cmp__chargement" data-cmp-chargement hidden>Chargement des primes…</div>
+      <div data-cmp-liste-bloc hidden>
+        <div class="cmp__synthese" data-cmp-synthese></div>
+        <div class="cmp__outils">
+          <label class="cmp__tri">Trier par
+            <select data-cmp-tri>
+              <option value="prix">Prime la plus basse</option>
+              <option value="caisse">Caisse (A à Z)</option>
+            </select>
+          </label>
+          <span class="cmp__compte" data-cmp-compte></span>
+        </div>
+        <ol class="cmp__liste" data-cmp-liste></ol>
+        <button type="button" class="bouton bouton--secondaire cmp__plus" data-cmp-plus hidden>Voir plus d'offres</button>
+
+        <section class="cmp__franchise" data-cmp-franchise hidden>
+          <h2>Quelle franchise pour vous ?</h2>
+          <p class="fe__aide" data-cmp-franchise-intro></p>
+          <label class="cmp__frais">Vos frais médicaux par an (estimation) : <strong data-cmp-frais-val>CHF 1'000</strong>
+            <input type="range" min="0" max="10000" step="100" value="1000" data-cmp-frais>
+          </label>
+          <div class="cmp__franchise-grille" data-cmp-franchise-grille></div>
+          <p class="fe__aide">Coût annuel = primes + franchise utilisée + quote-part de 10 % (au plus CHF 700 par adulte). Exemple de calcul, hors exceptions comme la maternité.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="cadre cadre--etroit cmp-lead" id="conseil-lamal">
+    <div class="panneau-form">
+      <h2 class="form-titre" data-cmp-lead-titre>Faites-vous conseiller pour votre assurance de base</h2>
+      <p class="form-sous-titre" data-cmp-lead-texte>Un conseiller vérifie avec vous le modèle, la franchise et les délais de changement. Gratuit et sans engagement.</p>
+      {{ f.ouvrir("comparateur-lamal", "lamal") }}
+        <input type="hidden" name="lieu" data-cmp-champ="lieu">
+        <input type="hidden" name="personnes" data-cmp-champ="personnes">
+        <input type="hidden" name="modeles" data-cmp-champ="modeles">
+        <input type="hidden" name="caisse_actuelle" data-cmp-champ="actuelle">
+        <input type="hidden" name="offre_choisie" data-cmp-champ="offre">
+        <input type="hidden" name="prime_mensuelle" data-cmp-champ="prime">
+        <div class="grille-champs">
+          <div class="champ"><label for="prenom-cmp">Prénom</label><input id="prenom-cmp" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+          <div class="champ"><label for="nom-cmp">Nom</label><input id="nom-cmp" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+          {{ f.telephone("cmp") }}
+          <div class="champ"><label for="email-cmp">E-mail</label><input id="email-cmp" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+          {{ f.naissance("cmp") }}
+        </div>
+        <div class="champ">
+          <label for="message-cmp">Votre question <span class="facultatif">(facultatif)</span></label>
+          <textarea id="message-cmp" name="message" placeholder="Ex. Je souhaite aussi revoir mes complémentaires."></textarea>
+        </div>
+        {{ f.fermer("Être conseillé", "cmp") }}
+      </form>
+    </div>
+  </div>
+
+  <div class="cadre cadre--etroit">
+    <p class="cmp__source">Source des primes : Office fédéral de la santé publique (OFSP), primes {{ "2027" }} de l'assurance obligatoire des soins approuvées, publiées sur opendata.swiss (licence CC BY). Primes mensuelles en francs, sans réduction individuelle de primes ni rabais particuliers. Assuravia n'est pas un service de la Confédération. Seule l'offre de l'assureur fait foi.</p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/js/comparateur-lamal.js" defer></script>{% endblock %}
