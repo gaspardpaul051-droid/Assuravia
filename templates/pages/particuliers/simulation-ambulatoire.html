@@ -1,0 +1,24 @@
+{% set sim = {"id": "amb", "theme": "prive", "groupe": "particuliers", "form": "simulation-ambulatoire", "produit": "complementaire-ambulatoire", "produit_nom": "Ambulatoire et médecines douces", "page": "/particuliers/complementaire-ambulatoire/", "icone": "coeur", "lca": True,
+  "titre": "Complémentaire ambulatoire et médecines douces : estimez votre prime", "h1": "Estimez votre complémentaire ambulatoire et médecines douces",
+  "description": "Ostéopathie, acupuncture, lunettes, médicaments hors liste, prévention : estimez la prime de votre complémentaire ambulatoire et voyez les prestations possibles.",
+  "attrs": {"prime-nom": "Complémentaire ambulatoire"},
+  "note": "Estimation indicative. La prime réelle dépend de l'assureur, de votre état de santé et des conditions du contrat."} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% block etapes %}
+{{ e.identite() }}
+{{ e.pour_qui_sante() }}
+{{ e.profil_sante() }}
+{{ e.ouvrir("formule", "Quelle formule vous correspond ?", "Toutes complètent l'assurance de base pour les soins sans hospitalisation.") }}
+  {{ e.lca_cartes("formule_amb", ["amb_essentiel", "amb_douce", "amb_confort"]) }}
+  {{ e.continuer() }}
+</fieldset>
+{{ e.ouvrir("renforts", "Aller plus loin ?", "Facultatif : laissez vide si la formule choisie vous suffit.") }}
+  {{ e.lca_cartes("renforts", ["amb_plus", "amb_innovation", "pj_sante"], type="checkbox", requis=False) }}
+  {{ e.contrat_3ans() }}
+  {{ e.continuer() }}
+</fieldset>
+{{ e.oui_non("interet_hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Chambre à deux lits ou individuelle, libre choix du médecin : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
+{{ e.coordonnees(naissance=False) }}
+{{ e.resultat_lca("formule") }}
+{% endblock %}

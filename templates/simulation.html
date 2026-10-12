@@ -20,6 +20,7 @@
       </div>
       <div class="funnel__progression" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Avancée de la demande"><span data-funnel-barre></span></div>
 
+      {% if sim.lca %}<script type="application/json" data-tarif-lca>{{ complementaires|tojson }}</script>{% endif %}
       {{ f.ouvrir(sim.form, sim.produit) }}
         <input type="hidden" name="etape_atteinte" value="" data-funnel-etat>
         <input type="hidden" name="somme_assuree" data-calc="somme">

@@ -14,12 +14,15 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - `templates/pages/lp/` : pages publicitaires (Google Ads), sans menu, `noindex`. Ne jamais les lier depuis le site.
 - `content/articles/*.md` : articles du blog, publiés sous `/blog/<nom-du-fichier>/`.
 - Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
-  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`), sinon Netlify crée un nouveau formulaire.
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`, `simulation-hospitalisation`, `simulation-ambulatoire`, `simulation-complementaires`), sinon Netlify crée un nouveau formulaire.
 
 ## Comparateur LAMal
 - Page `templates/pages/particuliers/comparateur-lamal.html`, script `static/js/comparateur-lamal.js`, données `static/data/lamal/` (une fichier JSON par canton + `index.json`).
 - Mise à jour annuelle (fin septembre, quand l'OFSP publie les primes) : télécharger sur opendata.swiss (jeu « Primes de l'assurance-maladie ») `Prämien_CH.csv`, `Tarife.csv`, `Einzugsgebiete.csv`, et sur bag.admin.ch le fichier « Prämienregionen » (XLSX) ; les mettre dans `donnees/ofsp-AAAA/` (non versionné), puis `python3 outils/import_lamal.py donnees/ofsp-AAAA`. Ajouter le nom d'une nouvelle caisse dans `CAISSES` si le script le demande.
 - Ne jamais imiter un site fédéral (pas de croix suisse, pas « officiel ») ; citer la source OFSP (licence CC BY).
+
+## Complémentaires maladie
+- Trois simulations (hospitalisation, ambulatoire et médecines douces, couverture complète) avec `"lca": True` dans `sim`. Primes et prestations : `content/complementaires.json` (grille indicative par âge, sexe, canton ; à ajuster avec les tarifs réels). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `resultat_lca`).
 
 ## Article hebdomadaire
 Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :

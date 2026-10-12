@@ -160,3 +160,85 @@
   {% if not auto %}{{ continuer() }}{% endif %}
 </fieldset>
 {%- endmacro %}
+
+{# ---------- Complémentaires maladie (grille content/complementaires.json) ---------- #}
+{% macro pour_qui_sante() -%}
+{{ ouvrir("pour_qui", "Pour qui faites-vous cette simulation ?") }}
+  <div class="choix-cartes">
+    <label class="choix-carte"><input type="radio" name="pour_qui" value="Moi" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("utilisateur") }}</span><span>Pour moi</span></label>
+    <label class="choix-carte"><input type="radio" name="pour_qui" value="Mon enfant" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("coeur") }}</span><span>Pour mon enfant</span></label>
+    <label class="choix-carte"><input type="radio" name="pour_qui" value="Mon conjoint" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("groupe") }}</span><span>Pour mon conjoint</span></label>
+    <label class="choix-carte"><input type="radio" name="pour_qui" value="Autre personne" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("bulle") }}</span><span>Pour une autre personne</span></label>
+  </div>
+</fieldset>
+{%- endmacro %}
+
+{% macro profil_sante() -%}
+{{ ouvrir("profil", "Quelques informations sur la personne à assurer", "La prime d'une complémentaire dépend surtout de l'âge, puis du sexe et du lieu de domicile.") }}
+  <div class="grille-champs">
+    <div class="champ"><label for="annee-{{ sim.id }}">Année de naissance</label><input id="annee-{{ sim.id }}" name="annee_naissance" type="number" inputmode="numeric" min="1920" max="{{ complementaires.annee }}" required placeholder="Ex. 1988"></div>
+    <div class="champ"><label for="canton-{{ sim.id }}">Canton de domicile</label>
+      <select id="canton-{{ sim.id }}" name="canton" required>
+        <option value="">Choisir</option>
+        {% for c, nom in [("VD","Vaud"),("GE","Genève"),("FR","Fribourg"),("NE","Neuchâtel"),("VS","Valais"),("JU","Jura"),("BE","Berne"),("autre","Autre canton")] %}<option value="{{ c }}">{{ nom }}</option>{% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="choix-cartes">
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Femme" required><span>Femme</span></label>
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Homme" required><span>Homme</span></label>
+  </div>
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{# Cartes de modules : type « radio » (un choix) ou « checkbox » (options). La prime s'affiche floutée jusqu'aux coordonnées. #}
+{% macro lca_cartes(nom, cles, type="radio", requis=True, auto=False, coche=False) -%}
+<div class="formules formules--lca">
+  {% for k in cles %}{% set m = complementaires.modules[k] %}
+  <label class="formule{% if loop.index == 2 and type == 'radio' and cles|length > 2 %} formule--conseil{% endif %}"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if auto %} data-fe-auto{% endif %}{% if coche %} checked{% endif %}>
+    {% if loop.index == 2 and type == 'radio' and cles|length > 2 %}<span class="formule__badge">Bon compromis</span>{% endif %}
+    <span class="formule__nom">{{ m.court }}</span>
+    <span class="formule__prix floute" data-prix-lca="{{ k }}">CHF 00 / mois</span>
+    <ul>{% for p in m.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
+  {% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro franchise_hop() -%}
+<p class="fe__sous-question">Franchise d'hospitalisation</p>
+<p class="fe__aide">Avec une franchise, vous payez vous-même ce montant avant que la complémentaire n'intervienne. En échange, la prime baisse.</p>
+<div class="choix-cartes choix-cartes--3">
+  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="0" required checked><span>Sans franchise</span></label>
+  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="1000" required><span>CHF 1'000</span></label>
+  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="2000" required><span>CHF 2'000</span></label>
+</div>
+{%- endmacro %}
+
+{% macro contrat_3ans() -%}
+<div class="consentement fe__option">
+  <input id="trois-ans-{{ sim.id }}" name="contrat_3_ans" type="checkbox" value="oui">
+  <label for="trois-ans-{{ sim.id }}">Je m'engage pour 3 ans (rabais d'environ 3 % chez de nombreux assureurs).</label>
+</div>
+{%- endmacro %}
+
+{% macro resultat_lca(modifier) -%}
+{{ ouvrir("resultat", '<span data-affiche="prenom"></span>, voici votre estimation', final=True) }}
+  <div class="resultat-prime">
+    <p class="resultat-prime__label">Prime mensuelle estimée</p>
+    <p class="resultat-prime__montant" data-affiche="total">CHF 0</p>
+    <p class="resultat-prime__mois" data-affiche="mois"></p>
+    <ul class="resultat-prime__detail" data-affiche="detail"></ul>
+  </div>
+  <div class="resultat-prestations">
+    <p class="fe__sous-question">Les prestations possibles avec cette couverture</p>
+    <div data-affiche="prestations"></div>
+  </div>
+  <p class="resultat__avertissement">Estimation indicative pour une personne, établie à partir d'une grille moyenne du marché. Les prestations sont des exemples : elles varient selon l'assureur et la formule. Une complémentaire est conclue après un questionnaire de santé ; l'assureur peut émettre des réserves ou refuser. Seule l'offre de l'assureur fait foi.</p>
+  <div class="resultat-actions">
+    <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Recevoir une offre détaillée</button>
+    <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être conseillé par téléphone</button>
+    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+  </div>
+</fieldset>
+{%- endmacro %}

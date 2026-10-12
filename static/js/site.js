@@ -360,7 +360,40 @@
     var nombre = function (nom) { var el = valeur(nom); return el ? Number(el.value) || 0 : 0; };
     var arrondi = function (x) { return Math.round(x * 20) / 20; };
     var chf2 = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+    // Complémentaires maladie : grille indicative (content/complementaires.json) selon l'âge, le sexe et le canton
+    var tarifLca = funnel.querySelector("[data-tarif-lca]");
+    var T = tarifLca ? JSON.parse(tarifLca.textContent) : null;
+    var arrondi05 = function (x) { return Math.round(x * 20) / 20; };
+    var primeLca = function (cle) {
+      var m = T.modules[cle];
+      var an = nombre("annee_naissance"), age = an > 1900 ? T.annee - an : 35;
+      var f = 1;
+      T.courbes[m.courbe].forEach(function (b) { if (age >= b[0] && age <= b[1]) f = b[2]; });
+      var sexe = valeur("sexe"), fem = T.femme[m.courbe];
+      if (sexe && sexe.value === "Femme" && fem && age >= fem[0] && age <= fem[1]) f *= fem[2];
+      var canton = formF.querySelector('[name="canton"]');
+      f *= T.cantons[canton && canton.value] || 1;
+      if (m.courbe === "hop" && cle.indexOf("hop_") === 0) { var fr = valeur("franchise_hop"); if (fr) f *= T.franchise_hop[fr.value] || 1; }
+      var trois = formF.querySelector('[name="contrat_3_ans"]');
+      if (trois && trois.checked) f *= 1 - T.rabais_3ans;
+      return arrondi05(m.base * f);
+    };
+    var modulesLca = function () {
+      var liste = [];
+      formF.querySelectorAll("[data-lca]:checked").forEach(function (el) {
+        if (el.closest("[hidden]:not(.fe)")) return;
+        var cle = el.getAttribute("data-lca");
+        liste.push({ cle: cle, nom: T.modules[cle].nom, mois: primeLca(cle) });
+      });
+      return liste;
+    };
     var calculer = function () {
+      if (T) {
+        var mods = modulesLca();
+        var totalMois = mods.reduce(function (t, x) { return t + x.mois; }, 0);
+        return { sommeCalc: 0, somme: 0, formule: "", nom: mods.length ? mods[0].nom : "Complémentaires", surMesure: false, lca: mods,
+          principale: mods.length ? mods[0].mois : 0, options: mods.slice(1).map(function (x) { return { nom: x.nom, prix: x.mois }; }), total: totalMois };
+      }
       // Somme assurée : ménage (pièces × inventaire) ou somme des champs [data-somme] (valeur du bâtiment, objets…)
       var inv = valeur("inventaire"), sommeCalc = 0;
       if (inv) sommeCalc = nombre("pieces") * Number(inv.getAttribute("data-valeur"));
@@ -398,7 +431,15 @@
       set("total_floute", chf2(c.total || 999));
       var prenom = valeur("prenom");
       set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
-      if (!c.surMesure) {
+      if (T) {
+        funnel.querySelectorAll("[data-prix-lca]").forEach(function (el) { el.textContent = "≈ " + chf2(primeLca(el.getAttribute("data-prix-lca"))) + " / mois"; });
+        set("total_floute", chf2(c.total || 99) + " / mois");
+        set("total", chf2(c.total));
+        set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
+        set("prestations", c.lca.map(function (x) {
+          return '<div class="resultat-prestations__bloc"><p>' + T.modules[x.cle].nom + "</p><ul>" + T.modules[x.cle].points.map(function (pt) { return "<li>" + pt + "</li>"; }).join("") + "</ul></div>";
+        }).join(""));
+      } else if (!c.surMesure) {
         set("total", chf2(c.total));
         set("mois", "soit environ " + chf2(c.total / 12) + " par mois");
       } else {
@@ -411,6 +452,7 @@
       set("detail", lignes.join(""));
       var cache = function (k, v) { var el = formF.querySelector('[data-calc="' + k + '"]'); if (el) el.value = v; };
       cache("somme", Math.round(c.somme)); cache("formule", c.formule); cache("prime_principale", c.surMesure ? "sur mesure" : c.principale.toFixed(2)); cache("prime_totale", c.total.toFixed(2));
+      if (T) cache("formule", c.lca.map(function (x) { return x.nom + " (" + chf2(x.mois) + "/mois)"; }).join(" + "));
     };
     var montrer = function (n, enArriere) {
       etapesF.forEach(function (e, k) { e.hidden = k !== n; });

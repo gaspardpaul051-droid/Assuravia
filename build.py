@@ -292,6 +292,7 @@ def main() -> None:
         glossaire=lire_glossaire(ROOT / "content" / "glossaire.txt"),
         cas=lire_cas(ROOT / "content" / "cas.txt"),
         indicatifs=lire_indicatifs(ROOT / "content" / "indicatifs.txt"),
+        complementaires=json.loads((ROOT / "content" / "complementaires.json").read_text(encoding="utf-8")),
         annee=aujourd_hui.year,
     )
 

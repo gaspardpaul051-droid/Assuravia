@@ -9,8 +9,12 @@ titre_seo: Assurance complémentaire maladie en Suisse : bien choisir
 description: Hospitalisation, dentaire, médecines complémentaires : ce que couvrent les complémentaires LCA, comment les choisir et les changer sans perdre votre couverture.
 desc: Dentaire, hospitalisation, médecines complémentaires : complétez votre LAMal avec les prestations qui comptent pour vous.
 points: Hospitalisation en chambre semi-privée ou privée | Soins dentaires et lunettes | Médecines complémentaires
-badge: Offre gratuite
-bouton: Comparer les offres
+badge: Estimation en 2 min
+bouton: Composer ma couverture
+simulateur: /particuliers/simulation-complementaires/
+simulateur_titre: Composez votre couverture
+simulateur_texte: Hospitalisation, ambulatoire, médecines douces, dentaire : choisissez ce qui compte pour vous et découvrez une estimation de prime.
+simulateur_bouton: Composer ma couverture
 h1: Assurance complémentaire maladie : couvrez ce que la LAMal ne paie pas
 chapeau: L'assurance de base rembourse l'essentiel, mais pas tout. Les complémentaires (LCA) comblent les lacunes qui comptent pour vous, et seulement celles-là.
 retenir: Les complémentaires sont facultatives et chaque assureur fixe ses conditions. | L'assureur peut poser des questions de santé et refuser une demande. | Ne résiliez jamais une complémentaire avant d'être accepté ailleurs. | Base et complémentaires peuvent être chez deux assureurs différents.
@@ -37,6 +41,8 @@ L'[assurance de base LAMal](/particuliers/lamal/) est la même chez tous les ass
 | Soins ambulatoires | Médecines complémentaires, lunettes, prévention, transports et sauvetage |
 | Soins dentaires | Contrôles, détartrage, traitements, orthodontie pour les enfants |
 | Voyage et étranger | Frais médicaux au-delà de ce que rembourse la LAMal, rapatriement |
+
+Vous cherchez une seule couverture ? Estimez directement votre [assurance hospitalisation](/particuliers/assurance-hospitalisation/) ou votre [complémentaire ambulatoire et médecines douces](/particuliers/complementaire-ambulatoire/).
 
 Chaque assureur combine ces éléments à sa façon. Deux produits portant le même nom peuvent couvrir des prestations différentes. Ce sont les conditions générales qui font foi.
 

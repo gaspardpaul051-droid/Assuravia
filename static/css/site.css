@@ -1223,3 +1223,15 @@ a.contact__ligne:hover span { text-decoration: underline; }
   .cmp-offre__prix { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .cmp-offre, .cmp__vide .icone { animation: none; } }
+
+/* Complémentaires maladie */
+.formules--lca { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.formules--lca + .formules--lca { margin-top: var(--e-3); }
+.formules--lca .formule ul { font-size: var(--t-xs); }
+.lca-bloc { display: grid; gap: var(--e-3); padding: var(--e-4); border: 1px solid var(--bordure); border-radius: var(--r-l); background: var(--surface); }
+.lca-bloc[hidden] { display: none; }
+.resultat-prestations { display: grid; gap: var(--e-3); }
+.resultat-prestations [data-affiche="prestations"] { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--e-3); }
+.resultat-prestations__bloc { padding: var(--e-4); border-radius: var(--r-m); background: var(--bleu-pale); }
+.resultat-prestations__bloc p { margin: 0 0 var(--e-2); font-weight: 800; color: var(--marine); }
+.resultat-prestations__bloc ul { margin: 0; padding-left: 1.1em; font-size: var(--t-s); display: grid; gap: 4px; }
