@@ -1753,3 +1753,4 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 @media (max-width: 700px) { .merci__carte { flex-basis: calc((100% - var(--e-3)) / 2); } }
 @media (max-width: 480px) { .merci__carte { flex-basis: 100%; } }
 .merci-page .merci__actions { margin-top: var(--e-6); }
+@media (min-width: 1000px) { .lp-sante__modules { grid-template-columns: repeat(5, minmax(0, 1fr)); } }

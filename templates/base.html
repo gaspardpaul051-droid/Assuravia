@@ -40,7 +40,7 @@
 {% else %}
 <header class="entete">
   <div class="cadre entete__barre">
-    <a class="logo" href="/" aria-label="Assuravia, accueil">{% include "partials/logo.html" %}</a>
+    <a class="logo" href="/" aria-label="{{ marque|default("Assuravia") }}, accueil">{% include "partials/logo.html" %}</a>
     <button class="menu-bouton" type="button" aria-expanded="false" aria-controls="navigation" data-menu-bouton>
       <span class="menu-bouton__barres" aria-hidden="true"></span> Menu
     </button>
@@ -93,7 +93,7 @@
       </nav>
     </div>
     {% endif %}
-    <p class="pied__legal"><span>© {{ annee }} Assuravia</span> <a href="/mentions-legales/">Mentions légales</a> <a href="/confidentialite/">Protection des données</a>{% if ga_id or clarity_id %} <button type="button" class="pied__cookies" data-cookies-gerer>Gérer les cookies</button>{% endif %}</p>
+    <p class="pied__legal"><span>© {{ annee }} {{ marque|default("Assuravia") }}</span> <a href="/mentions-legales/">Mentions légales</a> <a href="/confidentialite/">Protection des données</a>{% if ga_id or clarity_id %} <button type="button" class="pied__cookies" data-cookies-gerer>Gérer les cookies</button>{% endif %}</p>
   </div>
 </footer>
 {% if not landing %}

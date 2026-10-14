@@ -20,7 +20,7 @@
       <legend><span class="sante__famille-icone">{{ i.icone("croix") }}</span><span><strong>Hospitalisation</strong> Quelle chambre à l'hôpital ?</span></legend>
       <div class="sante__niveaux">
         <label><input type="radio" name="sante-hop" value=""> <span>Aucune</span></label>
-        {% for k in ["hop_commune", "hop_flex", "hop_demi", "hop_privee"] %}<label><input type="radio" name="sante-hop" value="{{ k }}"{% if k == "hop_demi" %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
+        {% for k in ["hop_commune", "hop_flex", "hop_demi", "hop_privee"] %}<label><input type="radio" name="sante-hop" value="{{ k }}"{% if k == (sante_hop_defaut|default("hop_demi")) %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
       </div>
     </fieldset>
 
