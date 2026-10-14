@@ -36,7 +36,7 @@
   <label for="telephone-{{ id }}">{{ libelle }}{% if not requis %} <span class="facultatif">(facultatif)</span>{% endif %}</label>
   <div class="tel" data-tel>
     <select class="tel__indicatif" name="{{ 'indicatif' if nom == 'telephone' else nom ~ '_indicatif' }}" aria-label="Indicatif du pays" data-tel-indicatif>
-      {% for g in indicatifs %}<optgroup label="{{ g.groupe }}">{% for x in g.liste %}<option value="{{ x.code }}"{% if loop.first and g.groupe == "Pays fréquents" %} selected{% endif %}>{{ x.code }} {{ x.pays }}</option>{% endfor %}</optgroup>{% endfor %}
+      {% for g in indicatifs %}<optgroup label="{{ g.groupe }}">{% for x in g.liste %}<option value="{{ x.code }}" data-iso="{{ x.iso }}"{% if loop.first and g.groupe == "Pays fréquents" %} selected{% endif %}>{{ x.code }} {{ x.pays }}</option>{% endfor %}</optgroup>{% endfor %}
     </select>
     <input id="telephone-{{ id }}" name="{{ nom }}" type="tel"{% if requis %} required{% endif %} autocomplete="tel-national" inputmode="tel" placeholder="79 123 45 67" data-tel-numero>
     <input type="hidden" name="{{ nom }}_complet" data-tel-complet>

@@ -183,8 +183,8 @@ def lire_indicatifs(path: Path) -> list[dict]:
         if ligne == "--":
             cible = tous
             continue
-        code, pays = [x.strip() for x in ligne.split("|")]
-        cible.append({"code": code, "pays": pays})
+        champs = [x.strip() for x in ligne.split("|")]
+        cible.append({"code": champs[0], "pays": champs[1], "iso": champs[2] if len(champs) > 2 else ""})
     return [{"groupe": "Pays fréquents", "liste": favoris}, {"groupe": "Tous les pays", "liste": tous}]
 
 
@@ -293,6 +293,7 @@ def main() -> None:
         cas=lire_cas(ROOT / "content" / "cas.txt"),
         indicatifs=lire_indicatifs(ROOT / "content" / "indicatifs.txt"),
         complementaires=json.loads((ROOT / "content" / "complementaires.json").read_text(encoding="utf-8")),
+        taux_hypo=json.loads((ROOT / "static" / "data" / "hypotheques.json").read_text(encoding="utf-8")),
         annee=aujourd_hui.year,
     )
 

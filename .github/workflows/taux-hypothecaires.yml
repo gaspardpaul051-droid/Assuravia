@@ -1,0 +1,29 @@
+# Met à jour les taux hypothécaires (BNS) chaque lundi matin et publie le site si les taux ont changé.
+name: Taux hypothécaires
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  maj:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 outils/maj_taux_hypothecaires.py
+      - name: Enregistrer si les taux ont changé
+        run: |
+          if ! git diff --quiet static/data/hypotheques.json; then
+            git config user.name "assuravia-bot"
+            git config user.email "bot@assuravia.ch"
+            git add static/data/hypotheques.json
+            git commit -m "Taux hypothécaires : mise à jour BNS"
+            git push
+          fi

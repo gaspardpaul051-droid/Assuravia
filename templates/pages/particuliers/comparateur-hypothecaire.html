@@ -1,0 +1,124 @@
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% set T = taux_hypo %}
+{% set MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"] %}
+{% set mois_txt = MOIS_FR[T.mois[5:7]|int - 1] ~ " " ~ T.mois[:4] %}
+{% macro pct(x) %}{{ "%.2f"|format(x)|replace(".", ",") }} %{% endmacro %}
+{% block theme %}prive{% endblock %}
+{% block title %}Taux hypothécaires en Suisse : comparateur | Assuravia{% endblock %}
+{% block description %}Taux hypothécaires moyens en Suisse, fixes de 2 à 15 ans et SARON, mis à jour chaque mois avec les données de la BNS. Calculez le coût de votre hypothèque.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": "Privé", "item": site_url ~ "/particuliers/"}, {"@type": "ListItem", "position": 3, "name": "Comparateur de taux hypothécaires", "item": site_url ~ url}]}|tojson }}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Dataset", "name": "Taux hypothécaires moyens des nouveaux contrats en Suisse", "description": "Moyenne, premier et troisième quartile des taux des nouvelles hypothèques en Suisse (SARON, variable, taux fixes de 2 à 15 ans), par mois.", "temporalCoverage": T.historique.mois[0] ~ "/" ~ T.mois, "creator": {"@type": "Organization", "name": "Banque nationale suisse"}, "isBasedOn": "https://data.snb.ch/fr/topics/ziredev/cube/zikrepro", "inLanguage": "fr-CH"}|tojson }}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"D'où viennent ces taux hypothécaires ?","acceptedAnswer":{"@type":"Answer","text":"Ce sont les taux des nouvelles hypothèques conclues en Suisse, publiés chaque mois par la Banque nationale suisse (BNS). Nous affichons la moyenne et la fourchette dans laquelle se situe la moitié des contrats."}},
+{"@type":"Question","name":"Hypothèque SARON ou taux fixe ?","acceptedAnswer":{"@type":"Answer","text":"Avec une hypothèque SARON, le taux suit le marché monétaire et peut monter ou baisser à chaque période. Avec un taux fixe, vous connaissez vos intérêts pour toute la durée. Le bon choix dépend de votre budget, de votre tolérance aux variations et de vos projets. Beaucoup de propriétaires combinent plusieurs tranches."}},
+{"@type":"Question","name":"Combien de fonds propres faut-il pour acheter ?","acceptedAnswer":{"@type":"Answer","text":"En règle générale, au moins 20 % du prix du logement, dont au moins 10 % qui ne proviennent pas du 2e pilier. L'hypothèque finance au plus 80 % du prix."}},
+{"@type":"Question","name":"Comment les banques calculent-elles la capacité financière ?","acceptedAnswer":{"@type":"Answer","text":"Elles comparent des charges théoriques à votre revenu brut : intérêts calculés avec un taux théorique d'environ 5 %, amortissement et frais d'entretien d'environ 1 % de la valeur du bien. Ces charges ne doivent en général pas dépasser un tiers du revenu."}}
+]}</script>
+{% endblock %}
+{% block content %}
+<script type="application/json" data-hypo-taux>{{ T|tojson }}</script>
+<section class="cmp-page hypo-page">
+  <div class="cadre">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("maison", "icone icone--petite") }} Comparateur hypothécaire</p>
+    <h1 class="cmp-page__titre">Comparateur de taux hypothécaires en Suisse</h1>
+    <p class="chapeau">Les taux moyens des nouvelles hypothèques, du SARON au taux fixe sur 15 ans, et le coût réel de votre financement. Les taux sont mis à jour chaque mois avec les données de la Banque nationale suisse.</p>
+    <p class="hypo-maj">{{ i.icone("horloge", "icone icone--petite") }} Taux de {{ mois_txt }}, publiés par la BNS le {{ T.publication[8:10]|int }} {{ MOIS_FR[T.publication[5:7]|int - 1] }} {{ T.publication[:4] }}</p>
+
+    <h2 class="hypo-titre">Les taux du moment</h2>
+    <div class="hypo-taux" role="list">
+      {% for t in T.taux %}
+      <button type="button" class="hypo-carte{% if t.cle == 'fixe10' %} hypo-carte--choisie{% endif %}" role="listitem" data-hypo-choisir="{{ t.cle }}" aria-pressed="{{ 'true' if t.cle == 'fixe10' else 'false' }}">
+        <span class="hypo-carte__nom">{{ t.libelle }}</span>
+        <span class="hypo-carte__taux">{{ pct(t.moyenne) }}</span>
+        <span class="hypo-carte__fourchette">La moitié des contrats entre {{ pct(t.q1) }} et {{ pct(t.q3) }}</span>
+        <svg class="hypo-carte__courbe" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true" data-hypo-courbe="{{ t.cle }}"></svg>
+      </button>
+      {% endfor %}
+    </div>
+    <p class="hypo-note">Taux moyens des nouveaux contrats conclus en Suisse en {{ mois_txt }}. Votre taux dépend de votre dossier, du bien et du prêteur. Cliquez sur une durée pour l'utiliser dans le calcul.</p>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte" id="calcul">
+  <div class="cadre">
+    <div class="bloc__entete"><p class="surtitre">Simulateur</p><h2>Combien va vous coûter votre hypothèque ?</h2></div>
+    <div class="hypo-calc" data-hypo>
+      <div class="hypo-calc__reglages">
+        <div class="champ"><label for="hypo-prix">Prix du logement (CHF)</label><input id="hypo-prix" type="number" inputmode="numeric" min="100000" step="10000" value="900000" data-hypo-champ="prix"></div>
+        <div class="champ"><label for="hypo-fp">Fonds propres (CHF)</label><input id="hypo-fp" type="number" inputmode="numeric" min="0" step="5000" value="200000" data-hypo-champ="fp"><p class="champ__aide">Épargne, 3e pilier, 2e pilier, donation.</p></div>
+        <div class="champ"><label for="hypo-revenu">Revenu brut annuel du ménage (CHF)</label><input id="hypo-revenu" type="number" inputmode="numeric" min="0" step="1000" value="160000" data-hypo-champ="revenu"></div>
+        <div class="champ"><label for="hypo-produit">Type d'hypothèque</label>
+          <select id="hypo-produit" data-hypo-champ="produit">{% for t in T.taux %}<option value="{{ t.cle }}"{% if t.cle == 'fixe10' %} selected{% endif %}>{{ t.libelle }} ({{ pct(t.moyenne) }})</option>{% endfor %}</select>
+        </div>
+      </div>
+      <div class="hypo-calc__resultat" aria-live="polite">
+        <p class="hypo-calc__label">Votre coût mensuel estimé</p>
+        <p class="hypo-calc__total"><strong data-hypo-sortie="mensuel">CHF 0</strong><span>par mois</span></p>
+        <ul class="hypo-calc__detail">
+          <li><span>Hypothèque</span><strong data-hypo-sortie="montant"></strong></li>
+          <li><span>Intérêts <small data-hypo-sortie="taux"></small></span><strong data-hypo-sortie="interets"></strong></li>
+          <li><span>Amortissement <small>2e rang, en 15 ans</small></span><strong data-hypo-sortie="amort"></strong></li>
+          <li><span>Entretien <small>env. 1 % du prix par an</small></span><strong data-hypo-sortie="entretien"></strong></li>
+        </ul>
+        <p class="hypo-calc__fourchette" data-hypo-sortie="fourchette"></p>
+        <div class="hypo-jauges">
+          <div class="hypo-jauge" data-hypo-jauge="financement"><p><span>Part financée par l'hypothèque</span><strong data-hypo-sortie="ltv"></strong></p><div><span></span></div><small data-hypo-sortie="ltv-msg"></small></div>
+          <div class="hypo-jauge" data-hypo-jauge="capacite"><p><span>Charges théoriques sur votre revenu</span><strong data-hypo-sortie="capacite"></strong></p><div><span></span></div><small data-hypo-sortie="capacite-msg"></small></div>
+        </div>
+        <a class="bouton bouton--action" href="/particuliers/comparateur-hypothecaire/demande/">Recevoir des offres de financement</a>
+        <p class="hypo-note">Estimation indicative. Capacité calculée selon les règles usuelles des prêteurs : taux théorique de 5 %, amortissement et entretien, au plus un tiers du revenu brut.</p>
+      </div>
+    </div>
+
+    <h3 class="hypo-sous-titre">Toutes les durées pour votre montant</h3>
+    <div class="hypo-table-wrap">
+      <table class="hypo-table">
+        <thead><tr><th scope="col">Type</th><th scope="col">Taux moyen</th><th scope="col">Intérêts par an</th><th scope="col">Intérêts par mois</th></tr></thead>
+        <tbody data-hypo-table>
+          {% for t in T.taux %}<tr data-cle="{{ t.cle }}"><th scope="row">{{ t.libelle }}</th><td>{{ pct(t.moyenne) }}</td><td data-an></td><td data-mois></td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>L'évolution des taux</h2><p>Taux moyens des nouvelles hypothèques, mois par mois.</p></div>
+    <div class="hypo-graphe" data-hypo-graphe>
+      <svg viewBox="0 0 640 260" role="img" aria-label="Évolution des taux hypothécaires moyens : SARON, 5 ans et 10 ans"></svg>
+      <ul class="hypo-legende">
+        <li><span class="hypo-legende__trait hypo-legende__trait--saron"></span>SARON</li>
+        <li><span class="hypo-legende__trait hypo-legende__trait--fixe5"></span>Fixe 5 ans</li>
+        <li><span class="hypo-legende__trait hypo-legende__trait--fixe10"></span>Fixe 10 ans</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Bien choisir votre hypothèque</h2>
+      <p>Le taux n'est qu'une partie de la décision. La durée, la répartition en tranches, l'amortissement et la souplesse du contrat comptent autant.</p>
+      <p><a class="bouton bouton--prive" href="/particuliers/comparateur-hypothecaire/demande/">Parler à un spécialiste</a></p>
+    </div>
+    <div class="faq">
+      <details><summary>D'où viennent ces taux hypothécaires ?</summary><div class="faq__reponse"><p>Ce sont les taux des nouvelles hypothèques conclues en Suisse, publiés chaque mois par la Banque nationale suisse (BNS). Nous affichons la moyenne et la fourchette dans laquelle se situe la moitié des contrats. La page se met à jour automatiquement dès que la BNS publie de nouveaux chiffres.</p></div></details>
+      <details><summary>Hypothèque SARON ou taux fixe ?</summary><div class="faq__reponse"><p>Avec une hypothèque SARON, le taux suit le marché monétaire et peut monter ou baisser à chaque période. Avec un taux fixe, vous connaissez vos intérêts pour toute la durée. Le bon choix dépend de votre budget, de votre tolérance aux variations et de vos projets. Beaucoup de propriétaires combinent plusieurs tranches.</p></div></details>
+      <details><summary>Combien de fonds propres faut-il pour acheter ?</summary><div class="faq__reponse"><p>En règle générale, au moins 20 % du prix du logement, dont au moins 10 % qui ne proviennent pas du 2e pilier. L'hypothèque finance au plus 80 % du prix.</p></div></details>
+      <details><summary>Comment les banques calculent-elles la capacité financière ?</summary><div class="faq__reponse"><p>Elles comparent des charges théoriques à votre revenu brut : intérêts calculés avec un taux théorique d'environ 5 %, amortissement et frais d'entretien d'environ 1 % de la valeur du bien. Ces charges ne doivent en général pas dépasser un tiers du revenu.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre">
+    <p class="hypo-source">Source : Banque nationale suisse, portail de données <a href="https://data.snb.ch/fr/topics/ziredev/cube/zikrepro" rel="noopener" target="_blank">data.snb.ch</a>, taux d'intérêt appliqués aux nouveaux contrats de crédit. Taux de {{ mois_txt }}. Assuravia n'est pas affilié à la BNS.</p>
+  </div>
+</section>
+<script src="/js/hypotheque.js" defer></script>
+{% endblock %}

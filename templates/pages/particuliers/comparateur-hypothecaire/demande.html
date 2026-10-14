@@ -1,0 +1,61 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Financer mon logement | Assuravia{% endblock %}
+{% block description %}Achat, renouvellement ou construction : décrivez votre projet, un spécialiste vous rappelle avec des offres de financement hypothécaire adaptées.{% endblock %}
+{% block content %}
+{% set p = par_slug["hypotheque"] %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="{{ p.url }}">{{ p.nom }}</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("maison", "icone icone--petite") }} Financement hypothécaire</p>
+    <h1 class="cmp-page__titre">Financer mon logement</h1>
+    <p class="chapeau">Quelques questions sur votre projet. Un spécialiste étudie votre situation et vous rappelle avec des offres de financement adaptées. Gratuit et sans engagement.</p>
+
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir("hypotheque", "hypotheque") }}
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {{ question("Quel est votre projet ?", "projet", ["Acheter un logement", "Renouveler mon hypothèque", "Construire", "Rénover ou augmenter mon hypothèque", "Autre projet"], premier=True) }}
+        {{ question("Quel type de bien ?", "type_bien", ["Appartement", "Maison", "Immeuble de rendement", "Résidence secondaire"]) }}
+        {{ question("Le bien sera-t-il votre résidence principale ?", "usage", ["Oui, j'y habiterai", "Non, je le louerai", "C'est une résidence secondaire"]) }}
+        {{ question("Quel est le prix du bien ou le montant de l'hypothèque actuelle ?", "valeur_bien", ["Moins de CHF 500'000", "CHF 500'000 à 800'000", "CHF 800'000 à 1,2 million", "CHF 1,2 à 2 millions", "Plus de CHF 2 millions"]) }}
+        {{ question("De quels fonds propres disposez-vous ?", "fonds_propres", ["Moins de 20 % du prix", "20 à 30 % du prix", "Plus de 30 % du prix", "Je renouvelle, ce n'est pas nécessaire", "Je ne sais pas encore"], aide="Épargne, 3e pilier, 2e pilier, donation.") }}
+        {{ question("Quel type de taux vous intéresse ?", "type_taux", ["Taux fixe", "SARON", "Un mélange des deux", "Je ne sais pas, conseillez-moi"]) }}
+        {{ question("Quand avez-vous besoin du financement ?", "echeance", ["Dans le mois", "Dans 1 à 3 mois", "Dans 3 à 12 mois", "Dans plus d'un an", "Je me renseigne"]) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <p class="fe__aide">Un conseiller étudie votre demande et vous recontacte avec une offre adaptée. Gratuit et sans engagement.</p>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-hy">Prénom</label><input id="prenom-hy" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-hy">Nom</label><input id="nom-hy" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("hy") }}
+            <div class="champ"><label for="email-hy">E-mail</label><input id="email-hy" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+            {{ f.naissance("hy") }}
+            <div class="champ">
+              <label for="moment-hy">Quand vous rappeler ?</label>
+              <select id="moment-hy" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          {{ f.adresse("domicile") }}
+          <div class="champ">
+            <label for="message-hy">Une précision ? <span class="facultatif">(facultatif)</span></label>
+            <textarea id="message-hy" name="message" placeholder="Ex. Mon taux fixe arrive à échéance en mars."></textarea>
+          </div>
+          {{ f.fermer("Être rappelé par un spécialiste", "hy") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

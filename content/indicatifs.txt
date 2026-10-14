@@ -1,217 +1,217 @@
-# Indicatifs téléphoniques internationaux : indicatif | pays. Les premiers sont proposés en tête de liste.
-+41 | Suisse
-+33 | France
-+39 | Italie
-+49 | Allemagne
-+43 | Autriche
-+423 | Liechtenstein
-+351 | Portugal
-+34 | Espagne
-+32 | Belgique
-+352 | Luxembourg
-+44 | Royaume-Uni
+# Indicatifs téléphoniques internationaux : indicatif | pays | code ISO du drapeau (static/drapeaux/<code>.svg). Les premiers sont proposés en tête de liste.
++41 | Suisse | ch
++33 | France | fr
++39 | Italie | it
++49 | Allemagne | de
++43 | Autriche | at
++423 | Liechtenstein | li
++351 | Portugal | pt
++34 | Espagne | es
++32 | Belgique | be
++352 | Luxembourg | lu
++44 | Royaume-Uni | gb
 --
-+93 | Afghanistan
-+27 | Afrique du Sud
-+355 | Albanie
-+213 | Algérie
-+49 | Allemagne
-+376 | Andorre
-+244 | Angola
-+1 | Antigua-et-Barbuda
-+966 | Arabie saoudite
-+54 | Argentine
-+374 | Arménie
-+297 | Aruba
-+61 | Australie
-+43 | Autriche
-+994 | Azerbaïdjan
-+1 | Bahamas
-+973 | Bahreïn
-+880 | Bangladesh
-+1 | Barbade
-+32 | Belgique
-+501 | Belize
-+229 | Bénin
-+975 | Bhoutan
-+375 | Biélorussie
-+95 | Birmanie (Myanmar)
-+591 | Bolivie
-+387 | Bosnie-Herzégovine
-+267 | Botswana
-+55 | Brésil
-+673 | Brunei
-+359 | Bulgarie
-+226 | Burkina Faso
-+257 | Burundi
-+855 | Cambodge
-+237 | Cameroun
-+1 | Canada
-+238 | Cap-Vert
-+236 | Centrafrique
-+56 | Chili
-+86 | Chine
-+357 | Chypre
-+57 | Colombie
-+269 | Comores
-+242 | Congo
-+243 | Congo (Rép. dém.)
-+82 | Corée du Sud
-+850 | Corée du Nord
-+506 | Costa Rica
-+225 | Côte d'Ivoire
-+385 | Croatie
-+53 | Cuba
-+599 | Curaçao
-+45 | Danemark
-+253 | Djibouti
-+1 | Dominique
-+20 | Égypte
-+971 | Émirats arabes unis
-+593 | Équateur
-+291 | Érythrée
-+34 | Espagne
-+372 | Estonie
-+268 | Eswatini
-+1 | États-Unis
-+251 | Éthiopie
-+679 | Fidji
-+358 | Finlande
-+33 | France
-+241 | Gabon
-+220 | Gambie
-+995 | Géorgie
-+233 | Ghana
-+350 | Gibraltar
-+30 | Grèce
-+1 | Grenade
-+299 | Groenland
-+590 | Guadeloupe
-+502 | Guatemala
-+224 | Guinée
-+240 | Guinée équatoriale
-+245 | Guinée-Bissau
-+592 | Guyana
-+594 | Guyane française
-+509 | Haïti
-+504 | Honduras
-+852 | Hong Kong
-+36 | Hongrie
-+91 | Inde
-+62 | Indonésie
-+964 | Irak
-+98 | Iran
-+353 | Irlande
-+354 | Islande
-+972 | Israël
-+39 | Italie
-+1 | Jamaïque
-+81 | Japon
-+962 | Jordanie
-+7 | Kazakhstan
-+254 | Kenya
-+996 | Kirghizistan
-+686 | Kiribati
-+383 | Kosovo
-+965 | Koweït
-+856 | Laos
-+266 | Lesotho
-+371 | Lettonie
-+961 | Liban
-+231 | Liberia
-+218 | Libye
-+423 | Liechtenstein
-+370 | Lituanie
-+352 | Luxembourg
-+853 | Macao
-+389 | Macédoine du Nord
-+261 | Madagascar
-+60 | Malaisie
-+265 | Malawi
-+960 | Maldives
-+223 | Mali
-+356 | Malte
-+212 | Maroc
-+596 | Martinique
-+230 | Maurice
-+222 | Mauritanie
-+262 | Mayotte et La Réunion
-+52 | Mexique
-+373 | Moldavie
-+377 | Monaco
-+976 | Mongolie
-+382 | Monténégro
-+258 | Mozambique
-+264 | Namibie
-+977 | Népal
-+505 | Nicaragua
-+227 | Niger
-+234 | Nigeria
-+47 | Norvège
-+687 | Nouvelle-Calédonie
-+64 | Nouvelle-Zélande
-+968 | Oman
-+256 | Ouganda
-+998 | Ouzbékistan
-+92 | Pakistan
-+970 | Palestine
-+507 | Panama
-+675 | Papouasie-Nouvelle-Guinée
-+595 | Paraguay
-+31 | Pays-Bas
-+51 | Pérou
-+63 | Philippines
-+48 | Pologne
-+689 | Polynésie française
-+1 | Porto Rico
-+351 | Portugal
-+974 | Qatar
-+1 | République dominicaine
-+420 | République tchèque
-+40 | Roumanie
-+44 | Royaume-Uni
-+7 | Russie
-+250 | Rwanda
-+1 | Saint-Christophe-et-Niévès
-+1 | Sainte-Lucie
-+378 | Saint-Marin
-+1 | Saint-Vincent-et-les-Grenadines
-+503 | Salvador
-+685 | Samoa
-+239 | Sao Tomé-et-Principe
-+221 | Sénégal
-+381 | Serbie
-+248 | Seychelles
-+232 | Sierra Leone
-+65 | Singapour
-+421 | Slovaquie
-+386 | Slovénie
-+252 | Somalie
-+249 | Soudan
-+211 | Soudan du Sud
-+94 | Sri Lanka
-+46 | Suède
-+41 | Suisse
-+597 | Suriname
-+963 | Syrie
-+992 | Tadjikistan
-+886 | Taïwan
-+255 | Tanzanie
-+235 | Tchad
-+66 | Thaïlande
-+670 | Timor oriental
-+228 | Togo
-+676 | Tonga
-+1 | Trinité-et-Tobago
-+216 | Tunisie
-+993 | Turkménistan
-+90 | Turquie
-+380 | Ukraine
-+598 | Uruguay
-+678 | Vanuatu
-+379 | Vatican
-+58 | Venezuela
-+84 | Viêt Nam
-+967 | Yémen
-+260 | Zambie
-+263 | Zimbabwe
++93 | Afghanistan | af
++27 | Afrique du Sud | za
++355 | Albanie | al
++213 | Algérie | dz
++49 | Allemagne | de
++376 | Andorre | ad
++244 | Angola | ao
++1 | Antigua-et-Barbuda | ag
++966 | Arabie saoudite | sa
++54 | Argentine | ar
++374 | Arménie | am
++297 | Aruba | aw
++61 | Australie | au
++43 | Autriche | at
++994 | Azerbaïdjan | az
++1 | Bahamas | bs
++973 | Bahreïn | bh
++880 | Bangladesh | bd
++1 | Barbade | bb
++32 | Belgique | be
++501 | Belize | bz
++229 | Bénin | bj
++975 | Bhoutan | bt
++375 | Biélorussie | by
++95 | Birmanie (Myanmar) | mm
++591 | Bolivie | bo
++387 | Bosnie-Herzégovine | ba
++267 | Botswana | bw
++55 | Brésil | br
++673 | Brunei | bn
++359 | Bulgarie | bg
++226 | Burkina Faso | bf
++257 | Burundi | bi
++855 | Cambodge | kh
++237 | Cameroun | cm
++1 | Canada | ca
++238 | Cap-Vert | cv
++236 | Centrafrique | cf
++56 | Chili | cl
++86 | Chine | cn
++357 | Chypre | cy
++57 | Colombie | co
++269 | Comores | km
++242 | Congo | cg
++243 | Congo (Rép. dém.) | cd
++82 | Corée du Sud | kr
++850 | Corée du Nord | kp
++506 | Costa Rica | cr
++225 | Côte d'Ivoire | ci
++385 | Croatie | hr
++53 | Cuba | cu
++599 | Curaçao | cw
++45 | Danemark | dk
++253 | Djibouti | dj
++1 | Dominique | dm
++20 | Égypte | eg
++971 | Émirats arabes unis | ae
++593 | Équateur | ec
++291 | Érythrée | er
++34 | Espagne | es
++372 | Estonie | ee
++268 | Eswatini | sz
++1 | États-Unis | us
++251 | Éthiopie | et
++679 | Fidji | fj
++358 | Finlande | fi
++33 | France | fr
++241 | Gabon | ga
++220 | Gambie | gm
++995 | Géorgie | ge
++233 | Ghana | gh
++350 | Gibraltar | gi
++30 | Grèce | gr
++1 | Grenade | gd
++299 | Groenland | gl
++590 | Guadeloupe | gp
++502 | Guatemala | gt
++224 | Guinée | gn
++240 | Guinée équatoriale | gq
++245 | Guinée-Bissau | gw
++592 | Guyana | gy
++594 | Guyane française | gf
++509 | Haïti | ht
++504 | Honduras | hn
++852 | Hong Kong | hk
++36 | Hongrie | hu
++91 | Inde | in
++62 | Indonésie | id
++964 | Irak | iq
++98 | Iran | ir
++353 | Irlande | ie
++354 | Islande | is
++972 | Israël | il
++39 | Italie | it
++1 | Jamaïque | jm
++81 | Japon | jp
++962 | Jordanie | jo
++7 | Kazakhstan | kz
++254 | Kenya | ke
++996 | Kirghizistan | kg
++686 | Kiribati | ki
++383 | Kosovo | xk
++965 | Koweït | kw
++856 | Laos | la
++266 | Lesotho | ls
++371 | Lettonie | lv
++961 | Liban | lb
++231 | Liberia | lr
++218 | Libye | ly
++423 | Liechtenstein | li
++370 | Lituanie | lt
++352 | Luxembourg | lu
++853 | Macao | mo
++389 | Macédoine du Nord | mk
++261 | Madagascar | mg
++60 | Malaisie | my
++265 | Malawi | mw
++960 | Maldives | mv
++223 | Mali | ml
++356 | Malte | mt
++212 | Maroc | ma
++596 | Martinique | mq
++230 | Maurice | mu
++222 | Mauritanie | mr
++262 | Mayotte et La Réunion | re
++52 | Mexique | mx
++373 | Moldavie | md
++377 | Monaco | mc
++976 | Mongolie | mn
++382 | Monténégro | me
++258 | Mozambique | mz
++264 | Namibie | na
++977 | Népal | np
++505 | Nicaragua | ni
++227 | Niger | ne
++234 | Nigeria | ng
++47 | Norvège | no
++687 | Nouvelle-Calédonie | nc
++64 | Nouvelle-Zélande | nz
++968 | Oman | om
++256 | Ouganda | ug
++998 | Ouzbékistan | uz
++92 | Pakistan | pk
++970 | Palestine | ps
++507 | Panama | pa
++675 | Papouasie-Nouvelle-Guinée | pg
++595 | Paraguay | py
++31 | Pays-Bas | nl
++51 | Pérou | pe
++63 | Philippines | ph
++48 | Pologne | pl
++689 | Polynésie française | pf
++1 | Porto Rico | pr
++351 | Portugal | pt
++974 | Qatar | qa
++1 | République dominicaine | do
++420 | République tchèque | cz
++40 | Roumanie | ro
++44 | Royaume-Uni | gb
++7 | Russie | ru
++250 | Rwanda | rw
++1 | Saint-Christophe-et-Niévès | kn
++1 | Sainte-Lucie | lc
++378 | Saint-Marin | sm
++1 | Saint-Vincent-et-les-Grenadines | vc
++503 | Salvador | sv
++685 | Samoa | ws
++239 | Sao Tomé-et-Principe | st
++221 | Sénégal | sn
++381 | Serbie | rs
++248 | Seychelles | sc
++232 | Sierra Leone | sl
++65 | Singapour | sg
++421 | Slovaquie | sk
++386 | Slovénie | si
++252 | Somalie | so
++249 | Soudan | sd
++211 | Soudan du Sud | ss
++94 | Sri Lanka | lk
++46 | Suède | se
++41 | Suisse | ch
++597 | Suriname | sr
++963 | Syrie | sy
++992 | Tadjikistan | tj
++886 | Taïwan | tw
++255 | Tanzanie | tz
++235 | Tchad | td
++66 | Thaïlande | th
++670 | Timor oriental | tl
++228 | Togo | tg
++676 | Tonga | to
++1 | Trinité-et-Tobago | tt
++216 | Tunisie | tn
++993 | Turkménistan | tm
++90 | Turquie | tr
++380 | Ukraine | ua
++598 | Uruguay | uy
++678 | Vanuatu | vu
++379 | Vatican | va
++58 | Venezuela | ve
++84 | Viêt Nam | vn
++967 | Yémen | ye
++260 | Zambie | zm
++263 | Zimbabwe | zw

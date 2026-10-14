@@ -243,6 +243,79 @@
     num.addEventListener("input", maj);
   });
 
+  // 2b. Téléphone : liste des pays avec drapeaux (le select reste en place pour l'envoi et le repli sans JS)
+  var lienCss = document.querySelector('link[href$="css/site.css"]');
+  var baseDrapeaux = lienCss ? lienCss.getAttribute("href").replace(/css\/site\.css.*$/, "") + "drapeaux/" : "/drapeaux/";
+  var drapeau = function (iso) {
+    return iso ? '<img class="tel__drapeau" src="' + baseDrapeaux + iso + '.svg" alt="" width="24" height="18" loading="lazy">' : '<span class="tel__drapeau tel__drapeau--vide"></span>';
+  };
+  var sansAccent = function (s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
+  document.querySelectorAll("[data-tel]").forEach(function (bloc, n) {
+    var sel = bloc.querySelector("[data-tel-indicatif]");
+    if (!sel) return;
+    bloc.classList.add("tel--drapeaux");
+    var bouton = document.createElement("button");
+    bouton.type = "button"; bouton.className = "tel__pays";
+    bouton.setAttribute("aria-haspopup", "listbox"); bouton.setAttribute("aria-expanded", "false");
+    var panneau = document.createElement("div");
+    panneau.className = "tel__liste"; panneau.hidden = true;
+    var html = '<input type="search" class="tel__recherche" placeholder="Rechercher un pays" aria-label="Rechercher un pays" autocomplete="off"><ul role="listbox" aria-label="Indicatif du pays">';
+    Array.prototype.forEach.call(sel.querySelectorAll("optgroup"), function (g, gi) {
+      html += '<li class="tel__groupe" role="presentation">' + g.label + "</li>";
+      Array.prototype.forEach.call(g.querySelectorAll("option"), function (o) {
+        var i = Array.prototype.indexOf.call(sel.options, o);
+        var pays = o.textContent.replace(/^\+\d+\s*/, "");
+        html += '<li role="option" tabindex="-1" data-g="' + gi + '" data-i="' + i + '" data-cherche="' + sansAccent(pays + " " + o.value) + '">' + drapeau(o.getAttribute("data-iso")) + '<span class="tel__nom">' + pays + '</span><span class="tel__code">' + o.value + "</span></li>";
+      });
+    });
+    panneau.innerHTML = html + "</ul>";
+    sel.insertAdjacentElement("afterend", bouton);
+    bouton.insertAdjacentElement("afterend", panneau);
+    var recherche = panneau.querySelector(".tel__recherche");
+    var afficher = function () {
+      var o = sel.options[sel.selectedIndex];
+      bouton.innerHTML = drapeau(o.getAttribute("data-iso")) + '<span class="tel__code">' + o.value + '</span><svg class="tel__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+      bouton.setAttribute("aria-label", "Indicatif : " + o.textContent);
+    };
+    var fermer = function (focus) {
+      panneau.hidden = true; bouton.setAttribute("aria-expanded", "false");
+      if (focus) bouton.focus();
+    };
+    var ouvrir = function () {
+      panneau.hidden = false; bouton.setAttribute("aria-expanded", "true");
+      recherche.value = ""; filtrer();
+      var actif = panneau.querySelector('[data-i="' + sel.selectedIndex + '"]');
+      panneau.querySelectorAll('[aria-selected]').forEach(function (x) { x.removeAttribute("aria-selected"); });
+      if (actif) { actif.setAttribute("aria-selected", "true"); actif.scrollIntoView({ block: "nearest" }); }
+      recherche.focus();
+    };
+    var filtrer = function () {
+      var q = sansAccent(recherche.value.trim());
+      panneau.querySelectorAll("[role=option]").forEach(function (li) { li.hidden = q && (li.getAttribute("data-g") === "0" || li.getAttribute("data-cherche").indexOf(q) < 0); });
+      panneau.querySelectorAll(".tel__groupe").forEach(function (li) { li.hidden = !!q; });
+    };
+    var choisir = function (li) {
+      sel.selectedIndex = Number(li.getAttribute("data-i"));
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      afficher(); fermer(false);
+      var num = bloc.querySelector("[data-tel-numero]"); if (num) num.focus();
+    };
+    bouton.addEventListener("click", function () { panneau.hidden ? ouvrir() : fermer(true); });
+    recherche.addEventListener("input", filtrer);
+    panneau.addEventListener("click", function (e) { var li = e.target.closest("[role=option]"); if (li) choisir(li); });
+    panneau.addEventListener("keydown", function (e) {
+      var vis = Array.prototype.filter.call(panneau.querySelectorAll("[role=option]"), function (x) { return !x.hidden; });
+      var pos = vis.indexOf(document.activeElement);
+      if (e.key === "ArrowDown") { e.preventDefault(); (vis[pos + 1] || vis[0]).focus(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); if (pos <= 0) recherche.focus(); else vis[pos - 1].focus(); }
+      else if (e.key === "Enter") { e.preventDefault(); if (pos >= 0) choisir(vis[pos]); else if (vis.length) choisir(vis[0]); }
+      else if (e.key === "Escape") { e.preventDefault(); fermer(true); }
+    });
+    document.addEventListener("click", function (e) { if (!panneau.hidden && !bloc.contains(e.target)) fermer(false); });
+    sel.addEventListener("change", afficher);
+    afficher();
+  });
+
   // 2c. Avancée en pourcentage des formulaires d'une seule page (les simulations ont la leur)
   document.querySelectorAll("form[data-lead]").forEach(function (form) {
     if (form.closest("[data-funnel]")) return;

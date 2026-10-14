@@ -18,12 +18,19 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Adresse : macro `f.adresse(prefixe)`, quatre champs saisis à la main (rue, n°, NPA, localité), sans suggestions automatiques (choix du propriétaire du site).
 - `content/articles/*.md` : articles du blog, publiés sous `/blog/<nom-du-fichier>/`.
 - Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
-  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`, `simulation-hospitalisation`, `simulation-ambulatoire`, `simulation-complementaires`, `placements`, `complementaires-rappel`, `libre-passage`, `vehicule`, `pj-entreprise`, `transport`, `techniques`, `lpp`, `laa`, `perte-de-gain-maladie`, `cyber-entreprise`, `commerce-inventaire`, `vehicules-entreprise`), sinon Netlify crée un nouveau formulaire.
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`, `simulation-hospitalisation`, `simulation-ambulatoire`, `simulation-complementaires`, `placements`, `complementaires-rappel`, `libre-passage`, `vehicule`, `pj-entreprise`, `transport`, `techniques`, `lpp`, `laa`, `perte-de-gain-maladie`, `cyber-entreprise`, `commerce-inventaire`, `vehicules-entreprise`, `hypotheque`), sinon Netlify crée un nouveau formulaire.
 
 ## Comparateur LAMal
 - Page `templates/pages/particuliers/comparateur-lamal.html`, script `static/js/comparateur-lamal.js`, données `static/data/lamal/` (une fichier JSON par canton + `index.json`).
 - Mise à jour annuelle (fin septembre, quand l'OFSP publie les primes) : télécharger sur opendata.swiss (jeu « Primes de l'assurance-maladie ») `Prämien_CH.csv`, `Tarife.csv`, `Einzugsgebiete.csv`, et sur bag.admin.ch le fichier « Prämienregionen » (XLSX) ; les mettre dans `donnees/ofsp-AAAA/` (non versionné), puis `python3 outils/import_lamal.py donnees/ofsp-AAAA`. Ajouter le nom d'une nouvelle caisse dans `CAISSES` si le script le demande.
 - Ne jamais imiter un site fédéral (pas de croix suisse, pas « officiel ») ; citer la source OFSP (licence CC BY).
+
+## Comparateur hypothécaire
+- Page `templates/pages/particuliers/comparateur-hypothecaire.html`, script `static/js/hypotheque.js`, données `static/data/hypotheques.json` (aussi intégrées au HTML par `build.py`, variable `taux_hypo`).
+- Source : BNS, cube `zikrepro` (taux des nouveaux contrats : moyenne, 1er et 3e quartile). Mise à jour automatique chaque lundi par `.github/workflows/taux-hypothecaires.yml`, qui lance `python3 outils/maj_taux_hypothecaires.py` et pousse le JSON s'il a changé. Toujours citer la source BNS.
+
+## Téléphone
+- Indicatifs : `content/indicatifs.txt` (indicatif | pays | code ISO). Drapeaux SVG dans `static/drapeaux/` (flag-icons, licence MIT). Liste à drapeaux construite en JS sur le select, qui reste le champ envoyé.
 
 ## Complémentaires maladie
 - Pages publiques NEUTRES : aucune référence à un assureur, ni dans les noms, ni dans la structure, ni dans les chiffres. Couverture organisée par besoin (hospitalisation par type de chambre, soins ambulatoires à la carte avec niveau Standard ou Étendu, dentaire par plafond annuel, indemnité par jour, protection juridique santé).
