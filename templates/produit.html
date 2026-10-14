@@ -41,6 +41,13 @@
       </ul>
       {% endif %}
       <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Lancer la simulation" }}</a>
+      {% elif produit.widget_hero == "interets" %}
+      {% include "partials/simulateur-interets.html" %}
+      <details class="form-repli">
+        <summary class="bouton bouton--action">{{ produit.bouton }}</summary>
+        <p class="form-sous-titre">Un spécialiste analyse votre situation et vous propose une stratégie adaptée. Premier entretien gratuit et sans engagement.</p>
+        {% with p=produit %}{% include "partials/form-prive.html" %}{% endwith %}
+      </details>
       {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>

@@ -6,4 +6,4 @@ reformulés par Assuravia.
 
 Pour la réactiver : copier `complementaires.json` dans `content/`, puis lancer `python3 build.py`.
 Le code des simulations (templates, `etapes.html`, moteur dans `static/js/site.js`) est le même
-pour les deux versions : seule la grille change. Version de référence dans git : étiquette `complementaires-helsana`.
+pour les deux versions : seule la grille change. Version de référence dans git : commit 315b43e.

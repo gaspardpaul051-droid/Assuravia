@@ -1360,3 +1360,38 @@ a.contact__ligne:hover span { text-decoration: underline; }
   .sante__extras { grid-template-columns: 1fr; }
 }
 .sante__detail strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Simulateur d'intérêts composés (Placements) */
+.interets { display: grid; gap: var(--e-4); }
+.interets .form-titre, .interets .form-sous-titre { margin: 0; }
+.interets__curseurs { display: grid; gap: var(--e-3); }
+.interets__curseur { display: grid; grid-template-columns: 1fr auto; gap: 4px var(--e-3); font-size: var(--t-s); font-weight: 600; color: var(--texte); }
+.interets__curseur strong { color: var(--bleu); font-variant-numeric: tabular-nums; }
+.interets__curseur input { grid-column: 1 / -1; width: 100%; accent-color: var(--bleu); }
+.interets__profils { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.interets__profils label { position: relative; cursor: pointer; }
+.interets__profils input { position: absolute; opacity: 0; }
+.interets__profils span { display: grid; gap: 2px; height: 100%; padding: 8px 6px; border-radius: var(--r-m); border: 1px solid var(--bordure); text-align: center; font-size: var(--t-xs); font-weight: 700; color: var(--marine); transition: all var(--duree); }
+.interets__profils small { font-weight: 500; color: var(--texte-doux); }
+.interets__profils input:checked + span { background: var(--bleu); border-color: var(--bleu); color: #fff; }
+.interets__profils input:checked + span small { color: rgba(255,255,255,.8); }
+.interets__profils input:focus-visible + span { outline: 3px solid rgba(21,101,168,.35); outline-offset: 2px; }
+.interets__resultat { display: grid; gap: var(--e-2); padding: var(--e-4); border-radius: var(--r-l); background: var(--marine); color: #fff; }
+.interets__resultat p { margin: 0; }
+.interets__label { font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--or-clair); }
+.interets__total { font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.interets__chiffres { display: grid; gap: 4px; font-size: var(--t-s); color: rgba(255,255,255,.8); }
+.interets__chiffres strong { color: #fff; }
+.interets__pastille { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+.interets__pastille--verse { background: #3A9AE0; } .interets__pastille--gain { background: var(--or-clair); }
+.interets__graphe { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin-top: var(--e-2); }
+.interets__an { flex: 1; display: flex; align-items: flex-end; border-radius: 4px 4px 0 0; background: var(--or-clair); overflow: hidden; transition: height .4s var(--courbe); }
+.interets__an i { display: block; width: 100%; background: #3A9AE0; transition: height .4s var(--courbe); }
+.interets__ecart { font-size: var(--t-s); color: var(--or-clair); font-weight: 600; }
+.interets__note { margin: 0; font-size: var(--t-xs); color: var(--texte-doux); }
+.form-repli { margin-top: var(--e-4); }
+.form-repli > summary { list-style: none; width: 100%; cursor: pointer; }
+.form-repli > summary::-webkit-details-marker { display: none; }
+.form-repli[open] > summary { margin-bottom: var(--e-4); }
+.form-repli[open] .formulaire { animation: cmp-entree .35s var(--courbe) both; }
+@media (max-width: 480px) { .interets__profils { grid-template-columns: repeat(2, 1fr); } }

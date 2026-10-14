@@ -362,7 +362,7 @@
     var G = JSON.parse(sante.querySelector("[data-sante-grille]").textContent);
     var chfS = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
     var elTotal = sante.querySelector("[data-sante-total]"), affiche = 0, anim = null;
-    var COULEURS = { hop: "#1565A8", amb: "#3A9AE0", dent: "#E2BE52", ij_hop: "#0B2545", pj_sante: "#8798AE" };
+    var COULEURS = { hop: "#1565A8", amb: "#3A9AE0", dent: "#E2BE52", ij_hop: "#9CC9EE", pj_sante: "#8798AE" };
     var majSante = function () {
       var profil = {
         annee: Number(sante.querySelector('[data-sante-champ="annee"]').value),
@@ -415,6 +415,40 @@
     sante.addEventListener("input", majSante);
     sante.addEventListener("change", majSante);
     majSante();
+  }
+
+  // 4g. Intérêts composés (page Placements) : capitalisation mensuelle, versements en fin de mois
+  var interets = document.querySelector("[data-interets]");
+  if (interets) {
+    var chfI = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+    var lireI = function (k) { var el = interets.querySelector('[data-interets-champ="' + k + '"]' + (k === "taux" ? ":checked" : "")); return Number(el.value); };
+    var projeter = function (depart, mensuel, annees, taux) {
+      var r = Math.pow(1 + taux / 100, 1 / 12) - 1, capital = depart, verse = depart, serie = [];
+      for (var m = 1; m <= annees * 12; m++) {
+        capital = capital * (1 + r) + mensuel; verse += mensuel;
+        if (m % 12 === 0) serie.push({ capital: capital, verse: verse });
+      }
+      return serie;
+    };
+    var majI = function () {
+      var depart = lireI("depart"), mensuel = lireI("mensuel"), duree = lireI("duree"), taux = lireI("taux");
+      interets.querySelector('[data-interets-val="depart"]').textContent = chfI(depart);
+      interets.querySelector('[data-interets-val="mensuel"]').textContent = chfI(mensuel);
+      interets.querySelector('[data-interets-val="duree"]').textContent = duree + (duree > 1 ? " ans" : " an");
+      var serie = projeter(depart, mensuel, duree, taux), fin = serie[serie.length - 1];
+      interets.querySelector("[data-interets-total]").textContent = chfI(fin.capital);
+      interets.querySelector("[data-interets-verse]").textContent = chfI(fin.verse);
+      interets.querySelector("[data-interets-gain]").textContent = chfI(fin.capital - fin.verse);
+      var compte = projeter(depart, mensuel, duree, 0.5).pop().capital;
+      interets.querySelector("[data-interets-ecart]").textContent = taux > 0.5 && fin.capital > compte
+        ? "Soit " + chfI(fin.capital - compte) + " de plus qu'un compte épargne, dans cette hypothèse." : "Placer selon un profil adapté peut faire croître davantage votre épargne sur le long terme.";
+      var max = fin.capital || 1, pas = Math.max(1, Math.ceil(serie.length / 20));
+      interets.querySelector("[data-interets-graphe]").innerHTML = serie.filter(function (x, k) { return (k + 1) % pas === 0 || k === serie.length - 1; }).map(function (x) {
+        return '<span class="interets__an" style="height:' + (x.capital / max * 100) + '%"><i style="height:' + (x.verse / x.capital * 100) + '%"></i></span>';
+      }).join("");
+    };
+    interets.addEventListener("input", majI);
+    majI();
   }
 
   // 4c. Simulation en plusieurs écrans (funnel), ex. assurance ménage

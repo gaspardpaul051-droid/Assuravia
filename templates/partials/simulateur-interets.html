@@ -1,0 +1,29 @@
+{# Simulateur d'intérêts composés (page Placements). Hypothèses de rendement identiques au simulateur 3e pilier. #}
+<div class="interets" data-interets>
+  <h2 class="form-titre">Simulez la croissance de votre épargne</h2>
+  <p class="form-sous-titre">Les intérêts composés : vos gains rapportent à leur tour. Faites varier les curseurs.</p>
+  <div class="interets__curseurs">
+    <label class="interets__curseur">Capital de départ <strong data-interets-val="depart"></strong>
+      <input type="range" min="0" max="500000" step="1000" value="20000" data-interets-champ="depart"></label>
+    <label class="interets__curseur">Versement mensuel <strong data-interets-val="mensuel"></strong>
+      <input type="range" min="0" max="5000" step="50" value="300" data-interets-champ="mensuel"></label>
+    <label class="interets__curseur">Durée <strong data-interets-val="duree"></strong>
+      <input type="range" min="1" max="40" step="1" value="20" data-interets-champ="duree"></label>
+  </div>
+  <div class="interets__profils" role="radiogroup" aria-label="Profil de placement">
+    {% for v, t in [("0.5", "Compte épargne"), ("2", "Prudent"), ("3.5", "Équilibré"), ("5", "Dynamique")] %}
+    <label><input type="radio" name="interets-profil" value="{{ v }}"{% if v == "3.5" %} checked{% endif %} data-interets-champ="taux"> <span>{{ t }}<small>{{ v|replace(".", ",") }} % par an</small></span></label>
+    {% endfor %}
+  </div>
+  <div class="interets__resultat">
+    <p class="interets__label">Capital estimé à la fin</p>
+    <p class="interets__total" data-interets-total>CHF 0</p>
+    <div class="interets__chiffres">
+      <span><i class="interets__pastille interets__pastille--verse"></i>Vous versez <strong data-interets-verse></strong></span>
+      <span><i class="interets__pastille interets__pastille--gain"></i>Les intérêts rapportent <strong data-interets-gain></strong></span>
+    </div>
+    <div class="interets__graphe" data-interets-graphe aria-hidden="true"></div>
+    <p class="interets__ecart" data-interets-ecart></p>
+  </div>
+  <p class="interets__note">Hypothèses de rendement annuel moyen, non garanties, avant frais et impôts. Les placements en titres peuvent perdre de la valeur.</p>
+</div>

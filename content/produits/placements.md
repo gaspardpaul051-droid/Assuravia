@@ -11,6 +11,7 @@ desc: Faites travailler votre épargne selon votre horizon et votre profil de ri
 points: Analyse de votre profil investisseur | Fonds, mandats de gestion, prévoyance | Frais transparents
 badge: Premier entretien gratuit
 bouton: Parler à un spécialiste
+widget_hero: interets
 h1: Placements et gestion de fortune : faites travailler votre épargne
 chapeau: Laisser son épargne sur un compte, c'est accepter qu'elle perde du pouvoir d'achat avec le temps. Placer, c'est choisir un équilibre entre rendement espéré, risque et disponibilité, avec une stratégie que vous comprenez.
 retenir: Votre horizon de placement décide de la part que vous pouvez investir en actions. | Gardez une réserve disponible avant de placer. | Comparez le coût total, pas seulement les frais de gestion. | Aucun rendement n'est garanti sur les placements en titres.
