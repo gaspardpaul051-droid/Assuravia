@@ -132,8 +132,10 @@
     conteneur.querySelectorAll("input, select, textarea").forEach(function (el) {
       if (el.type === "hidden" || el.closest("[hidden]")) return;
       controleFormat(el);
-      var zoneMsg = el.type === "radio" ? (el.closest("fieldset") || el.parentElement) : (el.closest(".champ") || el.parentElement);
-      var msg = zoneMsg.querySelector(".champ__erreur");
+      var groupeRadio = el.type === "radio" ? el.closest(".choix-cartes, .formules") : null;
+      var msg;
+      if (groupeRadio) { var suivant = groupeRadio.nextElementSibling; msg = suivant && suivant.classList.contains("champ__erreur") ? suivant : null; }
+      else { var zoneMsg = el.type === "radio" ? (el.closest("fieldset") || el.parentElement) : (el.closest(".champ") || el.parentElement); msg = zoneMsg.querySelector(".champ__erreur"); }
       if (el.checkValidity()) {
         el.removeAttribute("aria-invalid");
         if (msg) msg.remove();
@@ -256,7 +258,7 @@
     var maj = function () {
       var vus = {}, total = 0, ok = 0;
       form.querySelectorAll("input[required], select[required], textarea[required]").forEach(function (el) {
-        if (el.disabled || el.type === "hidden" || el.closest("[hidden], template, .cache")) return;
+        if (el.disabled || el.type === "hidden" || el.closest("[hidden]:not([data-etape]), template, .cache")) return;
         var cle = (el.type === "radio" || el.type === "checkbox") ? "n:" + el.name : el;
         if (typeof cle === "string") { if (vus[cle]) return; vus[cle] = 1; }
         total++; if (rempli(el)) ok++;
@@ -456,6 +458,45 @@
     interets.addEventListener("input", majI);
     majI();
   }
+
+  // 4h. Fenêtres (dialog) ouvertes par un bouton [data-ouvrir-modale="nom"], formulaires en étapes [data-etape]
+  document.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-ouvrir-modale]");
+    if (!b) return;
+    var modale = document.querySelector('[data-modale="' + b.getAttribute("data-ouvrir-modale") + '"]');
+    if (!modale || !modale.showModal) return;
+    ev.preventDefault();
+    // Le résumé de la simulation d'intérêts accompagne la demande
+    var resume = modale.querySelector("[data-interets-resume]"), sim = document.querySelector("[data-interets]");
+    if (resume && sim) {
+      var v = function (k) { var el = sim.querySelector('[data-interets-val="' + k + '"]'); return el ? el.textContent : ""; };
+      var pr = sim.querySelector('[data-interets-champ="taux"]:checked');
+      resume.value = "Départ " + v("depart") + ", " + v("mensuel") + " par mois, " + v("duree") + ", profil " + (pr ? pr.parentElement.querySelector("span").firstChild.textContent : "") + " : " + sim.querySelector("[data-interets-total]").textContent;
+    }
+    modale.showModal();
+    document.body.classList.add("modale-ouverte");
+  });
+  document.querySelectorAll("dialog.modale").forEach(function (modale) {
+    var fermer = function () { modale.close(); };
+    modale.querySelectorAll("[data-fermer-modale]").forEach(function (b) { b.addEventListener("click", fermer); });
+    modale.addEventListener("click", function (ev) { if (ev.target === modale) fermer(); });
+    modale.addEventListener("close", function () { document.body.classList.remove("modale-ouverte"); });
+    var etapes = Array.prototype.slice.call(modale.querySelectorAll("[data-etape]"));
+    var reperes = modale.querySelectorAll(".modale__etapes li");
+    var aller = function (n) {
+      etapes.forEach(function (e, k) { e.hidden = k !== n; });
+      reperes.forEach(function (r, k) { r.classList.toggle("actif", k === n); r.classList.toggle("fait", k < n); });
+      modale.scrollTop = 0;
+      var champ = etapes[n].querySelector("input:not([type=hidden]):not([type=radio]):not([type=checkbox]), select");
+      if (champ) champ.focus({ preventScroll: true });
+    };
+    modale.querySelectorAll("[data-etape-suivante]").forEach(function (b) {
+      b.addEventListener("click", function () { var k = etapes.indexOf(b.closest("[data-etape]")); if (verifier(etapes[k])) aller(k + 1); });
+    });
+    modale.querySelectorAll("[data-etape-precedente]").forEach(function (b) {
+      b.addEventListener("click", function () { aller(Math.max(etapes.indexOf(b.closest("[data-etape]")) - 1, 0)); });
+    });
+  });
 
   // 4c. Simulation en plusieurs écrans (funnel), ex. assurance ménage
   var funnel = document.querySelector("[data-funnel]");

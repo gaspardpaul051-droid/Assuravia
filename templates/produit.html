@@ -43,11 +43,8 @@
       <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Lancer la simulation" }}</a>
       {% elif produit.widget_hero == "interets" %}
       {% include "partials/simulateur-interets.html" %}
-      <details class="form-repli">
-        <summary class="bouton bouton--action">{{ produit.bouton }}</summary>
-        <p class="form-sous-titre">Un spécialiste analyse votre situation et vous propose une stratégie adaptée. Premier entretien gratuit et sans engagement.</p>
-        {% with p=produit %}{% include "partials/form-prive.html" %}{% endwith %}
-      </details>
+      <button type="button" class="bouton bouton--action interets__cta" data-ouvrir-modale="placements">Construire ma stratégie avec un spécialiste</button>
+      <p class="interets__rassure">{{ i.icone("valide", "icone icone--petite") }} Premier entretien gratuit et sans engagement</p>
       {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
@@ -73,7 +70,7 @@
       {% endif %}
       <div class="mini-cta mini-cta--{{ produit.theme }}">
         <p>{{ produit.nom }} : un conseil gratuit, sans engagement.</p>
-        <a class="bouton bouton--action bouton--petit" href="#demande">{{ produit.bouton }}</a>
+        <a class="bouton bouton--action bouton--petit" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </div>
     </aside>
     <div class="article__corps texte-long">
@@ -88,7 +85,7 @@
       <aside class="encart encart--milieu">
         <p class="encart__titre">Un doute sur votre couverture ?</p>
         <p>Un spécialiste regarde votre situation et vous explique ce qui vous convient. C'est gratuit et sans engagement.</p>
-        <a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a>
+        <a class="bouton bouton--action" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </aside>
       {% endif %}
       {{ produit.html_fin|safe }}
@@ -124,7 +121,7 @@
       <aside class="encart">
         <p class="encart__titre">{{ produit.bouton }}</p>
         <p>Un spécialiste vous rappelle au moment qui vous arrange, avec des propositions claires. Gratuit et sans engagement.</p>
-        <a class="bouton bouton--action" href="#demande">{{ produit.bouton }}</a>
+        <a class="bouton bouton--action" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </aside>
     </div>
   </div>
@@ -152,4 +149,5 @@
   </div>
 </section>
 {% endif %}
+{% if produit.widget_hero == "interets" %}{% include "partials/form-placements.html" %}{% endif %}
 {% endblock %}
