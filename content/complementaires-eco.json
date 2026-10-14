@@ -1,0 +1,366 @@
+{
+ "_note": "Grille INDICATIVE des formules économiques à la carte (page publicitaire lp/complementaire-sante, marque Assuravie). Structure et primes de départ inspirées des formules d'un assureur suisse à prime basse, sans nom ni produit de marque. Primes mensuelles de référence pour un adulte de 31 à 35 ans, canton coefficient 1. À ajuster avec les tarifs réels.",
+ "annee": 2027,
+ "courbes": {
+  "hop": [
+   [
+    0,
+    18,
+    0.22
+   ],
+   [
+    19,
+    25,
+    0.55
+   ],
+   [
+    26,
+    30,
+    0.85
+   ],
+   [
+    31,
+    35,
+    1
+   ],
+   [
+    36,
+    40,
+    1.15
+   ],
+   [
+    41,
+    45,
+    1.35
+   ],
+   [
+    46,
+    50,
+    1.6
+   ],
+   [
+    51,
+    55,
+    1.9
+   ],
+   [
+    56,
+    60,
+    2.3
+   ],
+   [
+    61,
+    65,
+    2.7
+   ],
+   [
+    66,
+    70,
+    3.0
+   ],
+   [
+    71,
+    130,
+    3.6
+   ]
+  ],
+  "amb": [
+   [
+    0,
+    18,
+    0.55
+   ],
+   [
+    19,
+    25,
+    0.8
+   ],
+   [
+    26,
+    35,
+    1
+   ],
+   [
+    36,
+    45,
+    1.1
+   ],
+   [
+    46,
+    55,
+    1.25
+   ],
+   [
+    56,
+    65,
+    1.45
+   ],
+   [
+    66,
+    130,
+    1.7
+   ]
+  ],
+  "dent": [
+   [
+    0,
+    18,
+    0.9
+   ],
+   [
+    19,
+    45,
+    1
+   ],
+   [
+    46,
+    65,
+    1.15
+   ],
+   [
+    66,
+    130,
+    1.3
+   ]
+  ],
+  "plat": [
+   [
+    0,
+    130,
+    1
+   ]
+  ]
+ },
+ "femme": {
+  "hop": [
+   19,
+   45,
+   1.12
+  ],
+  "amb": [
+   19,
+   45,
+   1.05
+  ]
+ },
+ "cantons": {
+  "GE": 1.2,
+  "VD": 1.1,
+  "NE": 1.05,
+  "FR": 1.0,
+  "JU": 1.0,
+  "VS": 0.95,
+  "BE": 1.0,
+  "autre": 1.0
+ },
+ "niveaux_amb": {},
+ "modules": {
+  "base_plus": {
+   "famille": "Complément de base",
+   "nom": "Complément à l'assurance de base",
+   "court": "Complément essentiel",
+   "base": 15,
+   "courbe": "amb",
+   "tag": "Essentiel",
+   "icone": "bouclier",
+   "points": [
+    "Hôpital au choix en division commune, dans toute la Suisse",
+    "Lunettes, médicaments hors liste, transports et sauvetage"
+   ],
+   "details": [
+    "Libre choix de l'hôpital en division commune, dans toute la Suisse",
+    "Lunettes ou lentilles : par exemple CHF 100 par an, jusqu'à CHF 500 sur 5 ans",
+    "Médicaments vitaux hors liste et moyens auxiliaires",
+    "Transports en Suisse et sauvetage",
+    "Aide ménagère et garde d'enfants pendant une hospitalisation",
+    "Une participation aux soins dentaires après une franchise"
+   ]
+  },
+  "hop_flex": {
+   "famille": "Hospitalisation",
+   "nom": "Hospitalisation au choix le jour venu",
+   "court": "Au choix le jour venu",
+   "base": 23,
+   "courbe": "hop",
+   "tag": "Flexible",
+   "icone": "croix",
+   "points": [
+    "Vous choisissez la chambre à chaque séjour",
+    "Commune sans frais, demi-privée ou privée avec une participation par jour"
+   ],
+   "details": [
+    "Division commune sans frais supplémentaires",
+    "Demi-privée ou privée : une participation fixe par jour, limitée à quelques jours par an",
+    "Une indemnité vous est versée si vous choisissez la division commune",
+    "La prime la plus douce pour garder le choix du confort"
+   ]
+  },
+  "hop_demi": {
+   "famille": "Hospitalisation",
+   "nom": "Hospitalisation en demi-privée",
+   "court": "Demi-privée",
+   "base": 39,
+   "courbe": "hop",
+   "tag": "2 lits",
+   "icone": "croix",
+   "points": [
+    "Chambre à deux lits, libre choix du médecin",
+    "Dans toute la Suisse"
+   ],
+   "details": [
+    "Chambre à deux lits dans les hôpitaux et cliniques reconnus en Suisse",
+    "Libre choix du médecin et du chirurgien",
+    "Une indemnité par jour si vous choisissez la division commune"
+   ]
+  },
+  "hop_privee": {
+   "famille": "Hospitalisation",
+   "nom": "Hospitalisation en privée",
+   "court": "Privée",
+   "base": 49,
+   "courbe": "hop",
+   "tag": "1 lit",
+   "icone": "croix",
+   "points": [
+    "Chambre individuelle, libre choix du médecin",
+    "Dans toute la Suisse"
+   ],
+   "details": [
+    "Chambre individuelle dans les hôpitaux et cliniques reconnus en Suisse",
+    "Libre choix du médecin et du chirurgien",
+    "Une indemnité par jour si vous choisissez la division commune"
+   ]
+  },
+  "hop_monde": {
+   "famille": "Hospitalisation",
+   "nom": "Hospitalisation privée en Suisse et à l'étranger",
+   "court": "Privée, Suisse et étranger",
+   "base": 85,
+   "courbe": "hop",
+   "tag": "Premium",
+   "icone": "avion",
+   "points": [
+    "Chambre individuelle, aussi dans les cliniques spécialisées",
+    "En Suisse et à l'étranger"
+   ],
+   "details": [
+    "Division privée en Suisse et à l'étranger",
+    "Accès aux cliniques spécialisées",
+    "Libre choix du médecin",
+    "Indemnité en cas de séjour en division commune"
+   ]
+  },
+  "alt_therap": {
+   "famille": "Médecines alternatives",
+   "nom": "Médecines alternatives chez un thérapeute",
+   "court": "Thérapeutes reconnus",
+   "base": 14,
+   "courbe": "amb",
+   "tag": "24 thérapies",
+   "icone": "coeur",
+   "points": [
+    "Ostéopathie, acupuncture, shiatsu, réflexologie, naturopathie…",
+    "Environ 12 séances par an, remboursées par séance"
+   ],
+   "details": [
+    "Plus de vingt thérapies chez un thérapeute reconnu : ostéopathie, acupuncture, shiatsu, réflexologie, kinésiologie, médecine chinoise…",
+    "Un montant par séance selon sa durée, par exemple de CHF 50 à CHF 110",
+    "Environ 12 séances par an, davantage sur accord",
+    "Remèdes naturels prescrits (homéopathie, phytothérapie) avec un plafond annuel",
+    "Une petite franchise annuelle et une quote-part de 10 %"
+   ]
+  },
+  "alt_medecin": {
+   "famille": "Médecines alternatives",
+   "nom": "Médecines alternatives chez un médecin",
+   "court": "Chez un médecin",
+   "base": 4,
+   "courbe": "amb",
+   "tag": "Médecins",
+   "icone": "croix",
+   "points": [
+    "Acupuncture, homéopathie, hypnose médicale… pratiquées par un médecin",
+    "Séances illimitées"
+   ],
+   "details": [
+    "Une dizaine de méthodes pratiquées par des médecins formés : acupuncture, homéopathie, hypnose médicale, phytothérapie…",
+    "Un montant fixe par séance, sans limite du nombre de séances",
+    "Médicaments de médecine alternative remboursés à 80 % sur ordonnance, avec un plafond annuel",
+    "Une prime très basse, à combiner avec les thérapeutes"
+   ]
+  },
+  "dent_essentiel": {
+   "famille": "Dentaire",
+   "nom": "Dentaire essentiel",
+   "court": "Contrôles et soins",
+   "base": 18,
+   "courbe": "dent",
+   "tag": "Essentiel",
+   "icone": "valide",
+   "points": [
+    "Contrôle et détartrage remboursés chaque année",
+    "Les traitements pris en charge en grande partie"
+   ],
+   "details": [
+    "Contrôle, radiographies et détartrage remboursés chaque année",
+    "Soins et traitements pris en charge à 75 %, avec un plafond annuel élevé"
+   ]
+  },
+  "dent_confort": {
+   "famille": "Dentaire",
+   "nom": "Dentaire confort",
+   "court": "Confort, avec orthodontie",
+   "base": 28,
+   "courbe": "dent",
+   "tag": "Confort",
+   "icone": "valide",
+   "points": [
+    "Traitements à 80 %, couronnes et ponts",
+    "Orthodontie pour les enfants et les jeunes"
+   ],
+   "details": [
+    "Contrôle et détartrage remboursés",
+    "Traitements pris en charge à 80 %, après une franchise annuelle",
+    "Couronnes, ponts et prothèses avec un plafond annuel",
+    "Orthodontie jusqu'à 20 ans",
+    "La franchise peut tomber après plusieurs années sans prestations"
+   ]
+  },
+  "voyage": {
+   "famille": "Voyage",
+   "nom": "Assurance voyage et urgences à l'étranger",
+   "court": "Voyage, monde entier",
+   "base": 7,
+   "courbe": "plat",
+   "tag": "Monde",
+   "icone": "avion",
+   "points": [
+    "Soins urgents à l'étranger, dans le monde entier",
+    "Assistance 24 h sur 24"
+   ],
+   "details": [
+    "Frais de soins urgents à l'étranger au-delà de l'assurance de base",
+    "Couverture dans le monde entier",
+    "Assistance 24 h sur 24, aussi en cas de perte de documents"
+   ]
+  },
+  "capital": {
+   "famille": "Capital hospitalisation",
+   "nom": "Capital en cas d'hospitalisation",
+   "court": "Capital hospitalisation",
+   "base": 17,
+   "courbe": "plat",
+   "tag": "Capital",
+   "icone": "tirelire",
+   "points": [
+    "Un montant versé à vous dès une hospitalisation",
+    "Pour les frais imprévus : garde, transport, perte de revenu"
+   ],
+   "details": [
+    "Un capital versé directement à vous en cas d'hospitalisation",
+    "Montant au choix, par exemple de CHF 500 à CHF 3'000",
+    "Libre utilisation : garde d'enfants, transports, perte de revenu"
+   ]
+  }
+ }
+}

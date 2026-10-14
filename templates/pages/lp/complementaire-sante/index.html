@@ -1,0 +1,148 @@
+{# Page publicitaire (Google Ads) : complémentaires santé, formules économiques à la carte.
+   Marque affichée : Assuravie. Menu et liens du site actifs ; page non liée depuis le site, noindex, hors sitemap.
+   Le simulateur est sur une page à part : /lp/complementaire-sante/simulation/ (grille content/complementaires-eco.json). #}
+{% set noindex = true %}
+{% set marque = "Assuravie" %}
+{% set M = complementaires_eco.modules %}
+{% set sim_url = "/lp/complementaire-sante/simulation/" %}
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Complémentaire santé à prime maîtrisée | Assuravie{% endblock %}
+{% block description %}Complémentaire maladie à la carte : hospitalisation, médecines alternatives, dentaire, voyage. Ne payez que ce qui vous sert. Estimation gratuite en 2 minutes.{% endblock %}
+{% block content %}
+<section class="produit lp-sante">
+  <div class="cadre produit__grille">
+    <div class="produit__texte">
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span>Complémentaires santé</span></nav>
+      <p class="etiquette etiquette--prive">{{ i.icone("coeur", "icone icone--petite") }} Complémentaires santé à la carte</p>
+      <h1>Votre complémentaire santé, sans payer pour ce qui ne vous sert pas</h1>
+      <p class="chapeau">Gardez votre assurance de base et ajoutez seulement les modules utiles : un complément essentiel, l'hospitalisation, les médecines alternatives, le dentaire ou le voyage. Chaque module se prend seul, avec une prime de départ basse.</p>
+      <ul class="points">
+        <li>Des modules dès quelques francs par mois</li>
+        <li>Hôpital au choix en division commune dans toute la Suisse</li>
+        <li>Plus de vingt médecines alternatives remboursées</li>
+        <li>Estimation immédiate, gratuite et sans engagement</li>
+      </ul>
+    </div>
+    <aside class="produit__form">
+      <h2 class="form-titre">Composez votre couverture</h2>
+      <p class="form-sous-titre">Choisissez vos modules et voyez votre prime estimée tout de suite. Un spécialiste vous envoie ensuite l'offre détaillée.</p>
+      <ul class="entree-simulation__points">
+        <li>{{ i.icone("valide", "icone icone--petite") }} Estimation en 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Six modules à combiner librement</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      </ul>
+      <a class="bouton bouton--action" href="{{ sim_url }}">Estimer ma prime</a>
+    </aside>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre texte-long lp-sante__texte">
+    <aside class="retenir" aria-labelledby="retenir-titre">
+      <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+      <ul>
+        <li>L'assurance de base rembourse les soins essentiels, mais pas le libre choix de l'hôpital dans toute la Suisse, ni la plupart des lunettes, des médecines alternatives ou des soins dentaires.</li>
+        <li>Une complémentaire à la carte vous laisse choisir module par module : vous ne payez que ce que vous utilisez.</li>
+        <li>Les primes de départ sont basses : quelques francs par mois pour les médecines alternatives chez un médecin, une quinzaine de francs pour un complément essentiel.</li>
+        <li>Un questionnaire de santé est demandé : mieux vaut s'assurer tant que l'on est en bonne santé.</li>
+      </ul>
+    </aside>
+
+    <h2>Ce que l'assurance de base ne paie pas</h2>
+    <p>L'assurance de base (LAMal) est la même pour tout le monde. Elle couvre les soins nécessaires, mais laisse de côté plusieurs frais du quotidien et le confort à l'hôpital :</p>
+    <div class="tableau tableau--3col">
+      <table>
+        <thead><tr><th>Besoin</th><th>Assurance de base</th><th>Avec une complémentaire</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Besoin">Hôpital hors de votre canton</td><td data-label="Assurance de base">Limité, des frais peuvent rester à votre charge</td><td data-label="Avec une complémentaire">Libre choix en division commune dans toute la Suisse</td></tr>
+          <tr><td data-label="Besoin">Chambre et choix du médecin</td><td data-label="Assurance de base">Division commune, médecin attribué</td><td data-label="Avec une complémentaire">Demi-privée ou privée, médecin au choix</td></tr>
+          <tr><td data-label="Besoin">Ostéopathie, shiatsu, naturopathie</td><td data-label="Assurance de base">Non remboursés chez un thérapeute</td><td data-label="Avec une complémentaire">Remboursés par séance chez un thérapeute reconnu</td></tr>
+          <tr><td data-label="Besoin">Lunettes et lentilles (adultes)</td><td data-label="Assurance de base">Non remboursées</td><td data-label="Avec une complémentaire">Une participation chaque année</td></tr>
+          <tr><td data-label="Besoin">Contrôle et soins dentaires</td><td data-label="Assurance de base">Presque jamais remboursés</td><td data-label="Avec une complémentaire">Contrôles, détartrage et traitements pris en charge</td></tr>
+          <tr><td data-label="Besoin">Urgence à l'étranger</td><td data-label="Assurance de base">Au plus le double du tarif suisse</td><td data-label="Avec une complémentaire">Frais urgents couverts dans le monde entier</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Six modules à combiner librement</h2>
+    <p>Chaque module répond à un besoin précis. Prenez-en un seul ou plusieurs, et adaptez votre couverture quand votre vie change.</p>
+  </div>
+  <div class="cadre">
+    <div class="lp-sante__modules-detail">
+      {% for titre, icone, cles, texte in [
+        ("Complément essentiel", "bouclier", ["base_plus"], "Le premier module à prendre : il comble les principaux trous de l'assurance de base pour une petite prime."),
+        ("Hospitalisation", "croix", ["hop_flex", "hop_demi", "hop_privee", "hop_monde"], "Quatre niveaux de confort, de la chambre choisie le jour venu à la division privée en Suisse et à l'étranger."),
+        ("Médecines alternatives", "coeur", ["alt_therap", "alt_medecin"], "Chez un thérapeute reconnu ou chez un médecin : les deux formules se combinent."),
+        ("Dentaire", "valide", ["dent_essentiel", "dent_confort"], "Pour l'entretien de vos dents ou pour des traitements plus importants, orthodontie comprise."),
+        ("Voyage", "avion", ["voyage"], "Les urgences médicales à l'étranger, dans le monde entier, avec une assistance jour et nuit."),
+        ("Capital hospitalisation", "tirelire", ["capital"], "Un montant versé directement à vous pour faire face aux frais imprévus d'un séjour à l'hôpital.")] %}
+      <article class="lp-module">
+        <div class="lp-module__tete"><span class="atout__icone">{{ i.icone(icone) }}</span><div><h3>{{ titre }}</h3><p>{{ texte }}</p></div></div>
+        <div class="lp-module__formules">
+          {% for k in cles %}{% set m = M[k] %}
+          <div class="lp-module__formule">
+            <p class="lp-module__nom">{{ m.court }} <span>{{ m.tag }}</span></p>
+            <ul>{% for d in m.details %}<li>{{ d }}</li>{% endfor %}</ul>
+          </div>
+          {% endfor %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="lp-sante__note">Exemples de prestations courantes. Les montants, plafonds et conditions exacts dépendent de l'assureur et du contrat proposé : le spécialiste vous les détaille avant toute signature.</p>
+    <p class="centre"><a class="bouton bouton--action" href="{{ sim_url }}">Composer ma couverture</a></p>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre texte-long lp-sante__texte">
+    <h2>Pour qui est-ce fait ?</h2>
+    <ul class="lp-sante__pourqui">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Vous voulez être bien soigné sans payer pour des prestations que vous n'utilisez jamais.</li>
+      <li>{{ i.icone("valide", "icone icone--petite") }} Vous consultez un ostéopathe, un acupuncteur ou un naturopathe.</li>
+      <li>{{ i.icone("valide", "icone icone--petite") }} Vous voulez pouvoir choisir votre hôpital, même hors de votre canton.</li>
+      <li>{{ i.icone("valide", "icone icone--petite") }} Vous avez des enfants : dentaire, orthodontie et médecines alternatives se prévoient tôt.</li>
+    </ul>
+
+    <h2>Bien choisir, en trois questions</h2>
+    <ol>
+      <li><strong>Qu'utilisez-vous vraiment ?</strong> Faites la liste de vos frais de l'an passé : séances, lunettes, dentiste. C'est la meilleure base pour choisir vos modules.</li>
+      <li><strong>Quel confort à l'hôpital ?</strong> La formule au choix le jour venu garde la prime basse tout en laissant la possibilité d'une chambre demi-privée ou privée.</li>
+      <li><strong>Y a-t-il des doublons ?</strong> Un spécialiste vérifie que votre nouvelle couverture ne répète pas ce que vous avez déjà, et qu'il ne reste pas de lacune.</li>
+    </ol>
+
+    <blockquote><p><strong>Le saviez-vous ?</strong> Les complémentaires sont accordées après un questionnaire de santé. L'assureur peut émettre une réserve ou refuser. Plus vous vous assurez tôt, plus c'est simple.</p></blockquote>
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Comment ça marche</h2></div>
+    <ol class="etapes">
+      <li><h3>Vous composez</h3><p>Choisissez vos modules et voyez votre prime estimée en 2 minutes.</p></li>
+      <li><h3>Un spécialiste vous rappelle</h3><p>Il vérifie vos besoins et votre assurance actuelle, et répond à vos questions.</p></li>
+      <li><h3>Vous recevez l'offre</h3><p>Vous décidez en toute tranquillité, sans engagement.</p></li>
+    </ol>
+    <p class="centre"><a class="bouton bouton--action" href="{{ sim_url }}">Estimer ma prime</a></p>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Vos questions</h2>
+      <p>L'essentiel avant de compléter votre assurance de base.</p>
+      <p><a class="bouton bouton--prive" href="{{ sim_url }}">Composer ma couverture</a></p>
+    </div>
+    <div class="faq">
+      <details><summary>Dois-je changer d'assurance de base ?</summary><div class="faq__reponse"><p>Non. La complémentaire peut être conclue indépendamment de votre assurance de base, chez le même assureur ou chez un autre.</p></div></details>
+      <details><summary>Puis-je ne prendre qu'un seul module ?</summary><div class="faq__reponse"><p>Oui. Vous pouvez par exemple ne couvrir que les médecines alternatives ou seulement l'hospitalisation, et compléter plus tard.</p></div></details>
+      <details><summary>Faut-il remplir un questionnaire de santé ?</summary><div class="faq__reponse"><p>Oui, en général. L'assureur peut accepter, accepter avec une réserve sur une maladie existante ou refuser. Le spécialiste vous explique la démarche.</p></div></details>
+      <details><summary>Que veut dire « au choix le jour venu » ?</summary><div class="faq__reponse"><p>Vous ne payez pas toute l'année pour une chambre privée. Au moment d'une hospitalisation, vous choisissez : division commune sans frais, ou demi-privée et privée avec une participation par jour, limitée chaque année.</p></div></details>
+      <details><summary>Quand puis-je résilier ma complémentaire actuelle ?</summary><div class="faq__reponse"><p>Les délais dépendent de votre contrat. Ne résiliez jamais avant d'avoir reçu la confirmation d'acceptation de votre nouvel assureur.</p></div></details>
+    </div>
+  </div>
+</section>
+{% endblock %}

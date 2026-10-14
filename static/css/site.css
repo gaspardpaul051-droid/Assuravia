@@ -1754,3 +1754,21 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 @media (max-width: 480px) { .merci__carte { flex-basis: 100%; } }
 .merci-page .merci__actions { margin-top: var(--e-6); }
 @media (min-width: 1000px) { .lp-sante__modules { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+/* ---------- Page publicitaire complémentaires santé (Assuravie) ---------- */
+.lp-sante__texte { margin-inline: auto; }
+.lp-sante__modules-detail { display: grid; gap: var(--e-5); margin-top: var(--e-5); }
+.lp-module { padding: var(--e-6); border-radius: var(--r-l); background: var(--fond); border: 1px solid var(--bordure); box-shadow: var(--ombre-1); }
+.lp-module__tete { display: flex; gap: var(--e-4); align-items: flex-start; margin-bottom: var(--e-4); }
+.lp-module__tete h3 { margin: 0 0 4px; color: var(--marine); font-size: var(--t-xl); }
+.lp-module__tete p { margin: 0; color: var(--texte-doux); }
+.lp-module__formules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--e-3); }
+.lp-module__formule { padding: var(--e-4); border-radius: var(--r-m); background: var(--bleu-pale); }
+.lp-module__nom { margin: 0 0 var(--e-2); font-weight: 800; color: var(--marine); display: flex; justify-content: space-between; gap: var(--e-2); align-items: center; }
+.lp-module__nom span { font-size: var(--t-xs); font-weight: 700; color: var(--bleu); background: var(--fond); padding: 2px 10px; border-radius: var(--r-plein); white-space: nowrap; }
+.lp-module__formule ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: var(--t-s); color: var(--texte); }
+.lp-sante__note { margin: var(--e-5) 0; font-size: var(--t-s); color: var(--texte-doux); text-align: center; }
+.lp-sante__pourqui { list-style: none; padding: 0; display: grid; gap: var(--e-3); }
+.lp-sante__pourqui li { display: flex; gap: var(--e-3); align-items: flex-start; padding: var(--e-4); border-radius: var(--r-m); background: var(--fond); box-shadow: var(--ombre-1); }
+.lp-sante__pourqui .icone { color: var(--succes); flex: none; margin-top: 3px; }
+@media (max-width: 640px) { .lp-module { padding: var(--e-4); } .lp-module__tete { flex-direction: column; gap: var(--e-2); } }

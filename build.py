@@ -319,6 +319,7 @@ def main() -> None:
         cas=lire_cas(ROOT / "content" / "cas.txt"),
         indicatifs=lire_indicatifs(ROOT / "content" / "indicatifs.txt"),
         complementaires=json.loads((ROOT / "content" / "complementaires.json").read_text(encoding="utf-8")),
+        complementaires_eco=json.loads((ROOT / "content" / "complementaires-eco.json").read_text(encoding="utf-8")),
         taux_hypo=json.loads((ROOT / "static" / "data" / "hypotheques.json").read_text(encoding="utf-8")),
         annee=aujourd_hui.year,
     )

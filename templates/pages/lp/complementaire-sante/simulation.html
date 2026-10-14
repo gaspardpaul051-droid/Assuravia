@@ -1,0 +1,60 @@
+{# Simulation des formules économiques à la carte (page publicitaire, marque Assuravie). Grille : content/complementaires-eco.json #}
+{% set noindex = true %}
+{% set marque = "Assuravie" %}
+{% set complementaires = complementaires_eco %}
+{% set sim = {"id": "eco", "theme": "prive", "groupe": "particuliers", "form": "simulation-sante-eco", "produit": "complementaire-sante-eco", "produit_nom": "Complémentaires santé", "page": "/lp/complementaire-sante/", "icone": "coeur", "lca": True,
+  "titre": "Complémentaire santé : estimez votre prime", "h1": "Composez votre complémentaire santé",
+  "description": "Composez votre complémentaire santé à la carte et voyez votre prime estimée en 2 minutes. Gratuit et sans engagement.",
+  "attrs": {"prime-nom": "Complémentaires santé"},
+  "note": "Estimation indicative. La prime réelle dépend de l'assureur, de votre âge, de votre état de santé et des conditions du contrat."} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% import "partials/icones.html" as i %}
+{% block title %}{{ sim.titre }} | Assuravie{% endblock %}
+{% block etapes %}
+{{ e.identite() }}
+{{ e.pour_qui_sante() }}
+{{ e.profil_sante() }}
+{{ e.ouvrir("familles", "Que souhaitez-vous ajouter à votre assurance de base ?", "Cochez tout ce qui vous intéresse. Vous choisirez ensuite la formule de chaque module.") }}
+  <div class="choix-cartes choix-cartes--3">
+    {% for nom, titre, detail, icone in [
+      ("fam_base", "Complément essentiel", "Hôpital au choix en commune, lunettes, transports", "bouclier"),
+      ("fam_hop", "Hospitalisation", "Au choix, demi-privée ou privée", "croix"),
+      ("fam_alt", "Médecines alternatives", "Thérapeutes reconnus ou médecins", "coeur"),
+      ("fam_dent", "Dentaire", "Contrôles, soins, orthodontie", "valide"),
+      ("fam_voyage", "Voyage", "Urgences dans le monde entier", "avion"),
+      ("fam_capital", "Capital hospitalisation", "Un montant versé à vous", "tirelire")] %}
+    <label class="choix-carte"><input type="checkbox" name="{{ nom }}" value="oui" data-groupe-requis="familles"><span class="choix-carte__icone">{{ i.icone(icone) }}</span><span class="choix-carte__titre">{{ titre }}</span><span class="choix-carte__detail">{{ detail }}</span></label>
+    {% endfor %}
+  </div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.ouvrir("composer", "Choisissez la formule de chaque module") }}
+  <div class="lca-bloc" data-montre-si="fam_base=oui" hidden>
+    {{ e.lca_cartes("complement", ["base_plus"], type="checkbox", requis=False, coche=True) }}
+  </div>
+  <div class="lca-bloc" data-montre-si="fam_hop=oui" hidden>
+    <p class="fe__sous-question">Hospitalisation : quelle chambre ?</p>
+    {{ e.lca_cartes("division", ["hop_flex", "hop_demi", "hop_privee", "hop_monde"]) }}
+  </div>
+  <div class="lca-bloc" data-montre-si="fam_alt=oui" hidden>
+    <p class="fe__sous-question">Médecines alternatives : chez qui ?</p>
+    <p class="fe__aide">Les deux se combinent : beaucoup de personnes prennent les deux.</p>
+    {{ e.lca_cartes("alternatives", ["alt_therap", "alt_medecin"], type="checkbox", requis=False, groupe="alternatives") }}
+  </div>
+  <div class="lca-bloc" data-montre-si="fam_dent=oui" hidden>
+    <p class="fe__sous-question">Dentaire : quelle formule ?</p>
+    <p class="fe__aide">Une complémentaire dentaire se conclut en général après un contrôle chez le dentiste. Pour les enfants, mieux vaut la conclure tôt.</p>
+    {{ e.lca_cartes("dentaire", ["dent_essentiel", "dent_confort"]) }}
+  </div>
+  <div class="lca-bloc" data-montre-si="fam_voyage=oui" hidden>
+    {{ e.lca_cartes("voyage", ["voyage"], type="checkbox", requis=False, coche=True) }}
+  </div>
+  <div class="lca-bloc" data-montre-si="fam_capital=oui" hidden>
+    {{ e.lca_cartes("capital", ["capital"], type="checkbox", requis=False, coche=True) }}
+  </div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.coordonnees(naissance=False) }}
+{{ e.resultat_lca("familles") }}
+{% endblock %}
