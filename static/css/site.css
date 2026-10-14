@@ -1445,3 +1445,12 @@ body.modale-ouverte { overflow: hidden; }
 .sante__niveaux input[type=checkbox]:checked + span { background: var(--bleu); border-color: var(--bleu); color: #fff; }
 .sante__extras { grid-template-columns: 1fr; }
 .formule--aucune { display: grid; place-items: center; min-height: 80px; }
+
+/* Menu : produits rangés par domaine */
+.sous-menu__panneau { width: min(680px, 94vw); }
+.sous-menu__domaines { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-2) var(--e-4); }
+.sous-menu__domaine-titre { margin: var(--e-2) 0 2px var(--e-2); font-size: 0.75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--bleu); }
+.sous-menu--pro .sous-menu__domaine-titre { color: var(--or-texte); }
+.sous-menu__domaine li a { min-height: 40px; }
+@media (max-width: 1080px) { .sous-menu__panneau { width: 100%; } .sous-menu__domaines { grid-template-columns: 1fr; } }
+@media (min-width: 1081px) { .sous-menu--pro .sous-menu__panneau { left: auto; right: 0; transform: none; } }

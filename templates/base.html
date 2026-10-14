@@ -49,11 +49,18 @@
         <button class="sous-menu__bascule" type="button" aria-expanded="false" aria-controls="menu-{{ cle }}" aria-label="Voir les produits {{ g.nom }}" data-sous-menu-bascule>{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</button>
         <div class="sous-menu__panneau" id="menu-{{ cle }}">
           <p class="sous-menu__titre">Assurances pour {{ g.titre|lower }}</p>
-          <ul>
-            {% for p in produits[cle] %}
-            <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom }}</a></li>
-            {% endfor %}
-          </ul>
+          <div class="sous-menu__domaines">
+            {% for cat in g.categories %}{% set liste = produits[cle]|selectattr("categorie", "equalto", cat)|list %}{% if liste %}
+            <div class="sous-menu__domaine">
+              <p class="sous-menu__domaine-titre">{{ cat }}</p>
+              <ul>
+                {% for p in liste %}
+                <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}{% endfor %}
+          </div>
           <a class="sous-menu__tout" href="{{ g.url }}">Tout l'espace {{ g.nom }} {{ i.icone("fleche", "icone icone--petite") }}</a>
         </div>
       </div>
