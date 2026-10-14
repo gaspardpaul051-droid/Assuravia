@@ -308,7 +308,7 @@ def main() -> None:
     })
     (DIST / "espace" / "config.js").write_text(
         "window.ESPACE = " + json.dumps({
-            "url": os.environ.get("SUPABASE_URL", ""),
+            "url": re.sub(r"/(rest|auth)/v1/?$|/$", "", os.environ.get("SUPABASE_URL", "").strip()),
             "anon": os.environ.get("SUPABASE_ANON_KEY", ""),
             "produits": noms_produits,
         }, ensure_ascii=False) + ";\n",

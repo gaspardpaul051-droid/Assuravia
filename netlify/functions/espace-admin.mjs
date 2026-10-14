@@ -3,7 +3,7 @@
 // Appel : POST /.netlify/functions/espace-admin  { action, email, nom, poids }  avec l'en-tête Authorization: Bearer <jeton du connecté>
 
 export const handler = async (event) => {
-  const URL = process.env.SUPABASE_URL;
+  const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
   const CLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const SITE = process.env.ESPACE_URL || "https://assuravia.ch/espace/";
   const reponse = (code, objet) => ({ statusCode: code, headers: { "Content-Type": "application/json" }, body: JSON.stringify(objet) });

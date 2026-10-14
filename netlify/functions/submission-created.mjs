@@ -6,7 +6,7 @@
 import { choisirConseiller, extraireLead, memeContact } from "../lib/leads.mjs";
 
 export const handler = async (event) => {
-  const URL = process.env.SUPABASE_URL;
+  const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
   const CLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!URL || !CLE) {
     console.log("Espace conseillers non configuré (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY manquants) : lead non enregistré.");
