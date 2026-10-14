@@ -429,7 +429,11 @@
   var interets = document.querySelector("[data-interets]");
   if (interets) {
     var chfI = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
-    var lireI = function (k) { var el = interets.querySelector('[data-interets-champ="' + k + '"]' + (k === "taux" ? ":checked" : "")); return Number(el.value); };
+    var lireI = function (k) { var el = interets.querySelector('[data-interets-champ="' + k + '"]'); return el ? Number(el.value) : 0; };
+    // Les profils servent d'exemples : ils règlent le curseur d'intérêt
+    interets.querySelectorAll("[data-interets-profil]").forEach(function (r) {
+      r.addEventListener("change", function () { interets.querySelector('[data-interets-champ="taux"]').value = r.value; majI(); });
+    });
     var projeter = function (depart, mensuel, annees, taux) {
       var r = Math.pow(1 + taux / 100, 1 / 12) - 1, capital = depart, verse = depart, serie = [];
       for (var m = 1; m <= annees * 12; m++) {
@@ -439,9 +443,10 @@
       return serie;
     };
     var majI = function () {
-      var depart = lireI("depart"), mensuel = lireI("mensuel"), duree = lireI("duree"), taux = lireI("taux");
+      var depart = lireI("depart"), mensuel = 0, duree = lireI("duree"), taux = lireI("taux");
       interets.querySelector('[data-interets-val="depart"]').textContent = chfI(depart);
-      interets.querySelector('[data-interets-val="mensuel"]').textContent = chfI(mensuel);
+      interets.querySelector('[data-interets-val="taux"]').textContent = taux.toFixed(1).replace(".", ",") + " % par an";
+      interets.querySelectorAll("[data-interets-profil]").forEach(function (r) { r.checked = Number(r.value) === taux; });
       interets.querySelector('[data-interets-val="duree"]').textContent = duree + (duree > 1 ? " ans" : " an");
       var serie = projeter(depart, mensuel, duree, taux), fin = serie[serie.length - 1];
       interets.querySelector("[data-interets-total]").textContent = chfI(fin.capital);
@@ -470,8 +475,7 @@
     var resume = modale.querySelector("[data-interets-resume]"), sim = document.querySelector("[data-interets]");
     if (resume && sim) {
       var v = function (k) { var el = sim.querySelector('[data-interets-val="' + k + '"]'); return el ? el.textContent : ""; };
-      var pr = sim.querySelector('[data-interets-champ="taux"]:checked');
-      resume.value = "Départ " + v("depart") + ", " + v("mensuel") + " par mois, " + v("duree") + ", profil " + (pr ? pr.parentElement.querySelector("span").firstChild.textContent : "") + " : " + sim.querySelector("[data-interets-total]").textContent;
+      resume.value = "Capital " + v("depart") + ", intérêt " + v("taux") + ", " + v("duree") + " : " + sim.querySelector("[data-interets-total]").textContent;
     }
     modale.showModal();
     document.body.classList.add("modale-ouverte");
