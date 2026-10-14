@@ -4,7 +4,7 @@
   <script type="application/json" data-sante-grille>{{ complementaires|tojson }}</script>
   <div class="sante__reglages">
     <div class="sante__profil">
-      <div class="champ"><label for="sante-annee">Année de naissance</label><input id="sante-annee" type="number" inputmode="numeric" min="1920" max="{{ complementaires.annee }}" value="1990" data-sante-champ="annee"></div>
+      <div class="champ"><label for="sante-annee">Année de naissance</label><input id="sante-annee" type="number" inputmode="numeric" min="{{ annee - 100 }}" max="{{ annee }}" value="1990" data-sante-champ="annee"></div>
       <div class="champ"><label for="sante-canton">Canton</label>
         <select id="sante-canton" data-sante-champ="canton">
           {% for c, nom in [("VD","Vaud"),("GE","Genève"),("FR","Fribourg"),("NE","Neuchâtel"),("VS","Valais"),("JU","Jura"),("BE","Berne"),("autre","Autre canton")] %}<option value="{{ c }}">{{ nom }}</option>{% endfor %}
@@ -37,7 +37,10 @@
 
   <aside class="sante__resultat" aria-live="polite">
     <p class="sante__label">Votre prime estimée</p>
-    <p class="sante__total"><strong data-sante-total>CHF 0</strong><span>par mois</span></p>
+    <div class="sante__verrou">
+      <p class="sante__total" aria-hidden="true"><strong class="floute" data-sante-total>CHF 0</strong><span>par mois</span></p>
+      <p class="sante__verrou-texte">{{ i.icone("cadenas", "icone icone--petite") }} Votre prime vous est communiquée par un conseiller</p>
+    </div>
     <p class="sante__an" data-sante-an></p>
     <div class="sante__barre" data-sante-barre></div>
     <ul class="sante__detail" data-sante-detail></ul>
@@ -45,8 +48,8 @@
       <summary>Voir les prestations possibles</summary>
       <div data-sante-prestations></div>
     </details>
-    <a class="bouton bouton--action" href="/particuliers/simulation-complementaires/" data-sante-cta>Recevoir une offre personnalisée</a>
-    <a class="bouton bouton--secondaire" href="/conseil/?produit=complementaire-maladie">Parler à un conseiller</a>
+    <a class="bouton bouton--action" href="/particuliers/simulation-complementaires/" data-sante-cta>Recevoir ma prime et être recontacté</a>
+    <a class="bouton bouton--secondaire" href="/conseil/?produit=complementaire-maladie">Poser une question à un conseiller</a>
     <p class="sante__note">Estimation indicative pour une personne, établie à partir de primes moyennes du marché. Les prestations varient selon l'assureur et la formule. Les complémentaires sont conclues après un questionnaire de santé.</p>
   </aside>
 </div>

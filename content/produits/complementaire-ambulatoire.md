@@ -32,7 +32,7 @@ L'[assurance de base LAMal](/particuliers/lamal/) rembourse les soins ambulatoir
 - une partie de la **prévention** : check-up, certains vaccins, cours de santé ;
 - les **frais à l'étranger** au-delà du tarif suisse.
 
-## Trois formules, selon vos besoins
+## Trois niveaux, selon vos besoins
 
 | Formule | Ce qu'elle apporte | Pour qui |
 |---|---|---|
@@ -40,7 +40,7 @@ L'[assurance de base LAMal](/particuliers/lamal/) rembourse les soins ambulatoir
 | Médecines douces | Thérapeutes reconnus, prévention, fitness | Pour ceux qui consultent hors du cabinet médical |
 | Confort | Les deux, avec des plafonds plus élevés et l'orthodontie des enfants | Pour les familles et les besoins réguliers |
 
-Des renforts permettent d'aller plus loin : plafonds relevés, check-up, traitements récents pas encore remboursés ou correction de la vue au laser.
+Selon l'assureur, des options permettent d'aller plus loin : plafonds relevés, check-up de santé ou participation à une correction de la vue au laser.
 
 > **Le saviez-vous ?** Pour être remboursé, le thérapeute doit être reconnu par l'assureur, souvent au travers d'un registre comme l'ASCA ou le RME. Vérifiez-le avant la première séance.
 

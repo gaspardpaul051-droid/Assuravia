@@ -1395,3 +1395,8 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .form-repli[open] > summary { margin-bottom: var(--e-4); }
 .form-repli[open] .formulaire { animation: cmp-entree .35s var(--courbe) both; }
 @media (max-width: 480px) { .interets__profils { grid-template-columns: repeat(2, 1fr); } }
+.sante__verrou { position: relative; display: grid; gap: 6px; }
+.sante__total .floute, .sante__detail .floute { filter: blur(12px); user-select: none; }
+.sante__verrou-texte { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-xs); font-weight: 700; color: var(--or-clair); }
+.sante__an { font-weight: 600; }
+.sante input[aria-invalid="true"] { border-color: var(--erreur); box-shadow: 0 0 0 3px rgba(180,35,24,.15); }

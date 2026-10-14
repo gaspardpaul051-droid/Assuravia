@@ -2,47 +2,347 @@
   "_note": "Grille NEUTRE et INDICATIVE des complémentaires maladie (simulateur de la page Privé et simulations hospitalisation, ambulatoire, complète). Primes mensuelles de référence : homme de 31 à 35 ans, coefficient canton 1. Prestations courantes du marché suisse, sans référence à un assureur. Calibrage : moyennes publiées par des comparateurs (2026) ; à ajuster avec les tarifs réels des partenaires. L'ancienne grille inspirée d'Helsana est dans archives/complementaires-helsana/.",
   "annee": 2027,
   "courbes": {
-    "hop": [[0, 18, 0.22], [19, 25, 0.5], [26, 30, 0.85], [31, 35, 1], [36, 40, 1.15], [41, 45, 1.35], [46, 50, 1.6], [51, 55, 1.9], [56, 60, 2.3], [61, 65, 2.7], [66, 70, 3.0], [71, 130, 3.6]],
-    "amb": [[0, 18, 0.55], [19, 25, 0.8], [26, 35, 1], [36, 45, 1.1], [46, 55, 1.25], [56, 65, 1.45], [66, 130, 1.7]],
-    "dent": [[0, 18, 0.9], [19, 45, 1], [46, 65, 1.15], [66, 130, 1.3]],
-    "plat": [[0, 130, 1]]
+    "hop": [
+      [
+        0,
+        18,
+        0.22
+      ],
+      [
+        19,
+        25,
+        0.5
+      ],
+      [
+        26,
+        30,
+        0.85
+      ],
+      [
+        31,
+        35,
+        1
+      ],
+      [
+        36,
+        40,
+        1.15
+      ],
+      [
+        41,
+        45,
+        1.35
+      ],
+      [
+        46,
+        50,
+        1.6
+      ],
+      [
+        51,
+        55,
+        1.9
+      ],
+      [
+        56,
+        60,
+        2.3
+      ],
+      [
+        61,
+        65,
+        2.7
+      ],
+      [
+        66,
+        70,
+        3.0
+      ],
+      [
+        71,
+        130,
+        3.6
+      ]
+    ],
+    "amb": [
+      [
+        0,
+        18,
+        0.55
+      ],
+      [
+        19,
+        25,
+        0.8
+      ],
+      [
+        26,
+        35,
+        1
+      ],
+      [
+        36,
+        45,
+        1.1
+      ],
+      [
+        46,
+        55,
+        1.25
+      ],
+      [
+        56,
+        65,
+        1.45
+      ],
+      [
+        66,
+        130,
+        1.7
+      ]
+    ],
+    "dent": [
+      [
+        0,
+        18,
+        0.9
+      ],
+      [
+        19,
+        45,
+        1
+      ],
+      [
+        46,
+        65,
+        1.15
+      ],
+      [
+        66,
+        130,
+        1.3
+      ]
+    ],
+    "plat": [
+      [
+        0,
+        130,
+        1
+      ]
+    ]
   },
-  "femme": {"hop": [19, 45, 1.12], "amb": [19, 45, 1.05]},
-  "cantons": {"GE": 1.2, "VD": 1.1, "NE": 1.05, "FR": 1.0, "JU": 1.0, "VS": 0.95, "BE": 1.0, "autre": 1.0},
-  "franchise_hop": {"0": 1, "1000": 0.85, "2000": 0.75},
+  "femme": {
+    "hop": [
+      19,
+      45,
+      1.12
+    ],
+    "amb": [
+      19,
+      45,
+      1.05
+    ]
+  },
+  "cantons": {
+    "GE": 1.2,
+    "VD": 1.1,
+    "NE": 1.05,
+    "FR": 1.0,
+    "JU": 1.0,
+    "VS": 0.95,
+    "BE": 1.0,
+    "autre": 1.0
+  },
+  "franchise_hop": {
+    "0": 1,
+    "1000": 0.85,
+    "2000": 0.75
+  },
   "rabais_3ans": 0.03,
   "modules": {
-    "hop_commune": {"famille": "Hospitalisation", "nom": "Hospitalisation commune, toute la Suisse", "court": "Commune, toute la Suisse", "base": 5, "courbe": "hop",
-      "points": ["Division commune dans tout hôpital reconnu de Suisse", "La différence de tarif hors de votre canton est couverte", "Idéal si vous voulez choisir l'hôpital, pas la chambre"]},
-    "hop_flex_eco": {"famille": "Hospitalisation", "nom": "Hospitalisation flexible", "court": "Flexible", "base": 30, "courbe": "hop",
-      "points": ["Vous choisissez la division au moment de l'hospitalisation", "Division commune sans frais supplémentaires", "Demi-privée ou privée avec une participation, en général de 20 à 50 % et plafonnée chaque année"]},
-    "hop_flex_confort": {"famille": "Hospitalisation", "nom": "Hospitalisation flexible plus", "court": "Flexible plus", "base": 44, "courbe": "hop",
-      "points": ["Vous choisissez la division au moment de l'hospitalisation", "Division commune sans frais supplémentaires", "Participation réduite en demi-privée ou en privée, avec un plafond annuel plus bas"]},
-    "hop_demi": {"famille": "Hospitalisation", "nom": "Hospitalisation demi-privée", "court": "Demi-privée", "base": 100, "courbe": "hop",
-      "points": ["Chambre à deux lits, dans toute la Suisse", "Libre choix du médecin à l'hôpital", "Aide à domicile ou cure de convalescence après le séjour, selon le contrat"]},
-    "hop_privee": {"famille": "Hospitalisation", "nom": "Hospitalisation privée", "court": "Privée", "base": 150, "courbe": "hop",
-      "points": ["Chambre individuelle, dans toute la Suisse", "Libre choix du médecin à l'hôpital", "Prestations après le séjour plus étendues : aide à domicile, cure, garde d'enfants"]},
-    "amb_essentiel": {"famille": "Ambulatoire", "nom": "Ambulatoire Essentiel", "court": "Essentiel", "base": 15, "courbe": "amb",
-      "points": ["Médicaments prescrits hors liste de l'assurance de base, en général 90 %", "Participation aux lunettes et lentilles, souvent quelques centaines de francs sur 1 à 3 ans", "Transports, sauvetage et urgences à l'étranger"]},
-    "amb_douce": {"famille": "Ambulatoire", "nom": "Médecines douces et prévention", "court": "Médecines douces", "base": 24, "courbe": "amb",
-      "points": ["Ostéopathie, acupuncture, naturopathie : en général 75 à 90 % chez un thérapeute reconnu", "Plafond annuel selon la formule, de quelques centaines à quelques milliers de francs", "Participation à la prévention et à un abonnement de fitness"]},
-    "amb_confort": {"famille": "Ambulatoire", "nom": "Ambulatoire Confort", "court": "Confort", "base": 48, "courbe": "amb",
-      "points": ["Les prestations Essentiel et Médecines douces réunies", "Plafonds plus élevés pour les lunettes et les médecines douces", "Participation à l'orthodontie des enfants et aux moyens auxiliaires"]},
-    "amb_plus": {"famille": "Ambulatoire", "nom": "Renfort des plafonds", "court": "Renfort", "base": 10, "courbe": "amb",
-      "points": ["Plafonds relevés pour les médecines douces et les lunettes", "Utile si vous consultez régulièrement un thérapeute"]},
-    "amb_innovation": {"famille": "Ambulatoire", "nom": "Prévention étendue", "court": "Prévention étendue", "base": 9, "courbe": "amb",
-      "points": ["Check-up de santé et vaccins de voyage", "Participation à une correction de la vue au laser, selon le contrat"]},
-    "dent_light": {"famille": "Dentaire", "nom": "Dentaire Contrôle", "court": "Contrôle", "base": 14, "courbe": "dent",
-      "points": ["Contrôle annuel et hygiène dentaire", "En général 50 à 75 %, jusqu'à quelques centaines de francs par an"]},
-    "dent_bronze": {"famille": "Dentaire", "nom": "Dentaire Base", "court": "Base", "base": 28, "courbe": "dent",
-      "points": ["Contrôles, détartrage et soins courants", "Par exemple 50 % jusqu'à CHF 1'000 par an"]},
-    "dent_argent": {"famille": "Dentaire", "nom": "Dentaire Confort", "court": "Confort", "base": 50, "courbe": "dent",
-      "points": ["Soins, hygiène et orthodontie", "Par exemple 75 % jusqu'à CHF 2'000 par an"]},
-    "dent_or": {"famille": "Dentaire", "nom": "Dentaire Premium", "court": "Premium", "base": 75, "courbe": "dent",
-      "points": ["Soins, hygiène, orthodontie et prothèses", "Par exemple 75 % jusqu'à CHF 3'000 par an ou plus"]},
-    "ij_hop": {"famille": "Indemnité", "nom": "Indemnité journalière d'hospitalisation", "court": "CHF 100 par jour", "base": 8, "courbe": "hop",
-      "points": ["Un montant fixe versé pour chaque jour d'hôpital, ici CHF 100", "Vous l'utilisez librement : garde, transports, perte de revenu"]},
-    "pj_sante": {"famille": "Protection juridique", "nom": "Protection juridique santé", "court": "Protection juridique", "base": 3, "courbe": "plat",
-      "points": ["Litige avec un hôpital, un médecin ou un assureur", "Frais d'avocat et d'expertise pris en charge"]}
+    "hop_commune": {
+      "famille": "Hospitalisation",
+      "nom": "Hospitalisation commune, toute la Suisse",
+      "court": "Commune, toute la Suisse",
+      "base": 5,
+      "courbe": "hop",
+      "points": [
+        "Division commune dans tout hôpital reconnu de Suisse",
+        "La différence de tarif hors de votre canton est couverte",
+        "Idéal si vous voulez choisir l'hôpital, pas la chambre"
+      ]
+    },
+    "hop_flex_eco": {
+      "famille": "Hospitalisation",
+      "nom": "Hospitalisation flexible",
+      "court": "Flexible",
+      "base": 30,
+      "courbe": "hop",
+      "points": [
+        "Vous choisissez la division au moment de l'hospitalisation",
+        "Division commune sans frais supplémentaires",
+        "Demi-privée ou privée avec une participation, en général de 20 à 50 % et plafonnée chaque année"
+      ]
+    },
+    "hop_flex_confort": {
+      "famille": "Hospitalisation",
+      "nom": "Hospitalisation flexible plus",
+      "court": "Flexible plus",
+      "base": 44,
+      "courbe": "hop",
+      "points": [
+        "Vous choisissez la division au moment de l'hospitalisation",
+        "Division commune sans frais supplémentaires",
+        "Participation réduite en demi-privée ou en privée, avec un plafond annuel plus bas"
+      ]
+    },
+    "hop_demi": {
+      "famille": "Hospitalisation",
+      "nom": "Hospitalisation demi-privée",
+      "court": "Demi-privée",
+      "base": 100,
+      "courbe": "hop",
+      "points": [
+        "Chambre à deux lits, dans toute la Suisse",
+        "Libre choix du médecin à l'hôpital",
+        "Aide à domicile ou cure de convalescence après le séjour, selon le contrat"
+      ]
+    },
+    "hop_privee": {
+      "famille": "Hospitalisation",
+      "nom": "Hospitalisation privée",
+      "court": "Privée",
+      "base": 150,
+      "courbe": "hop",
+      "points": [
+        "Chambre individuelle, dans toute la Suisse",
+        "Libre choix du médecin à l'hôpital",
+        "Prestations après le séjour plus étendues : aide à domicile, cure, garde d'enfants"
+      ]
+    },
+    "amb_essentiel": {
+      "famille": "Ambulatoire",
+      "nom": "Ambulatoire Essentiel",
+      "court": "Essentiel",
+      "base": 15,
+      "courbe": "amb",
+      "points": [
+        "Médicaments prescrits hors liste de l'assurance de base, en général 90 %",
+        "Participation aux lunettes et lentilles, souvent quelques centaines de francs sur 1 à 3 ans",
+        "Transports, sauvetage et urgences à l'étranger"
+      ]
+    },
+    "amb_douce": {
+      "famille": "Ambulatoire",
+      "nom": "Médecines douces et prévention",
+      "court": "Médecines douces",
+      "base": 24,
+      "courbe": "amb",
+      "points": [
+        "Ostéopathie, acupuncture, naturopathie : en général 75 à 90 % chez un thérapeute reconnu",
+        "Plafond annuel selon la formule, de quelques centaines à quelques milliers de francs",
+        "Participation à la prévention et à un abonnement de fitness"
+      ]
+    },
+    "amb_confort": {
+      "famille": "Ambulatoire",
+      "nom": "Ambulatoire Confort",
+      "court": "Confort",
+      "base": 48,
+      "courbe": "amb",
+      "points": [
+        "Les prestations Essentiel et Médecines douces réunies",
+        "Plafonds plus élevés pour les lunettes et les médecines douces",
+        "Participation à l'orthodontie des enfants et aux moyens auxiliaires"
+      ]
+    },
+    "amb_plus": {
+      "famille": "Ambulatoire",
+      "nom": "Renfort des plafonds",
+      "court": "Renfort",
+      "base": 10,
+      "courbe": "amb",
+      "points": [
+        "Plafonds relevés pour les médecines douces et les lunettes",
+        "Utile si vous consultez régulièrement un thérapeute"
+      ]
+    },
+    "amb_innovation": {
+      "famille": "Ambulatoire",
+      "nom": "Prévention étendue",
+      "court": "Prévention étendue",
+      "base": 9,
+      "courbe": "amb",
+      "points": [
+        "Check-up de santé et vaccins de voyage",
+        "Participation à une correction de la vue au laser, selon le contrat"
+      ]
+    },
+    "dent_light": {
+      "famille": "Dentaire",
+      "nom": "Dentaire Contrôle",
+      "court": "Contrôle",
+      "base": 14,
+      "courbe": "dent",
+      "points": [
+        "Contrôle annuel et hygiène dentaire",
+        "Un montant annuel modeste, pour l'entretien courant"
+      ]
+    },
+    "dent_bronze": {
+      "famille": "Dentaire",
+      "nom": "Dentaire Base",
+      "court": "Base",
+      "base": 28,
+      "courbe": "dent",
+      "points": [
+        "Contrôles, détartrage et soins courants",
+        "En général la moitié des frais, avec un plafond annuel"
+      ]
+    },
+    "dent_argent": {
+      "famille": "Dentaire",
+      "nom": "Dentaire Confort",
+      "court": "Confort",
+      "base": 50,
+      "courbe": "dent",
+      "points": [
+        "Soins courants, traitements et orthodontie",
+        "Une part plus élevée des frais et un plafond annuel confortable"
+      ]
+    },
+    "dent_or": {
+      "famille": "Dentaire",
+      "nom": "Dentaire Premium",
+      "court": "Premium",
+      "base": 75,
+      "courbe": "dent",
+      "points": [
+        "Soins, orthodontie, couronnes et prothèses",
+        "La plus grande part des frais, avec un plafond annuel élevé"
+      ]
+    },
+    "ij_hop": {
+      "famille": "Indemnité",
+      "nom": "Indemnité journalière d'hospitalisation",
+      "court": "CHF 100 par jour",
+      "base": 8,
+      "courbe": "hop",
+      "points": [
+        "Un montant fixe versé pour chaque jour d'hôpital, ici CHF 100",
+        "Vous l'utilisez librement : garde, transports, perte de revenu"
+      ]
+    },
+    "pj_sante": {
+      "famille": "Protection juridique",
+      "nom": "Protection juridique santé",
+      "court": "Protection juridique",
+      "base": 3,
+      "courbe": "plat",
+      "points": [
+        "Litige avec un hôpital, un médecin ou un assureur",
+        "Frais d'avocat et d'expertise pris en charge"
+      ]
+    }
   }
 }

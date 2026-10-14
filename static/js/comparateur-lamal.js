@@ -21,6 +21,7 @@
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var norm = function (s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").trim(); };
   var annee = Number(racine.getAttribute("data-annee"));
+  var anneeMin = new Date().getFullYear() - 100, anneeMax = new Date().getFullYear();
 
   /* ---------- Personnes ---------- */
   var classe = function (naissance) {
@@ -43,10 +44,11 @@
         '<div class="cmp-personne__haut"><strong>Personne ' + (k + 1) + '</strong><span class="cmp-personne__classe">' + (c ? LIB_CLASSE[c] : "") + "</span>" +
         (etat.personnes.length > 1 ? '<button type="button" class="cmp-personne__retirer" aria-label="Retirer la personne ' + (k + 1) + '">Retirer</button>' : "") + "</div>" +
         '<div class="grille-champs">' +
-        '<div class="champ"><label for="cmp-naiss-' + k + '">Année de naissance</label><input id="cmp-naiss-' + k + '" type="number" inputmode="numeric" min="1900" max="' + annee + '" placeholder="Ex. 1988" value="' + (p.naissance || "") + '" data-p="naissance"></div>' +
+        '<div class="champ"><label for="cmp-naiss-' + k + '">Année de naissance</label><input id="cmp-naiss-' + k + '" type="number" inputmode="numeric" min="' + anneeMin + '" max="' + anneeMax + '" placeholder="Ex. 1988" value="' + (p.naissance || "") + '" data-p="naissance"></div>' +
         '<div class="champ"><label for="cmp-fr-' + k + '">Franchise</label><select id="cmp-fr-' + k + '" data-p="franchise">' +
         fr.map(function (f) { return '<option value="' + f + '"' + (f === p.franchise ? " selected" : "") + ">" + chf(f, false) + "</option>"; }).join("") + "</select></div>" +
         "</div>" +
+        '<p class="champ__erreur" data-aide-annee hidden>Indiquez une année entre ' + anneeMin + " et " + anneeMax + ".</p>" +
         '<label class="cmp-personne__accident"><input type="checkbox" data-p="accident"' + (p.accident ? " checked" : "") + "> Avec couverture accidents" +
         '<span class="fe__aide">À décocher si vous travaillez au moins 8 heures par semaine chez le même employeur.</span></label>';
       carte.addEventListener("input", function (ev) {
@@ -54,7 +56,10 @@
         if (cle === "naissance") {
           var v = Number(el.value);
           var ancien = p.naissance ? classe(p.naissance) : null;
-          p.naissance = v >= 1900 && v <= annee && String(v).length === 4 ? v : null;
+          p.naissance = v >= anneeMin && v <= anneeMax ? v : null;
+          el.setAttribute("aria-invalid", String(el.value.length >= 4 && !p.naissance));
+          var aideAn = carte.querySelector("[data-aide-annee]");
+          if (aideAn) aideAn.hidden = !(el.value.length >= 4 && !p.naissance);
           var nouveau = p.naissance ? classe(p.naissance) : null;
           if (nouveau && nouveau !== ancien) {
             var liste = franchisesDe(nouveau);

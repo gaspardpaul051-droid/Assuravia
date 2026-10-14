@@ -47,7 +47,7 @@
 {% macro naissance(id="f", nom="date_naissance", requis=True) -%}
 <div class="champ">
   <label for="naissance-{{ id }}">Date de naissance</label>
-  <input id="naissance-{{ id }}" name="{{ nom }}" type="date"{% if requis %} required{% endif %} min="1920-01-01" max="{{ annee - 16 }}-12-31" autocomplete="bday">
+  <input id="naissance-{{ id }}" name="{{ nom }}" type="date"{% if requis %} required{% endif %} min="{{ annee - 100 }}-01-01" max="{{ annee - 16 }}-12-31" autocomplete="bday">
 </div>
 {%- endmacro %}
 

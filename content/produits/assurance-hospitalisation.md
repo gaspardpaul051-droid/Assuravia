@@ -37,16 +37,16 @@ Elle ne vous laisse pas non plus choisir le médecin qui vous soigne, et vous pa
 | Demi-privée | Deux lits | Libre choix | Pour le confort et le choix du spécialiste |
 | Privée | Individuelle | Libre choix | Pour le maximum de confort et de discrétion |
 
-Avec une **formule flexible**, la division commune ne coûte rien de plus. Si vous choisissez la demi-privée ou la privée, vous payez une part des frais, par exemple 20 % à 50 %, avec un plafond annuel. C'est souvent un bon compromis pour les jeunes adultes.
+Avec une **formule flexible**, la division commune ne coûte rien de plus. Si vous choisissez la demi-privée ou la privée, vous payez une part des frais, avec un plafond annuel qui varie selon l'assureur. C'est souvent un bon compromis pour les jeunes adultes.
 
-> **Le saviez-vous ?** Les meilleures formules ne s'arrêtent pas à la sortie de l'hôpital. Selon le contrat, elles participent à une aide ménagère, à une cure de convalescence, à la garde de vos enfants pendant votre séjour ou à des soins de transition.
+> **Le saviez-vous ?** Une bonne couverture ne s'arrête pas à la sortie de l'hôpital. Selon le contrat, elle peut participer à une aide à domicile ou à une cure de convalescence. Comparez ces prestations, pas seulement la chambre.
 
 ## Bien choisir sa formule
 
 1. **Pensez à l'avenir.** La prime augmente avec l'âge, et l'accès devient plus difficile avec les années. S'assurer jeune et en bonne santé est un avantage.
-2. **Regardez la franchise.** Une franchise d'hospitalisation de CHF 1'000 ou 2'000 fait baisser la prime de façon sensible.
+2. **Regardez la franchise.** Plusieurs assureurs proposent une franchise par hospitalisation : vous payez une part fixe en cas de séjour, et la prime baisse.
 3. **Vérifiez la liste des hôpitaux.** Certains assureurs excluent quelques cliniques ou y limitent la prise en charge.
-4. **Anticipez une naissance.** Les prestations de maternité sont souvent soumises à un délai d'attente, par exemple d'une année.
+4. **Anticipez une naissance.** Les prestations de maternité sont souvent soumises à un délai d'attente : concluez votre couverture bien avant un projet de famille.
 
 Les soins sans hospitalisation se couvrent à part, avec une [complémentaire ambulatoire et médecines douces](/particuliers/complementaire-ambulatoire/).
 

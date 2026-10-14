@@ -176,7 +176,7 @@
 {% macro profil_sante() -%}
 {{ ouvrir("profil", "Quelques informations sur la personne à assurer", "La prime d'une complémentaire dépend surtout de l'âge, puis du sexe et du lieu de domicile.") }}
   <div class="grille-champs">
-    <div class="champ"><label for="annee-{{ sim.id }}">Année de naissance</label><input id="annee-{{ sim.id }}" name="annee_naissance" type="number" inputmode="numeric" min="1920" max="{{ complementaires.annee }}" required placeholder="Ex. 1988"></div>
+    <div class="champ"><label for="annee-{{ sim.id }}">Année de naissance</label><input id="annee-{{ sim.id }}" name="annee_naissance" type="number" inputmode="numeric" min="{{ annee - 100 }}" max="{{ annee }}" required placeholder="Ex. 1988"></div>
     <div class="champ"><label for="canton-{{ sim.id }}">Canton de domicile</label>
       <select id="canton-{{ sim.id }}" name="canton" required>
         <option value="">Choisir</option>
@@ -218,7 +218,7 @@
 {% macro contrat_3ans() -%}
 <div class="consentement fe__option">
   <input id="trois-ans-{{ sim.id }}" name="contrat_3_ans" type="checkbox" value="oui">
-  <label for="trois-ans-{{ sim.id }}">Je m'engage pour 3 ans (rabais d'environ 3 % chez de nombreux assureurs).</label>
+  <label for="trois-ans-{{ sim.id }}">Je suis prêt à m'engager sur plusieurs années (certains assureurs accordent alors un rabais).</label>
 </div>
 {%- endmacro %}
 

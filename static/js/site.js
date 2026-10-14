@@ -155,6 +155,8 @@
           : el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
           : el.type === "tel" ? "Numéro non valide. Choisissez l'indicatif du pays, puis le numéro, par exemple 79 123 45 67."
+          : (el.validity.rangeUnderflow || el.validity.rangeOverflow || el.validity.badInput) && (el.type === "date" || el.type === "number") && el.min && el.max
+            ? "Indiquez " + (el.type === "date" ? "une date de naissance" : "une année") + " entre " + el.min.slice(0, 4) + " et " + el.max.slice(0, 4) + "."
           : "Vérifiez cette valeur.";
       }
     });
@@ -389,12 +391,16 @@
         if (k < 1) anim = requestAnimationFrame(pas);
       };
       anim = requestAnimationFrame(pas);
-      sante.querySelector("[data-sante-an]").textContent = total ? "soit environ CHF " + Math.round(total * 12).toLocaleString("fr-CH").replace(/\u202f|\s/g, "'") + " par an" : "Choisissez au moins une couverture";
+      var champAn = sante.querySelector('[data-sante-champ="annee"]');
+      var anOk = champAn.checkValidity() && profil.annee > 0;
+      champAn.setAttribute("aria-invalid", String(!anOk));
+      sante.querySelector("[data-sante-an]").textContent = !anOk ? "Indiquez une année de naissance entre " + champAn.min + " et " + champAn.max + "."
+        : total ? choix.length + (choix.length > 1 ? " couvertures choisies" : " couverture choisie") + " : remplissez vos coordonnées pour recevoir votre prime." : "Choisissez au moins une couverture.";
       sante.querySelector("[data-sante-barre]").innerHTML = choix.map(function (c) {
         return '<span style="flex:' + c.mois + ";background:" + COULEURS[c.fam] + '" title="' + G.modules[c.cle].nom + '"></span>';
       }).join("");
       sante.querySelector("[data-sante-detail]").innerHTML = choix.map(function (c) {
-        return '<li><span><i style="background:' + COULEURS[c.fam] + '"></i>' + G.modules[c.cle].nom + "</span><strong>" + chfS(c.mois) + "</strong></li>";
+        return '<li><span><i style="background:' + COULEURS[c.fam] + '"></i>' + G.modules[c.cle].nom + '</span><strong class="floute" aria-hidden="true">' + chfS(c.mois) + "</strong></li>";
       }).join("");
       sante.querySelector("[data-sante-prestations]").innerHTML = choix.map(function (c) {
         return "<p>" + G.modules[c.cle].nom + "</p><ul>" + G.modules[c.cle].points.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
