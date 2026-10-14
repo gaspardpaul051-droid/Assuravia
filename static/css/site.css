@@ -1270,3 +1270,36 @@ a.contact__ligne:hover span { text-decoration: underline; }
   .ip-halo, .ip-carte, .ip-lignes span::after, .ip-barre span, .ip-sceau, .ip-puce { animation: none; }
   .ip-puce, .ip-sceau { opacity: 1; transform: none; } .ip-barre span, .ip-lignes span::after { width: 100%; }
 }
+
+/* Comparateur LAMal : appel au conseil et page de demande */
+.cmp-appel { margin-top: var(--e-7); }
+.cmp-appel__boite { display: grid; grid-template-columns: auto 1fr auto; gap: var(--e-4); align-items: center; padding: var(--e-5); border-radius: var(--r-l); background: var(--marine); color: #fff; box-shadow: var(--ombre-2); }
+.cmp-appel__boite p { margin: 0; color: rgba(255,255,255,.85); font-size: var(--t-s); }
+.cmp-appel__titre { font-weight: 800; font-size: var(--t-l) !important; color: #fff !important; margin-bottom: 4px !important; }
+.cmp-appel__icone { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.12); color: var(--or-clair); }
+@media (max-width: 640px) { .cmp-appel__boite { grid-template-columns: 1fr; } }
+.cmp-conseil .panneau-form { margin-top: var(--e-5); }
+.cmp-recap { display: grid; grid-template-columns: auto 1fr auto; gap: var(--e-2) var(--e-4); align-items: center; margin-top: var(--e-5); padding: var(--e-4) var(--e-5); border-radius: var(--r-l); background: #fff; border: 2px solid var(--bleu-vif); box-shadow: var(--ombre-1); animation: cmp-entree .4s var(--courbe) both; }
+.cmp-recap[hidden] { display: none; }
+.cmp-recap__icone { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); }
+.cmp-recap p { margin: 0; }
+.cmp-recap__label { font-size: var(--t-xs); font-weight: 700; color: var(--texte-doux); text-transform: uppercase; letter-spacing: .04em; }
+.cmp-recap__offre { color: var(--marine); }
+.cmp-recap__offre strong { font-size: var(--t-l); margin-right: 4px; }
+.cmp-recap__detail { font-size: var(--t-xs); color: var(--texte-doux); }
+.cmp-recap__prix { text-align: right; display: grid; }
+.cmp-recap__prix strong { font-size: var(--t-xl); color: var(--marine); white-space: nowrap; }
+.cmp-recap__prix span { font-size: var(--t-xs); color: var(--texte-doux); }
+.cmp-recap__modifier { grid-column: 2 / -1; justify-self: start; font-size: var(--t-xs); font-weight: 700; }
+@media (max-width: 560px) { .cmp-recap { grid-template-columns: auto 1fr; } .cmp-recap__prix { grid-column: 2; text-align: left; } }
+.cmp-plus { display: grid; gap: var(--e-3); padding: var(--e-4); border-radius: var(--r-m); background: var(--bleu-pale); border: 1px solid var(--bleu-ciel); }
+.cmp-plus__case { display: grid; grid-template-columns: auto auto 1fr; gap: var(--e-3); align-items: center; cursor: pointer; font-size: var(--t-s); color: var(--texte-doux); }
+.cmp-plus__case strong { display: block; color: var(--marine); font-size: var(--t-m); }
+.cmp-plus__case input { width: 20px; height: 20px; accent-color: var(--bleu); }
+.cmp-plus__icone { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--bleu); animation: ip-respire 3s ease-in-out infinite; }
+.cmp-plus__choix { display: flex; flex-wrap: wrap; gap: var(--e-2); }
+.cmp-plus__choix[hidden] { display: none; }
+.cmp-plus__choix .fe__aide { flex-basis: 100%; margin: 0; }
+.cmp-plus__puce { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--r-plein); background: #fff; border: 1px solid var(--bordure); font-size: var(--t-s); font-weight: 600; cursor: pointer; transition: border-color var(--duree), background var(--duree); }
+.cmp-plus__puce input { accent-color: var(--bleu); }
+.cmp-plus__puce:has(input:checked) { border-color: var(--bleu); background: #fff; color: var(--bleu); box-shadow: 0 0 0 2px var(--bleu-ciel); }

@@ -165,8 +165,10 @@
 
   /* ---------- Caisse actuelle ---------- */
   var selActuelle = $("[data-cmp-actuelle]");
+  var actuelleVoulue = "";
   var remplirActuelle = function () {
-    var val = selActuelle.value, vus = {};
+    var val = actuelleVoulue || selActuelle.value, vus = {};
+    actuelleVoulue = "";
     var opts = ['<option value="">Je ne sais pas ou je n\'en ai pas</option>'];
     (etat.donnees ? etat.donnees.offres : []).forEach(function (o) { vus[o.c] = 1; });
     Object.keys(vus).map(function (c) { return [c, etat.index.caisses[c]]; })
@@ -313,28 +315,36 @@
   };
   frais.addEventListener("input", franchise);
 
-  /* ---------- Demande de conseil ---------- */
-  var champ = function (cle, v) { var el = document.querySelector('[data-cmp-champ="' + cle + '"]'); if (el) el.value = v; };
+  /* ---------- Demande de conseil : page séparée avec l'offre choisie ---------- */
+  var pageConseil = /index\.html$/.test(location.pathname) ? "conseil/index.html" : "/particuliers/comparateur-lamal/conseil/";
+  var contexte = function () {
+    return {
+      lieu: etat.lieu ? etat.lieu.libelle : "",
+      personnes: etat.personnes.map(function (p, k) {
+        return "Personne " + (k + 1) + " : " + (p.naissance || "?") + ", franchise " + p.franchise + (p.accident ? ", avec accidents" : ", sans accidents");
+      }).join(" | "),
+      modeles: modeles().map(function (m) { return TYPES[m]; }).join(", "),
+      actuelle: selActuelle.value && etat.index ? etat.index.caisses[selActuelle.value] : ""
+    };
+  };
   function majChamps() {
-    champ("lieu", etat.lieu ? etat.lieu.libelle : "");
-    champ("personnes", etat.personnes.map(function (p, k) {
-      return "Personne " + (k + 1) + " : " + (p.naissance || "?") + ", franchise " + p.franchise + (p.accident ? ", avec accidents" : ", sans accidents");
-    }).join(" | "));
-    champ("modeles", modeles().map(function (m) { return TYPES[m]; }).join(", "));
-    champ("actuelle", selActuelle.value && etat.index ? etat.index.caisses[selActuelle.value] : "");
+    try {
+      sessionStorage.setItem("assuravia-cmp", JSON.stringify({ lieu: etat.lieu, personnes: etat.personnes, modeles: modeles(), actuelle: selActuelle.value }));
+    } catch (e) {}
+    var lien = document.querySelector("[data-cmp-conseil-general]");
+    if (lien) lien.href = pageConseil + "?" + new URLSearchParams(contexte()).toString();
   }
   $("[data-cmp-liste]").addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-conseil]");
     if (!b) return;
     var x = etat.offres[Number(b.getAttribute("data-conseil"))];
-    champ("offre", x.caisse + " – " + x.o.n + " (" + TYPES[x.o.y] + ")");
-    champ("prime", x.total.toFixed(2));
-    document.querySelector("[data-cmp-lead-titre]").textContent = "Être conseillé : " + x.caisse + ", " + x.o.n;
-    document.querySelector("[data-cmp-lead-texte]").textContent = "Prime " + chf(x.total) + " par mois. Un conseiller vérifie avec vous ce modèle, la franchise et le délai de changement. Gratuit et sans engagement.";
-    var cible = document.getElementById("conseil-lamal");
-    cible.scrollIntoView({ behavior: "smooth", block: "start" });
-    var prenom = document.getElementById("prenom-cmp");
-    if (prenom) setTimeout(function () { prenom.focus({ preventScroll: true }); }, 500);
+    var c = contexte(), nb = etat.personnes.length;
+    c.caisse = x.caisse;
+    c.modele = x.o.n + " (" + TYPES[x.o.y] + ")";
+    c.offre = x.caisse + " – " + x.o.n + " (" + TYPES[x.o.y] + ")";
+    c.prime = x.total.toFixed(2);
+    c.resume = nb + (nb > 1 ? " personnes" : " personne") + ", franchise " + etat.personnes.map(function (p) { return p.franchise; }).join(" / ");
+    location.href = pageConseil + "?" + new URLSearchParams(c).toString();
   });
 
   /* ---------- Démarrage ---------- */
@@ -343,7 +353,18 @@
     annee = idx.annee || annee;
     initRecherche();
     var q = new URLSearchParams(location.search);
+    var sauve = null;
+    try { sauve = JSON.parse(sessionStorage.getItem("assuravia-cmp") || "null"); } catch (e) {}
     if (q.get("canton")) choisirCanton(q.get("canton").toUpperCase(), q.get("region"));
+    else if (sauve && sauve.lieu) {
+      // Retour depuis la page de conseil : on retrouve les mêmes réglages
+      if (sauve.personnes && sauve.personnes.length) { etat.personnes = sauve.personnes; dessinerPersonnes(); }
+      racine.querySelectorAll("[data-cmp-modele]").forEach(function (x) { x.checked = (sauve.modeles || []).indexOf(x.value) >= 0; });
+      actuelleVoulue = sauve.actuelle || "";
+      var l = sauve.lieu;
+      if (l.bfs) { var ch = $("[data-cmp-lieu]"), ok = $("[data-cmp-lieu-choisi]"); if (ch) ch.value = l.libelle.split(",")[0]; if (ok) { ok.hidden = false; ok.textContent = l.libelle; } }
+      choisirCanton(l.canton, l.region, l.bfs ? { bfs: l.bfs, libelle: l.libelle } : null);
+    }
     else calculer();
   }).catch(function () {
     $("[data-cmp-vide]").querySelector("p").textContent = "Les primes n'ont pas pu être chargées. Vérifiez votre connexion et réessayez.";

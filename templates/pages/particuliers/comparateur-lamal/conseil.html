@@ -1,0 +1,98 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Être conseillé pour votre assurance de base | Assuravia{% endblock %}
+{% block description %}Un conseiller vérifie avec vous l'offre LAMal choisie, la franchise, le modèle et le délai de changement. Gratuit et sans engagement.{% endblock %}
+{% block content %}
+<section class="cmp-page cmp-conseil">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/lamal/">Assurance de base (LAMal)</a> <span aria-hidden="true">/</span> <a href="/particuliers/comparateur-lamal/" data-cmp-retour>Comparateur</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("croix", "icone icone--petite") }} Demande de conseil</p>
+    <h1 class="cmp-page__titre">Être conseillé pour votre assurance de base</h1>
+    <p class="chapeau">Un conseiller vérifie avec vous l'offre choisie, la franchise, le modèle et le délai pour changer de caisse. Gratuit et sans engagement.</p>
+
+    <div class="cmp-recap" data-recap hidden>
+      <span class="cmp-recap__icone">{{ i.icone("valide") }}</span>
+      <div class="cmp-recap__texte">
+        <p class="cmp-recap__label">Votre offre</p>
+        <p class="cmp-recap__offre"><strong data-recap="caisse"></strong> <span data-recap="modele"></span></p>
+        <p class="cmp-recap__detail" data-recap="detail"></p>
+      </div>
+      <p class="cmp-recap__prix"><strong data-recap="prime"></strong><span>par mois</span></p>
+      <a class="cmp-recap__modifier" href="/particuliers/comparateur-lamal/" data-cmp-retour>Changer d'offre</a>
+    </div>
+
+    <div class="panneau-form">
+      <h2 class="form-titre">Vos coordonnées</h2>
+      <p class="form-sous-titre">Un conseiller vous contacte pour finaliser avec vous. Vous restez libre de votre choix.</p>
+      {{ f.ouvrir("comparateur-lamal", "lamal") }}
+        <input type="hidden" name="lieu" data-param="lieu">
+        <input type="hidden" name="personnes" data-param="personnes">
+        <input type="hidden" name="modeles" data-param="modeles">
+        <input type="hidden" name="caisse_actuelle" data-param="actuelle">
+        <input type="hidden" name="offre_choisie" data-param="offre">
+        <input type="hidden" name="prime_mensuelle" data-param="prime">
+        <div class="grille-champs">
+          <div class="champ"><label for="prenom-cmp">Prénom</label><input id="prenom-cmp" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+          <div class="champ"><label for="nom-cmp">Nom</label><input id="nom-cmp" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+          {{ f.telephone("cmp") }}
+          <div class="champ"><label for="email-cmp">E-mail</label><input id="email-cmp" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+          {{ f.naissance("cmp") }}
+        </div>
+
+        <div class="cmp-plus">
+          <label class="cmp-plus__case">
+            <input type="checkbox" name="complementaires" value="oui" data-cmp-plus-case>
+            <span class="cmp-plus__icone">{{ i.icone("coeur") }}</span>
+            <span><strong>Aller plus loin que l'assurance de base</strong> Je souhaite aussi une couverture complémentaire : hôpital, médecines douces, dentaire…</span>
+          </label>
+          <div class="cmp-plus__choix" data-cmp-plus-choix hidden>
+            <p class="fe__aide">Ce qui vous intéresse (facultatif) :</p>
+            {% for v, t in [("Hospitalisation demi-privée ou privée", "Hospitalisation"), ("Ambulatoire et médecines douces", "Médecines douces et ambulatoire"), ("Dentaire", "Dentaire"), ("Lunettes et prévention", "Lunettes et prévention"), ("Voyage et étranger", "Voyage et étranger")] %}
+            <label class="cmp-plus__puce"><input type="checkbox" name="complementaires_souhaitees" value="{{ v }}"> <span>{{ t }}</span></label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="champ">
+          <label for="message-cmp">Votre question <span class="facultatif">(facultatif)</span></label>
+          <textarea id="message-cmp" name="message" placeholder="Ex. Quand dois-je résilier ma caisse actuelle ?"></textarea>
+        </div>
+        {{ f.fermer("Être conseillé", "cmp") }}
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} Réponse rapide</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  document.querySelectorAll("[data-param]").forEach(function (el) { el.value = q.get(el.getAttribute("data-param")) || ""; });
+  if (q.get("caisse")) {
+    var recap = document.querySelector("[data-recap]");
+    var set = function (k, v) { var el = document.querySelector('[data-recap="' + k + '"]'); if (el) el.textContent = v; };
+    set("caisse", q.get("caisse"));
+    set("modele", q.get("modele") || "");
+    set("detail", [q.get("lieu"), q.get("resume")].filter(Boolean).join(" · "));
+    var p = Number(q.get("prime"));
+    set("prime", p ? "CHF " + p.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'") : "");
+    recap.hidden = false;
+  }
+  // Retour au comparateur : on revient à la page précédente pour retrouver les réglages
+  var depuisComparateur = document.referrer.indexOf("comparateur-lamal") > -1 && document.referrer.indexOf("conseil") < 0;
+  document.querySelectorAll("[data-cmp-retour]").forEach(function (a) {
+    a.addEventListener("click", function (ev) { if (depuisComparateur && history.length > 1) { ev.preventDefault(); history.back(); } });
+  });
+  var caseP = document.querySelector("[data-cmp-plus-case]"), choix = document.querySelector("[data-cmp-plus-choix]");
+  caseP.addEventListener("change", function () { choix.hidden = !caseP.checked; });
+})();
+</script>
+{% endblock %}

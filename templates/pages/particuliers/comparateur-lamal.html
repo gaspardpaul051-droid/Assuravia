@@ -97,30 +97,11 @@
     </div>
   </div>
 
-  <div class="cadre cadre--etroit cmp-lead" id="conseil-lamal">
-    <div class="panneau-form">
-      <h2 class="form-titre" data-cmp-lead-titre>Faites-vous conseiller pour votre assurance de base</h2>
-      <p class="form-sous-titre" data-cmp-lead-texte>Un conseiller vérifie avec vous le modèle, la franchise et les délais de changement. Gratuit et sans engagement.</p>
-      {{ f.ouvrir("comparateur-lamal", "lamal") }}
-        <input type="hidden" name="lieu" data-cmp-champ="lieu">
-        <input type="hidden" name="personnes" data-cmp-champ="personnes">
-        <input type="hidden" name="modeles" data-cmp-champ="modeles">
-        <input type="hidden" name="caisse_actuelle" data-cmp-champ="actuelle">
-        <input type="hidden" name="offre_choisie" data-cmp-champ="offre">
-        <input type="hidden" name="prime_mensuelle" data-cmp-champ="prime">
-        <div class="grille-champs">
-          <div class="champ"><label for="prenom-cmp">Prénom</label><input id="prenom-cmp" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
-          <div class="champ"><label for="nom-cmp">Nom</label><input id="nom-cmp" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
-          {{ f.telephone("cmp") }}
-          <div class="champ"><label for="email-cmp">E-mail</label><input id="email-cmp" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
-          {{ f.naissance("cmp") }}
-        </div>
-        <div class="champ">
-          <label for="message-cmp">Votre question <span class="facultatif">(facultatif)</span></label>
-          <textarea id="message-cmp" name="message" placeholder="Ex. Je souhaite aussi revoir mes complémentaires."></textarea>
-        </div>
-        {{ f.fermer("Être conseillé", "cmp") }}
-      </form>
+  <div class="cadre cadre--etroit cmp-appel">
+    <div class="cmp-appel__boite">
+      <span class="cmp-appel__icone">{{ i.icone("bulle") }}</span>
+      <div><p class="cmp-appel__titre">Vous hésitez entre plusieurs offres ?</p><p>Un conseiller vous aide à choisir le modèle, la franchise et le bon moment pour changer. Gratuit et sans engagement.</p></div>
+      <a class="bouton bouton--action" href="/particuliers/comparateur-lamal/conseil/" data-cmp-conseil-general>Être conseillé</a>
     </div>
   </div>
 
