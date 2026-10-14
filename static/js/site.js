@@ -158,7 +158,11 @@
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
           : el.type === "tel" ? "Numéro non valide. Choisissez l'indicatif du pays, puis le numéro, par exemple 79 123 45 67."
           : (el.validity.rangeUnderflow || el.validity.rangeOverflow || el.validity.badInput) && (el.type === "date" || el.type === "number") && el.min && el.max
-            ? "Indiquez " + (el.type === "date" ? "une date de naissance" : "une année") + " entre " + el.min.slice(0, 4) + " et " + el.max.slice(0, 4) + "."
+            ? (/naissance/.test(el.name)
+                ? "Indiquez " + (el.type === "date" ? "une date de naissance" : "une année") + " entre " + el.min.slice(0, 4) + " et " + el.max.slice(0, 4) + "."
+                : el.type === "date"
+                  ? "Indiquez une date entre le " + el.min.split("-").reverse().join(".") + " et le " + el.max.split("-").reverse().join(".") + "."
+                  : "Indiquez une valeur entre " + el.min + " et " + el.max + ".")
           : "Vérifiez cette valeur.";
       }
     });

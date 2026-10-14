@@ -1,0 +1,19 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block theme %}pro{% endblock %}
+{% block title %}Recevoir des offres de RC professionnelle | Assuravia{% endblock %}
+{% block description %}Décrivez votre activité en 2 minutes : un conseiller compare les offres de RC professionnelle et vous rappelle. Gratuit et sans engagement.{% endblock %}
+{% block content %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Professionnel</a> <span aria-hidden="true">/</span> <a href="/entreprises/rc-professionnelle/">RC professionnelle</a></nav>
+    <p class="etiquette etiquette--pro">{{ i.icone("bouclier", "icone icone--petite") }} Demande</p>
+    <h1 class="cmp-page__titre">Recevoir des offres pour votre RC professionnelle</h1>
+    <p class="chapeau">Décrivez votre entreprise, puis laissez vos coordonnées. Un conseiller vous rappelle avec des offres adaptées à votre activité. Gratuit et sans engagement.</p>
+    <div class="panneau-form">
+      {% include "partials/form-rc-pro.html" %}
+    </div>
+  </div>
+</section>
+{% endblock %}
