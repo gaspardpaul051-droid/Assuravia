@@ -4,6 +4,8 @@
 
 [build.environment]
   PYTHON_VERSION = "3.13"
+  # URL et clé anon Supabase sont publiques par nature (écrites dans /espace/config.js) : ne pas bloquer le build
+  SECRETS_SCAN_OMIT_KEYS = "SUPABASE_URL,SUPABASE_ANON_KEY"
 
 # Pages publicitaires : jamais indexées par Google
 [[headers]]
