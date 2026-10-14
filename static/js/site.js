@@ -343,6 +343,80 @@
     majCapital();
   }
 
+  // Prime mensuelle indicative d'une complémentaire maladie (grille content/complementaires.json)
+  var prixLca = function (T, cle, p) {
+    var m = T.modules[cle];
+    var age = p.annee > 1900 ? T.annee - p.annee : 35, f = 1;
+    T.courbes[m.courbe].forEach(function (b) { if (age >= b[0] && age <= b[1]) f = b[2]; });
+    var fem = T.femme[m.courbe];
+    if (p.sexe === "Femme" && fem && age >= fem[0] && age <= fem[1]) f *= fem[2];
+    f *= T.cantons[p.canton] || 1;
+    if (cle.indexOf("hop_") === 0) f *= T.franchise_hop[p.franchise || "0"] || 1;
+    if (p.troisAns) f *= 1 - T.rabais_3ans;
+    return Math.round(m.base * f * 20) / 20;
+  };
+
+  // 4f. Simulateur global des complémentaires (page Privé) : prime en direct
+  var sante = document.querySelector("[data-sante]");
+  if (sante) {
+    var G = JSON.parse(sante.querySelector("[data-sante-grille]").textContent);
+    var chfS = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+    var elTotal = sante.querySelector("[data-sante-total]"), affiche = 0, anim = null;
+    var COULEURS = { hop: "#1565A8", amb: "#3A9AE0", dent: "#E2BE52", ij_hop: "#0B2545", pj_sante: "#8798AE" };
+    var majSante = function () {
+      var profil = {
+        annee: Number(sante.querySelector('[data-sante-champ="annee"]').value),
+        canton: sante.querySelector('[data-sante-champ="canton"]').value,
+        sexe: (sante.querySelector('[data-sante-champ="sexe"]:checked') || {}).value
+      };
+      var choix = [];
+      ["hop", "amb", "dent"].forEach(function (fam) {
+        var r = sante.querySelector('[name="sante-' + fam + '"]:checked');
+        sante.querySelector('[data-sante-famille="' + fam + '"]').classList.toggle("sante__famille--active", !!(r && r.value));
+        if (r && r.value) choix.push({ cle: r.value, fam: fam });
+      });
+      sante.querySelectorAll("[data-sante-extra]:checked").forEach(function (x) { choix.push({ cle: x.value, fam: x.value }); });
+      choix.forEach(function (c) { c.mois = prixLca(G, c.cle, profil); });
+      var total = choix.reduce(function (t, c) { return t + c.mois; }, 0);
+      // Compteur animé vers le nouveau total
+      var depart = affiche, t0 = null;
+      if (anim) cancelAnimationFrame(anim);
+      var pas = function (t) {
+        if (!t0) t0 = t;
+        var k = Math.min((t - t0) / 450, 1);
+        affiche = depart + (total - depart) * (1 - Math.pow(1 - k, 3));
+        elTotal.textContent = chfS(affiche);
+        if (k < 1) anim = requestAnimationFrame(pas);
+      };
+      anim = requestAnimationFrame(pas);
+      sante.querySelector("[data-sante-an]").textContent = total ? "soit environ CHF " + Math.round(total * 12).toLocaleString("fr-CH").replace(/\u202f|\s/g, "'") + " par an" : "Choisissez au moins une couverture";
+      sante.querySelector("[data-sante-barre]").innerHTML = choix.map(function (c) {
+        return '<span style="flex:' + c.mois + ";background:" + COULEURS[c.fam] + '" title="' + G.modules[c.cle].nom + '"></span>';
+      }).join("");
+      sante.querySelector("[data-sante-detail]").innerHTML = choix.map(function (c) {
+        return '<li><span><i style="background:' + COULEURS[c.fam] + '"></i>' + G.modules[c.cle].nom + "</span><strong>" + chfS(c.mois) + "</strong></li>";
+      }).join("");
+      sante.querySelector("[data-sante-prestations]").innerHTML = choix.map(function (c) {
+        return "<p>" + G.modules[c.cle].nom + "</p><ul>" + G.modules[c.cle].points.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
+      }).join("");
+      // La simulation détaillée reprend les choix faits ici
+      var q = new URLSearchParams({ annee_naissance: profil.annee || "", canton: profil.canton, sexe: profil.sexe || "" });
+      choix.forEach(function (c) {
+        var m = G.modules[c.cle];
+        if (c.fam === "hop") { q.set("fam_hop", "oui"); q.set("division", m.court); }
+        else if (c.fam === "amb") { q.set("fam_amb", "oui"); q.set("formule_amb", m.court); }
+        else if (c.fam === "dent") { q.set("fam_dent", "oui"); q.set("dentaire", m.court); }
+        else if (c.cle === "ij_hop") q.set("fam_ij", "oui");
+        else if (c.cle === "pj_sante") q.set("fam_pj", "oui");
+      });
+      var cta = sante.querySelector("[data-sante-cta]");
+      cta.href = cta.getAttribute("href").split("?")[0] + "?" + q.toString();
+    };
+    sante.addEventListener("input", majSante);
+    sante.addEventListener("change", majSante);
+    majSante();
+  }
+
   // 4c. Simulation en plusieurs écrans (funnel), ex. assurance ménage
   var funnel = document.querySelector("[data-funnel]");
   if (funnel) {
@@ -365,18 +439,8 @@
     var T = tarifLca ? JSON.parse(tarifLca.textContent) : null;
     var arrondi05 = function (x) { return Math.round(x * 20) / 20; };
     var primeLca = function (cle) {
-      var m = T.modules[cle];
-      var an = nombre("annee_naissance"), age = an > 1900 ? T.annee - an : 35;
-      var f = 1;
-      T.courbes[m.courbe].forEach(function (b) { if (age >= b[0] && age <= b[1]) f = b[2]; });
-      var sexe = valeur("sexe"), fem = T.femme[m.courbe];
-      if (sexe && sexe.value === "Femme" && fem && age >= fem[0] && age <= fem[1]) f *= fem[2];
-      var canton = formF.querySelector('[name="canton"]');
-      f *= T.cantons[canton && canton.value] || 1;
-      if (m.courbe === "hop" && cle.indexOf("hop_") === 0) { var fr = valeur("franchise_hop"); if (fr) f *= T.franchise_hop[fr.value] || 1; }
-      var trois = formF.querySelector('[name="contrat_3_ans"]');
-      if (trois && trois.checked) f *= 1 - T.rabais_3ans;
-      return arrondi05(m.base * f);
+      var an = nombre("annee_naissance"), sexe = valeur("sexe"), canton = formF.querySelector('[name="canton"]'), fr = valeur("franchise_hop"), trois = formF.querySelector('[name="contrat_3_ans"]');
+      return prixLca(T, cle, { annee: an, sexe: sexe ? sexe.value : "", canton: canton ? canton.value : "", franchise: fr ? fr.value : "0", troisAns: !!(trois && trois.checked) });
     };
     var modulesLca = function () {
       var liste = [];
@@ -568,6 +632,14 @@
         bloc.hidden = neg ? v === attendu : v !== attendu;
       });
     };
+    // Préremplissage depuis l'adresse (ex. simulateur de la page Privé) : ?nom=valeur
+    new URLSearchParams(location.search).forEach(function (v, k) {
+      if (k === "logement") return;
+      formF.querySelectorAll('[name="' + k.replace(/"/g, "") + '"]').forEach(function (el) {
+        if (el.type === "radio" || el.type === "checkbox") { if (el.value === v) el.checked = true; }
+        else if (el.type !== "hidden" && !el.value) el.value = v;
+      });
+    });
     formF.addEventListener("change", majConditions);
     majConditions();
     // Compteurs + / −

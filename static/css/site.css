@@ -1303,3 +1303,60 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .cmp-plus__puce { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--r-plein); background: #fff; border: 1px solid var(--bordure); font-size: var(--t-s); font-weight: 600; cursor: pointer; transition: border-color var(--duree), background var(--duree); }
 .cmp-plus__puce input { accent-color: var(--bleu); }
 .cmp-plus__puce:has(input:checked) { border-color: var(--bleu); background: #fff; color: var(--bleu); box-shadow: 0 0 0 2px var(--bleu-ciel); }
+
+/* Simulateur global des complémentaires (page Privé) */
+.bloc--sante { background: radial-gradient(800px 400px at 100% 0%, var(--bleu-pale), transparent 70%), var(--surface); }
+.sante { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: var(--e-6); align-items: start; }
+.sante__reglages { display: grid; gap: var(--e-3); min-width: 0; }
+.sante__profil { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--e-3); align-items: end; padding: var(--e-4); border-radius: var(--r-l); background: #fff; border: 1px solid var(--bordure); box-shadow: var(--ombre-1); }
+.sante__sexe { border: 0; padding: 0; margin: 0; display: flex; gap: 4px; padding: 4px; border-radius: var(--r-plein); background: var(--surface); }
+.sante__sexe legend { position: absolute; left: -9999px; }
+.sante__sexe label, .sante__niveaux label { position: relative; cursor: pointer; }
+.sante__sexe input, .sante__niveaux input { position: absolute; opacity: 0; }
+.sante__sexe span { display: block; padding: 10px 16px; border-radius: var(--r-plein); font-weight: 700; font-size: var(--t-s); color: var(--texte-doux); transition: background var(--duree), color var(--duree); }
+.sante__sexe input:checked + span { background: var(--bleu); color: #fff; }
+.sante__famille { margin: 0; padding: var(--e-4); border-radius: var(--r-l); background: #fff; border: 1px solid var(--bordure); box-shadow: var(--ombre-1); display: grid; gap: var(--e-3); transition: border-color var(--duree), box-shadow var(--duree); }
+.sante__famille--active { border-color: var(--bleu-vif); box-shadow: 0 10px 24px -16px rgba(21,101,168,.6); }
+.sante__famille legend { display: flex; align-items: center; gap: var(--e-3); padding: 0; float: left; width: 100%; font-size: var(--t-s); color: var(--texte-doux); }
+.sante__famille legend strong { display: block; color: var(--marine); font-size: var(--t-m); }
+.sante__famille-icone { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); transition: transform var(--duree); }
+.sante__famille--active .sante__famille-icone { background: var(--bleu); color: #fff; transform: rotate(-6deg) scale(1.05); }
+.sante__niveaux { display: flex; flex-wrap: wrap; gap: 6px; clear: both; }
+.sante__niveaux span { display: block; padding: 8px 14px; border-radius: var(--r-plein); border: 1px solid var(--bordure); font-size: var(--t-s); font-weight: 600; color: var(--marine); background: #fff; transition: all var(--duree); }
+.sante__niveaux label:hover span { border-color: var(--bleu); }
+.sante__niveaux input:checked + span { background: var(--bleu); border-color: var(--bleu); color: #fff; box-shadow: 0 6px 14px -8px rgba(21,101,168,.8); }
+.sante__niveaux input[value=""]:checked + span { background: var(--surface); border-color: var(--bordure-champ); color: var(--texte-doux); box-shadow: none; }
+.sante__niveaux input:focus-visible + span, .sante__sexe input:focus-visible + span { outline: 3px solid rgba(21,101,168,.35); outline-offset: 2px; }
+.sante__extras { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-3); }
+.sante__extra { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: var(--e-3) var(--e-4); border-radius: var(--r-m); background: #fff; border: 1px solid var(--bordure); cursor: pointer; font-size: var(--t-xs); color: var(--texte-doux); }
+.sante__extra strong { display: block; font-size: var(--t-s); color: var(--marine); }
+.sante__extra input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--bleu); }
+.sante__extra:has(input:checked) { border-color: var(--bleu); background: var(--bleu-pale); }
+.sante__resultat { position: sticky; top: 90px; display: grid; gap: var(--e-3); padding: var(--e-5); border-radius: var(--r-l); background: var(--marine); color: #fff; box-shadow: var(--ombre-2); }
+.sante__resultat p { margin: 0; }
+.sante__label { font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--or-clair); }
+.sante__total { display: flex; align-items: baseline; gap: 8px; }
+.sante__total strong { font-size: clamp(2rem, 4vw, 2.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.sante__total span, .sante__an { color: rgba(255,255,255,.75); font-size: var(--t-s); }
+.sante__barre { display: flex; gap: 3px; height: 10px; border-radius: var(--r-plein); overflow: hidden; background: rgba(255,255,255,.12); }
+.sante__barre span { transition: flex .45s var(--courbe); min-width: 6px; }
+.sante__detail { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: var(--t-s); }
+.sante__detail li { display: flex; justify-content: space-between; gap: var(--e-3); padding: 8px 10px; border-radius: var(--r-s); background: rgba(255,255,255,.07); animation: cmp-entree .3s var(--courbe) both; }
+.sante__detail i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+.sante__prestations { font-size: var(--t-s); }
+.sante__prestations summary { cursor: pointer; font-weight: 700; color: var(--or-clair); }
+.sante__prestations p { margin: var(--e-3) 0 4px !important; font-weight: 700; }
+.sante__prestations ul { margin: 0; padding-left: 1.1em; color: rgba(255,255,255,.85); display: grid; gap: 3px; }
+.sante__resultat .bouton { width: 100%; }
+.sante__resultat .bouton--secondaire { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
+.sante__note { font-size: var(--t-xs); color: rgba(255,255,255,.65); }
+@media (max-width: 960px) {
+  .sante { grid-template-columns: 1fr; }
+  .sante__resultat { position: static; }
+}
+@media (max-width: 560px) {
+  .sante__profil { grid-template-columns: 1fr 1fr; }
+  .sante__sexe { grid-column: 1 / -1; justify-content: center; }
+  .sante__extras { grid-template-columns: 1fr; }
+}
+.sante__detail strong { white-space: nowrap; font-variant-numeric: tabular-nums; }

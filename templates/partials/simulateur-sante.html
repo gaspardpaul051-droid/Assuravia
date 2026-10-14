@@ -1,0 +1,52 @@
+{# Simulateur global des complémentaires maladie (page Privé). Grille neutre : content/complementaires.json #}
+{% set M = complementaires.modules %}
+<div class="sante" data-sante>
+  <script type="application/json" data-sante-grille>{{ complementaires|tojson }}</script>
+  <div class="sante__reglages">
+    <div class="sante__profil">
+      <div class="champ"><label for="sante-annee">Année de naissance</label><input id="sante-annee" type="number" inputmode="numeric" min="1920" max="{{ complementaires.annee }}" value="1990" data-sante-champ="annee"></div>
+      <div class="champ"><label for="sante-canton">Canton</label>
+        <select id="sante-canton" data-sante-champ="canton">
+          {% for c, nom in [("VD","Vaud"),("GE","Genève"),("FR","Fribourg"),("NE","Neuchâtel"),("VS","Valais"),("JU","Jura"),("BE","Berne"),("autre","Autre canton")] %}<option value="{{ c }}">{{ nom }}</option>{% endfor %}
+        </select>
+      </div>
+      <fieldset class="sante__sexe"><legend>Vous êtes</legend>
+        <label><input type="radio" name="sante-sexe" value="Femme" data-sante-champ="sexe" checked> <span>Femme</span></label>
+        <label><input type="radio" name="sante-sexe" value="Homme" data-sante-champ="sexe"> <span>Homme</span></label>
+      </fieldset>
+    </div>
+
+    {% for fam, titre, icone, aide, cles, defaut in [
+      ("hop", "Hospitalisation", "croix", "Chambre, choix de l'hôpital et du médecin", ["hop_commune", "hop_flex_eco", "hop_flex_confort", "hop_demi", "hop_privee"], "hop_flex_eco"),
+      ("amb", "Ambulatoire et médecines douces", "coeur", "Thérapeutes, lunettes, médicaments, prévention", ["amb_essentiel", "amb_douce", "amb_confort"], "amb_douce"),
+      ("dent", "Dentaire", "valide", "Contrôles, soins, orthodontie", ["dent_light", "dent_bronze", "dent_argent", "dent_or"], "")] %}
+    <fieldset class="sante__famille" data-sante-famille="{{ fam }}">
+      <legend><span class="sante__famille-icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong> {{ aide }}</span></legend>
+      <div class="sante__niveaux">
+        <label><input type="radio" name="sante-{{ fam }}" value=""{% if not defaut %} checked{% endif %}> <span>Aucune</span></label>
+        {% for k in cles %}<label><input type="radio" name="sante-{{ fam }}" value="{{ k }}"{% if k == defaut %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
+      </div>
+    </fieldset>
+    {% endfor %}
+
+    <div class="sante__extras">
+      <label class="sante__extra"><input type="checkbox" value="ij_hop" data-sante-extra> <span><strong>Indemnité d'hospitalisation</strong> CHF 100 par jour d'hôpital, versés à vous</span></label>
+      <label class="sante__extra"><input type="checkbox" value="pj_sante" data-sante-extra> <span><strong>Protection juridique santé</strong> En cas de litige avec un hôpital ou un assureur</span></label>
+    </div>
+  </div>
+
+  <aside class="sante__resultat" aria-live="polite">
+    <p class="sante__label">Votre prime estimée</p>
+    <p class="sante__total"><strong data-sante-total>CHF 0</strong><span>par mois</span></p>
+    <p class="sante__an" data-sante-an></p>
+    <div class="sante__barre" data-sante-barre></div>
+    <ul class="sante__detail" data-sante-detail></ul>
+    <details class="sante__prestations">
+      <summary>Voir les prestations possibles</summary>
+      <div data-sante-prestations></div>
+    </details>
+    <a class="bouton bouton--action" href="/particuliers/simulation-complementaires/" data-sante-cta>Recevoir une offre personnalisée</a>
+    <a class="bouton bouton--secondaire" href="/conseil/?produit=complementaire-maladie">Parler à un conseiller</a>
+    <p class="sante__note">Estimation indicative pour une personne, établie à partir de primes moyennes du marché. Les prestations varient selon l'assureur et la formule. Les complémentaires sont conclues après un questionnaire de santé.</p>
+  </aside>
+</div>
