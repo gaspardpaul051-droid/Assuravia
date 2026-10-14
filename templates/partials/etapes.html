@@ -92,12 +92,12 @@
 {% macro impots() -%}{{ oui_non("economiser_impots", "Souhaitez-vous aussi payer moins d'impôts ?", "Un spécialiste peut vous montrer ce que le 3e pilier ou votre déclaration peuvent vous faire gagner.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
 
 {# Coordonnées : la prime reste floutée jusqu'à l'envoi #}
-{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True) -%}
-{{ ouvrir("coordonnees", "Votre prime est prête") }}
+{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=True) -%}
+{{ ouvrir("coordonnees", "Votre prime est prête" if flou else "Recevoir cette offre") }}
   <div class="apercu-prime">
-    <p class="apercu-prime__label">Votre prime annuelle estimée</p>
-    <p class="apercu-prime__montant floute" data-affiche="total_floute">CHF 000.00</p>
-    <p class="fe__aide">Indiquez où vous joindre pour l'afficher et recevoir votre récapitulatif.</p>
+    <p class="apercu-prime__label">{{ "Votre prime annuelle estimée" if flou else "Votre prime estimée" }}</p>
+    <p class="apercu-prime__montant{% if flou %} floute{% endif %}" data-affiche="total_floute">CHF 000.00</p>
+    <p class="fe__aide">{{ "Indiquez où vous joindre pour l'afficher et recevoir votre récapitulatif." if flou else "Cette couverture existe chez plusieurs assureurs. Laissez vos coordonnées : un conseiller vous dit lesquels la proposent et vous envoie l'offre détaillée." }}</p>
   </div>
   <div class="grille-champs">
     {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{% endif %}
@@ -113,7 +113,7 @@
     <input id="consentement-{{ sim.id }}" name="consentement" type="checkbox" value="oui" required>
     <label for="consentement-{{ sim.id }}">J'accepte d'être contacté par téléphone ou e-mail au sujet de ma demande, par un conseiller Assuravia ou par un partenaire spécialisé à qui elle peut être transmise. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
   </div>
-  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Afficher ma prime</button>
+  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">{{ "Afficher ma prime" if flou else "Être rappelé pour recevoir cette offre" }}</button>
 </fieldset>
 {%- endmacro %}
 
@@ -200,7 +200,7 @@
   {% for k in cles %}{% set m = complementaires.modules[k] %}
   <label class="formule"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if groupe %} data-groupe-requis="{{ groupe }}"{% endif %}{% if coche %} checked{% endif %}>
     <span class="formule__nom">{{ m.court }}</span>
-    <span class="formule__prix floute" data-prix-lca="{{ k }}">CHF 00 / mois</span>
+    <span class="formule__prix" data-prix-lca="{{ k }}"></span>
     <ul>{% for p in m.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
   {% endfor %}
 </div>
@@ -223,7 +223,7 @@
     <ul class="resultat-prime__detail" data-affiche="detail"></ul>
   </div>
   <div class="resultat-prestations">
-    <p class="fe__sous-question">Les prestations possibles avec cette couverture</p>
+    <p class="fe__sous-question">Ce que comprend votre couverture</p>
     <div data-affiche="prestations"></div>
   </div>
   <p class="resultat__avertissement">Estimation indicative pour une personne, établie à partir d'une grille moyenne du marché. Les prestations sont des exemples : elles varient selon l'assureur et la formule. Une complémentaire est conclue après un questionnaire de santé ; l'assureur peut émettre des réserves ou refuser. Seule l'offre de l'assureur fait foi.</p>

@@ -58,19 +58,43 @@
 
   <aside class="sante__resultat" aria-live="polite">
     <p class="sante__label">Votre prime estimée</p>
-    <div class="sante__verrou">
-      <p class="sante__total" aria-hidden="true"><strong class="floute" data-sante-total>CHF 0</strong><span>par mois</span></p>
-      <p class="sante__verrou-texte">{{ i.icone("cadenas", "icone icone--petite") }} Votre prime vous est communiquée par un conseiller</p>
-    </div>
+    <p class="sante__total"><strong data-sante-total>CHF 0</strong><span>par mois</span></p>
     <p class="sante__an" data-sante-an></p>
     <div class="sante__barre" data-sante-barre></div>
     <ul class="sante__detail" data-sante-detail></ul>
-    <details class="sante__prestations">
-      <summary>Voir les prestations possibles</summary>
-      <div data-sante-prestations></div>
-    </details>
-    <a class="bouton bouton--action" href="/particuliers/simulation-complementaires/" data-sante-cta>Recevoir ma prime et être recontacté</a>
-    <a class="bouton bouton--secondaire" href="/conseil/?produit=complementaire-maladie">Poser une question à un conseiller</a>
+    <p class="sante__accroche">{{ i.icone("bulle", "icone icone--petite") }} Cette couverture existe chez plusieurs assureurs. Un conseiller vous dit lesquels la proposent et vous envoie l'offre détaillée.</p>
+    <button type="button" class="bouton bouton--action" data-ouvrir-modale="sante">Être rappelé pour recevoir cette offre</button>
+    <a class="bouton bouton--secondaire" href="/particuliers/simulation-complementaires/" data-sante-cta>Faire la simulation détaillée</a>
     <p class="sante__note">Estimation indicative pour une personne, établie à partir de primes moyennes du marché. Les prestations varient selon l'assureur et la formule. Les complémentaires sont conclues après un questionnaire de santé.</p>
   </aside>
+
+  <div class="sante__prestations" aria-live="polite">
+    <h3>Ce que comprend votre couverture</h3>
+    <div class="sante__prestations-grille" data-sante-prestations></div>
+  </div>
 </div>
+
+{% import "partials/form.html" as f %}
+<dialog class="modale" data-modale="sante" aria-labelledby="modale-sante-titre">
+  <div class="modale__haut">
+    <div>
+      <p class="surtitre">Complémentaires maladie</p>
+      <h2 id="modale-sante-titre" class="modale__titre">Recevoir cette offre</h2>
+    </div>
+    <button type="button" class="modale__fermer" data-fermer-modale aria-label="Fermer">{{ i.icone("croix-fermer") }}</button>
+  </div>
+  {{ f.ouvrir("complementaires-rappel", "complementaire-maladie") }}
+    <input type="hidden" name="couverture" data-sante-resume="couverture">
+    <input type="hidden" name="prime_mensuelle_estimee" data-sante-resume="prime">
+    <input type="hidden" name="profil" data-sante-resume="profil">
+    <div class="sante__recap" data-sante-recap></div>
+    <p class="fe__aide">Un conseiller vous rappelle avec le détail des prestations et le nom des assureurs qui proposent cette couverture. Gratuit et sans engagement.</p>
+    <div class="grille-champs">
+      <div class="champ"><label for="prenom-sa">Prénom</label><input id="prenom-sa" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+      <div class="champ"><label for="nom-sa">Nom</label><input id="nom-sa" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+      {{ f.telephone("sa") }}
+      <div class="champ"><label for="email-sa">E-mail</label><input id="email-sa" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+    </div>
+    {{ f.fermer("Être rappelé", "sa") }}
+  </form>
+</dialog>

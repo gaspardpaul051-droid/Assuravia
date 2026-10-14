@@ -1463,3 +1463,16 @@ body.modale-ouverte { overflow: hidden; }
 .modale__choix .choix-carte { justify-content: flex-start; text-align: left; min-height: 56px; }
 @media (max-width: 560px) { .modale__choix { grid-template-columns: 1fr; } }
 .modale .avancee { display: none; }
+.sante__accroche { display: flex; gap: 8px; align-items: flex-start; font-size: var(--t-s); color: rgba(255,255,255,.85); }
+.sante__accroche .icone { color: var(--or-clair); flex: none; margin-top: 3px; }
+.sante > .sante__prestations { grid-column: 1 / -1; display: grid; gap: var(--e-4); }
+.sante > .sante__prestations h3 { margin: 0; font-size: var(--t-xl); color: var(--marine); }
+.sante__prestations-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--e-4); }
+.sante__prestation { padding: var(--e-4) var(--e-5); border-radius: var(--r-l); background: #fff; border: 1px solid var(--bordure); border-top: 5px solid var(--teinte, var(--bleu)); box-shadow: var(--ombre-1); animation: cmp-entree .35s var(--courbe) both; }
+.sante__prestation h4 { margin: 0 0 var(--e-3); font-size: var(--t-m); color: var(--marine); }
+.sante__prestation ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: var(--t-s); color: var(--texte); }
+.sante__prestation li { position: relative; padding-left: 26px; }
+.sante__prestation li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 800; background: #E7F5EC; color: var(--succes); }
+.sante__recap .sante__detail li { background: var(--surface); color: var(--marine); }
+.sante__recap-total { display: flex; justify-content: space-between; margin: var(--e-2) 0 0; font-weight: 700; color: var(--marine); }
+.sante__recap-total strong { font-size: var(--t-l); }

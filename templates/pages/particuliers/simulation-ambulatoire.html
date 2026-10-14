@@ -22,6 +22,6 @@
   {{ e.continuer() }}
 </fieldset>
 {{ e.oui_non("interet_hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Chambre à deux lits ou individuelle, libre choix du médecin : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
-{{ e.coordonnees(naissance=False) }}
+{{ e.coordonnees(naissance=False, flou=False) }}
 {{ e.resultat_lca("besoins") }}
 {% endblock %}

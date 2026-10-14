@@ -400,16 +400,27 @@
       var anOk = champAn.checkValidity() && profil.annee > 0;
       champAn.setAttribute("aria-invalid", String(!anOk));
       sante.querySelector("[data-sante-an]").textContent = !anOk ? "Indiquez une année de naissance entre " + champAn.min + " et " + champAn.max + "."
-        : total ? choix.length + (choix.length > 1 ? " couvertures choisies" : " couverture choisie") + " : remplissez vos coordonnées pour recevoir votre prime." : "Choisissez au moins une couverture.";
+        : total ? "soit environ CHF " + Math.round(total * 12).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'") + " par an" : "Choisissez au moins une couverture.";
       sante.querySelector("[data-sante-barre]").innerHTML = choix.map(function (c) {
         return '<span style="flex:' + c.mois + ";background:" + COULEURS[c.fam] + '" title="' + G.modules[c.cle].nom + '"></span>';
       }).join("");
-      sante.querySelector("[data-sante-detail]").innerHTML = choix.map(function (c) {
-        return '<li><span><i style="background:' + COULEURS[c.fam] + '"></i>' + G.modules[c.cle].nom + '</span><strong class="floute" aria-hidden="true">' + chfS(c.mois) + "</strong></li>";
+      var lignes = choix.map(function (c) {
+        return '<li><span><i style="background:' + COULEURS[c.fam] + '"></i>' + G.modules[c.cle].nom + "</span><strong>" + chfS(c.mois) + "</strong></li>";
       }).join("");
-      sante.querySelector("[data-sante-prestations]").innerHTML = choix.map(function (c) {
-        return "<p>" + G.modules[c.cle].nom + "</p><ul>" + G.modules[c.cle].points.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
-      }).join("");
+      sante.querySelector("[data-sante-detail]").innerHTML = lignes;
+      document.querySelectorAll("[data-sante-prestations]").forEach(function (zone) {
+        zone.innerHTML = choix.length ? choix.map(function (c) {
+          var m = G.modules[c.cle];
+          return '<article class="sante__prestation" style="--teinte:' + COULEURS[c.fam] + '"><h4>' + m.nom + '</h4><ul>' + (m.details || m.points).map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul></article>";
+        }).join("") : "<p>Choisissez au moins une couverture pour voir les prestations.</p>";
+      });
+      // Résumé envoyé avec la demande de rappel
+      var res = function (k, v) { var el = document.querySelector('[data-sante-resume="' + k + '"]'); if (el) el.value = v; };
+      res("couverture", choix.map(function (c) { return G.modules[c.cle].nom + " (" + chfS(c.mois) + "/mois)"; }).join(" + "));
+      res("prime", total.toFixed(2));
+      res("profil", "Né(e) en " + (profil.annee || "?") + ", " + (profil.sexe || "") + ", canton " + profil.canton + ", niveau ambulatoire " + profil.niveau);
+      var recap = document.querySelector("[data-sante-recap]");
+      if (recap) recap.innerHTML = '<ul class="sante__detail">' + lignes + '</ul><p class="sante__recap-total"><span>Total estimé</span><span><strong>' + chfS(total) + "</strong> par mois</span></p>";
       // La simulation détaillée reprend les choix faits ici
       var q = new URLSearchParams({ annee_naissance: profil.annee || "", canton: profil.canton, sexe: profil.sexe || "" });
       choix.forEach(function (c) {
@@ -507,7 +518,7 @@
     modale.querySelectorAll("[data-etape-auto]").forEach(function (r) {
       r.addEventListener("change", function () { var k = etapes.indexOf(r.closest("[data-etape]")); setTimeout(function () { aller(k + 1); }, 250); });
     });
-    aller(0);
+    if (etapes.length) aller(0);
     modale.querySelectorAll("[data-etape-precedente]").forEach(function (b) {
       b.addEventListener("click", function () { aller(Math.max(etapes.indexOf(b.closest("[data-etape]")) - 1, 0)); });
     });
@@ -597,7 +608,8 @@
         set("total", chf2(c.total));
         set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
         set("prestations", c.lca.map(function (x) {
-          return '<div class="resultat-prestations__bloc"><p>' + T.modules[x.cle].nom + "</p><ul>" + T.modules[x.cle].points.map(function (pt) { return "<li>" + pt + "</li>"; }).join("") + "</ul></div>";
+          var m = T.modules[x.cle];
+          return '<div class="resultat-prestations__bloc"><p>' + m.nom + "</p><ul>" + (m.details || m.points).map(function (pt) { return "<li>" + pt + "</li>"; }).join("") + "</ul></div>";
         }).join(""));
       } else if (!c.surMesure) {
         set("total", chf2(c.total));
