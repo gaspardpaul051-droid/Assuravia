@@ -607,7 +607,7 @@
       set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
       if (T) {
         funnel.querySelectorAll("[data-prix-lca]").forEach(function (el) { el.textContent = "≈ " + chf2(primeLca(el.getAttribute("data-prix-lca"))) + " / mois"; });
-        set("total_floute", chf2(c.total) + " / mois");
+        set("total_floute", chf2(c.total));
         set("total", chf2(c.total));
         set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
         set("prestations", c.lca.map(function (x) {

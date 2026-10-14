@@ -110,7 +110,7 @@
     <div class="champ"><label for="nom-{{ sim.id }}">Nom</label><input id="nom-{{ sim.id }}" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
     {% endif %}
     {{ f.telephone(sim.id) }}
-    <div class="champ"><label for="email-{{ sim.id }}">E-mail</label><input id="email-{{ sim.id }}" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+    <div class="champ{% if not naissance %} champ--large{% endif %}"><label for="email-{{ sim.id }}">E-mail</label><input id="email-{{ sim.id }}" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
     {% if naissance %}{{ f.naissance(sim.id) }}{% endif %}
   </div>
   <div class="consentement">
@@ -206,13 +206,14 @@
 {# Cartes de modules : type « radio » (un choix) ou « checkbox » (plusieurs). `aucun` ajoute une carte « Aucune ».
    Pas de prix sur les cartes : la prime s'affiche à la fin. #}
 {% macro lca_cartes(nom, cles, type="radio", requis=True, coche=False, aucun=None, groupe=None) -%}
-<div class="formules formules--lca">
+<div class="formules formules--lca formules--n{{ cles|length }}">
   {% for k in cles %}{% set m = complementaires.modules[k] %}
   <label class="formule"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if groupe %} data-groupe-requis="{{ groupe }}"{% endif %}{% if coche %} checked{% endif %}>
+    <span class="formule__tete"><span class="formule__icone">{{ i.icone(m.icone or "bouclier") }}</span><span class="formule__tag">{{ m.tag }}</span><span class="formule__coche formule__coche--{{ type }}" aria-hidden="true"></span></span>
     <span class="formule__nom">{{ m.court }}</span>
     <ul>{% for p in m.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
   {% endfor %}
-  {% if aucun %}<label class="formule formule--aucune"><input type="radio" name="{{ nom }}" value="Aucune"{% if requis %} required{% endif %}><span class="formule__nom">{{ aucun }}</span></label>{% endif %}
+  {% if aucun %}<label class="formule formule--aucune"><input type="radio" name="{{ nom }}" value="Aucune"{% if requis %} required{% endif %}><span class="formule__coche formule__coche--radio" aria-hidden="true"></span><span class="formule__nom">{{ aucun }}</span></label>{% endif %}
 </div>
 {%- endmacro %}
 
