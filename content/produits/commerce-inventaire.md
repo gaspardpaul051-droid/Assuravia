@@ -5,7 +5,7 @@ nom: Commerce et inventaire
 categorie: Biens et exploitation
 icone: colis
 ordre: 5
-titre_seo: Assurance inventaire et commerce pour PME en Suisse romande
+titre_seo: Assurance inventaire et commerce pour PME
 description: Assurance inventaire pour commerces, artisans et PME : marchandises, mobilier, machines, vol, dégâts d'eau et interruption d'exploitation après un sinistre.
 desc: Marchandises, mobilier et machines, plus votre chiffre d'affaires si l'activité s'arrête.
 points: Incendie, eau, vol et éléments naturels | Interruption d'exploitation | Valeur à neuf
@@ -16,6 +16,9 @@ chapeau: Un incendie ou un dégât d'eau ne détruit pas seulement votre matéri
 retenir: L'assurance inventaire couvre mobilier, machines et marchandises contre l'incendie, l'eau, le vol et les éléments naturels | L'interruption d'exploitation paie la marge perdue et les charges qui continuent après un sinistre | Une somme d'assurance trop basse réduit l'indemnité en proportion | Dans le canton de Vaud, l'incendie et les éléments naturels se couvrent auprès de l'ECA
 pour_qui: Vous ouvrez un commerce, un atelier ou un bureau | Vous stockez des marchandises ou des objets de clients | Un arrêt de quelques semaines mettrait votre entreprise en difficulté | Votre bailleur ou votre banque exige une preuve d'assurance
 quiz: Si votre inventaire est assuré pour la moitié de sa valeur, l'assureur paie quand même un petit sinistre en entier. | faux | En cas de sous-assurance, l'indemnité est en principe réduite dans la même proportion, même pour un petit dommage. ;; L'interruption d'exploitation peut couvrir les salaires et le loyer pendant la remise en état des locaux. | vrai | Elle paie la marge brute perdue, qui sert justement à financer les charges fixes, ainsi que des frais supplémentaires pour poursuivre l'activité. ;; L'assurance inventaire couvre aussi les attaques informatiques. | faux | Une assurance inventaire classique ne couvre pas les cyberattaques. Il faut une cyberassurance séparée.
+demande_titre: Vos biens et votre activité protégés
+demande_texte: Décrivez vos locaux et vos biens en 2 minutes : un conseiller vous propose une couverture adaptée.
+demande_points: Incendie, eau, vol et éléments naturels | Interruption d'exploitation | Demande en 2 minutes, sans engagement
 ---
 
 ## Ce que l'assurance protège

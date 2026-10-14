@@ -1,5 +1,5 @@
 {# Question en plein écran pour les formulaires en étapes ([data-etape]) #}
-{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False, facultatif=False) -%}
+{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False, facultatif=False, bouton="prive") -%}
 <fieldset class="modale__etape" data-etape{% if not premier %} hidden{% endif %}>
   <legend class="modale__question">{{ titre }}</legend>
   {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
@@ -8,7 +8,7 @@
   </div>
   <div class="modale__actions">
     {% if not premier %}<button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>{% endif %}
-    {% if type != 'radio' %}<button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>{% endif %}
+    {% if type != 'radio' %}<button type="button" class="bouton bouton--{{ bouton }} modale__suivant" data-etape-suivante>Continuer</button>{% endif %}
   </div>
 </fieldset>
 {%- endmacro %}

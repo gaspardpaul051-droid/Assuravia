@@ -1,0 +1,93 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "cyberassurance" %}
+{% set form_nom = "cyber-entreprise" %}
+{% set h1 = "Demander une offre de cyberassurance" %}
+{% set chapeau = "Décrivez votre activité et votre informatique en 2 minutes. Un conseiller vous rappelle avec une offre adaptée. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous gérons les dossiers de nos patients en ligne." %}
+{% set questions = [
+ {
+  "titre": "Quel est votre domaine d'activité ?",
+  "nom": "secteur",
+  "options": [
+   "Construction et artisanat",
+   "Commerce et vente",
+   "Restauration et hôtellerie",
+   "Santé et thérapies",
+   "Conseil, fiduciaire et services",
+   "Informatique et digital",
+   "Transport et logistique",
+   "Industrie et production",
+   "Autre domaine"
+  ]
+ },
+ {
+  "titre": "Combien de personnes travaillent dans l'entreprise ?",
+  "nom": "effectif",
+  "options": [
+   "Vous seul",
+   "2 à 5",
+   "6 à 20",
+   "21 à 50",
+   "Plus de 50"
+  ],
+  "aide": "Vous compris."
+ },
+ {
+  "titre": "Quel est votre chiffre d'affaires annuel ?",
+  "nom": "chiffre_affaires",
+  "options": [
+   "Moins de CHF 250'000",
+   "CHF 250'000 à 1 million",
+   "CHF 1 à 5 millions",
+   "Plus de CHF 5 millions",
+   "Je préfère ne pas répondre"
+  ],
+  "aide": "Pour une entreprise en création, indiquez le chiffre prévu."
+ },
+ {
+  "titre": "Quelles données gérez-vous ?",
+  "nom": "donnees",
+  "options": [
+   "Des données de santé ou financières",
+   "Des données clients courantes",
+   "Peu ou pas de données personnelles"
+  ]
+ },
+ {
+  "titre": "Votre activité dépend-elle d'internet ?",
+  "nom": "usages",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Vente en ligne",
+   "Paiements par e-banking",
+   "Logiciel métier en ligne",
+   "Télétravail",
+   "Site internet essentiel pour l'activité"
+  ]
+ },
+ {
+  "titre": "Quelles protections avez-vous déjà ?",
+  "nom": "mesures",
+  "type": "checkbox",
+  "facultatif": true,
+  "aide": "Facultatif. Les assureurs posent souvent ces questions.",
+  "options": [
+   "Sauvegardes régulières hors ligne",
+   "Antivirus et mises à jour automatiques",
+   "Double authentification",
+   "Formation des collaborateurs",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Avez-vous déjà subi une attaque informatique ?",
+  "nom": "incident",
+  "options": [
+   "Non",
+   "Oui",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

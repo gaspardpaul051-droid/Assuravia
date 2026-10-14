@@ -5,7 +5,7 @@ nom: Complémentaire maladie
 categorie: Santé
 icone: coeur
 ordre: 3
-titre_seo: Assurance complémentaire maladie en Suisse : bien choisir
+titre_seo: Complémentaire maladie en Suisse : bien choisir
 description: Hospitalisation, dentaire, médecines complémentaires : ce que couvrent les complémentaires LCA, comment les choisir et les changer sans perdre votre couverture.
 desc: Dentaire, hospitalisation, médecines complémentaires : complétez votre LAMal avec les prestations qui comptent pour vous.
 points: Hospitalisation en chambre semi-privée ou privée | Soins dentaires et lunettes | Médecines complémentaires

@@ -1,0 +1,60 @@
+{# Page de demande d'un produit Pro : questions une par une, puis coordonnées. Pas de prime.
+   La page enfant définit : slug (produit), form_nom (Netlify), h1, chapeau, questions (liste de dicts titre, nom, options, aide, type, facultatif). #}
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
+{% extends "base.html" %}
+{% set p = par_slug[slug] %}
+{% block theme %}pro{% endblock %}
+{% block title %}{{ h1 }} | Assuravia{% endblock %}
+{% block description %}{{ chapeau }}{% endblock %}
+{% block content %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Professionnel</a> <span aria-hidden="true">/</span> <a href="{{ p.url }}">{{ p.nom }}</a></nav>
+    <p class="etiquette etiquette--pro">{{ i.icone(p.icone, "icone icone--petite") }} Demande d'offre</p>
+    <h1 class="cmp-page__titre">{{ h1 }}</h1>
+    <p class="chapeau">{{ chapeau }}</p>
+
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir(form_nom, slug) }}
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {% for q in questions %}
+        {{ question(q.titre, q.nom, q.options, aide=q.aide, type=q.type or "radio", premier=loop.first, facultatif=q.facultatif, bouton="pro") }}
+        {% endfor %}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <p class="fe__aide">Un conseiller vous rappelle pour compléter votre dossier, puis vous présente les offres adaptées. Gratuit et sans engagement.</p>
+          <div class="grille-champs">
+            <div class="champ"><label for="entreprise-dp">Nom de l'entreprise <span class="facultatif">(facultatif si en création)</span></label><input id="entreprise-dp" name="entreprise" autocomplete="organization" placeholder="Dupont Sàrl"></div>
+            <div class="champ"><label for="fonction-dp">Votre fonction</label><select id="fonction-dp" name="fonction" required><option value="">Choisir</option>{% for x in ["Propriétaire ou associé", "Direction", "Administration ou finances", "Ressources humaines", "Autre"] %}<option>{{ x }}</option>{% endfor %}</select></div>
+            <div class="champ"><label for="prenom-dp">Prénom</label><input id="prenom-dp" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-dp">Nom</label><input id="nom-dp" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("dp") }}
+            <div class="champ"><label for="email-dp">E-mail</label><input id="email-dp" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@entreprise.ch"></div>
+            <div class="champ">
+              <label for="moment-dp">Quand vous rappeler ?</label>
+              <select id="moment-dp" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          {{ f.adresse("entreprise") }}
+          <div class="champ">
+            <label for="message-dp">Précisions <span class="facultatif">(facultatif)</span></label>
+            <textarea id="message-dp" name="message" placeholder="{{ exemple_message or "Ex. Nous ouvrons un deuxième site en janvier." }}"></textarea>
+          </div>
+          {{ f.fermer("Être rappelé par un conseiller", "dp") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

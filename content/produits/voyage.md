@@ -5,7 +5,7 @@ nom: Assurance voyage
 categorie: Protection
 icone: avion
 ordre: 7
-titre_seo: Assurance voyage en Suisse : annulation, frais médicaux
+titre_seo: Assurance voyage : annulation et frais médicaux
 description: Annulation, rapatriement, frais médicaux à l'étranger : ce que la LAMal ne paie pas en voyage, ce que couvre une assurance voyage, comment éviter les doublons.
 desc: Annulation, rapatriement et frais médicaux à l'étranger pour voyager l'esprit tranquille.
 points: Frais d'annulation remboursés | Rapatriement et assistance 24 h sur 24 | Frais médicaux à l'étranger

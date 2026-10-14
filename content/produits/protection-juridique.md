@@ -5,7 +5,7 @@ nom: Protection juridique
 categorie: Protection
 icone: balance
 ordre: 6
-titre_seo: Protection juridique en Suisse : privée et circulation
+titre_seo: Protection juridique privée et circulation
 description: Protection juridique privée et circulation : avocat, frais de justice en cas de litige avec un employeur, une régie ou après un accident. Couverture et limites.
 desc: Avocat, expertises et frais de justice pris en charge en cas de litige au travail, au logement ou sur la route.
 points: Conseil juridique par des spécialistes | Frais d'avocat et de procédure | Litiges privés et de la circulation

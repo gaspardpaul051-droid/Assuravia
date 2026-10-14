@@ -1,0 +1,78 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "techniques" %}
+{% set form_nom = "techniques" %}
+{% set h1 = "Demander une offre d'assurance technique" %}
+{% set chapeau = "Machines, électronique, chantier ou montage : dites-nous ce que vous voulez protéger. Un conseiller vous rappelle avec une offre adaptée. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous venons d'acheter une machine CNC." %}
+{% set questions = [
+ {
+  "titre": "Que voulez-vous assurer ?",
+  "nom": "objets",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Machines de production ou d'atelier",
+   "Matériel électronique et informatique",
+   "Appareils médicaux ou de laboratoire",
+   "Engins de chantier",
+   "Un chantier de construction",
+   "Le montage d'une installation"
+  ]
+ },
+ {
+  "titre": "Quel est votre domaine d'activité ?",
+  "nom": "secteur",
+  "options": [
+   "Construction et artisanat",
+   "Commerce et vente",
+   "Restauration et hôtellerie",
+   "Santé et thérapies",
+   "Conseil, fiduciaire et services",
+   "Informatique et digital",
+   "Transport et logistique",
+   "Industrie et production",
+   "Autre domaine"
+  ]
+ },
+ {
+  "titre": "Quelle est la valeur à neuf du matériel ?",
+  "nom": "valeur_materiel",
+  "options": [
+   "Moins de CHF 50'000",
+   "CHF 50'000 à 250'000",
+   "CHF 250'000 à 1 million",
+   "Plus de CHF 1 million",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Quel âge a votre matériel ?",
+  "nom": "age_materiel",
+  "options": [
+   "Moins de 3 ans",
+   "3 à 7 ans",
+   "Plus de 7 ans",
+   "C'est variable"
+  ]
+ },
+ {
+  "titre": "Un arrêt de ces machines bloquerait-il votre activité ?",
+  "nom": "interet_perte_exploitation",
+  "options": [
+   "Oui, je veux couvrir la perte d'exploitation",
+   "Non, nous pouvons continuer",
+   "Je ne sais pas"
+  ],
+  "aide": "Une option peut payer la marge perdue et les frais pendant la réparation."
+ },
+ {
+  "titre": "Avez-vous déjà une assurance technique ?",
+  "nom": "assurance_actuelle",
+  "options": [
+   "Oui, je veux comparer ou améliorer",
+   "Non, c'est une première",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

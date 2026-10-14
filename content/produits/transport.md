@@ -5,7 +5,7 @@ nom: Assurance transport
 categorie: Biens et exploitation
 icone: camion
 ordre: 6
-titre_seo: Assurance transport de marchandises pour entreprises suisses
+titre_seo: Assurance transport de marchandises PME
 description: Assurance transport de marchandises en Suisse et à l'étranger : limites du transporteur, Incoterms, police annuelle ou au voyage, que faire en cas de dommage.
 desc: Vos marchandises couvertes en Suisse et à l'étranger, par route, rail, air ou mer.
 points: Couverture de porte à porte | Police annuelle ou au voyage | Import, export et transports propres
@@ -16,6 +16,9 @@ chapeau: Quand une marchandise est perdue ou abîmée en route, le transporteur 
 retenir: Le transporteur ne répond des dommages que dans des limites souvent calculées au kilo | L'assurance transport couvre la valeur de la marchandise, même quand le transporteur n'est pas responsable | L'Incoterm de votre contrat de vente dit qui doit assurer | Une police annuelle couvre automatiquement tous vos envois
 pour_qui: Vous expédiez ou importez des marchandises régulièrement | Vous envoyez des produits légers mais de grande valeur | Vous transportez vos marchandises ou votre outillage avec vos propres véhicules | Vos clients à l'étranger vous demandent une livraison assurée
 quiz: Le transporteur rembourse toujours la valeur complète d'une marchandise perdue. | faux | Sa responsabilité est limitée par la loi ou les conventions internationales, souvent selon le poids. Pour un produit léger et cher, l'indemnité est faible. ;; L'Incoterm choisi dans le contrat de vente détermine qui supporte le risque pendant le transport. | vrai | Chaque Incoterm fixe le moment où le risque passe du vendeur à l'acheteur, et donc qui a intérêt à assurer chaque étape. ;; Une police annuelle oblige à annoncer chaque envoi avant le départ pour qu'il soit couvert. | faux | La police annuelle couvre en principe automatiquement les envois prévus au contrat. Les envois sont déclarés périodiquement pour le calcul de la prime.
+demande_titre: Vos marchandises bien assurées
+demande_texte: Décrivez vos envois en 2 minutes : un conseiller vous propose une police annuelle ou au voyage.
+demande_points: Route, rail, air, mer et coursiers | Suisse, Europe et monde entier | Demande en 2 minutes, sans engagement
 ---
 
 ## Pourquoi la responsabilité du transporteur ne suffit pas

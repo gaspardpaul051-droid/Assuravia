@@ -5,7 +5,7 @@ nom: Véhicules d'entreprise
 categorie: Biens et exploitation
 icone: voiture
 ordre: 8
-titre_seo: Assurance véhicule d'entreprise et flotte en Suisse romande
+titre_seo: Assurance véhicules d'entreprise et flotte
 description: Voitures de service, utilitaires, camions : RC obligatoire, casco, flotte, passagers et outillage. Comment bien assurer les véhicules de votre entreprise.
 desc: Voitures de service, utilitaires et camions bien assurés, un par un ou en flotte.
 points: RC véhicule, casco partielle ou complète | Contrat de flotte pour plusieurs véhicules | Outillage et marchandises transportés
@@ -16,6 +16,9 @@ chapeau: Un utilitaire immobilisé, c'est un chantier qui attend. Une bonne assu
 retenir: La RC véhicule est obligatoire, sans elle pas de plaques | La casco et la couverture de l'outillage sont facultatives mais souvent indispensables | Dès quelques véhicules, un contrat de flotte simplifie la gestion | Les trajets professionnels avec des voitures privées méritent une couverture à part
 pour_qui: Vous utilisez une camionnette ou un utilitaire pour vos chantiers | Vous mettez des voitures de service à disposition de vos collaborateurs | Vous transportez de l'outillage ou des marchandises de valeur | Vos employés font des trajets professionnels avec leur propre voiture
 quiz: En Suisse, un véhicule peut être immatriculé sans assurance responsabilité civile | faux | Une attestation d'assurance RC valable est exigée pour obtenir le permis de circulation et les plaques ;; La casco partielle couvre les dégâts à votre véhicule quand vous causez une collision | faux | Les dégâts de collision dont vous êtes responsable relèvent de la casco complète. La casco partielle couvre notamment le vol, l'incendie, le bris de glace et la grêle ;; L'outillage rangé dans un utilitaire n'est pas toujours couvert par la casco | vrai | La casco couvre le véhicule. Le contenu demande souvent une couverture spécifique pour l'outillage et les marchandises transportées
+demande_titre: Vos véhicules d'entreprise assurés
+demande_texte: Décrivez vos véhicules et leur usage : un conseiller compare les offres, en contrats séparés ou en flotte.
+demande_points: Voitures, utilitaires, camions et engins | RC, casco partielle ou complète | Demande en 2 minutes, sans engagement
 ---
 
 ## Ce qui est obligatoire, et ce qui ne l'est pas

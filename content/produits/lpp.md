@@ -16,6 +16,9 @@ chapeau: La prévoyance professionnelle est obligatoire dès votre premier emplo
 retenir: Un employé qui gagne plus de CHF 22'680 par an chez vous doit être affilié à une caisse de pension | L'employeur finance au moins la moitié des cotisations | Le minimum légal assure peu les salaires moyens et élevés, un plan plus large est souvent utile | Une caisse se compare sur sa solidité, ses frais, la rémunération des avoirs et la qualité de son service
 pour_qui: Vous engagez un premier employé au-dessus du seuil LPP | Vous créez une Sàrl ou une SA et vous vous versez un salaire | Vous voulez mieux protéger vos cadres ou vous-même | Votre caisse actuelle augmente ses frais ou baisse ses prestations
 quiz: Un employé qui gagne CHF 20'000 par an chez vous doit être affilié à la LPP obligatoire. | faux | En 2026, l'assurance obligatoire commence au-delà de CHF 22'680 de salaire annuel chez le même employeur. La caisse peut toutefois prévoir un seuil plus bas dans son règlement. ;; La part de l'employeur doit être au moins égale à celle des employés. | vrai | La loi exige que les cotisations de l'employeur soient au moins égales à celles de l'ensemble des salariés. Beaucoup d'entreprises paient davantage. ;; Les jeunes employés cotisent pour leur retraite dès leur premier emploi à 18 ans. | faux | Avant 25 ans, l'assurance obligatoire couvre seulement l'invalidité et le décès. L'épargne retraite commence le 1er janvier qui suit le 24e anniversaire.
+demande_titre: Une caisse de pension adaptée à votre entreprise
+demande_texte: Quelques questions sur vos collaborateurs : un spécialiste compare les fondations collectives et vous rappelle.
+demande_points: Premier employé, création ou changement de caisse | Solutions pour dirigeants et cadres | Analyse gratuite, sans engagement
 ---
 
 ## Vos obligations d'employeur

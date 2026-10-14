@@ -1,0 +1,99 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "pgm" %}
+{% set form_nom = "perte-de-gain-maladie" %}
+{% set h1 = "Demander une offre de perte de gain maladie" %}
+{% set chapeau = "Quelques questions sur votre équipe et la couverture souhaitée. Un conseiller compare les offres et vous rappelle. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Notre convention collective impose une couverture." %}
+{% set questions = [
+ {
+  "titre": "Quelle est votre situation ?",
+  "nom": "situation",
+  "options": [
+   "J'engage mes premiers employés",
+   "Je veux changer d'assureur",
+   "Je veux revoir ma couverture",
+   "Je crée mon entreprise",
+   "Autre situation"
+  ]
+ },
+ {
+  "titre": "Quel est votre domaine d'activité ?",
+  "nom": "secteur",
+  "options": [
+   "Construction et artisanat",
+   "Commerce et vente",
+   "Restauration et hôtellerie",
+   "Santé et thérapies",
+   "Conseil, fiduciaire et services",
+   "Informatique et digital",
+   "Transport et logistique",
+   "Industrie et production",
+   "Autre domaine"
+  ]
+ },
+ {
+  "titre": "Combien de personnes travaillent dans l'entreprise ?",
+  "nom": "effectif",
+  "options": [
+   "Vous seul",
+   "2 à 5",
+   "6 à 20",
+   "21 à 50",
+   "Plus de 50"
+  ],
+  "aide": "Vous compris."
+ },
+ {
+  "titre": "Quelle est la masse salariale annuelle ?",
+  "nom": "masse_salariale",
+  "options": [
+   "Moins de CHF 250'000",
+   "CHF 250'000 à 1 million",
+   "CHF 1 à 3 millions",
+   "Plus de CHF 3 millions",
+   "Je préfère ne pas répondre"
+  ],
+  "aide": "Total des salaires bruts AVS de l'année."
+ },
+ {
+  "titre": "Quel pourcentage du salaire voulez-vous assurer ?",
+  "nom": "taux_couverture",
+  "options": [
+   "80 %",
+   "90 %",
+   "100 %",
+   "Je ne sais pas, conseillez-moi"
+  ]
+ },
+ {
+  "titre": "Quel délai d'attente avant les indemnités ?",
+  "nom": "delai_attente",
+  "options": [
+   "Moins de 30 jours",
+   "30 jours",
+   "60 jours",
+   "90 jours ou plus",
+   "Je ne sais pas, conseillez-moi"
+  ],
+  "aide": "Pendant ce délai, c'est l'entreprise qui paie le salaire. Un délai plus long réduit la prime."
+ },
+ {
+  "titre": "Êtes-vous soumis à une convention collective (CCT) ?",
+  "nom": "cct",
+  "options": [
+   "Oui",
+   "Non",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Avez-vous déjà une perte de gain maladie ?",
+  "nom": "assurance_actuelle",
+  "options": [
+   "Oui, je veux comparer ou améliorer",
+   "Non, c'est une première",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

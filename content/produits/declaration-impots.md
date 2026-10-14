@@ -6,7 +6,7 @@ categorie: Prévoyance, placement et impôts
 icone: calcul
 ordre: 3
 formulaire: impots
-titre_seo: Déclaration d'impôts en Suisse romande : aide et déductions
+titre_seo: Déclaration d'impôts en Suisse romande : aide
 description: Déclaration d'impôts en Suisse romande : un spécialiste la remplit ou la vérifie, repère les déductions oubliées et prépare avec vous l'année suivante.
 desc: Un spécialiste remplit ou vérifie votre déclaration et repère les déductions oubliées.
 points: Déclaration remplie ou vérifiée | Déductions oubliées repérées | Conseils pour payer moins l'an prochain

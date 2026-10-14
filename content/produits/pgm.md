@@ -5,7 +5,7 @@ nom: Perte de gain maladie
 categorie: Personnel
 icone: thermometre
 ordre: 4
-titre_seo: Assurance perte de gain maladie pour entreprises en Suisse
+titre_seo: Perte de gain maladie pour entreprises
 description: Perte de gain maladie pour employeurs : obligation de payer le salaire, délai d'attente, 80 % pendant 720 jours, CCT. Ce qu'il faut vérifier avant de signer.
 desc: Maintenez le salaire d'un employé malade sans mettre votre trésorerie en danger.
 points: 80 % du salaire pendant 720 jours | Délai d'attente au choix | Conforme à votre CCT
@@ -16,6 +16,9 @@ chapeau: Sans assurance, l'employeur doit continuer à verser le salaire d'un em
 retenir: Sans assurance, vous payez vous-même le salaire d'un employé malade pendant une durée qui dépend de son ancienneté | La solution courante verse 80 % du salaire pendant 720 jours sur une période de 900 jours | Plus le délai d'attente est long, plus vous payez le salaire vous-même au début de la maladie | De nombreuses CCT rendent cette assurance obligatoire et en fixent les conditions
 pour_qui: Vous engagez vos premiers employés | Votre convention collective impose une assurance perte de gain | Une longue absence mettrait votre trésorerie en difficulté | Vous êtes indépendant et vivez de votre seul revenu
 quiz: L'assurance perte de gain maladie est obligatoire par la loi pour tous les employeurs. | faux | Aucune loi fédérale ne l'impose en général. Elle est toutefois souvent exigée par une CCT ou par le contrat de travail. ;; Pendant le délai d'attente, c'est l'employeur qui paie le salaire de l'employé malade. | vrai | L'assureur ne verse ses indemnités qu'après le délai d'attente choisi. Avant, l'obligation de payer le salaire reste à la charge de l'employeur. ;; Pour libérer l'employeur de son obligation légale, l'assurance doit offrir des prestations au moins équivalentes. | vrai | Les tribunaux admettent en général qu'une couverture de 80 % du salaire pendant 720 jours sur 900, avec une prime payée au moins pour moitié par l'employeur, est équivalente.
+demande_titre: Votre perte de gain maladie
+demande_texte: Taux, délai d'attente, convention collective : décrivez vos besoins, un conseiller compare les offres.
+demande_points: Salaires couverts pendant la maladie | Délai d'attente sur mesure | Demande en 2 minutes, sans engagement
 ---
 
 ## Ce que dit la loi

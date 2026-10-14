@@ -5,7 +5,7 @@ nom: Assurance ménage
 categorie: Logement et biens
 icone: maison
 ordre: 4
-titre_seo: Assurance ménage en Suisse romande : calcul et conseils
+titre_seo: Assurance ménage en Suisse romande : calcul
 description: Assurance ménage : vol, incendie, dégâts d'eau, éléments naturels. Calculez votre prime en 2 minutes et combinez-la avec votre RC privée.
 desc: Vol, incendie, dégâts d'eau : vos affaires protégées à leur juste valeur, seules ou avec votre RC privée.
 points: Vol, incendie et dégâts d'eau | Valeur à neuf de vos biens | Combinable avec la RC privée

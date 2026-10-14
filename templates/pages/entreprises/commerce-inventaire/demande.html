@@ -1,0 +1,87 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "commerce-inventaire" %}
+{% set form_nom = "commerce-inventaire" %}
+{% set h1 = "Demander une offre d'assurance inventaire" %}
+{% set chapeau = "Décrivez vos locaux et vos biens. Un conseiller vous propose une couverture adaptée, avec l'interruption d'exploitation si besoin. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous ouvrons une boutique en mars." %}
+{% set questions = [
+ {
+  "titre": "Quel type d'activité exercez-vous ?",
+  "nom": "type_activite",
+  "options": [
+   "Commerce ou magasin",
+   "Atelier ou artisanat",
+   "Bureau",
+   "Restaurant ou café",
+   "Cabinet (santé, beauté)",
+   "Entrepôt ou dépôt",
+   "Autre"
+  ]
+ },
+ {
+  "titre": "Vos locaux",
+  "nom": "locaux",
+  "options": [
+   "Je suis locataire",
+   "Je suis propriétaire"
+  ]
+ },
+ {
+  "titre": "Quelle est la surface de vos locaux ?",
+  "nom": "surface",
+  "options": [
+   "Moins de 50 m²",
+   "50 à 150 m²",
+   "150 à 500 m²",
+   "Plus de 500 m²"
+  ]
+ },
+ {
+  "titre": "Quelle est la valeur à neuf de vos biens ?",
+  "nom": "valeur_inventaire",
+  "options": [
+   "Moins de CHF 50'000",
+   "CHF 50'000 à 150'000",
+   "CHF 150'000 à 500'000",
+   "Plus de CHF 500'000",
+   "Je ne sais pas"
+  ],
+  "aide": "Mobilier, machines, marchandises et installations."
+ },
+ {
+  "titre": "Contre quoi voulez-vous être protégé ?",
+  "nom": "risques",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Incendie et éléments naturels",
+   "Dégâts d'eau",
+   "Vol et cambriolage",
+   "Bris de glaces et vitrines",
+   "Arrêt de l'activité après un sinistre",
+   "Biens confiés par vos clients"
+  ]
+ },
+ {
+  "titre": "Quel est votre chiffre d'affaires annuel ?",
+  "nom": "chiffre_affaires",
+  "options": [
+   "Moins de CHF 250'000",
+   "CHF 250'000 à 1 million",
+   "CHF 1 à 5 millions",
+   "Plus de CHF 5 millions",
+   "Je préfère ne pas répondre"
+  ],
+  "aide": "Pour une entreprise en création, indiquez le chiffre prévu."
+ },
+ {
+  "titre": "Avez-vous déjà une assurance inventaire ?",
+  "nom": "assurance_actuelle",
+  "options": [
+   "Oui, je veux comparer ou améliorer",
+   "Non, c'est une première",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

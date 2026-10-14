@@ -1,8 +1,12 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
 {% block theme %}pro{% endblock %}
-{% block title %}RC professionnelle en Suisse romande : comparer les offres | Assuravia{% endblock %}
-{% block description %}Responsabilité civile professionnelle pour indépendants et PME en Suisse romande. Décrivez votre activité en 2 minutes, un conseiller compare les offres pour vous. Gratuit.{% endblock %}
+{% block title %}RC professionnelle PME et indépendants | Assuravia{% endblock %}
+{% block description %}RC professionnelle pour indépendants et PME de Suisse romande : ce qu'elle couvre, ce qui fait varier le prix, et votre estimation de prime en 2 minutes.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Je suis indépendant et je travaille seul, en ai-je besoin ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, si un client peut subir un dommage à cause de votre travail. Votre RC privée ne couvre pas votre activité professionnelle, et en raison individuelle vous répondez des dettes de l'entreprise sur vos biens personnels."}}, {"@type": "Question", "name": "Puis-je changer d'assureur en cours de contrat ?", "acceptedAnswer": {"@type": "Answer", "text": "En principe, à l'échéance, en respectant le délai de résiliation prévu par votre contrat (souvent 3 mois). Le conseiller en tient compte pour préparer les offres à temps."}}, {"@type": "Question", "name": "Mon entreprise est en cours de création, puis-je déjà demander une offre ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui. C'est même le bon moment, car certains clients ou bailleurs demandent une attestation d'assurance dès le début."}}, {"@type": "Question", "name": "Combien de temps pour recevoir une offre ?", "acceptedAnswer": {"@type": "Answer", "text": "Le conseiller vous rappelle pour compléter votre dossier, puis vous transmet les offres. Le délai dépend de votre activité et des assureurs sollicités."}}]}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": "Professionnel", "item": site_url ~ "/entreprises/"}, {"@type": "ListItem", "position": 3, "name": "RC professionnelle", "item": site_url ~ "/entreprises/rc-professionnelle/"}]}|tojson }}</script>
+{% endblock %}
 {% block content %}
 <section class="produit">
   <div class="cadre produit__grille">

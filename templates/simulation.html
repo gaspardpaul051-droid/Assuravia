@@ -5,6 +5,9 @@
 {% block theme %}{{ sim.theme }}{% endblock %}
 {% block title %}{{ sim.titre }} | Assuravia{% endblock %}
 {% block description %}{{ sim.description }}{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": groupes[sim.groupe].nom, "item": site_url ~ groupes[sim.groupe].url}, {"@type": "ListItem", "position": 3, "name": sim.produit_nom, "item": site_url ~ sim.page}, {"@type": "ListItem", "position": 4, "name": sim.h1, "item": site_url ~ url}]}|tojson }}</script>
+{% endblock %}
 {% block content %}
 {% set g = groupes[sim.groupe] %}
 <section class="funnel-page funnel-page--{{ sim.theme }}">

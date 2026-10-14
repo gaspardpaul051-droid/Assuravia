@@ -5,7 +5,7 @@ nom: Ambulatoire et médecines douces
 categorie: Santé
 icone: coeur
 ordre: 5
-titre_seo: Complémentaire médecines douces et ambulatoire : estimer sa prime
+titre_seo: Complémentaire médecines douces : votre prime
 description: Ostéopathie, acupuncture, lunettes, médicaments hors liste, prévention : ce que couvre une complémentaire ambulatoire, et une estimation de prime en 2 minutes.
 desc: Ostéopathie, lunettes, médicaments hors liste, prévention : les soins du quotidien que la LAMal laisse de côté.
 points: Médecines douces reconnues | Lunettes, lentilles et prévention | Urgences à l'étranger

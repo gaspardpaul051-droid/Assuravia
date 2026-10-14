@@ -1,0 +1,93 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "protection-juridique-entreprise" %}
+{% set form_nom = "pj-entreprise" %}
+{% set h1 = "Demander une offre de protection juridique d'entreprise" %}
+{% set chapeau = "Quelques questions sur votre entreprise et les litiges à couvrir. Un conseiller compare les offres et vous rappelle. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous avons 4 employés et louons un atelier." %}
+{% set questions = [
+ {
+  "titre": "Quelle est la forme juridique de votre entreprise ?",
+  "nom": "forme_juridique",
+  "options": [
+   "Raison individuelle",
+   "Sàrl",
+   "SA",
+   "Société de personnes (SNC, SCm)",
+   "Association ou fondation",
+   "En cours de création"
+  ]
+ },
+ {
+  "titre": "Quel est votre domaine d'activité ?",
+  "nom": "secteur",
+  "options": [
+   "Construction et artisanat",
+   "Commerce et vente",
+   "Restauration et hôtellerie",
+   "Santé et thérapies",
+   "Conseil, fiduciaire et services",
+   "Informatique et digital",
+   "Transport et logistique",
+   "Industrie et production",
+   "Autre domaine"
+  ]
+ },
+ {
+  "titre": "Combien de personnes travaillent dans l'entreprise ?",
+  "nom": "effectif",
+  "options": [
+   "Vous seul",
+   "2 à 5",
+   "6 à 20",
+   "21 à 50",
+   "Plus de 50"
+  ],
+  "aide": "Vous compris."
+ },
+ {
+  "titre": "Quels domaines voulez-vous couvrir ?",
+  "nom": "domaines",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Droit du travail (employés)",
+   "Contrats avec clients et fournisseurs",
+   "Recouvrement de factures impayées",
+   "Bail commercial",
+   "Circulation (véhicules de l'entreprise)",
+   "Assurances sociales",
+   "Défense pénale",
+   "Protection des données",
+   "Je ne sais pas, conseillez-moi"
+  ]
+ },
+ {
+  "titre": "Vos locaux professionnels",
+  "nom": "locaux",
+  "options": [
+   "Je suis locataire",
+   "Je suis propriétaire",
+   "Pas de locaux (domicile, chantiers)"
+  ]
+ },
+ {
+  "titre": "Avez-vous déjà une protection juridique d'entreprise ?",
+  "nom": "assurance_actuelle",
+  "options": [
+   "Oui, je veux comparer ou améliorer",
+   "Non, c'est une première",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Avez-vous un litige en cours ou qui se prépare ?",
+  "nom": "litige_en_cours",
+  "options": [
+   "Non",
+   "Oui",
+   "Je ne sais pas"
+  ],
+  "aide": "Un litige qui existe déjà avant la signature n'est en général pas couvert. Le conseiller vous oriente dans tous les cas."
+ }
+] %}
+{% extends "demande-pro.html" %}

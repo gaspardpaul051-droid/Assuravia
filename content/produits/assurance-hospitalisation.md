@@ -5,8 +5,8 @@ nom: Assurance hospitalisation
 categorie: Santé
 icone: croix
 ordre: 4
-titre_seo: Assurance hospitalisation demi-privée ou privée : estimer sa prime
-description: Commune, au choix le jour venu, demi-privée ou privée : ce que couvre une assurance hospitalisation complémentaire en Suisse, et une estimation de prime en 2 minutes.
+titre_seo: Assurance hospitalisation : estimer sa prime
+description: Chambre commune, demi-privée ou privée : ce que couvre une assurance hospitalisation et une estimation de prime en 2 minutes, sans engagement.
 desc: Chambre à deux lits ou individuelle, libre choix du médecin : choisissez votre confort à l'hôpital.
 points: Commune, demi-privée ou privée | Libre choix du médecin à l'hôpital | Aide à domicile après le séjour
 badge: Estimation en 2 min

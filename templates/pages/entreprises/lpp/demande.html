@@ -1,0 +1,90 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "lpp" %}
+{% set form_nom = "lpp" %}
+{% set h1 = "Demander une analyse LPP pour votre entreprise" %}
+{% set chapeau = "Quelques questions sur votre entreprise et vos collaborateurs. Un spécialiste compare les fondations collectives et vous rappelle. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Notre contrat arrive à échéance en décembre." %}
+{% set questions = [
+ {
+  "titre": "Quelle est votre situation ?",
+  "nom": "situation",
+  "options": [
+   "J'engage mon premier employé",
+   "Je crée mon entreprise",
+   "Je veux changer de caisse de pension",
+   "Je veux mieux assurer les cadres ou moi-même",
+   "Autre situation"
+  ]
+ },
+ {
+  "titre": "Quelle est la forme juridique de votre entreprise ?",
+  "nom": "forme_juridique",
+  "options": [
+   "Raison individuelle",
+   "Sàrl",
+   "SA",
+   "Société de personnes (SNC, SCm)",
+   "Association ou fondation",
+   "En cours de création"
+  ]
+ },
+ {
+  "titre": "Combien de personnes faut-il assurer ?",
+  "nom": "nb_assures",
+  "options": [
+   "1",
+   "2 à 5",
+   "6 à 20",
+   "21 à 50",
+   "Plus de 50"
+  ],
+  "aide": "Vous compris, si vous vous versez un salaire."
+ },
+ {
+  "titre": "Quelle est la masse salariale annuelle ?",
+  "nom": "masse_salariale",
+  "options": [
+   "Moins de CHF 250'000",
+   "CHF 250'000 à 1 million",
+   "CHF 1 à 3 millions",
+   "Plus de CHF 3 millions",
+   "Je préfère ne pas répondre"
+  ],
+  "aide": "Total des salaires bruts AVS de l'année."
+ },
+ {
+  "titre": "Quel est l'âge moyen de vos collaborateurs ?",
+  "nom": "age_moyen",
+  "options": [
+   "Moins de 35 ans",
+   "35 à 45 ans",
+   "45 à 55 ans",
+   "Plus de 55 ans",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Qu'est-ce qui compte le plus pour vous ?",
+  "nom": "priorites",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Le coût des cotisations",
+   "L'intérêt crédité sur les avoirs",
+   "La couverture décès et invalidité",
+   "Une solution pour les dirigeants",
+   "La simplicité de gestion en ligne"
+  ]
+ },
+ {
+  "titre": "Où sont assurés vos collaborateurs aujourd'hui ?",
+  "nom": "caisse_actuelle",
+  "options": [
+   "Nulle part, c'est une première",
+   "Dans une fondation collective",
+   "Dans une caisse de branche",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

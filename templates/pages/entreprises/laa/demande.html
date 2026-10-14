@@ -1,0 +1,81 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "laa" %}
+{% set form_nom = "laa" %}
+{% set h1 = "Demander une offre d'assurance accidents LAA" %}
+{% set chapeau = "Quelques questions sur votre entreprise et vos collaborateurs. Un conseiller compare les offres LAA et complémentaires, puis vous rappelle. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous engageons deux apprentis en août." %}
+{% set questions = [
+ {
+  "titre": "Quelle est votre situation ?",
+  "nom": "situation",
+  "options": [
+   "J'engage mon premier employé",
+   "Je crée mon entreprise",
+   "Je veux changer d'assureur",
+   "Je veux revoir ma couverture",
+   "Autre situation"
+  ]
+ },
+ {
+  "titre": "Quel est votre domaine d'activité ?",
+  "nom": "secteur",
+  "options": [
+   "Construction et artisanat",
+   "Commerce et vente",
+   "Restauration et hôtellerie",
+   "Santé et thérapies",
+   "Conseil, fiduciaire et services",
+   "Informatique et digital",
+   "Transport et logistique",
+   "Industrie et production",
+   "Autre domaine"
+  ]
+ },
+ {
+  "titre": "Combien de personnes travaillent dans l'entreprise ?",
+  "nom": "effectif",
+  "options": [
+   "Vous seul",
+   "2 à 5",
+   "6 à 20",
+   "21 à 50",
+   "Plus de 50"
+  ],
+  "aide": "Vous compris."
+ },
+ {
+  "titre": "Quelle est la masse salariale annuelle ?",
+  "nom": "masse_salariale",
+  "options": [
+   "Moins de CHF 250'000",
+   "CHF 250'000 à 1 million",
+   "CHF 1 à 3 millions",
+   "Plus de CHF 3 millions",
+   "Je préfère ne pas répondre"
+  ],
+  "aide": "Total des salaires bruts AVS de l'année."
+ },
+ {
+  "titre": "Souhaitez-vous aller au-delà du minimum légal ?",
+  "nom": "complements",
+  "type": "checkbox",
+  "facultatif": true,
+  "aide": "Facultatif. Plusieurs choix possibles.",
+  "options": [
+   "Complémentaire LAA (salaires au-dessus du plafond)",
+   "Hospitalisation en division privée",
+   "Couverture du dirigeant",
+   "Perte de gain maladie"
+  ]
+ },
+ {
+  "titre": "Avez-vous déjà une assurance LAA ?",
+  "nom": "assurance_actuelle",
+  "options": [
+   "Oui, je veux comparer ou améliorer",
+   "Non, c'est une première",
+   "Je ne sais pas"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

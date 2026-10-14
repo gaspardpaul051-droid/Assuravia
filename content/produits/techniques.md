@@ -5,7 +5,7 @@ nom: Assurances techniques
 categorie: Biens et exploitation
 icone: engrenage
 ordre: 7
-titre_seo: Assurance bris de machines et électronique pour PME en Suisse
+titre_seo: Assurance bris de machines pour PME
 description: Bris de machines, matériel électronique, chantiers et montage : ce que couvrent les assurances techniques, ce qu'elles excluent et comment bien les choisir.
 desc: Bris de machines, matériel électronique et chantiers couverts contre les dommages imprévus.
 points: Bris de machines | Matériel électronique et informatique | Travaux de construction et montage
@@ -16,6 +16,9 @@ chapeau: Une machine qui casse, un serveur grillé par une surtension, une erreu
 retenir: L'assurance inventaire couvre surtout l'incendie, l'eau et le vol, pas la casse d'une machine | Les assurances techniques couvrent les dommages soudains et imprévus, pas l'usure | Une option perte d'exploitation paie le revenu perdu pendant la réparation | Une liste d'équipements à jour et une valeur à neuf correcte évitent les mauvaises surprises
 pour_qui: Vous travaillez avec des machines de production ou d'atelier | Vous avez un cabinet médical, dentaire ou un laboratoire bien équipé | Vous menez un chantier ou installez des équipements chez vos clients | Votre activité s'arrête si vos ordinateurs ou votre caisse tombent en panne
 quiz: L'assurance inventaire couvre toujours une machine cassée par une erreur de manipulation | faux | L'assurance inventaire couvre surtout l'incendie, les dégâts d'eau et le vol. La casse due à une fausse manœuvre relève en général de l'assurance bris de machines ;; L'usure normale d'une machine est couverte par l'assurance bris de machines | faux | Seul l'événement soudain et imprévu est assuré. L'usure, la corrosion progressive et le manque d'entretien sont exclus ;; Une assurance électronique peut prendre en charge la reconstitution des données après un dommage au matériel | vrai | Beaucoup de contrats incluent ou proposent en option les frais de reconstitution des données, avec une limite fixée dans la police
+demande_titre: Votre matériel protégé contre la casse
+demande_texte: Machines, électronique, chantier ou montage : décrivez ce que vous voulez protéger, un conseiller vous rappelle.
+demande_points: Bris de machines et électronique | Option perte d'exploitation | Demande en 2 minutes, sans engagement
 ---
 
 ## Pourquoi une assurance technique en plus de l'inventaire ?

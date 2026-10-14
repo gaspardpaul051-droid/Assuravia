@@ -5,7 +5,7 @@ nom: Protection juridique d'entreprise
 categorie: Responsabilité
 icone: balance
 ordre: 2
-titre_seo: Protection juridique entreprise en Suisse : PME, indépendants
+titre_seo: Protection juridique d'entreprise en Suisse
 description: Litige avec un client, un fournisseur, un employé ou le bailleur : la protection juridique d'entreprise conseille et paie les frais d'avocat et de procédure.
 desc: Un litige avec un client, un employé ou le bailleur ? Les frais d'avocat et de procédure sont pris en charge.
 points: Droit du travail, contrats et bail commercial | Conseil juridique par téléphone | Frais d'avocat, d'expertise et de justice
@@ -16,6 +16,9 @@ chapeau: Un client qui conteste une facture, un ancien employé qui conteste son
 retenir: La protection juridique vous aide à faire valoir vos droits, la RC professionnelle répond aux réclamations de tiers | Un litige dont la cause existait avant la signature n'est en général pas couvert | Le libre choix de l'avocat est garanti en cas de procédure ou de conflit d'intérêts | La protection juridique privée exclut en général l'activité indépendante
 pour_qui: Vous avez des employés et voulez être épaulé en cas de conflit de travail | Vous louez des locaux commerciaux ou un atelier | Vous signez régulièrement des contrats avec des clients et des fournisseurs | Vous êtes indépendant et votre protection juridique privée exclut votre activité
 quiz: Une protection juridique privée couvre en général aussi les litiges liés à une activité indépendante | faux | Les contrats privés excluent en général l'activité professionnelle indépendante. Il faut une protection juridique d'entreprise ;; Un litige dont la cause existait déjà avant la signature du contrat est couvert | faux | Les contrats couvrent les besoins juridiques qui naissent après l'entrée en vigueur de l'assurance. Il faut donc s'assurer avant le conflit ;; En cas de procédure judiciaire, vous pouvez proposer l'avocat de votre choix | vrai | Le libre choix de l'avocat s'applique lorsqu'une procédure judiciaire ou administrative est engagée, ainsi qu'en cas de conflit d'intérêts
+demande_titre: Votre protection juridique d'entreprise
+demande_texte: Quelques questions sur votre activité et les litiges à couvrir : un conseiller compare les offres et vous rappelle.
+demande_points: Travail, contrats, recouvrement et bail commercial | Conseil juridique par téléphone inclus | Demande en 2 minutes, sans engagement
 ---
 
 ## RC professionnelle ou protection juridique ?

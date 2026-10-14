@@ -5,7 +5,7 @@ nom: Cyberassurance
 categorie: Responsabilité
 icone: cyber
 ordre: 3
-titre_seo: Cyberassurance PME en Suisse : rançongiciel, fuite de données
+titre_seo: Cyberassurance PME en Suisse romande
 description: Piratage, rançongiciel, fuite de données : la cyberassurance paie les experts, la remise en état, la perte d'exploitation et les réclamations de vos clients.
 desc: Piratage, rançongiciel ou fuite de données : des experts mobilisés tout de suite et les pertes couvertes.
 points: Assistance d'urgence par des spécialistes | Perte d'exploitation et restauration des données | Réclamations de clients après une fuite de données
@@ -16,6 +16,9 @@ chapeau: Un e-mail piégé suffit pour bloquer tous vos ordinateurs. Les petites
 retenir: La cyberassurance couvre vos propres dommages, la perte d'exploitation et les réclamations de tiers | Une assistance d'urgence permet d'agir vite après une attaque | La fraude au virement n'est pas couverte par tous les contrats | Une fuite de données à risque élevé doit être annoncée au Préposé fédéral dans les meilleurs délais
 pour_qui: Vous gérez des données de clients ou de patients | Vous vendez en ligne ou votre caisse dépend d'un logiciel connecté | Vos collaborateurs paient des factures par e-banking | Votre activité s'arrête si vos ordinateurs sont bloqués
 quiz: Une RC professionnelle couvre en général la restauration de vos données après une attaque | faux | La RC couvre les dommages causés à des tiers. Vos propres données et la perte d'exploitation relèvent de la cyberassurance ;; Une entreprise doit annoncer au Préposé fédéral une violation de la sécurité des données qui présente un risque élevé pour les personnes concernées | vrai | La loi sur la protection des données impose cette annonce dans les meilleurs délais, en cas de risque élevé pour la personnalité ou les droits fondamentaux ;; Tous les contrats de cyberassurance couvrent automatiquement la fraude au président | faux | La fraude par faux ordre de virement est parfois exclue ou proposée en option. C'est un point à vérifier dans le contrat
+demande_titre: Votre entreprise protégée contre les cyberattaques
+demande_texte: Décrivez votre activité et votre informatique en 2 minutes : un conseiller vous rappelle avec une offre adaptée.
+demande_points: Assistance d'urgence par des spécialistes | Perte d'exploitation et données | Demande en 2 minutes, sans engagement
 ---
 
 ## Ce qui peut arriver

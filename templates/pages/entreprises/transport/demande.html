@@ -1,0 +1,97 @@
+{# Page de demande (sans prime). Questions : voir la liste ci-dessous ; mise en page : templates/demande-pro.html #}
+{% set slug = "transport" %}
+{% set form_nom = "transport" %}
+{% set h1 = "Demander une offre d'assurance transport" %}
+{% set chapeau = "Décrivez vos marchandises et vos envois. Un conseiller vous propose une couverture adaptée, annuelle ou au voyage. Gratuit et sans engagement." %}
+{% set exemple_message = "Ex. Nous importons des pièces d'Italie chaque mois." %}
+{% set questions = [
+ {
+  "titre": "Que transportez-vous ?",
+  "nom": "marchandises",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Marchandises de votre commerce",
+   "Machines et outillage",
+   "Matériel électronique",
+   "Denrées alimentaires",
+   "Objets de valeur ou œuvres d'art",
+   "Autre"
+  ]
+ },
+ {
+  "titre": "Comment vos marchandises voyagent-elles ?",
+  "nom": "modes",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "Route",
+   "Rail",
+   "Avion",
+   "Bateau",
+   "Poste et coursiers"
+  ]
+ },
+ {
+  "titre": "Où vont vos marchandises ?",
+  "nom": "zones",
+  "type": "checkbox",
+  "aide": "Plusieurs choix possibles.",
+  "options": [
+   "En Suisse",
+   "En Europe",
+   "Hors d'Europe"
+  ]
+ },
+ {
+  "titre": "Qui transporte ?",
+  "nom": "transporteur",
+  "options": [
+   "Nous, avec nos propres véhicules",
+   "Un transporteur",
+   "Les deux"
+  ]
+ },
+ {
+  "titre": "S'agit-il d'importations ou d'exportations ?",
+  "nom": "flux",
+  "options": [
+   "Importations",
+   "Exportations",
+   "Les deux",
+   "Uniquement en Suisse"
+  ]
+ },
+ {
+  "titre": "Quelle valeur transportez-vous par an ?",
+  "nom": "valeur_annuelle",
+  "options": [
+   "Moins de CHF 100'000",
+   "CHF 100'000 à 500'000",
+   "CHF 500'000 à 2 millions",
+   "Plus de CHF 2 millions",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Quelle est la valeur maximale d'un envoi ?",
+  "nom": "valeur_max_envoi",
+  "options": [
+   "Moins de CHF 10'000",
+   "CHF 10'000 à 50'000",
+   "CHF 50'000 à 250'000",
+   "Plus de CHF 250'000",
+   "Je ne sais pas"
+  ]
+ },
+ {
+  "titre": "Quel type de couverture cherchez-vous ?",
+  "nom": "type_police",
+  "options": [
+   "Une police annuelle pour tous mes envois",
+   "Une assurance pour un envoi précis",
+   "Je ne sais pas, conseillez-moi"
+  ]
+ }
+] %}
+{% extends "demande-pro.html" %}

@@ -5,7 +5,7 @@ nom: Assurance de base (LAMal)
 categorie: Santé
 icone: croix
 ordre: 1
-titre_seo: Caisse maladie LAMal : franchise, modèle et changement
+titre_seo: Caisse maladie LAMal : franchise et modèle
 description: Assurance de base LAMal en Suisse romande : choisir sa franchise et son modèle, changer de caisse dans les délais et éviter les erreurs de résiliation.
 desc: Même couverture partout, mais pas le même prix : choisissez la bonne caisse, la bonne franchise et le bon modèle.
 points: Primes comparées entre caisses | Franchise adaptée à vos frais réels | Modèle médecin de famille, Telmed ou HMO
