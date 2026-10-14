@@ -15,6 +15,7 @@ from __future__ import annotations
 import datetime as dt
 import html as html_lib
 import json
+import os
 import re
 import shutil
 from pathlib import Path
@@ -297,6 +298,22 @@ def main() -> None:
     tous = [lire_produit(p) for p in sorted((ROOT / "content" / "produits").glob("*.md"))]
     produits = {g: sorted((p for p in tous if p["groupe"] == g), key=lambda p: p["ordre"]) for g in GROUPES}
     par_slug = {p["slug"]: p for p in tous}
+    # Espace conseillers : clés publiques Supabase (variables d'environnement Netlify) et noms des produits
+    noms_produits = {p["slug"]: p["nom"] for p in tous}
+    noms_produits.update({
+        "contact": "Message de contact", "contact-rapide": "Demande de rappel", "lamal": "LAMal",
+        "complementaire-sante-eco": "Complémentaire santé (Assuravie)", "pgm": "Perte de gain maladie",
+        "rc-pro": "RC professionnelle", "complementaire-maladie": "Complémentaire maladie",
+        "complementaire-ambulatoire": "Soins ambulatoires", "assurance-hospitalisation": "Hospitalisation",
+    })
+    (DIST / "espace" / "config.js").write_text(
+        "window.ESPACE = " + json.dumps({
+            "url": os.environ.get("SUPABASE_URL", ""),
+            "anon": os.environ.get("SUPABASE_ANON_KEY", ""),
+            "produits": noms_produits,
+        }, ensure_ascii=False) + ";\n",
+        encoding="utf-8",
+    )
 
     articles = sorted(
         (a for a in (lire_article(p) for p in (ROOT / "content" / "articles").glob("*.md"))

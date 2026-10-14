@@ -11,6 +11,13 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
+# Espace conseillers : privé, jamais indexé
+[[headers]]
+  for = "/espace/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache"
+
 [[headers]]
   for = "/*"
   [headers.values]

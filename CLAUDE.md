@@ -33,6 +33,13 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - `build.py` : `WHATSAPP` (41782653473), `GA_ID` (Google Analytics 4), `CLARITY_ID` (Microsoft Clarity), `GSC_VERIF` (Google Search Console). Vides = désactivés. GA et Clarity ne se chargent qu'après « Accepter » dans le bandeau cookies (`base.html`) ; lien « Gérer les cookies » dans le pied de page. Les formulaires ont `data-clarity-mask`.
 - Éditeur : Assuravia Sàrl, 33 chemin Charles-Poluzzi, 1227 Carouge, info@assuravia.ch. La plateforme transmet les demandes à des compagnies, courtiers et conseillers agréés ; elle n'est pas intermédiaire d'assurance.
 
+## Espace conseillers (CRM des leads)
+- Page `/espace/` (`static/espace/` : `index.html`, `espace.css`, `espace.js`), `noindex`, bloquée dans robots.txt, jamais liée depuis le site. `build.py` écrit `dist/espace/config.js` (URL et clé anon Supabase depuis les variables d'environnement, noms des produits).
+- Base Supabase : `espace/schema.sql` (tables `conseillers`, `leads`, `commentaires`, règles d'accès : un conseiller ne voit que ses leads, l'admin voit tout). Mise en service : `espace/LISEZMOI.md`.
+- Chaque envoi de formulaire Netlify déclenche `netlify/functions/submission-created.mjs` : doublon (même e-mail ou téléphone en moins de 3 h) fusionné, sinon attribution au conseiller actif le plus en retard sur son pourcentage (30 derniers jours). Logique dans `netlify/lib/leads.mjs`.
+- `netlify/functions/espace-admin.mjs` : invitation et réinitialisation du mot de passe (clé service_role, réservé aux admins).
+- Statuts : nouveau, a_rappeler, injoignable, faux_numero, rdv, offre, signe, pas_interesse, doublon (liste `STATUTS` dans `espace.js`).
+
 ## Téléphone
 - Indicatifs : `content/indicatifs.txt` (indicatif | pays | code ISO). Drapeaux SVG dans `static/drapeaux/` (flag-icons, licence MIT). Liste à drapeaux construite en JS sur le select, qui reste le champ envoyé.
 
