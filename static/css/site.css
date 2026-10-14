@@ -1444,7 +1444,7 @@ body.modale-ouverte { overflow: hidden; }
 .sante__niveau-amb input:checked + span small { color: rgba(255,255,255,.75); }
 .sante__niveaux input[type=checkbox]:checked + span { background: var(--bleu); border-color: var(--bleu); color: #fff; }
 .sante__extras { grid-template-columns: 1fr; }
-.formule--aucune { display: grid; place-items: center; min-height: 80px; }
+.formule--aucune { grid-column: 1 / -1; display: grid; place-items: center; min-height: 0; padding-block: var(--e-3); }
 
 /* Menu : produits rangés par domaine */
 .sous-menu__panneau { width: min(680px, 94vw); }

@@ -21,7 +21,10 @@
   </div>
   {{ e.continuer() }}
 </fieldset>
-{{ e.oui_non("interet_hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Chambre à deux lits ou individuelle, libre choix du médecin : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
+{{ e.ouvrir("hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Choisissez la chambre que vous souhaitez à l'hôpital. Elle s'ajoute à votre estimation.") }}
+  {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"], aucun="Non merci") }}
+  {{ e.continuer() }}
+</fieldset>
 {{ e.coordonnees(naissance=False, flou=False) }}
 {{ e.resultat_lca("besoins") }}
 {% endblock %}

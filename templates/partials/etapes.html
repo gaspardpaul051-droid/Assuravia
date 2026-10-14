@@ -196,12 +196,12 @@
    Pas de prix sur les cartes : la prime s'affiche à la fin. #}
 {% macro lca_cartes(nom, cles, type="radio", requis=True, coche=False, aucun=None, groupe=None) -%}
 <div class="formules formules--lca">
-  {% if aucun %}<label class="formule formule--aucune"><input type="radio" name="{{ nom }}" value="Aucune"{% if requis %} required{% endif %}><span class="formule__nom">{{ aucun }}</span></label>{% endif %}
   {% for k in cles %}{% set m = complementaires.modules[k] %}
   <label class="formule"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if groupe %} data-groupe-requis="{{ groupe }}"{% endif %}{% if coche %} checked{% endif %}>
     <span class="formule__nom">{{ m.court }}</span>
     <ul>{% for p in m.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
   {% endfor %}
+  {% if aucun %}<label class="formule formule--aucune"><input type="radio" name="{{ nom }}" value="Aucune"{% if requis %} required{% endif %}><span class="formule__nom">{{ aucun }}</span></label>{% endif %}
 </div>
 {%- endmacro %}
 
