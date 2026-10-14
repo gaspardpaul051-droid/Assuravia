@@ -1454,3 +1454,12 @@ body.modale-ouverte { overflow: hidden; }
 .sous-menu__domaine li a { min-height: 40px; }
 @media (max-width: 1080px) { .sous-menu__panneau { width: 100%; } .sous-menu__domaines { grid-template-columns: 1fr; } }
 @media (min-width: 1081px) { .sous-menu--pro .sous-menu__panneau { left: auto; right: 0; transform: none; } }
+.modale__progression { display: grid; gap: 6px; }
+.modale__progression p { margin: 0; font-size: var(--t-xs); font-weight: 700; color: var(--texte-doux); }
+.modale__progression div { height: 6px; border-radius: var(--r-plein); background: var(--bleu-pale); overflow: hidden; }
+.modale__progression span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--bleu-vif), var(--bleu)); border-radius: inherit; transition: width .4s var(--courbe); }
+.modale__question { padding: 0; margin-bottom: var(--e-2); font-size: clamp(1.25rem, 2.4vw, 1.6rem); font-weight: 800; line-height: 1.25; color: var(--marine); }
+.modale__choix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.modale__choix .choix-carte { justify-content: flex-start; text-align: left; min-height: 56px; }
+@media (max-width: 560px) { .modale__choix { grid-template-columns: 1fr; } }
+.modale .avancee { display: none; }

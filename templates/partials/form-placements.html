@@ -1,9 +1,17 @@
 {# Demande de conseil en placement : fenêtre ouverte depuis un bouton [data-ouvrir-modale="placements"], en 3 étapes #}
 {% import "partials/form.html" as f %}
-{% macro puces(nom, options, requis=True, type="radio", groupe=None) -%}
-<div class="choix-cartes choix-cartes--puces">
-  {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if requis and type == 'radio' %} required{% endif %}{% if groupe %} data-groupe-requis="{{ groupe }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
-</div>
+{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False) -%}
+<fieldset class="modale__etape" data-etape{% if not premier %} hidden{% endif %}>
+  <legend class="modale__question">{{ titre }}</legend>
+  {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
+  <div class="choix-cartes modale__choix">
+    {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if type == 'radio' %} required data-etape-auto{% else %} data-groupe-requis="{{ nom }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
+  </div>
+  <div class="modale__actions">
+    {% if not premier %}<button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>{% endif %}
+    {% if type != 'radio' %}<button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>{% endif %}
+  </div>
+</fieldset>
 {%- endmacro %}
 <dialog class="modale" data-modale="placements" aria-labelledby="modale-placements-titre">
   <div class="modale__haut">
@@ -15,43 +23,17 @@
   </div>
   {{ f.ouvrir("placements", "placements") }}
     <input type="hidden" name="simulation" value="" data-interets-resume>
-    <ol class="modale__etapes" aria-hidden="true"><li class="actif">Votre projet</li><li>Votre profil</li><li>Vos coordonnées</li></ol>
+    <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
 
-    <fieldset class="modale__etape" data-etape>
-      <legend class="cache">Votre projet</legend>
-      <p class="fe__sous-question">Quel est l'objectif de ce placement ? <span class="facultatif">(plusieurs choix possibles)</span></p>
-      {{ puces("objectifs", ["Faire fructifier mon épargne", "Préparer ma retraite", "Financer un projet (logement, études)", "Obtenir des revenus réguliers", "Transmettre mon patrimoine", "Investir de façon durable", "Payer moins d'impôts"], type="checkbox", groupe="objectifs") }}
-      <p class="fe__sous-question">Quel montant envisagez-vous de placer ?</p>
-      {{ puces("montant_a_placer", ["Moins de CHF 25'000", "CHF 25'000 à 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "CHF 500'000 à 1 million", "Plus de CHF 1 million", "Je préfère ne pas répondre"]) }}
-      <p class="fe__sous-question">Souhaitez-vous aussi épargner régulièrement ?</p>
-      {{ puces("versements_reguliers", ["Oui, chaque mois", "Non, un montant unique", "Je ne sais pas encore"]) }}
-      <p class="fe__sous-question">Pendant combien de temps pouvez-vous laisser cet argent placé ?</p>
-      {{ puces("duree_placement", ["Moins de 3 ans", "3 à 5 ans", "5 à 10 ans", "Plus de 10 ans", "Je ne sais pas encore"]) }}
-      <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
-    </fieldset>
+    {{ question("Quel est l'objectif de ce placement ?", "objectifs", ["Faire fructifier mon épargne", "Préparer ma retraite", "Financer un projet", "Obtenir des revenus réguliers", "Transmettre mon patrimoine", "Payer moins d'impôts"], aide="Plusieurs choix possibles.", type="checkbox", premier=True) }}
+    {{ question("Quel montant envisagez-vous de placer ?", "montant_a_placer", ["Moins de CHF 25'000", "CHF 25'000 à 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "Plus de CHF 500'000", "Je préfère ne pas répondre"]) }}
+    {{ question("Pendant combien de temps pouvez-vous laisser cet argent placé ?", "duree_placement", ["Moins de 3 ans", "3 à 5 ans", "5 à 10 ans", "Plus de 10 ans", "Je ne sais pas encore"]) }}
+    {{ question("Quel profil d'investisseur vous ressemble le plus ?", "profil_investisseur", ["Prudent : je préserve mon capital", "Équilibré : j'accepte quelques variations", "Dynamique : je vise la croissance", "Je ne sais pas encore"]) }}
+    {{ question("Si votre placement perdait 15 % en quelques mois, vous…", "reaction_baisse", ["Vendriez pour limiter la perte", "Attendriez que cela remonte", "Investiriez davantage", "Je ne sais pas"]) }}
+    {{ question("Votre patrimoine global", "patrimoine_global", ["Moins de CHF 100'000", "CHF 100'000 à 500'000", "CHF 500'000 à 1 million", "CHF 1 à 5 millions", "Plus de CHF 5 millions", "Je préfère ne pas répondre"], aide="Épargne, placements et immobilier, dettes déduites.") }}
 
     <fieldset class="modale__etape" data-etape hidden>
-      <legend class="cache">Votre profil</legend>
-      <p class="fe__sous-question">Quel profil d'investisseur vous ressemble le plus ?</p>
-      <div class="choix-cartes">
-        {% for v, t, d in [("Prudent", "Prudent", "Je veux surtout préserver mon capital, avec de faibles variations."), ("Équilibré", "Équilibré", "J'accepte des variations modérées pour un meilleur rendement espéré."), ("Dynamique", "Dynamique", "Je vise la croissance à long terme et j'accepte de fortes variations."), ("Je ne sais pas encore", "Je ne sais pas encore", "Le spécialiste établit votre profil avec vous.")] %}
-        <label class="choix-carte"><input type="radio" name="profil_investisseur" value="{{ v }}" required><span class="choix-carte__titre">{{ t }}</span><span class="choix-carte__detail">{{ d }}</span></label>
-        {% endfor %}
-      </div>
-      <p class="fe__sous-question">Si votre placement perdait 15 % en quelques mois, vous…</p>
-      {{ puces("reaction_baisse", ["Vendriez pour limiter la perte", "Attendriez que cela remonte", "En profiteriez pour investir davantage", "Je ne sais pas"]) }}
-      <p class="fe__sous-question">Votre expérience des placements</p>
-      {{ puces("experience", ["Aucune", "Quelques placements (fonds, 3e pilier en fonds)", "Régulière (actions, ETF, obligations)", "Je préfère ne pas répondre"]) }}
-      <p class="fe__sous-question">Votre patrimoine global <span class="facultatif">(épargne, placements et immobilier, dettes déduites)</span></p>
-      {{ puces("patrimoine_global", ["Moins de CHF 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "CHF 500'000 à 1 million", "CHF 1 à 2 millions", "CHF 2 à 5 millions", "Plus de CHF 5 millions", "Je préfère ne pas répondre"]) }}
-      <div class="modale__actions">
-        <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
-        <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
-      </div>
-    </fieldset>
-
-    <fieldset class="modale__etape" data-etape hidden>
-      <legend class="cache">Vos coordonnées</legend>
+      <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
       <div class="grille-champs">
         <div class="champ"><label for="prenom-pl">Prénom</label><input id="prenom-pl" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
         <div class="champ"><label for="nom-pl">Nom</label><input id="nom-pl" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
@@ -60,11 +42,15 @@
         {{ f.naissance("pl") }}
       </div>
       {{ f.adresse("domicile") }}
-      <p class="fe__sous-question">Quand pouvons-nous vous rappeler ?</p>
-      {{ puces("moment_rappel", ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"]) }}
-      <div class="champ">
-        <label for="jour-pl">Jour préféré <span class="facultatif">(facultatif)</span></label>
-        <select id="jour-pl" name="jour_rappel"><option value="">Peu importe</option>{% for j in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"] %}<option>{{ j }}</option>{% endfor %}</select>
+      <div class="grille-champs">
+        <div class="champ">
+          <label for="moment-pl">Quand vous rappeler ?</label>
+          <select id="moment-pl" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+        </div>
+        <div class="champ">
+          <label for="jour-pl">Jour préféré <span class="facultatif">(facultatif)</span></label>
+          <select id="jour-pl" name="jour_rappel"><option value="">Peu importe</option>{% for j in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"] %}<option>{{ j }}</option>{% endfor %}</select>
+        </div>
       </div>
       <div class="champ">
         <label for="message-pl">Votre question <span class="facultatif">(facultatif)</span></label>

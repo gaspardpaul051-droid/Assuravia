@@ -490,9 +490,13 @@
     modale.addEventListener("close", function () { document.body.classList.remove("modale-ouverte"); });
     var etapes = Array.prototype.slice.call(modale.querySelectorAll("[data-etape]"));
     var reperes = modale.querySelectorAll(".modale__etapes li");
+    var compteur = modale.querySelector("[data-etape-compteur]"), barre = modale.querySelector("[data-etape-barre]");
     var aller = function (n) {
       etapes.forEach(function (e, k) { e.hidden = k !== n; });
       reperes.forEach(function (r, k) { r.classList.toggle("actif", k === n); r.classList.toggle("fait", k < n); });
+      if (compteur) compteur.textContent = n === etapes.length - 1 ? "Dernière étape" : "Question " + (n + 1) + " sur " + (etapes.length - 1);
+      if (barre) barre.style.width = ((n + 1) / etapes.length * 100) + "%";
+      etapes[n].classList.remove("fe--entree"); void etapes[n].offsetWidth; etapes[n].classList.add("fe--entree");
       modale.scrollTop = 0;
       var champ = etapes[n].querySelector("input:not([type=hidden]):not([type=radio]):not([type=checkbox]), select");
       if (champ) champ.focus({ preventScroll: true });
@@ -500,6 +504,10 @@
     modale.querySelectorAll("[data-etape-suivante]").forEach(function (b) {
       b.addEventListener("click", function () { var k = etapes.indexOf(b.closest("[data-etape]")); if (verifier(etapes[k])) aller(k + 1); });
     });
+    modale.querySelectorAll("[data-etape-auto]").forEach(function (r) {
+      r.addEventListener("change", function () { var k = etapes.indexOf(r.closest("[data-etape]")); setTimeout(function () { aller(k + 1); }, 250); });
+    });
+    aller(0);
     modale.querySelectorAll("[data-etape-precedente]").forEach(function (b) {
       b.addEventListener("click", function () { aller(Math.max(etapes.indexOf(b.closest("[data-etape]")) - 1, 0)); });
     });
