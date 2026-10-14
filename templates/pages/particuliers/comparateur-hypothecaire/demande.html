@@ -19,12 +19,12 @@
       {{ f.ouvrir("hypotheque", "hypotheque") }}
         <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
 
-        {{ question("Quel est votre projet ?", "projet", ["Acheter un logement", "Renouveler mon hypothèque", "Construire", "Rénover ou augmenter mon hypothèque", "Autre projet"], premier=True) }}
-        {{ question("Quel type de bien ?", "type_bien", ["Appartement", "Maison", "Immeuble de rendement", "Résidence secondaire"]) }}
-        {{ question("Le bien sera-t-il votre résidence principale ?", "usage", ["Oui, j'y habiterai", "Non, je le louerai", "C'est une résidence secondaire"]) }}
+        {{ question("Quel est votre projet ?", "projet", [{"v": "Acheter un logement", "icone": "maison", "detail": "Premier achat ou nouveau logement."}, {"v": "Renouveler mon hypothèque", "icone": "horloge", "detail": "Votre taux fixe ou SARON arrive à échéance."}, {"v": "Construire", "icone": "batiment", "detail": "Terrain, construction ou crédit de construction."}, {"v": "Rénover ou augmenter mon hypothèque", "icone": "engrenage", "detail": "Travaux, assainissement énergétique ou liquidités."}, {"v": "Autre projet", "icone": "bulle", "detail": "Expliquez-le au spécialiste lors de l'appel."}], premier=True) }}
+        {{ question("Quel type de bien ?", "type_bien", [{"v": "Appartement", "icone": "batiment", "detail": "En PPE (propriété par étages)."}, {"v": "Maison", "icone": "maison", "detail": "Villa individuelle ou mitoyenne."}, {"v": "Immeuble de rendement", "icone": "tirelire", "detail": "Bien destiné à la location."}, {"v": "Résidence secondaire", "icone": "cle", "detail": "Chalet ou logement de vacances."}]) }}
+        {{ question("Le bien sera-t-il votre résidence principale ?", "usage", [{"v": "Oui, j'y habiterai", "icone": "maison"}, {"v": "Non, je le louerai", "icone": "cle"}, {"v": "C'est une résidence secondaire", "icone": "repere"}]) }}
         {{ question("Quel est le prix du bien ou le montant de l'hypothèque actuelle ?", "valeur_bien", ["Moins de CHF 500'000", "CHF 500'000 à 800'000", "CHF 800'000 à 1,2 million", "CHF 1,2 à 2 millions", "Plus de CHF 2 millions"]) }}
         {{ question("De quels fonds propres disposez-vous ?", "fonds_propres", ["Moins de 20 % du prix", "20 à 30 % du prix", "Plus de 30 % du prix", "Je renouvelle, ce n'est pas nécessaire", "Je ne sais pas encore"], aide="Épargne, 3e pilier, 2e pilier, donation.") }}
-        {{ question("Quel type de taux vous intéresse ?", "type_taux", ["Taux fixe", "SARON", "Un mélange des deux", "Je ne sais pas, conseillez-moi"]) }}
+        {{ question("Quel type de taux vous intéresse ?", "type_taux", [{"v": "Taux fixe", "icone": "cadenas", "detail": "Vos intérêts connus pour toute la durée."}, {"v": "SARON", "icone": "courbe", "detail": "Suit le marché, peut monter ou baisser."}, {"v": "Un mélange des deux", "icone": "fleches", "detail": "Plusieurs tranches pour répartir le risque."}, {"v": "Je ne sais pas, conseillez-moi", "icone": "bulle", "detail": "Le spécialiste vous aide à choisir."}]) }}
         {{ question("Quand avez-vous besoin du financement ?", "echeance", ["Dans le mois", "Dans 1 à 3 mois", "Dans 3 à 12 mois", "Dans plus d'un an", "Je me renseigne"]) }}
 
         <fieldset class="modale__etape" data-etape hidden>

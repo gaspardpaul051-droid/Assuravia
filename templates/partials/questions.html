@@ -1,10 +1,11 @@
-{# Question en plein écran pour les formulaires en étapes ([data-etape]) #}
+{% import "partials/icones.html" as i %}
+{# Question en plein écran pour les formulaires en étapes ([data-etape]). Options : texte, ou dict {v, icone, detail}. #}
 {% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False, facultatif=False, bouton="prive") -%}
 <fieldset class="modale__etape" data-etape{% if not premier %} hidden{% endif %}>
   <legend class="modale__question">{{ titre }}</legend>
   {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
   <div class="choix-cartes modale__choix">
-    {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if type == 'radio' %} required data-etape-auto{% elif not facultatif %} data-groupe-requis="{{ nom }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
+    {% for o in options %}{% set v = o.v if o is mapping else o %}<label class="choix-carte choix-carte--compact{% if o is mapping and o.icone %} choix-carte--avec-icone{% endif %}"><input type="{{ type }}" name="{{ nom }}" value="{{ v }}"{% if type == 'radio' %} required data-etape-auto{% elif not facultatif %} data-groupe-requis="{{ nom }}"{% endif %}>{% if o is mapping and o.icone %}<span class="choix-carte__icone">{{ i.icone(o.icone) }}</span>{% endif %}<span class="choix-carte__texte"><span class="choix-carte__titre">{{ v }}</span>{% if o is mapping and o.detail %}<span class="choix-carte__detail">{{ o.detail }}</span>{% endif %}</span><span class="choix-carte__coche choix-carte__coche--{{ type }}" aria-hidden="true"></span></label>{% endfor %}
   </div>
   <div class="modale__actions">
     {% if not premier %}<button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>{% endif %}
