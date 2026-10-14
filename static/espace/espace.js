@@ -299,12 +299,12 @@
       prime: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>'
     };
     fiche.innerHTML =
-      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + '</p></div></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
+      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + (estAdmin() ? " · Conseiller : <b>" + esc(nomConseiller(l.conseiller_id)) + "</b>" : "") + '</p><div class="fiche__puces"><span class="badge badge--' + s0.couleur + '" data-badge-tete>' + s0.nom + "</span>" + (l.prime ? '<span class="fiche__puce">' + esc(formatPrime(l.prime)) + "</span>" : "") + (l.canton ? '<span class="fiche__puce">' + esc(l.canton) + "</span>" : "") + (l.rappel_le ? '<span class="fiche__puce fiche__puce--or">Rappel ' + date(l.rappel_le) + "</span>" : "") + '</div></div></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
       '<div class="fiche__actions">' +
       (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '">Appeler</a>' : "") +
       (wa ? '<a class="btn btn--wa btn--gros" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
       (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
-      '<section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
+      '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
       '<label class="statut-champ"><span>Rappel prévu</span><input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label></div>' +
       '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
@@ -317,12 +317,12 @@
       "</div>" +
       (reponses.length ? '<h4 class="sous-titre">Sa demande</h4><dl class="details">' + reponses.map(function (k) { return '<div class="details__ligne"><dt>' + esc(nomChamp(k)) + "</dt><dd>" + esc(valeurChamp(d[k])) + "</dd></div>"; }).join("") + "</dl>" : "") +
       (origine.length ? '<h4 class="sous-titre">Provenance</h4><dl class="details details--doux">' + origine.map(function (x) { return '<div class="details__ligne"><dt>' + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "") +
-      "</section>" +
-      '<section class="fiche__bloc"><h3>Commentaires</h3><form class="commentaire-form" data-commenter>' +
+      "</section></div>" +
+      '<div class="fiche__col fiche__col--com"><section class="fiche__bloc fiche__bloc--com"><h3>Suivi et commentaires <span class="compteur" data-compteur></span></h3><form class="commentaire-form" data-commenter>' +
       '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
       '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
       '<div class="commentaire-form__pied"><small>Ctrl + Entrée pour publier</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
-      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section>';
+      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section></div></div>';
     fiche.querySelector("[data-fermer]").onclick = fermerFiche;
     var maj = function (champs, note) {
       return sb.from("leads").update(champs).eq("id", l.id).select().single().then(function (r) {
@@ -384,6 +384,7 @@
       sb.from("commentaires").select("*").eq("lead_id", l.id).order("cree_le", { ascending: false }).then(function (r) {
         var ol = fiche.querySelector("[data-commentaires]"); if (!ol) return;
         var liste = r.data || [];
+        var cpt = fiche.querySelector("[data-compteur]"); if (cpt) cpt.textContent = liste.filter(function (c) { return !c.automatique; }).length || "";
         ol.innerHTML = liste.length ? liste.map(function (c) {
           var auteur = c.auteur_id ? nomConseiller(c.auteur_id) : "Assuravia";
           if (c.automatique) return '<li class="auto"><span class="auto__point"></span><span>' + esc(c.texte) + ' <em>· ' + esc(auteur) + ", " + depuis(c.cree_le) + "</em></span></li>";
