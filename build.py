@@ -75,6 +75,25 @@ def lire_entete(path: Path) -> tuple[dict, str]:
     return meta, m.group(2)
 
 
+def tableaux_mobiles(html: str) -> str:
+    """Tableaux Markdown lisibles sur téléphone : chaque cellule reçoit le titre de sa colonne (data-label)."""
+    def un(m: re.Match) -> str:
+        tableau = m.group(0)
+        tetes = [html_lib.unescape(re.sub(r"<[^>]+>", "", h)).strip() for h in re.findall(r"<th[^>]*>(.*?)</th>", tableau.split("</thead>")[0], re.S)]
+        if not tetes:
+            return tableau
+        def ligne(r: re.Match) -> str:
+            k = [0]
+            def cellule(c: re.Match) -> str:
+                lab = tetes[k[0]] if k[0] < len(tetes) else ""
+                k[0] += 1
+                return f'<td data-label="{html_lib.escape(lab, quote=True)}"{c.group(1)}>'
+            return re.sub(r"<td([^>]*)>", cellule, r.group(0))
+        tableau = re.sub(r"<tr>.*?</tr>", ligne, tableau, flags=re.S)
+        return f'<div class="tableau tableau--{min(len(tetes), 4)}col">{tableau}</div>'
+    return re.sub(r"<table>.*?</table>", un, html, flags=re.S)
+
+
 def extraire_faq(html: str) -> tuple[str, list[dict]]:
     """Sépare la section « Questions fréquentes » (h2 puis h3 + paragraphes) du reste."""
     morceaux = re.split(r"<h2[^>]*>Questions fréquentes</h2>", html, maxsplit=1)
@@ -141,7 +160,7 @@ def lire_produit(path: Path) -> dict:
     for cle in ("h1", "chapeau", "desc", "nom"):
         if cle in meta:
             meta[cle] = re.sub(r" ([:?!;])", "\u00a0\\1", meta[cle])
-    html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
+    html, faq = extraire_faq(tableaux_mobiles(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"])))
     widgets = enrichir(html, meta, path)
     return {
         **meta,
@@ -211,7 +230,7 @@ def lire_article(path: Path) -> dict:
         if cle not in meta:
             raise ValueError(f"Champ '{cle}' manquant dans {path}")
     date = dt.date.fromisoformat(meta["date"])
-    html, faq = extraire_faq(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"]))
+    html, faq = extraire_faq(tableaux_mobiles(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"])))
     # Encadrés « Le saviez-vous ? » : citations qui commencent par ce titre en gras
     html = re.sub(r"<blockquote>\s*<p><strong>(.*?)</strong>", r'<blockquote class="encadre"><p class="encadre__titre">\1</p><p>', html)
     sommaire = [{"id": i, "titre": html_lib.unescape(re.sub(r"<[^>]+>", "", t))}

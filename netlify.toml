@@ -34,3 +34,9 @@
   to = "/particuliers/assurance-menage/"
   status = 301
   force = true
+
+# Drapeaux : fichiers qui ne changent pas, mis en cache longtemps (téléphone : moins de téléchargements)
+[[headers]]
+  for = "/drapeaux/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
