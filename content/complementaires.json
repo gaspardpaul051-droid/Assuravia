@@ -1,5 +1,5 @@
 {
-  "_note": "Grille NEUTRE et INDICATIVE des complémentaires maladie, organisée par besoin (structure courante du marché suisse, sans reprendre la gamme d'un assureur). Primes mensuelles de référence : homme de 31 à 35 ans, coefficient canton 1. À ajuster avec les tarifs réels des partenaires. L'ancienne grille inspirée d'Helsana est dans archives/complementaires-helsana/ (pour les pages publicitaires).",
+  "_note": "Grille NEUTRE et INDICATIVE des complémentaires maladie, organisée par besoin, calée sur la moyenne haute du marché (primes moyennes publiées par des comparateurs en 2026 : demi-privée environ CHF 120 à 150 par mois, privée environ CHF 175 à 290, ambulatoire environ CHF 15 à 50, dentaire environ CHF 14 à 80). Primes mensuelles de référence : homme de 31 à 35 ans, coefficient canton 1. À ajuster avec les tarifs réels des partenaires. L'ancienne grille inspirée d'Helsana est dans archives/complementaires-helsana/ (pour les pages publicitaires).",
   "annee": 2027,
   "courbes": {
     "hop": [
@@ -162,7 +162,7 @@
       "famille": "Hospitalisation",
       "nom": "Hospitalisation commune, toute la Suisse",
       "court": "Commune, toute la Suisse",
-      "base": 5,
+      "base": 8,
       "courbe": "hop",
       "points": [
         "Division commune dans tout hôpital reconnu de Suisse",
@@ -179,7 +179,7 @@
       "famille": "Hospitalisation",
       "nom": "Hospitalisation au choix le jour venu",
       "court": "Au choix le jour venu",
-      "base": 32,
+      "base": 42,
       "courbe": "hop",
       "points": [
         "Vous choisissez la chambre au moment de l'hospitalisation",
@@ -197,7 +197,7 @@
       "famille": "Hospitalisation",
       "nom": "Hospitalisation demi-privée",
       "court": "Demi-privée",
-      "base": 100,
+      "base": 130,
       "courbe": "hop",
       "points": [
         "Chambre à deux lits, dans toute la Suisse",
@@ -214,7 +214,7 @@
       "famille": "Hospitalisation",
       "nom": "Hospitalisation privée",
       "court": "Privée",
-      "base": 150,
+      "base": 200,
       "courbe": "hop",
       "points": [
         "Chambre individuelle, dans toute la Suisse",
@@ -232,7 +232,7 @@
       "famille": "Ambulatoire",
       "nom": "Médecines complémentaires",
       "court": "Médecines complémentaires",
-      "base": 14,
+      "base": 20,
       "courbe": "amb",
       "points": [
         "Ostéopathie, acupuncture, naturopathie, massage médical",
@@ -249,7 +249,7 @@
       "famille": "Ambulatoire",
       "nom": "Lunettes et lentilles",
       "court": "Lunettes et lentilles",
-      "base": 4,
+      "base": 6,
       "courbe": "amb",
       "points": [
         "Participation aux verres et aux lentilles de contact",
@@ -265,7 +265,7 @@
       "famille": "Ambulatoire",
       "nom": "Médicaments hors liste",
       "court": "Médicaments hors liste",
-      "base": 4,
+      "base": 6,
       "courbe": "amb",
       "points": [
         "Médicaments prescrits que l'assurance de base ne rembourse pas",
@@ -281,7 +281,7 @@
       "famille": "Ambulatoire",
       "nom": "Prévention et bien-être",
       "court": "Prévention et bien-être",
-      "base": 5,
+      "base": 7,
       "courbe": "amb",
       "points": [
         "Check-up, vaccins de voyage, dépistages",
@@ -297,7 +297,7 @@
       "famille": "Ambulatoire",
       "nom": "Étranger, transports et sauvetage",
       "court": "Étranger et sauvetage",
-      "base": 4,
+      "base": 6,
       "courbe": "amb",
       "points": [
         "Urgences à l'étranger au-delà de l'assurance de base",
@@ -313,7 +313,7 @@
       "famille": "Ambulatoire",
       "nom": "Orthodontie des enfants",
       "court": "Orthodontie des enfants",
-      "base": 6,
+      "base": 8,
       "courbe": "amb",
       "points": [
         "Appareils dentaires des enfants et des jeunes",
@@ -329,7 +329,7 @@
       "famille": "Dentaire",
       "nom": "Dentaire, jusqu'à CHF 500 par an",
       "court": "Jusqu'à CHF 500",
-      "base": 14,
+      "base": 20,
       "courbe": "dent",
       "points": [
         "Contrôle et hygiène dentaire",
@@ -345,7 +345,7 @@
       "famille": "Dentaire",
       "nom": "Dentaire, jusqu'à CHF 1'000 par an",
       "court": "Jusqu'à CHF 1'000",
-      "base": 26,
+      "base": 35,
       "courbe": "dent",
       "points": [
         "Contrôles, détartrage et soins courants",
@@ -361,7 +361,7 @@
       "famille": "Dentaire",
       "nom": "Dentaire, jusqu'à CHF 2'000 par an",
       "court": "Jusqu'à CHF 2'000",
-      "base": 45,
+      "base": 60,
       "courbe": "dent",
       "points": [
         "Soins courants, traitements et orthodontie",
@@ -377,7 +377,7 @@
       "famille": "Dentaire",
       "nom": "Dentaire, jusqu'à CHF 4'000 par an",
       "court": "Jusqu'à CHF 4'000",
-      "base": 75,
+      "base": 95,
       "courbe": "dent",
       "points": [
         "Soins, orthodontie, couronnes et prothèses",
@@ -394,7 +394,7 @@
       "famille": "Indemnité",
       "nom": "Indemnité d'hospitalisation de CHF 50 par jour",
       "court": "CHF 50 par jour",
-      "base": 4,
+      "base": 6,
       "courbe": "hop",
       "points": [
         "CHF 50 versés à vous pour chaque jour d'hôpital",
@@ -410,7 +410,7 @@
       "famille": "Indemnité",
       "nom": "Indemnité d'hospitalisation de CHF 100 par jour",
       "court": "CHF 100 par jour",
-      "base": 8,
+      "base": 11,
       "courbe": "hop",
       "points": [
         "CHF 100 versés à vous pour chaque jour d'hôpital",
@@ -426,7 +426,7 @@
       "famille": "Indemnité",
       "nom": "Indemnité d'hospitalisation de CHF 200 par jour",
       "court": "CHF 200 par jour",
-      "base": 16,
+      "base": 21,
       "courbe": "hop",
       "points": [
         "CHF 200 versés à vous pour chaque jour d'hôpital",
@@ -442,7 +442,7 @@
       "famille": "Protection juridique",
       "nom": "Protection juridique santé",
       "court": "Protection juridique santé",
-      "base": 3,
+      "base": 4,
       "courbe": "plat",
       "points": [
         "Litige avec un hôpital, un médecin ou un assureur",
