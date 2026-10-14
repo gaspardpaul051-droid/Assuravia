@@ -9,8 +9,8 @@
     <div class="merci__check" aria-hidden="true">
       <svg viewBox="0 0 120 120"><circle class="merci__cercle" cx="60" cy="60" r="52"/><path class="merci__coche" d="M38 62l15 15 30-34"/></svg>
     </div>
-    <h1 class="merci__titre">Bravo, c'est envoyé !</h1>
-    <p class="chapeau" data-merci-texte>Votre demande est bien arrivée. Un spécialiste vous contacte au moment que vous avez indiqué. Gardez votre téléphone à portée de main : l'appel peut venir d'un numéro suisse que vous ne connaissez pas.</p>
+    <h1 class="merci__titre">Merci pour votre demande !</h1>
+    <p class="chapeau" data-merci-texte>Elle est bien arrivée et sera traitée par un expert, qui vous recontacte rapidement avec des propositions adaptées. L'appel peut venir d'un numéro suisse que vous ne connaissez pas.</p>
     <ol class="merci__suite">
       <li class="merci__etape merci__etape--fait"><span>{{ i.icone("valide") }}</span><div><strong>Demande reçue</strong><small>À l'instant</small></div></li>
       <li class="merci__etape merci__etape--encours"><span>{{ i.icone("horloge") }}</span><div><strong>Un spécialiste étudie votre situation</strong><small>Il prépare des propositions adaptées</small></div></li>
@@ -23,12 +23,31 @@
         <li>Pour le 3e pilier ou les impôts, ayez sous la main votre dernière déclaration ou votre certificat de salaire.</li>
       </ul>
     </div>
-    <p class="merci__actions"><a class="bouton bouton--prive" href="/">Retour à l'accueil</a> <a class="bouton bouton--secondaire" href="/blog/">Lire nos conseils</a></p>
+    <div class="merci__autres">
+      <h2>Faire une autre simulation</h2>
+      <p>Profitez-en pour vérifier vos autres couvertures, en 2 minutes.</p>
+      <div class="merci__grille">
+        {% for f, url, icone, nom in [
+          ("simulation-complementaires", "/particuliers/simulation-complementaires/", "coeur", "Complémentaires santé"),
+          ("comparateur-lamal", "/particuliers/comparateur-lamal/", "croix", "Assurance de base LAMal"),
+          ("simulation-menage", "/particuliers/simulation-menage/", "maison", "Assurance ménage"),
+          ("simulation-rc-privee", "/particuliers/simulation-rc-privee/", "bouclier", "RC privée"),
+          ("simulation-protection-juridique", "/particuliers/simulation-protection-juridique/", "balance", "Protection juridique"),
+          ("simulation-voyage", "/particuliers/simulation-voyage/", "avion", "Assurance voyage"),
+          ("3e-pilier", "/particuliers/3e-pilier/", "tirelire", "3e pilier"),
+          ("hypotheque", "/particuliers/comparateur-hypothecaire/", "courbe", "Taux hypothécaires"),
+          ("simulation-rc-pro", "/entreprises/simulation-rc-pro/", "mallette", "RC professionnelle")] %}
+        <a class="merci__carte" href="{{ url }}" data-merci-form="{{ f }}"><span>{{ i.icone(icone) }}</span>{{ nom }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="merci__actions"><a class="bouton bouton--secondaire" href="/">Retour à l'accueil</a></p>
   </div>
 </section>
 {% endblock %}
 {% block scripts %}
 <script>
+  (function () { var f = new URLSearchParams(location.search).get("f"); if (f) document.querySelectorAll('[data-merci-form="' + f + '"]').forEach(function (a) { a.remove(); }); })();
   /* Conversion Google Ads : remplacer AW-XXXXXXX/YYYYYYY par l'identifiant de conversion, puis décommenter.
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}

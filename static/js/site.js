@@ -187,13 +187,27 @@
   document.querySelectorAll("form[data-lead]").forEach(function (form) {
     form.noValidate = true;
     form.addEventListener("submit", function (e) {
-      if (!verifier(form)) { e.preventDefault(); return; }
-      var bouton = form.querySelector('button[type="submit"]');
-      if (bouton) {
-        bouton.setAttribute("aria-busy", "true");
-        bouton.textContent = "Envoi en cours…";
-        setTimeout(function () { bouton.disabled = true; }, 0);
-      }
+      e.preventDefault();
+      if (!verifier(form)) return;
+      // Envoi en arrière-plan à Netlify Forms, puis page de remerciement
+      var bouton = e.submitter || form.querySelector('button[type="submit"]');
+      var texte = bouton ? bouton.textContent : "";
+      if (bouton) { bouton.setAttribute("aria-busy", "true"); bouton.textContent = "Envoi en cours…"; bouton.disabled = true; }
+      var ancienne = form.querySelector(".envoi-erreur"); if (ancienne) ancienne.remove();
+      var donnees = new URLSearchParams(new FormData(form));
+      fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: donnees.toString() })
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          window.location.href = form.action;
+        })
+        .catch(function () {
+          if (bouton) { bouton.disabled = false; bouton.removeAttribute("aria-busy"); bouton.textContent = texte; }
+          var msg = document.createElement("p");
+          msg.className = "envoi-erreur";
+          msg.setAttribute("role", "alert");
+          msg.innerHTML = "L'envoi n'a pas fonctionné. Réessayez dans un instant, ou écrivez-nous sur <a href=\"https://wa.me/41782653473\" target=\"_blank\" rel=\"noopener\">WhatsApp</a> ou à <a href=\"mailto:info@assuravia.ch\">info@assuravia.ch</a>.";
+          (bouton || form.lastElementChild).insertAdjacentElement("afterend", msg);
+        });
     });
     // Corriger un champ retire son message d'erreur
     form.addEventListener("change", function (e) {
@@ -1394,7 +1408,7 @@
   if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");
     var texte = document.querySelector(".merci .chapeau");
-    if (titre) titre.textContent = "Bravo, votre message est envoyé !";
-    if (texte) texte.textContent = "Merci. Nous vous répondons dans les meilleurs délais, par téléphone ou par e-mail.";
+    if (titre) titre.textContent = "Merci pour votre message !";
+    if (texte) texte.textContent = "Il est bien arrivé. Un expert vous répond rapidement, par téléphone ou par e-mail.";
   }
 })();
