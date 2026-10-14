@@ -1430,3 +1430,8 @@ body.modale-ouverte { overflow: hidden; }
 .interets__rassure { display: flex; align-items: center; justify-content: center; gap: 6px; margin: var(--e-2) 0 0; font-size: var(--t-xs); color: var(--texte-doux); }
 .interets__rassure .icone { color: var(--succes); }
 @media (max-width: 560px) { .modale__etapes li { font-size: 0; } .modale__etapes li::before { font-size: var(--t-xs); } }
+.simulateur__suite { display: grid; justify-items: center; gap: var(--e-2); margin-top: var(--e-5); text-align: center; }
+.simulateur__suite .bouton { min-width: min(100%, 360px); }
+.simulateur__suite p { display: flex; align-items: center; gap: 6px; margin: 0; font-size: var(--t-xs); color: var(--texte-doux); }
+.simulateur__suite .icone { color: var(--succes); }
+.demande-3a .panneau-form { margin-top: var(--e-5); }

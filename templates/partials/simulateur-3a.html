@@ -1,3 +1,4 @@
+{% import "partials/icones.html" as i %}
 {% import "partials/form.html" as f %}
 <div class="simulateur" data-simulateur>
   <div class="simulateur__entrees">
@@ -40,26 +41,11 @@
   </div>
 </div>
 
-{{ f.ouvrir("3e-pilier", "3e-pilier") }}
-  <input type="hidden" name="sim_canton" data-sim-cache="canton">
-  <input type="hidden" name="sim_situation" data-sim-cache="situation">
-  <input type="hidden" name="sim_statut" data-sim-cache="statut">
-  <input type="hidden" name="sim_revenu" data-sim-cache="revenu">
-  <input type="hidden" name="sim_versement" data-sim-cache="versement">
-  <input type="hidden" name="sim_economie" data-sim-cache="economie">
-  <h2 class="form-titre" id="conseil-3a">Être conseillé pour mon 3e pilier</h2>
-  <p class="formulaire__intro">Un conseiller vérifie votre calcul, vous explique les options (banque ou assurance) et vous aide à verser avant le 31 décembre.</p>
-  <div class="champ">
-    <label for="besoin-3a">Ce qui vous intéresse</label>
-    <select id="besoin-3a" name="besoin" required>
-      <option value="">Choisir…</option>
-      <option value="ouvrir">Ouvrir un 3e pilier</option>
-      <option value="optimiser">Optimiser un 3e pilier existant</option>
-      <option value="declaration">Aide pour ma déclaration d'impôts</option>
-      <option value="les-deux">3e pilier et déclaration d'impôts</option>
-    </select>
-  </div>
-  {{ f.naissance("3a") }}
-  {{ f.contact("3a") }}
-{{ f.fermer("Être rappelé par un conseiller", "3a") }}
-</form>
+{% if formulaire_separe %}
+<div class="simulateur__suite" data-sim-suite>
+  <a class="bouton bouton--action" href="/particuliers/3e-pilier/demande/" data-sim-lien>Être conseillé pour mon 3e pilier</a>
+  <p>{{ i.icone("valide", "icone icone--petite") }} Un conseiller vérifie votre calcul et vous aide à verser avant le 31 décembre. Gratuit et sans engagement.</p>
+</div>
+{% else %}
+{% include "partials/form-3a.html" %}
+{% endif %}

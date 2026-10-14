@@ -1,0 +1,64 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Être conseillé pour mon 3e pilier | Assuravia{% endblock %}
+{% block description %}Un conseiller vérifie votre calcul, vous présente les solutions bancaires et d'assurance, et vous aide à verser avant le 31 décembre.{% endblock %}
+{% block content %}
+<section class="cmp-page demande-3a">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/3e-pilier/" data-retour-3a>3e pilier</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Demande de conseil</p>
+    <h1 class="cmp-page__titre">Être conseillé pour mon 3e pilier</h1>
+    <p class="chapeau">Un conseiller vérifie votre calcul, vous présente les solutions (banque ou assurance) et vous aide à verser avant le 31 décembre. Gratuit et sans engagement.</p>
+
+    <div class="cmp-recap" data-recap-3a hidden>
+      <span class="cmp-recap__icone">{{ i.icone("tirelire") }}</span>
+      <div class="cmp-recap__texte">
+        <p class="cmp-recap__label">Votre simulation</p>
+        <p class="cmp-recap__offre"><strong>Économie d'impôts estimée</strong></p>
+        <p class="cmp-recap__detail" data-recap-3a-detail></p>
+      </div>
+      <p class="cmp-recap__prix"><strong data-recap-3a-economie></strong><span>cette année</span></p>
+      <a class="cmp-recap__modifier" href="/particuliers/3e-pilier/" data-retour-3a>Refaire le calcul</a>
+    </div>
+
+    <div class="panneau-form">
+      {% include "partials/form-3a.html" %}
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  document.querySelectorAll("[data-sim-cache]").forEach(function (el) { el.value = q.get(el.getAttribute("data-sim-cache")) || ""; });
+  var eco = Number(q.get("economie"));
+  if (eco > 0) {
+    var chf = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+    document.querySelector("[data-recap-3a-economie]").textContent = chf(Math.round(eco / 10) * 10);
+    var noms = { seul: "personne seule", couple: "couple marié", salarie: "salarié", independant: "indépendant" };
+    document.querySelector("[data-recap-3a-detail]").textContent = [q.get("canton"), noms[q.get("situation")], noms[q.get("statut")], "versement de " + chf(Number(q.get("versement")) || 0)].filter(Boolean).join(" · ");
+    document.querySelector("[data-recap-3a]").hidden = false;
+  }
+  // Le titre du formulaire est déjà celui de la page
+  var titre = document.getElementById("conseil-3a");
+  if (titre) titre.textContent = "Vos coordonnées";
+  var intro = document.querySelector(".demande-3a .formulaire__intro");
+  if (intro) intro.remove();
+  var canton = document.querySelector('.demande-3a select[name="canton"]');
+  if (canton && q.get("canton")) canton.value = q.get("canton");
+  // Retour au calcul : page précédente si on vient du simulateur, pour garder les valeurs
+  var depuis = document.referrer.indexOf("/3e-pilier") > -1 && document.referrer.indexOf("demande") < 0;
+  document.querySelectorAll("[data-retour-3a]").forEach(function (a) {
+    a.addEventListener("click", function (ev) { if (depuis && history.length > 1) { ev.preventDefault(); history.back(); } });
+  });
+})();
+</script>
+{% endblock %}

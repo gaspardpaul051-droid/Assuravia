@@ -1039,6 +1039,20 @@
     sim.addEventListener("change", calculer);
     calculer();
   });
+  // 3e pilier : le bouton mène à la page de demande avec les valeurs du calcul
+  document.querySelectorAll("[data-sim-suite]").forEach(function (suite) {
+    var sim = suite.previousElementSibling, lien = suite.querySelector("[data-sim-lien]");
+    var maj = function () {
+      var v = function (n) { var el = sim.querySelector('[data-sim="' + n + '"]'); return el ? el.value : ""; };
+      var eco = (sim.querySelector('[data-sim-sortie="economie"]').textContent || "").replace(/[^\d]/g, "");
+      var q = new URLSearchParams({ canton: v("canton"), situation: v("situation"), statut: v("statut"), revenu: v("revenu"), versement: v("versement"), economie: eco });
+      lien.href = lien.getAttribute("href").split("?")[0] + "?" + q.toString();
+      document.querySelectorAll('a[href^="/particuliers/3e-pilier/demande/"]').forEach(function (a) { if (a !== lien) a.href = lien.href; });
+    };
+    sim.addEventListener("input", function () { setTimeout(maj, 0); });
+    sim.addEventListener("change", function () { setTimeout(maj, 0); });
+    maj();
+  });
 
   // 5. Garantie de loyer
   document.querySelectorAll("[data-calcul-loyer]").forEach(function (bloc) {
