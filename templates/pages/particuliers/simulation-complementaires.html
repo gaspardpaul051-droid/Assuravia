@@ -12,7 +12,7 @@
 {{ e.profil_sante() }}
 {{ e.ouvrir("familles", "Que souhaitez-vous couvrir ?", "Cochez tout ce qui vous intéresse. Vous choisirez ensuite le niveau de chaque couverture.") }}
   <div class="choix-cartes">
-    {% for nom, titre, detail, icone in [("fam_hop", "Hospitalisation", "Chambre à deux lits ou individuelle, libre choix du médecin", "croix"), ("fam_amb", "Ambulatoire et médecines douces", "Ostéopathie, lunettes, médicaments, prévention", "coeur"), ("fam_dent", "Dentaire", "Contrôles, soins, orthodontie", "valide"), ("fam_ij", "Indemnité d'hospitalisation", "Un montant versé pour chaque jour d'hôpital", "tirelire"), ("fam_pj", "Protection juridique santé", "Litige avec un hôpital, un médecin ou un assureur", "balance")] %}
+    {% for nom, titre, detail, icone in [("fam_hop", "Hospitalisation", "Chambre à deux lits ou individuelle, libre choix du médecin", "croix"), ("fam_amb", "Soins ambulatoires et médecines complémentaires", "Ostéopathie, lunettes, médicaments, prévention", "coeur"), ("fam_dent", "Dentaire", "Contrôles, soins, orthodontie", "valide"), ("fam_ij", "Indemnité d'hospitalisation", "Un montant versé pour chaque jour d'hôpital", "tirelire"), ("fam_pj", "Protection juridique santé", "Litige avec un hôpital, un médecin ou un assureur", "balance")] %}
     <label class="choix-carte"><input type="checkbox" name="{{ nom }}" value="oui" data-groupe-requis="familles"><span class="choix-carte__icone">{{ i.icone(icone) }}</span><span class="choix-carte__titre">{{ titre }}</span><span class="choix-carte__detail">{{ detail }}</span></label>
     {% endfor %}
   </div>
@@ -21,26 +21,25 @@
 {{ e.ouvrir("composer", "Choisissez le niveau de chaque couverture") }}
   <div class="lca-bloc" data-montre-si="fam_hop=oui" hidden>
     <p class="fe__sous-question">Hospitalisation</p>
-    {{ e.lca_cartes("division", ["hop_commune", "hop_flex_eco", "hop_flex_confort", "hop_demi", "hop_privee"]) }}
-    {{ e.franchise_hop() }}
+    {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"]) }}
   </div>
   <div class="lca-bloc" data-montre-si="fam_amb=oui" hidden>
-    <p class="fe__sous-question">Ambulatoire et médecines douces</p>
-    {{ e.lca_cartes("formule_amb", ["amb_essentiel", "amb_douce", "amb_confort"]) }}
-    {{ e.lca_cartes("renforts", ["amb_plus", "amb_innovation"], type="checkbox", requis=False) }}
+    <p class="fe__sous-question">Soins ambulatoires : de quoi avez-vous besoin ?</p>
+    {{ e.lca_cartes("besoins_amb", ["amb_douces", "amb_lunettes", "amb_medicaments", "amb_prevention", "amb_etranger", "amb_ortho"], type="checkbox", requis=False, groupe="besoins_amb") }}
+    {{ e.niveau_amb() }}
   </div>
   <div class="lca-bloc" data-montre-si="fam_dent=oui" hidden>
-    <p class="fe__sous-question">Dentaire</p>
+    <p class="fe__sous-question">Dentaire : quel montant par an ?</p>
     <p class="fe__aide">Une complémentaire dentaire se conclut en général après un contrôle chez le dentiste. Pour les enfants, mieux vaut la conclure tôt.</p>
-    {{ e.lca_cartes("dentaire", ["dent_light", "dent_bronze", "dent_argent", "dent_or"]) }}
+    {{ e.lca_cartes("dentaire", ["dent_500", "dent_1000", "dent_2000", "dent_4000"]) }}
   </div>
   <div class="lca-bloc" data-montre-si="fam_ij=oui" hidden>
-    {{ e.lca_cartes("indemnite", ["ij_hop"], type="checkbox", requis=False, coche=True) }}
+    <p class="fe__sous-question">Indemnité d'hospitalisation : quel montant par jour ?</p>
+    {{ e.lca_cartes("indemnite", ["ij_50", "ij_100", "ij_200"]) }}
   </div>
   <div class="lca-bloc" data-montre-si="fam_pj=oui" hidden>
     {{ e.lca_cartes("pj", ["pj_sante"], type="checkbox", requis=False, coche=True) }}
   </div>
-  {{ e.contrat_3ans() }}
   {{ e.continuer() }}
 </fieldset>
 {{ e.coordonnees(naissance=False) }}

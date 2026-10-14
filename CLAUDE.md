@@ -22,7 +22,9 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Ne jamais imiter un site fédéral (pas de croix suisse, pas « officiel ») ; citer la source OFSP (licence CC BY).
 
 ## Complémentaires maladie
-- Trois simulations (hospitalisation, ambulatoire et médecines douces, couverture complète) avec `"lca": True` dans `sim`. Primes et prestations : `content/complementaires.json` (grille indicative par âge, sexe, canton ; à ajuster avec les tarifs réels). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `resultat_lca`).
+- Pages publiques NEUTRES : aucune référence à un assureur, ni dans les noms, ni dans la structure, ni dans les chiffres. Couverture organisée par besoin (hospitalisation par type de chambre, soins ambulatoires à la carte avec niveau Standard ou Étendu, dentaire par plafond annuel, indemnité par jour, protection juridique santé).
+- Grille : `content/complementaires.json` (primes indicatives par âge, sexe, canton). Utilisée par le simulateur de la page Privé (`partials/simulateur-sante.html`) et les trois simulations (hospitalisation, ambulatoire, complète, avec `"lca": True`). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `niveau_amb`, `resultat_lca`). Prime floutée jusqu'aux coordonnées.
+- Les pages orientées assureur (Helsana, Assura…) seront des pages publicitaires `templates/pages/lp/`, non liées au site. Grille inspirée d'Helsana conservée dans `archives/complementaires-helsana/`.
 
 ## Article hebdomadaire
 Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :

@@ -32,15 +32,20 @@ L'[assurance de base LAMal](/particuliers/lamal/) rembourse les soins ambulatoir
 - une partie de la **prévention** : check-up, certains vaccins, cours de santé ;
 - les **frais à l'étranger** au-delà du tarif suisse.
 
-## Trois niveaux, selon vos besoins
+## Une couverture à la carte
 
-| Formule | Ce qu'elle apporte | Pour qui |
-|---|---|---|
-| Essentiel | Médicaments hors liste, lunettes, transports, urgences à l'étranger | Pour une base solide à petit prix |
-| Médecines douces | Thérapeutes reconnus, prévention, fitness | Pour ceux qui consultent hors du cabinet médical |
-| Confort | Les deux, avec des plafonds plus élevés et l'orthodontie des enfants | Pour les familles et les besoins réguliers |
+Inutile de tout prendre : choisissez les prestations qui correspondent à votre vie.
 
-Selon l'assureur, des options permettent d'aller plus loin : plafonds relevés, check-up de santé ou participation à une correction de la vue au laser.
+| Besoin | Ce que la complémentaire apporte |
+|---|---|
+| Médecines complémentaires | Ostéopathie, acupuncture, naturopathie, massage médical, chez un thérapeute reconnu |
+| Lunettes et lentilles | Une participation fixe sur une ou plusieurs années |
+| Médicaments hors liste | Les médicaments prescrits que l'assurance de base ne rembourse pas |
+| Prévention et bien-être | Check-up, vaccins de voyage, abonnement de fitness ou cours de santé |
+| Étranger et sauvetage | Urgences à l'étranger, transports et sauvetage en Suisse |
+| Orthodontie des enfants | Les appareils dentaires des enfants et des jeunes |
+
+Chaque prestation a un plafond annuel. Un niveau étendu relève ces plafonds si vous consultez régulièrement.
 
 > **Le saviez-vous ?** Pour être remboursé, le thérapeute doit être reconnu par l'assureur, souvent au travers d'un registre comme l'ASCA ou le RME. Vérifiez-le avant la première séance.
 

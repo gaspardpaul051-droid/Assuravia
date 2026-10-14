@@ -6,9 +6,9 @@ categorie: Santé
 icone: croix
 ordre: 4
 titre_seo: Assurance hospitalisation demi-privée ou privée : estimer sa prime
-description: Commune, flexible, demi-privée ou privée : ce que couvre une assurance hospitalisation complémentaire en Suisse, et une estimation de prime en 2 minutes.
+description: Commune, au choix le jour venu, demi-privée ou privée : ce que couvre une assurance hospitalisation complémentaire en Suisse, et une estimation de prime en 2 minutes.
 desc: Chambre à deux lits ou individuelle, libre choix du médecin : choisissez votre confort à l'hôpital.
-points: Commune, flexible, demi-privée ou privée | Libre choix du médecin à l'hôpital | Aide à domicile après le séjour
+points: Commune, demi-privée ou privée | Libre choix du médecin à l'hôpital | Aide à domicile après le séjour
 badge: Estimation en 2 min
 bouton: Estimer ma prime hospitalisation
 simulateur: /particuliers/simulation-hospitalisation/
@@ -33,18 +33,18 @@ Elle ne vous laisse pas non plus choisir le médecin qui vous soigne, et vous pa
 | Formule | Chambre | Médecin | Pour qui |
 |---|---|---|---|
 | Commune, toute la Suisse | Plusieurs lits | Attribué par l'hôpital | Pour être soigné hors canton sans frais supplémentaires |
-| Flexible | Au choix, à chaque séjour | Libre en demi-privée ou privée | Pour payer moins aujourd'hui et décider le moment venu |
+| Au choix le jour venu | Décidée à chaque séjour | Libre en demi-privée ou privée | Pour payer moins aujourd'hui et décider le moment venu |
 | Demi-privée | Deux lits | Libre choix | Pour le confort et le choix du spécialiste |
 | Privée | Individuelle | Libre choix | Pour le maximum de confort et de discrétion |
 
-Avec une **formule flexible**, la division commune ne coûte rien de plus. Si vous choisissez la demi-privée ou la privée, vous payez une part des frais, avec un plafond annuel qui varie selon l'assureur. C'est souvent un bon compromis pour les jeunes adultes.
+Avec une formule **au choix le jour venu**, la division commune ne coûte rien de plus. Si vous choisissez la demi-privée ou la privée, vous payez une part des frais, avec un plafond annuel qui varie selon l'assureur. C'est souvent un bon compromis pour les jeunes adultes.
 
 > **Le saviez-vous ?** Une bonne couverture ne s'arrête pas à la sortie de l'hôpital. Selon le contrat, elle peut participer à une aide à domicile ou à une cure de convalescence. Comparez ces prestations, pas seulement la chambre.
 
 ## Bien choisir sa formule
 
 1. **Pensez à l'avenir.** La prime augmente avec l'âge, et l'accès devient plus difficile avec les années. S'assurer jeune et en bonne santé est un avantage.
-2. **Regardez la franchise.** Plusieurs assureurs proposent une franchise par hospitalisation : vous payez une part fixe en cas de séjour, et la prime baisse.
+2. **Comparez l'après-hôpital.** Aide à domicile, cure de convalescence, garde d'enfants : ces prestations varient beaucoup d'un contrat à l'autre.
 3. **Vérifiez la liste des hôpitaux.** Certains assureurs excluent quelques cliniques ou y limitent la prise en charge.
 4. **Anticipez une naissance.** Les prestations de maternité sont souvent soumises à un délai d'attente : concluez votre couverture bien avant un projet de famille.
 
@@ -53,7 +53,7 @@ Les soins sans hospitalisation se couvrent à part, avec une [complémentaire am
 ## Questions fréquentes
 
 ### Une assurance hospitalisation est-elle utile si je suis jeune ?
-Elle coûte moins cher quand vous êtes jeune, et vous êtes plus facilement accepté sans réserve. Une formule flexible permet de commencer avec une prime modeste.
+Elle coûte moins cher quand vous êtes jeune, et vous êtes plus facilement accepté sans réserve. Une formule au choix le jour venu permet de commencer avec une prime modeste.
 
 ### Puis-je changer de formule plus tard ?
 Passer à une formule inférieure est en général possible. Passer à une formule supérieure demande un nouveau questionnaire de santé, et l'assureur peut refuser.

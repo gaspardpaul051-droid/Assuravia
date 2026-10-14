@@ -1435,3 +1435,13 @@ body.modale-ouverte { overflow: hidden; }
 .simulateur__suite p { display: flex; align-items: center; gap: 6px; margin: 0; font-size: var(--t-xs); color: var(--texte-doux); }
 .simulateur__suite .icone { color: var(--succes); }
 .demande-3a .panneau-form { margin-top: var(--e-5); }
+.sante__niveau-amb { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: var(--e-2); border-top: 1px dashed var(--bordure); font-size: var(--t-xs); font-weight: 700; color: var(--texte-doux); }
+.sante__niveau-amb label { position: relative; cursor: pointer; }
+.sante__niveau-amb input { position: absolute; opacity: 0; }
+.sante__niveau-amb span span, .sante__niveau-amb label > span { display: block; padding: 6px 12px; border-radius: var(--r-plein); background: var(--surface); color: var(--marine); font-size: var(--t-xs); }
+.sante__niveau-amb small { font-weight: 500; color: var(--texte-doux); }
+.sante__niveau-amb input:checked + span { background: var(--marine); color: #fff; }
+.sante__niveau-amb input:checked + span small { color: rgba(255,255,255,.75); }
+.sante__niveaux input[type=checkbox]:checked + span { background: var(--bleu); border-color: var(--bleu); color: #fff; }
+.sante__extras { grid-template-columns: 1fr; }
+.formule--aucune { display: grid; place-items: center; min-height: 80px; }

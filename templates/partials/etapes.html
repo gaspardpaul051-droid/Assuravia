@@ -192,12 +192,13 @@
 </fieldset>
 {%- endmacro %}
 
-{# Cartes de modules : type « radio » (un choix) ou « checkbox » (options). La prime s'affiche floutée jusqu'aux coordonnées. #}
-{% macro lca_cartes(nom, cles, type="radio", requis=True, auto=False, coche=False) -%}
+{# Cartes de modules : type « radio » (un choix) ou « checkbox » (plusieurs). `aucun` ajoute une carte « Aucune ».
+   La prime s'affiche floutée jusqu'aux coordonnées. #}
+{% macro lca_cartes(nom, cles, type="radio", requis=True, coche=False, aucun=None, groupe=None) -%}
 <div class="formules formules--lca">
+  {% if aucun %}<label class="formule formule--aucune"><input type="radio" name="{{ nom }}" value="Aucune"{% if requis %} required{% endif %}><span class="formule__nom">{{ aucun }}</span></label>{% endif %}
   {% for k in cles %}{% set m = complementaires.modules[k] %}
-  <label class="formule{% if loop.index == 2 and type == 'radio' and cles|length > 2 %} formule--conseil{% endif %}"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if auto %} data-fe-auto{% endif %}{% if coche %} checked{% endif %}>
-    {% if loop.index == 2 and type == 'radio' and cles|length > 2 %}<span class="formule__badge">Bon compromis</span>{% endif %}
+  <label class="formule"><input type="{{ type }}" name="{{ nom }}" value="{{ m.court }}" data-lca="{{ k }}"{% if requis and type == 'radio' %} required{% endif %}{% if groupe %} data-groupe-requis="{{ groupe }}"{% endif %}{% if coche %} checked{% endif %}>
     <span class="formule__nom">{{ m.court }}</span>
     <span class="formule__prix floute" data-prix-lca="{{ k }}">CHF 00 / mois</span>
     <ul>{% for p in m.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
@@ -205,20 +206,11 @@
 </div>
 {%- endmacro %}
 
-{% macro franchise_hop() -%}
-<p class="fe__sous-question">Franchise d'hospitalisation</p>
-<p class="fe__aide">Avec une franchise, vous payez vous-même ce montant avant que la complémentaire n'intervienne. En échange, la prime baisse.</p>
-<div class="choix-cartes choix-cartes--3">
-  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="0" required checked><span>Sans franchise</span></label>
-  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="1000" required><span>CHF 1'000</span></label>
-  <label class="choix-carte choix-carte--compact"><input type="radio" name="franchise_hop" value="2000" required><span>CHF 2'000</span></label>
-</div>
-{%- endmacro %}
-
-{% macro contrat_3ans() -%}
-<div class="consentement fe__option">
-  <input id="trois-ans-{{ sim.id }}" name="contrat_3_ans" type="checkbox" value="oui">
-  <label for="trois-ans-{{ sim.id }}">Je suis prêt à m'engager sur plusieurs années (certains assureurs accordent alors un rabais).</label>
+{% macro niveau_amb() -%}
+<p class="fe__sous-question">Niveau de couverture</p>
+<div class="choix-cartes">
+  <label class="choix-carte"><input type="radio" name="niveau_amb" value="Standard" required checked><span class="choix-carte__titre">Standard</span><span class="choix-carte__detail">Des plafonds annuels adaptés à un usage occasionnel</span></label>
+  <label class="choix-carte"><input type="radio" name="niveau_amb" value="Étendu" required><span class="choix-carte__titre">Étendu</span><span class="choix-carte__detail">Des plafonds plus élevés, pour un usage régulier</span></label>
 </div>
 {%- endmacro %}
 

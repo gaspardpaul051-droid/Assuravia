@@ -167,7 +167,7 @@
     conteneur.querySelectorAll("[data-groupe-requis]").forEach(function (c) { if (!c.closest("[hidden]")) groupes[c.getAttribute("data-groupe-requis")] = true; });
     Object.keys(groupes).forEach(function (g) {
       var cases = conteneur.querySelectorAll('[data-groupe-requis="' + g + '"]');
-      var zone = cases[0].closest(".choix-cartes, .volet") || cases[0].parentElement;
+      var zone = cases[0].closest(".choix-cartes, .formules, .volet, .sante__niveaux") || cases[0].parentElement;
       var msg = zone.nextElementSibling && zone.nextElementSibling.classList.contains("champ__erreur") ? zone.nextElementSibling : null;
       var coche = Array.prototype.some.call(cases, function (c) { return c.checked; });
       if (coche) { if (msg) msg.remove(); return; }
@@ -355,8 +355,7 @@
     var fem = T.femme[m.courbe];
     if (p.sexe === "Femme" && fem && age >= fem[0] && age <= fem[1]) f *= fem[2];
     f *= T.cantons[p.canton] || 1;
-    if (cle.indexOf("hop_") === 0) f *= T.franchise_hop[p.franchise || "0"] || 1;
-    if (p.troisAns) f *= 1 - T.rabais_3ans;
+    if (m.famille === "Ambulatoire" && T.niveaux_amb) f *= T.niveaux_amb[p.niveau] || 1;
     return Math.round(m.base * f * 20) / 20;
   };
 
@@ -366,7 +365,7 @@
     var G = JSON.parse(sante.querySelector("[data-sante-grille]").textContent);
     var chfS = function (x) { return "CHF " + x.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
     var elTotal = sante.querySelector("[data-sante-total]"), affiche = 0, anim = null;
-    var COULEURS = { hop: "#1565A8", amb: "#3A9AE0", dent: "#E2BE52", ij_hop: "#9CC9EE", pj_sante: "#8798AE" };
+    var COULEURS = { hop: "#1565A8", amb: "#3A9AE0", dent: "#E2BE52", ij: "#9CC9EE", pj_sante: "#8798AE" };
     var majSante = function () {
       var profil = {
         annee: Number(sante.querySelector('[data-sante-champ="annee"]').value),
@@ -374,11 +373,15 @@
         sexe: (sante.querySelector('[data-sante-champ="sexe"]:checked') || {}).value
       };
       var choix = [];
-      ["hop", "amb", "dent"].forEach(function (fam) {
+      profil.niveau = (sante.querySelector('[name="sante-niveau"]:checked') || {}).value || "Standard";
+      ["hop", "dent", "ij"].forEach(function (fam) {
         var r = sante.querySelector('[name="sante-' + fam + '"]:checked');
         sante.querySelector('[data-sante-famille="' + fam + '"]').classList.toggle("sante__famille--active", !!(r && r.value));
         if (r && r.value) choix.push({ cle: r.value, fam: fam });
       });
+      var amb = sante.querySelectorAll("[data-sante-amb]:checked");
+      sante.querySelector('[data-sante-famille="amb"]').classList.toggle("sante__famille--active", amb.length > 0);
+      amb.forEach(function (x) { choix.push({ cle: x.value, fam: "amb" }); });
       sante.querySelectorAll("[data-sante-extra]:checked").forEach(function (x) { choix.push({ cle: x.value, fam: x.value }); });
       choix.forEach(function (c) { c.mois = prixLca(G, c.cle, profil); });
       var total = choix.reduce(function (t, c) { return t + c.mois; }, 0);
@@ -412,9 +415,9 @@
       choix.forEach(function (c) {
         var m = G.modules[c.cle];
         if (c.fam === "hop") { q.set("fam_hop", "oui"); q.set("division", m.court); }
-        else if (c.fam === "amb") { q.set("fam_amb", "oui"); q.set("formule_amb", m.court); }
+        else if (c.fam === "amb") { q.set("fam_amb", "oui"); q.append("besoins_amb", m.court); q.set("niveau_amb", profil.niveau); }
         else if (c.fam === "dent") { q.set("fam_dent", "oui"); q.set("dentaire", m.court); }
-        else if (c.cle === "ij_hop") q.set("fam_ij", "oui");
+        else if (c.fam === "ij") { q.set("fam_ij", "oui"); q.set("indemnite", m.court); }
         else if (c.cle === "pj_sante") q.set("fam_pj", "oui");
       });
       var cta = sante.querySelector("[data-sante-cta]");
@@ -524,8 +527,8 @@
     var T = tarifLca ? JSON.parse(tarifLca.textContent) : null;
     var arrondi05 = function (x) { return Math.round(x * 20) / 20; };
     var primeLca = function (cle) {
-      var an = nombre("annee_naissance"), sexe = valeur("sexe"), canton = formF.querySelector('[name="canton"]'), fr = valeur("franchise_hop"), trois = formF.querySelector('[name="contrat_3_ans"]');
-      return prixLca(T, cle, { annee: an, sexe: sexe ? sexe.value : "", canton: canton ? canton.value : "", franchise: fr ? fr.value : "0", troisAns: !!(trois && trois.checked) });
+      var an = nombre("annee_naissance"), sexe = valeur("sexe"), canton = formF.querySelector('[name="canton"]'), niv = valeur("niveau_amb");
+      return prixLca(T, cle, { annee: an, sexe: sexe ? sexe.value : "", canton: canton ? canton.value : "", niveau: niv ? niv.value : "Standard" });
     };
     var modulesLca = function () {
       var liste = [];

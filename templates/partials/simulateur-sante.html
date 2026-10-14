@@ -16,22 +16,43 @@
       </fieldset>
     </div>
 
-    {% for fam, titre, icone, aide, cles, defaut in [
-      ("hop", "Hospitalisation", "croix", "Chambre, choix de l'hôpital et du médecin", ["hop_commune", "hop_flex_eco", "hop_flex_confort", "hop_demi", "hop_privee"], "hop_flex_eco"),
-      ("amb", "Ambulatoire et médecines douces", "coeur", "Thérapeutes, lunettes, médicaments, prévention", ["amb_essentiel", "amb_douce", "amb_confort"], "amb_douce"),
-      ("dent", "Dentaire", "valide", "Contrôles, soins, orthodontie", ["dent_light", "dent_bronze", "dent_argent", "dent_or"], "")] %}
-    <fieldset class="sante__famille" data-sante-famille="{{ fam }}">
-      <legend><span class="sante__famille-icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong> {{ aide }}</span></legend>
+    <fieldset class="sante__famille" data-sante-famille="hop">
+      <legend><span class="sante__famille-icone">{{ i.icone("croix") }}</span><span><strong>Hospitalisation</strong> Quelle chambre à l'hôpital ?</span></legend>
       <div class="sante__niveaux">
-        <label><input type="radio" name="sante-{{ fam }}" value=""{% if not defaut %} checked{% endif %}> <span>Aucune</span></label>
-        {% for k in cles %}<label><input type="radio" name="sante-{{ fam }}" value="{{ k }}"{% if k == defaut %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
+        <label><input type="radio" name="sante-hop" value=""> <span>Aucune</span></label>
+        {% for k in ["hop_commune", "hop_flex", "hop_demi", "hop_privee"] %}<label><input type="radio" name="sante-hop" value="{{ k }}"{% if k == "hop_demi" %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
       </div>
     </fieldset>
-    {% endfor %}
+
+    <fieldset class="sante__famille" data-sante-famille="amb">
+      <legend><span class="sante__famille-icone">{{ i.icone("coeur") }}</span><span><strong>Soins ambulatoires</strong> Cochez ce dont vous avez besoin</span></legend>
+      <div class="sante__niveaux">
+        {% for k in ["amb_douces", "amb_lunettes", "amb_medicaments", "amb_prevention", "amb_etranger", "amb_ortho"] %}<label><input type="checkbox" value="{{ k }}" data-sante-amb{% if k in ["amb_douces", "amb_lunettes"] %} checked{% endif %}> <span>{{ M[k].court }}</span></label>{% endfor %}
+      </div>
+      <div class="sante__niveau-amb">
+        <span>Niveau</span>
+        {% for n, d in [("Standard", "plafonds courants"), ("Étendu", "plafonds plus élevés")] %}<label><input type="radio" name="sante-niveau" value="{{ n }}"{% if loop.first %} checked{% endif %}> <span>{{ n }} <small>{{ d }}</small></span></label>{% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="sante__famille" data-sante-famille="dent">
+      <legend><span class="sante__famille-icone">{{ i.icone("valide") }}</span><span><strong>Dentaire</strong> Montant remboursé au plus par an</span></legend>
+      <div class="sante__niveaux">
+        <label><input type="radio" name="sante-dent" value="" checked> <span>Aucune</span></label>
+        {% for k in ["dent_500", "dent_1000", "dent_2000", "dent_4000"] %}<label><input type="radio" name="sante-dent" value="{{ k }}"> <span>{{ M[k].court }}</span></label>{% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="sante__famille" data-sante-famille="ij">
+      <legend><span class="sante__famille-icone">{{ i.icone("tirelire") }}</span><span><strong>Indemnité d'hospitalisation</strong> Un montant versé à vous pour chaque jour d'hôpital</span></legend>
+      <div class="sante__niveaux">
+        <label><input type="radio" name="sante-ij" value="" checked> <span>Aucune</span></label>
+        {% for k in ["ij_50", "ij_100", "ij_200"] %}<label><input type="radio" name="sante-ij" value="{{ k }}"> <span>{{ M[k].court }}</span></label>{% endfor %}
+      </div>
+    </fieldset>
 
     <div class="sante__extras">
-      <label class="sante__extra"><input type="checkbox" value="ij_hop" data-sante-extra> <span><strong>Indemnité d'hospitalisation</strong> CHF 100 par jour d'hôpital, versés à vous</span></label>
-      <label class="sante__extra"><input type="checkbox" value="pj_sante" data-sante-extra> <span><strong>Protection juridique santé</strong> En cas de litige avec un hôpital ou un assureur</span></label>
+      <label class="sante__extra"><input type="checkbox" value="pj_sante" data-sante-extra> <span><strong>Protection juridique santé</strong> En cas de litige avec un hôpital, un médecin ou un assureur</span></label>
     </div>
   </div>
 

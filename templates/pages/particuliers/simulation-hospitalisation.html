@@ -9,17 +9,19 @@
 {{ e.identite() }}
 {{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
-{{ e.ouvrir("division", "Quelle couverture à l'hôpital ?", "Toutes les formules complètent l'assurance de base, qui couvre déjà la division commune dans votre canton.") }}
-  {{ e.lca_cartes("division", ["hop_commune", "hop_flex_eco", "hop_flex_confort", "hop_demi", "hop_privee"]) }}
-  {{ e.franchise_hop() }}
+{{ e.ouvrir("division", "Quelle chambre souhaitez-vous à l'hôpital ?", "L'assurance de base couvre déjà la division commune dans votre canton. La complémentaire ajoute du choix.") }}
+  {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"]) }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.ouvrir("options_hop", "Des compléments utiles ?", "Facultatif : laissez vide si vous n'en avez pas besoin.") }}
-  {{ e.lca_cartes("options", ["ij_hop", "pj_sante"], type="checkbox", requis=False) }}
-  {{ e.contrat_3ans() }}
+{{ e.ouvrir("indemnite", "Un montant versé pour chaque jour d'hôpital ?", "Une indemnité journalière vous aide à payer les frais annexes : garde d'enfants, transports, perte de revenu.") }}
+  {{ e.lca_cartes("indemnite", ["ij_50", "ij_100", "ij_200"], aucun="Pas d'indemnité") }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.oui_non("interet_ambulatoire", "Souhaitez-vous aussi couvrir les soins ambulatoires et les médecines douces ?", "Ostéopathie, lunettes, médicaments hors liste, prévention : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
+{{ e.ouvrir("options_hop", "Ajouter une protection juridique santé ?", "Facultatif : utile en cas de litige avec un hôpital, un médecin ou un assureur.") }}
+  {{ e.lca_cartes("options", ["pj_sante"], type="checkbox", requis=False) }}
+  {{ e.continuer() }}
+</fieldset>
+{{ e.oui_non("interet_ambulatoire", "Souhaitez-vous aussi couvrir les soins ambulatoires et les médecines complémentaires ?", "Ostéopathie, lunettes, médicaments hors liste, prévention : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
 {{ e.coordonnees(naissance=False) }}
 {{ e.resultat_lca("division") }}
 {% endblock %}

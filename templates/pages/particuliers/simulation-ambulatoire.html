@@ -9,16 +9,19 @@
 {{ e.identite() }}
 {{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
-{{ e.ouvrir("formule", "Quelle formule vous correspond ?", "Toutes complètent l'assurance de base pour les soins sans hospitalisation.") }}
-  {{ e.lca_cartes("formule_amb", ["amb_essentiel", "amb_douce", "amb_confort"]) }}
+{{ e.ouvrir("besoins", "De quoi avez-vous besoin ?", "Cochez tout ce qui vous concerne : vous ne payez que ce qui vous est utile.") }}
+  {{ e.lca_cartes("besoins_amb", ["amb_douces", "amb_lunettes", "amb_medicaments", "amb_prevention", "amb_etranger", "amb_ortho"], type="checkbox", requis=False, groupe="besoins_amb") }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.ouvrir("renforts", "Aller plus loin ?", "Facultatif : laissez vide si la formule choisie vous suffit.") }}
-  {{ e.lca_cartes("renforts", ["amb_plus", "amb_innovation", "pj_sante"], type="checkbox", requis=False) }}
-  {{ e.contrat_3ans() }}
+{{ e.ouvrir("niveau", "Quel niveau de couverture ?") }}
+  {{ e.niveau_amb() }}
+  <div class="consentement fe__option">
+    <input id="pj-amb" name="options" type="checkbox" value="Protection juridique santé" data-lca="pj_sante">
+    <label for="pj-amb">Ajouter une protection juridique santé (litige avec un hôpital, un médecin ou un assureur).</label>
+  </div>
   {{ e.continuer() }}
 </fieldset>
 {{ e.oui_non("interet_hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Chambre à deux lits ou individuelle, libre choix du médecin : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
 {{ e.coordonnees(naissance=False) }}
-{{ e.resultat_lca("formule") }}
+{{ e.resultat_lca("besoins") }}
 {% endblock %}
