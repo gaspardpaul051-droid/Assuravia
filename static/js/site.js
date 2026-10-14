@@ -243,6 +243,14 @@
     num.addEventListener("input", maj);
   });
 
+  // 2a bis. Mesure : une demande envoyée compte comme « generate_lead » dans Google Analytics (si accepté)
+  document.addEventListener("submit", function (e) {
+    var f = e.target;
+    if (f.matches && f.matches("form[data-lead]") && typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", { form_name: f.getAttribute("name"), page_path: location.pathname });
+    }
+  }, true);
+
   // 2b. Téléphone : liste des pays avec drapeaux (le select reste en place pour l'envoi et le repli sans JS)
   var lienCss = document.querySelector('link[href$="css/site.css"]');
   var baseDrapeaux = lienCss ? lienCss.getAttribute("href").replace(/css\/site\.css.*$/, "") + "drapeaux/" : "/drapeaux/";
