@@ -1,6 +1,6 @@
 {% set sim = {"id": "pj", "theme": "prive", "groupe": "particuliers", "form": "simulation-protection-juridique", "produit": "protection-juridique", "produit_nom": "Protection juridique", "page": "/particuliers/protection-juridique/", "icone": "balance",
   "titre": "Protection juridique : calculez votre prime en 2 minutes", "h1": "Calculez votre protection juridique",
-  "description": "Simulez votre protection juridique privée : prime immédiate pour tout le ménage, options voyage et cyber. Estimation gratuite et sans engagement.",
+  "description": "Simulez votre protection juridique privée : prime immédiate pour tout le ménage, options circulation, voyage et cyber. Estimation gratuite et sans engagement.",
   "attrs": {"prime-base": 285, "prime-nom": "Protection juridique privée"}} %}
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
@@ -8,11 +8,12 @@
 {{ e.identite() }}
 {{ e.adresse("Quelle est votre adresse ?") }}
 {{ e.personnes() }}
-{{ e.situations("situations_pj", "Dans quelles situations voulez-vous être défendu ?", "Cochez ce qui vous parle : votre protection juridique couvre ces domaines de la vie courante.", [("voiture", "Circulation", "Accident, contestation d'une amende, retrait de permis."), ("maison", "Logement", "Litige avec le bailleur, la régie ou un voisin : loyer, caution, nuisances."), ("mallette", "Travail", "Licenciement, salaire impayé, certificat de travail contesté."), ("colis", "Achats et contrats", "Artisan qui ne termine pas, garantie refusée, achat en ligne."), ("coeur", "Santé et assurances", "Litige avec une caisse maladie, une assurance ou un hôpital."), ("cyber", "Internet", "Atteinte à votre réputation, usurpation d'identité, achat frauduleux.")]) }}
+{{ e.situations("situations_pj", "Dans quelles situations voulez-vous être défendu ?", "Cochez ce qui vous parle : votre protection juridique couvre ces domaines de la vie courante.", [("voiture", "Circulation", "Accident, contestation d'une amende, retrait de permis. Avec l'option circulation."), ("maison", "Logement", "Litige avec le bailleur, la régie ou un voisin : loyer, caution, nuisances."), ("mallette", "Travail", "Licenciement, salaire impayé, certificat de travail contesté."), ("colis", "Achats et contrats", "Artisan qui ne termine pas, garantie refusée, achat en ligne."), ("coeur", "Santé et assurances", "Litige avec une caisse maladie, une assurance ou un hôpital."), ("cyber", "Internet", "Atteinte à votre réputation, usurpation d'identité, achat frauduleux.")]) }}
+{{ e.option_circulation() }}
 {{ e.option_voyage() }}
 {{ e.option_cyber() }}
 {{ e.interet_menage() }}
 {{ e.impots() }}
 {{ e.coordonnees() }}
-{{ e.resultat("option_voyage", prestations=[("bulle", "Conseil juridique par téléphone", "Un juriste répond à vos questions dès que le problème apparaît, souvent avant qu'il devienne un litige."), ("balance", "Défense de vos droits", "L'assureur négocie pour vous et, si besoin, mandate un avocat."), ("livre", "Frais pris en charge", "Honoraires d'avocat, frais de justice, d'expertise et de procédure, jusqu'au plafond du contrat."), ("groupe", "Toute la famille", "Les personnes vivant dans votre ménage sont couvertes avec vous."), ("repere", "Où que vous soyez", "En Suisse et, pour de nombreux domaines, aussi en Europe. L'étendue dépend du contrat.")], titre_prestations="Ce que fait votre protection juridique") }}
+{{ e.resultat("option_circulation", prestations=[("bulle", "Conseil juridique par téléphone", "Un juriste répond à vos questions dès que le problème apparaît, souvent avant qu'il devienne un litige."), ("balance", "Défense de vos droits", "L'assureur négocie pour vous et, si besoin, mandate un avocat."), ("livre", "Frais pris en charge", "Honoraires d'avocat, frais de justice, d'expertise et de procédure, jusqu'au plafond du contrat."), ("groupe", "Toute la famille", "Les personnes vivant dans votre ménage sont couvertes avec vous."), ("repere", "Où que vous soyez", "En Suisse et, pour de nombreux domaines, aussi en Europe. L'étendue dépend du contrat.")], titre_prestations="Ce que fait votre protection juridique") }}
 {% endblock %}
