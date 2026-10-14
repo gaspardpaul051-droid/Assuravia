@@ -1533,3 +1533,39 @@ body.modale-ouverte { overflow: hidden; }
 .rappel-boutons .bouton { width: 100%; min-width: 0; }
 @media (max-width: 560px) { .rappel-boutons { grid-template-columns: 1fr; } }
 .funnel .choix-carte--compact span { font-size: var(--t-m); }
+/* Options facultatives des simulations santé */
+.options-lca { display: grid; gap: var(--e-3); }
+.option-lca { position: relative; display: grid; grid-template-columns: auto 1fr auto; gap: var(--e-3); align-items: center; padding: var(--e-4); border: 1.5px solid var(--bordure); border-radius: var(--r-l); background: #fff; cursor: pointer; transition: border-color .2s, background .2s, box-shadow .2s; }
+.option-lca:hover { border-color: var(--bleu-vif); }
+.option-lca input { position: absolute; opacity: 0; pointer-events: none; }
+.option-lca:has(input:focus-visible) { outline: 3px solid rgba(21,101,168,.35); outline-offset: 2px; }
+.option-lca__icone { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); }
+.option-lca__texte { display: grid; gap: 2px; font-size: var(--t-s); color: var(--texte-doux); }
+.option-lca__texte strong { font-size: var(--t-m); color: var(--marine); }
+.option-lca__bouton { padding: 8px 14px; border-radius: var(--r-plein); border: 1.5px solid var(--bleu); color: var(--bleu); font-size: var(--t-s); font-weight: 800; white-space: nowrap; }
+.option-lca__ok { display: none; }
+.option-lca:has(input:checked) { border-color: var(--bleu); background: linear-gradient(180deg, var(--bleu-pale), #fff 85%); box-shadow: 0 10px 24px -16px rgba(21,101,168,.7); }
+.option-lca:has(input:checked) .option-lca__icone { background: var(--bleu); color: #fff; }
+.option-lca:has(input:checked) .option-lca__bouton { background: var(--bleu); color: #fff; }
+.option-lca:has(input:checked) .option-lca__plus { display: none; }
+.option-lca:has(input:checked) .option-lca__ok { display: inline; }
+.option-lca__suite { margin: -6px 0 0 var(--e-6); padding: var(--e-3) var(--e-4); border-left: 3px solid var(--bleu-ciel); }
+.option-lca__suite[hidden] { display: none; }
+.option-lca__suite .fe__sous-question { margin: 0 0 var(--e-2); }
+@media (max-width: 560px) { .option-lca { grid-template-columns: auto 1fr; } .option-lca__bouton { grid-column: 1 / -1; justify-self: start; } .option-lca__suite { margin-left: 0; } }
+.formules--lca .formule__nom { overflow-wrap: anywhere; hyphens: auto; }
+/* D'autres solutions (résultat des simulations santé) */
+.solutions-lca { display: grid; gap: var(--e-3); }
+.solutions-lca:empty { display: none; }
+.solutions-lca .fe__sous-question, .solutions-lca .fe__aide { margin: 0; }
+.solutions-lca__groupe { display: grid; gap: var(--e-2); }
+.solutions-lca__groupe > p { margin: 0; font-size: var(--t-xs); font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--texte-doux); }
+.solutions-lca__groupe > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--e-2); }
+.solution-lca { display: grid; gap: 2px; padding: var(--e-3); border: 1.5px solid var(--bordure); border-radius: var(--r-m); background: #fff; text-align: left; font: inherit; cursor: pointer; transition: border-color .2s, transform .2s, background .2s; }
+.solution-lca:hover { border-color: var(--bleu-vif); transform: translateY(-2px); }
+.solution-lca span { font-size: var(--t-s); font-weight: 700; color: var(--marine); }
+.solution-lca strong { font-size: var(--t-l); color: var(--bleu); font-variant-numeric: tabular-nums; }
+.solution-lca small { font-size: var(--t-xs); color: var(--texte-doux); }
+.solution-lca--actif { border-color: var(--bleu); background: var(--bleu-pale); box-shadow: inset 0 0 0 1px var(--bleu); }
+.pulse { animation: pulse-prix .5s ease; }
+@keyframes pulse-prix { 50% { transform: scale(1.06); } }

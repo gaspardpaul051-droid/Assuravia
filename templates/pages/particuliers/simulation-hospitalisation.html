@@ -13,15 +13,20 @@
   {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"]) }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.ouvrir("indemnite", "Un montant versé pour chaque jour d'hôpital ?", "Une indemnité journalière vous aide à payer les frais annexes : garde d'enfants, transports, perte de revenu.") }}
-  {{ e.lca_cartes("indemnite", ["ij_50", "ij_100", "ij_200"], aucun="Pas d'indemnité") }}
-  {{ e.continuer() }}
+{{ e.ouvrir("options_hop", "Des options pour compléter votre couverture ?", "Toutes les options sont facultatives : ajoutez seulement celles qui vous sont utiles, puis continuez.") }}
+  <div class="options-lca">
+    {{ e.option_lca("opt_ij", "Indemnité d'hospitalisation", "Un montant versé directement à vous pour chaque jour d'hôpital, à utiliser librement : garde d'enfants, transports, perte de revenu.", "tirelire") }}
+    <div class="option-lca__suite" data-montre-si="opt_ij=oui" hidden>
+      <p class="fe__sous-question">Quel montant par jour ?</p>
+      <div class="choix-cartes choix-cartes--3">
+        {% for k in ["ij_50", "ij_100", "ij_200"] %}<label class="choix-carte choix-carte--compact"><input type="radio" name="indemnite" value="{{ complementaires.modules[k].court }}" data-lca="{{ k }}" required{% if k == "ij_100" %} checked{% endif %}><span>{{ complementaires.modules[k].court }}</span></label>{% endfor %}
+      </div>
+    </div>
+    {{ e.option_lca("options", "Protection juridique santé", "En cas de litige avec un hôpital, un médecin ou un assureur : conseils, frais d'avocat et d'expertise pris en charge.", "balance", cle="pj_sante", valeur="Protection juridique santé") }}
+    {{ e.option_lca("interet_ambulatoire", "Être conseillé aussi pour les soins ambulatoires", "Médecines complémentaires, lunettes, médicaments hors liste : un conseiller vous présente les possibilités. Sans effet sur l'estimation.", "coeur") }}
+  </div>
+  <button type="button" class="bouton bouton--{{ sim.theme }} fe__suivant" data-fe-suivant>Continuer</button>
 </fieldset>
-{{ e.ouvrir("options_hop", "Ajouter une protection juridique santé ?", "Facultatif : utile en cas de litige avec un hôpital, un médecin ou un assureur.") }}
-  {{ e.lca_cartes("options", ["pj_sante"], type="checkbox", requis=False) }}
-  {{ e.continuer() }}
-</fieldset>
-{{ e.oui_non("interet_ambulatoire", "Souhaitez-vous aussi couvrir les soins ambulatoires et les médecines complémentaires ?", "Ostéopathie, lunettes, médicaments hors liste, prévention : un conseiller vous présente les options.", oui="Oui, ça m'intéresse") }}
 {{ e.coordonnees(naissance=False) }}
 {{ e.resultat_lca("division") }}
 {% endblock %}

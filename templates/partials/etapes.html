@@ -217,6 +217,15 @@
 </div>
 {%- endmacro %}
 
+{# Option facultative en ligne : case à cocher, titre, description ; `contenu` s'affiche quand la case est cochée #}
+{% macro option_lca(nom, titre, texte, icone, cle=None, valeur="oui") -%}
+<label class="option-lca"><input type="checkbox" name="{{ nom }}" value="{{ valeur }}"{% if cle %} data-lca="{{ cle }}"{% endif %}>
+  <span class="option-lca__icone">{{ i.icone(icone) }}</span>
+  <span class="option-lca__texte"><strong>{{ titre }}</strong>{{ texte }}</span>
+  <span class="option-lca__bouton" aria-hidden="true"><span class="option-lca__plus">+ Ajouter</span><span class="option-lca__ok">✓ Ajoutée</span></span>
+</label>
+{%- endmacro %}
+
 {% macro niveau_amb() -%}
 <p class="fe__sous-question">Niveau de couverture</p>
 <div class="choix-cartes">
@@ -233,6 +242,7 @@
     <p class="resultat-prime__mois" data-affiche="mois"></p>
     <ul class="resultat-prime__detail" data-affiche="detail"></ul>
   </div>
+  <div class="solutions-lca" data-affiche="solutions"></div>
   <div class="resultat-prestations">
     <p class="fe__sous-question">Ce que comprend votre couverture</p>
     <div data-affiche="prestations"></div>

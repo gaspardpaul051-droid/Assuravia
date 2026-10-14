@@ -610,6 +610,28 @@
         set("total_floute", chf2(c.total));
         set("total", chf2(c.total));
         set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
+        // D'autres solutions : les autres niveaux de la même couverture, avec leur prime, à choisir en un clic
+        var sol = [];
+        c.lca.forEach(function (x) {
+          var el = formF.querySelector('[data-lca="' + x.cle + '"]');
+          if (!el || el.type !== "radio") return;
+          var freres = Array.prototype.slice.call(formF.querySelectorAll('[name="' + el.name + '"][data-lca]'));
+          if (freres.length < 2) return;
+          sol.push('<div class="solutions-lca__groupe"><p>' + T.modules[x.cle].famille + "</p><div>" + freres.map(function (fr) {
+            var k = fr.getAttribute("data-lca"), actif = k === x.cle;
+            return '<button type="button" class="solution-lca' + (actif ? " solution-lca--actif" : "") + '" data-lca-choisir="' + k + '"' + (actif ? ' aria-pressed="true"' : "") + "><span>" + T.modules[k].court + "</span><strong>" + chf2(primeLca(k)) + "</strong><small>par mois</small></button>";
+          }).join("") + "</div></div>");
+        });
+        var niv = valeur("niveau_amb");
+        if (niv && c.lca.some(function (x) { return T.modules[x.cle].famille === "Ambulatoire"; })) {
+          var ambs = c.lca.filter(function (x) { return T.modules[x.cle].famille === "Ambulatoire"; }).map(function (x) { return x.cle; });
+          sol.push('<div class="solutions-lca__groupe"><p>Niveau des soins ambulatoires</p><div>' + Object.keys(T.niveaux_amb).map(function (n) {
+            var total = ambs.reduce(function (t, k) { return t + Math.round(T.modules[k].base * (primeLca(k) / T.modules[k].base) / (T.niveaux_amb[niv.value] || 1) * T.niveaux_amb[n] * 20) / 20; }, 0);
+            var actif = n === niv.value;
+            return '<button type="button" class="solution-lca' + (actif ? " solution-lca--actif" : "") + '" data-niveau-choisir="' + n + '"><span>' + n + "</span><strong>" + chf2(total) + "</strong><small>par mois</small></button>";
+          }).join("") + "</div></div>");
+        }
+        set("solutions", sol.length ? '<p class="fe__sous-question">D\'autres solutions pour vous</p><p class="fe__aide">Comparez les niveaux en un clic : votre estimation se met à jour.</p>' + sol.join("") : "");
         set("prestations", c.lca.map(function (x) {
           var m = T.modules[x.cle];
           return '<div class="resultat-prestations__bloc"><p>' + m.nom + "</p><ul>" + (m.details || m.points).map(function (pt) { return "<li>" + pt + "</li>"; }).join("") + "</ul></div>";
@@ -685,6 +707,13 @@
         }
         avancer();
       });
+    });
+    // Changer de niveau depuis le résultat (complémentaires)
+    funnel.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-lca-choisir], [data-niveau-choisir]");
+      if (!b) return;
+      var el = b.hasAttribute("data-lca-choisir") ? formF.querySelector('[data-lca="' + b.getAttribute("data-lca-choisir") + '"]') : formF.querySelector('[name="niveau_amb"][value="' + b.getAttribute("data-niveau-choisir") + '"]');
+      if (el) { el.checked = true; afficher(); var tot = funnel.querySelector('[data-affiche="total"]'); if (tot) { tot.classList.remove("pulse"); void tot.offsetWidth; tot.classList.add("pulse"); } }
     });
     // Voir le résultat sans laisser ses coordonnées (le rappel reste proposé ensuite)
     funnel.querySelectorAll("[data-fe-sans-contact]").forEach(function (b) {
@@ -903,141 +932,6 @@
       document.getElementById("calcul").scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
-
-  // 4e. Recherche d'adresse comme sur une carte : suggestions au fil de la frappe.
-  //     Suisse et Liechtenstein : registre officiel des adresses (geo.admin.ch). Autres pays : OpenStreetMap (photon.komoot.io).
-  var CODES_PAYS = { "Suisse": "CH", "Liechtenstein": "LI", "France": "FR", "Allemagne": "DE", "Autriche": "AT", "Italie": "IT", "Espagne": "ES", "Portugal": "PT", "Royaume-Uni": "GB", "Belgique": "BE", "Luxembourg": "LU", "Pays-Bas": "NL" };
-  var lireAdresse = function (res) {
-    var label = String((res.attrs && res.attrs.label) || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").replace(/\s*\([A-Z]{2}\)\s*$/, "").trim();
-    var m = /^(.*)\s+(\d{4})\s+([^\d].*)$/.exec(label);
-    if (!m) return null;
-    var mm = /^(.*?)\s+(\d+[a-zA-Z]?(?:\s?[-–\/]\s?\d+[a-zA-Z]?)?)$/.exec(m[1]);
-    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim(), suisse: true, lat: res.attrs.lat, lon: res.attrs.lon };
-  };
-  var chercherSuisse = function (q, signal) {
-    return fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=8&searchText=" + encodeURIComponent(q), { signal: signal })
-      .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
-      .then(function (j) { return (j.results || []).map(lireAdresse).filter(Boolean); });
-  };
-  var chercherMonde = function (q, code, signal) {
-    return fetch("https://photon.komoot.io/api/?limit=10&lang=fr&q=" + encodeURIComponent(q), { signal: signal })
-      .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
-      .then(function (j) {
-        return (j.features || []).map(function (ft) {
-          var p = ft.properties || {}, ville = p.city || p.town || p.village || p.locality || p.district;
-          if (!p.street || !p.postcode || !ville) return null;
-          var co = (ft.geometry && ft.geometry.coordinates) || [];
-          return { rue: p.street, no: p.housenumber || "", npa: String(p.postcode), localite: ville, code: String(p.countrycode || "").toUpperCase(), lat: co[1], lon: co[0] };
-        }).filter(function (x) { return x && (!code || x.code === code); });
-      });
-  };
-  // Petite carte de l'adresse choisie : tuiles swisstopo (Suisse) ou OpenStreetMap (étranger), repère au centre
-  var carteAdresse = function (lat, lon, suisse) {
-    var z = 17, n = Math.pow(2, z), rad = lat * Math.PI / 180;
-    var xf = (lon + 180) / 360 * n, yf = (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n;
-    var tx = Math.floor(xf), ty = Math.floor(yf), html = "";
-    for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
-      var x = tx + dx, y = ty + dy;
-      var url = suisse ? "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/" + z + "/" + x + "/" + y + ".jpeg"
-        : "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
-      html += '<img src="' + url + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'" style="left:' + (dx * 256) + "px;top:" + (dy * 256) + 'px">';
-    }
-    var div = document.createElement("div");
-    div.className = "adresse__carte";
-    div.innerHTML = '<div class="adresse__tuiles" style="transform:translate(' + (-(xf - tx) * 256) + "px," + (-(yf - ty) * 256) + 'px)">' + html + "</div>" +
-      '<span class="adresse__repere" aria-hidden="true"></span><small class="adresse__attribution">' + (suisse ? "© swisstopo" : "© OpenStreetMap") + "</small>";
-    div.setAttribute("role", "img"); div.setAttribute("aria-label", "Carte de l'adresse choisie");
-    return div;
-  };
-  document.querySelectorAll("[data-adresse]").forEach(function (bloc, nBloc) {
-    var champ = bloc.querySelector("[data-adresse-recherche]"), liste = bloc.querySelector("[data-adresse-resultats]");
-    var aide = bloc.querySelector("[data-adresse-statut]"), zoneChamps = bloc.querySelector("[data-adresse-champs]");
-    var badge = bloc.querySelector("[data-adresse-badge]"), zoneRecherche = bloc.querySelector("[data-adresse-zone-recherche]");
-    var requis = champ.hasAttribute("data-adresse-requis");
-    var f = { rue: bloc.querySelector("[data-adresse-rue]"), no: bloc.querySelector("[data-adresse-no]"), npa: bloc.querySelector("[data-adresse-npa]"), localite: bloc.querySelector("[data-adresse-localite]") };
-    var minuterie = null, ctrl = null, items = [], actif = -1;
-    champ.setAttribute("role", "combobox"); champ.setAttribute("aria-autocomplete", "list"); champ.setAttribute("aria-expanded", "false");
-    liste.setAttribute("role", "listbox"); liste.id = "adresses-" + nBloc; champ.setAttribute("aria-controls", liste.id);
-    var codePays = function () {
-      var nom = bloc.getAttribute("data-adresse-pays");
-      if (!nom) return "CH";
-      var sel = bloc.closest("form").querySelector('[name="' + nom + '"]');
-      return sel ? (CODES_PAYS[sel.value] || "AUTRE") : "CH";
-    };
-    var statut = function (t, alerte) { aide.textContent = t; aide.classList.toggle("adresse__statut--alerte", !!alerte); };
-    var fermer = function () { liste.hidden = true; champ.setAttribute("aria-expanded", "false"); actif = -1; };
-    // Deux états : recherche (un seul champ) ou adresse détaillée (champs remplis, modifiables)
-    var montrerChamps = function (texteBadge) {
-      zoneChamps.hidden = false; zoneRecherche.hidden = true;
-      if (requis) champ.required = false;
-      badge.hidden = !texteBadge; badge.textContent = texteBadge || "";
-    };
-    var montrerRecherche = function () {
-      zoneChamps.hidden = true; zoneRecherche.hidden = false;
-      var carte = zoneChamps.querySelector(".adresse__carte"); if (carte) carte.remove();
-      if (requis) champ.required = true;
-      [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.value = ""; });
-      champ.value = ""; fermer(); statut("Commencez à taper : les adresses s'affichent au fur et à mesure.");
-      champ.focus();
-    };
-    var choisir = function (it) {
-      f.rue.value = it.rue; f.no.value = it.no; f.npa.value = it.npa; f.localite.value = it.localite;
-      [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.dispatchEvent(new Event("change", { bubbles: true })); });
-      montrerChamps(it.suisse ? "✓ Adresse vérifiée dans le registre suisse des adresses" : "✓ Adresse trouvée");
-      var ancienne = zoneChamps.querySelector(".adresse__carte"); if (ancienne) ancienne.remove();
-      if (it.lat && it.lon) zoneChamps.insertBefore(carteAdresse(Number(it.lat), Number(it.lon), !!it.suisse), badge.nextSibling);
-      if (!f.no.value) f.no.focus();
-    };
-    var afficherListe = function (res) {
-      items = res; liste.innerHTML = "";
-      if (!res.length) { fermer(); statut("Aucune adresse trouvée. Ajoutez le numéro ou la localité, ou saisissez-la à la main.", true); return; }
-      statut(res.length + (res.length > 1 ? " adresses trouvées" : " adresse trouvée") + " : choisissez la vôtre.");
-      res.forEach(function (it, i) {
-        var li = document.createElement("li");
-        li.setAttribute("role", "option"); li.id = liste.id + "-" + i;
-        li.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span><strong></strong><small></small></span>';
-        li.querySelector("strong").textContent = (it.rue + " " + it.no).trim();
-        li.querySelector("small").textContent = it.npa + " " + it.localite;
-        li.addEventListener("mousedown", function (e) { e.preventDefault(); choisir(it); });
-        liste.appendChild(li);
-      });
-      liste.hidden = false; champ.setAttribute("aria-expanded", "true");
-    };
-    var chercher = function () {
-      var q = champ.value.trim();
-      var err = zoneRecherche.querySelector(".champ__erreur"); if (err) err.remove(); champ.removeAttribute("aria-invalid");
-      if (q.length < 3) { fermer(); statut("Commencez à taper : les adresses s'affichent au fur et à mesure."); return; }
-      var code = codePays();
-      if (ctrl) ctrl.abort();
-      ctrl = window.AbortController ? new AbortController() : null;
-      var sig = ctrl ? ctrl.signal : undefined;
-      statut("Recherche…");
-      var p = code === "CH" || code === "LI" ? chercherSuisse(q, sig) : chercherMonde(q, code === "AUTRE" ? null : code, sig);
-      p.then(afficherListe).catch(function (err) {
-        if (err && err.name === "AbortError") return;
-        fermer(); statut("Les suggestions sont indisponibles pour le moment : saisissez l'adresse à la main.", true);
-        montrerChamps("");
-      });
-    };
-    champ.addEventListener("input", function () { clearTimeout(minuterie); minuterie = setTimeout(chercher, 200); });
-    champ.addEventListener("keydown", function (e) {
-      var opts = liste.children;
-      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-        if (liste.hidden || !opts.length) return;
-        e.preventDefault();
-        actif = (actif + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
-        Array.prototype.forEach.call(opts, function (o, i) { o.classList.toggle("actif", i === actif); });
-        champ.setAttribute("aria-activedescendant", opts[actif].id);
-        opts[actif].scrollIntoView({ block: "nearest" });
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        if (!liste.hidden && opts.length) choisir(items[actif > -1 ? actif : 0]);
-      } else if (e.key === "Escape") { fermer(); }
-    });
-    champ.addEventListener("blur", function () { setTimeout(fermer, 150); });
-    bloc.querySelector("[data-adresse-manuel]").addEventListener("click", function () { montrerChamps(""); f.rue.value = champ.value.replace(/\s*\d.*$/, ""); f.rue.focus(); });
-    bloc.querySelector("[data-adresse-changer]").addEventListener("click", montrerRecherche);
-  });
 
   // 4. Simulateur 3e pilier
   // Taux marginaux indicatifs (impôt fédéral + cantonal + communal au chef-lieu, personne seule).
