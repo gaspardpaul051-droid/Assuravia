@@ -1481,3 +1481,6 @@ body.modale-ouverte { overflow: hidden; }
 .demande-etapes span { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--bleu); color: #fff; font-weight: 800; }
 .demande-impots .panneau-form { margin-top: var(--e-5); }
 @media (max-width: 640px) { .demande-etapes { grid-template-columns: 1fr; } }
+.demande-page .panneau-form { margin-top: var(--e-5); }
+.demande-etapes-form .formulaire { display: grid; gap: var(--e-4); }
+.demande-etapes-form .avancee { display: none; }

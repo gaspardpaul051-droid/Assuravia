@@ -494,11 +494,13 @@
     modale.showModal();
     document.body.classList.add("modale-ouverte");
   });
-  document.querySelectorAll("dialog.modale").forEach(function (modale) {
-    var fermer = function () { modale.close(); };
-    modale.querySelectorAll("[data-fermer-modale]").forEach(function (b) { b.addEventListener("click", fermer); });
-    modale.addEventListener("click", function (ev) { if (ev.target === modale) fermer(); });
-    modale.addEventListener("close", function () { document.body.classList.remove("modale-ouverte"); });
+  document.querySelectorAll("dialog.modale, [data-etapes]").forEach(function (modale) {
+    if (modale.tagName === "DIALOG") {
+      var fermer = function () { modale.close(); };
+      modale.querySelectorAll("[data-fermer-modale]").forEach(function (b) { b.addEventListener("click", fermer); });
+      modale.addEventListener("click", function (ev) { if (ev.target === modale) fermer(); });
+      modale.addEventListener("close", function () { document.body.classList.remove("modale-ouverte"); });
+    }
     var etapes = Array.prototype.slice.call(modale.querySelectorAll("[data-etape]"));
     var reperes = modale.querySelectorAll(".modale__etapes li");
     var compteur = modale.querySelector("[data-etape-compteur]"), barre = modale.querySelector("[data-etape-barre]");
@@ -508,9 +510,10 @@
       if (compteur) compteur.textContent = n === etapes.length - 1 ? "Dernière étape" : "Question " + (n + 1) + " sur " + (etapes.length - 1);
       if (barre) barre.style.width = ((n + 1) / etapes.length * 100) + "%";
       etapes[n].classList.remove("fe--entree"); void etapes[n].offsetWidth; etapes[n].classList.add("fe--entree");
-      modale.scrollTop = 0;
+      if (modale.tagName === "DIALOG") modale.scrollTop = 0;
+      else if (n > 0) { var haut = modale.getBoundingClientRect().top + window.scrollY - 100; if (window.scrollY > haut) window.scrollTo({ top: haut, behavior: "smooth" }); }
       var champ = etapes[n].querySelector("input:not([type=hidden]):not([type=radio]):not([type=checkbox]), select");
-      if (champ) champ.focus({ preventScroll: true });
+      if (champ && (n > 0 || modale.tagName === "DIALOG")) champ.focus({ preventScroll: true });
     };
     modale.querySelectorAll("[data-etape-suivante]").forEach(function (b) {
       b.addEventListener("click", function () { var k = etapes.indexOf(b.closest("[data-etape]")); if (verifier(etapes[k])) aller(k + 1); });

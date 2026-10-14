@@ -17,6 +17,9 @@ chapeau: Frais de transport, 3e pilier, frais de garde, rachats LPP : chaque ann
 retenir: Les déductions et les délais dépendent de votre canton. | Les versements 3a et les rachats LPP doivent être faits avant le 31 décembre pour compter dans l'année. | En 2026, le plafond 3a est de CHF 7'258 si vous êtes affilié à une caisse de pension. | Après la décision de taxation, le délai de réclamation est court.
 pour_qui: Vous avez changé d'emploi, de canton ou de situation familiale cette année | Vous avez versé dans un 3e pilier ou racheté dans votre caisse de pension | Vous êtes propriétaire de votre logement | Vous ne savez pas si vous avez droit à toutes vos déductions
 quiz: Un versement au 3e pilier fait en janvier peut être déduit de l'année précédente. | faux | Le versement doit être crédité au plus tard le 31 décembre pour être déduit de l'année en cours. ;; Depuis 2025, il est possible de rattraper certaines années sans versement au 3e pilier. | vrai | Les lacunes nées depuis 2025 peuvent être comblées par un rachat 3a, à certaines conditions, dont celle d'avoir versé le maximum pour l'année en cours. ;; Une fois la décision de taxation reçue, vous avez plusieurs mois pour la contester. | faux | Le délai de réclamation est court. À Genève par exemple, il est de 30 jours. Lisez votre décision dès réception.
+demande_titre: Votre déclaration, faite avec un spécialiste
+demande_texte: Remplir votre déclaration sans stress, ou payer moins d'impôts grâce aux bonnes déductions.
+demande_points: Toutes les déductions auxquelles vous avez droit | Salariés, indépendants, retraités, frontaliers | Demande en 2 minutes, sans engagement
 ---
 
 ## Ce que nous faisons pour vous

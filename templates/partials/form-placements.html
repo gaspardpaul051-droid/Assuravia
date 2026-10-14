@@ -1,18 +1,6 @@
 {# Demande de conseil en placement : fenêtre ouverte depuis un bouton [data-ouvrir-modale="placements"], en 3 étapes #}
 {% import "partials/form.html" as f %}
-{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False) -%}
-<fieldset class="modale__etape" data-etape{% if not premier %} hidden{% endif %}>
-  <legend class="modale__question">{{ titre }}</legend>
-  {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
-  <div class="choix-cartes modale__choix">
-    {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if type == 'radio' %} required data-etape-auto{% else %} data-groupe-requis="{{ nom }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
-  </div>
-  <div class="modale__actions">
-    {% if not premier %}<button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>{% endif %}
-    {% if type != 'radio' %}<button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>{% endif %}
-  </div>
-</fieldset>
-{%- endmacro %}
+{% from "partials/questions.html" import question %}
 <dialog class="modale" data-modale="placements" aria-labelledby="modale-placements-titre">
   <div class="modale__haut">
     <div>

@@ -16,6 +16,9 @@ chapeau: Sans nouvelle caisse de pension, votre avoir LPP doit être placé aill
 retenir: Sans nouvelle caisse de pension, votre avoir va sur un compte ou une police de libre passage. | Sans instruction de votre part, il finit à l'institution supplétive LPP. | Vous pouvez répartir votre avoir sur deux institutions au maximum. | En cas de nouvel emploi, l'avoir doit être transféré à la nouvelle caisse.
 pour_qui: Vous quittez votre emploi sans en avoir trouvé un autre | Vous devenez indépendant sans caisse de pension | Vous partez vivre à l'étranger | Vous avez oublié un ancien avoir de 2e pilier
 quiz: Si vous ne donnez aucune instruction, votre avoir reste indéfiniment dans votre ancienne caisse de pension. | faux | Il est transféré à la Fondation institution supplétive LPP, au plus tôt après six mois et au plus tard après deux ans. ;; Votre prestation de sortie peut être répartie sur deux institutions de libre passage. | vrai | L'ordonnance sur le libre passage autorise deux institutions au maximum. Cela permet ensuite d'échelonner les retraits. ;; Un avoir de libre passage peut être versé sur un compte 3e pilier. | faux | Le libre passage reste dans le 2e pilier. Il va sur un compte ou une police de libre passage, ou dans la caisse de pension d'un nouvel employeur.
+demande_titre: Votre libre passage, bien placé
+demande_texte: Compte ou police, épargne ou fonds : un spécialiste vous aide à choisir selon votre horizon et votre besoin de sécurité.
+demande_points: Choix entre compte et police de libre passage | Placement adapté à votre profil | Demande en 2 minutes, sans engagement
 ---
 
 ## Quand êtes-vous concerné ?
