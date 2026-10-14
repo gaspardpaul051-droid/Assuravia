@@ -137,11 +137,11 @@
 </div>
 {% endif %}
 {% if ga_id or clarity_id %}
-<div class="cookies" data-cookies hidden role="dialog" aria-live="polite" aria-label="Cookies et mesure d'audience">
-  <p>Nous aimerions mesurer l'audience du site avec Google Analytics et Microsoft Clarity pour l'améliorer. Rien n'est activé sans votre accord. <a href="/confidentialite/#cookies">En savoir plus</a></p>
+<div class="cookies" data-cookies hidden role="dialog" aria-label="Cookies">
+  <p>Ce site utilise des <a href="/confidentialite/#cookies">cookies</a>.</p>
   <div class="cookies__actions">
-    <button type="button" class="bouton bouton--secondaire" data-cookies-choix="non">Refuser</button>
-    <button type="button" class="bouton bouton--prive" data-cookies-choix="oui">Accepter</button>
+    <button type="button" class="cookies__non" data-cookies-choix="non">Refuser</button>
+    <button type="button" class="cookies__oui" data-cookies-choix="oui">OK</button>
   </div>
 </div>
 <script>
