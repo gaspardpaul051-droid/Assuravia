@@ -1,33 +1,70 @@
 {% set sim = {"id": "rp", "theme": "pro", "groupe": "entreprises", "form": "simulation-rc-pro", "produit": "rc-pro", "produit_nom": "RC professionnelle", "page": "/entreprises/rc-professionnelle/", "icone": "bouclier",
   "titre": "RC professionnelle : calculez votre prime en 2 minutes", "h1": "Calculez votre RC professionnelle",
-  "description": "Indépendants et PME : estimez votre prime de RC professionnelle selon votre chiffre d'affaires et votre secteur. Estimation immédiate, gratuite et sans engagement.",
+  "description": "Indépendants et PME : estimez votre prime de RC professionnelle selon votre activité, votre chiffre d'affaires et la somme d'assurance. Estimation immédiate, gratuite et sans engagement.",
   "attrs": {"prime-nom": "RC professionnelle"}} %}
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-<fieldset class="fe" data-fe="statut_juridique">
-  <legend class="fe__question">Quelle est la forme juridique de votre entreprise ?</legend>
-  <div class="choix-cartes choix-cartes--3">
-    {% for v in ["Raison individuelle", "Sàrl", "SA", "SNC", "Association", "Autre"] %}
-    <label class="choix-carte choix-carte--compact"><input type="radio" name="statut_juridique" value="{{ v }}" required data-fe-auto><span>{{ v }}</span></label>
-    {% endfor %}
-  </div>
-</fieldset>
+{{ e.cartes("statut_juridique", "Quelle est la forme juridique de votre entreprise ?", [
+  {"valeur": "Raison individuelle", "icone": "utilisateur", "detail": "Vous exercez en votre nom, en indépendant."},
+  {"valeur": "Sàrl", "icone": "groupe", "detail": "Société à responsabilité limitée."},
+  {"valeur": "SA", "icone": "batiment", "detail": "Société anonyme."},
+  {"valeur": "Société de personnes", "icone": "mallette", "detail": "Société en nom collectif ou en commandite."},
+  {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
+  {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3, premier=True) }}
+
+{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
+  {"valeur": "Santé et thérapies", "icone": "croix", "detail": "Cabinet, physiothérapie, soins, thérapeutes.", "attrs": 'data-facteur="2"'},
+  {"valeur": "Construction et artisanat", "icone": "batiment", "detail": "Gros œuvre, second œuvre, installations, menuiserie.", "attrs": 'data-facteur="2"'},
+  {"valeur": "Conseil et fiduciaire", "icone": "balance", "detail": "Fiduciaire, gestion, architecture, ingénierie, conseil.", "attrs": 'data-facteur="1.1"'},
+  {"valeur": "Informatique et digital", "icone": "cyber", "detail": "Développement, agence web, conseil informatique.", "attrs": 'data-facteur="1.1"'},
+  {"valeur": "Commerce et vente", "icone": "colis", "detail": "Magasin, vente en ligne, import et distribution.", "attrs": 'data-facteur="1.1"'},
+  {"valeur": "Services aux personnes", "icone": "groupe", "detail": "Coiffure, beauté, nettoyage, enseignement, événementiel.", "attrs": 'data-facteur="1.1"'}], colonnes=3) }}
+
 {{ e.adresse("Quelle est l'adresse de l'entreprise ?") }}
+
 {{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
   <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>
   {{ e.continuer() }}
 </fieldset>
+
 {{ e.cartes("chiffre_affaires", "Quel est votre chiffre d'affaires annuel ?", [
   {"valeur": "Jusqu'à CHF 100'000", "attrs": 'data-prix-base="400"'},
   {"valeur": "CHF 100'000 à 500'000", "attrs": 'data-prix-base="900"'},
   {"valeur": "CHF 500'000 à 1 million", "attrs": 'data-prix-base="1800"'},
-  {"valeur": "Plus de CHF 1 million", "attrs": 'data-prix-base="2600"'}]) }}
-{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
-  {"valeur": "Médical", "icone": "croix", "attrs": 'data-facteur="2"'},
-  {"valeur": "Construction", "icone": "batiment", "attrs": 'data-facteur="2"'},
-  {"valeur": "Service", "icone": "groupe", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Vente de biens", "icone": "colis", "attrs": 'data-facteur="1.1"'}]) }}
+  {"valeur": "Plus de CHF 1 million", "attrs": 'data-prix-base="2600"'}], aide="Une estimation suffit. Pour une entreprise en création, indiquez le chiffre d'affaires prévu.") }}
+
+{{ e.situations("risques", "Contre quels risques voulez-vous protéger votre entreprise ?", "Cochez ce qui pourrait vous arriver. Le conseiller vérifie que l'offre couvre bien ces situations.", [
+  ("groupe", "Un client se blesse", "Une personne glisse dans vos locaux ou se blesse lors d'une prestation."),
+  ("maison", "Un dégât chez un client", "Un dégât d'eau après une installation, un objet cassé pendant une intervention."),
+  ("balance", "Une erreur de conseil", "Un conseil ou un calcul erroné fait perdre de l'argent à un client."),
+  ("colis", "Un produit défectueux", "Un produit que vous vendez ou fabriquez cause un dommage."),
+  ("cle", "Des locaux loués abîmés", "Des dégâts aux locaux que vous louez, causés par votre activité."),
+  ("cyber", "Les données de vos clients", "Des données transmises par erreur ou une atteinte à la vie privée.")]) }}
+
+{{ e.cartes("somme_assurance", "Quelle somme d'assurance souhaitez-vous ?", [
+  {"valeur": "CHF 3 millions", "titre": "CHF 3 millions", "detail": "Par sinistre. Courant pour les indépendants et les petites structures."},
+  {"valeur": "CHF 5 millions", "titre": "CHF 5 millions", "detail": "Par sinistre. Souvent demandé par les régies et les maîtres d'ouvrage."},
+  {"valeur": "CHF 10 millions", "titre": "CHF 10 millions", "detail": "Par sinistre. Pour les activités à risque élevé ou les gros contrats."},
+  {"valeur": "Je ne sais pas", "titre": "Je ne sais pas", "detail": "Le conseiller vous aide à choisir le bon montant."}], aide="C'est le montant maximal que l'assureur paie pour un sinistre. Certains contrats clients imposent un minimum. Le conseiller ajuste l'offre selon votre choix.") }}
+
+{{ e.cartes("sinistres", "Avez-vous eu des sinistres ces 5 dernières années ?", [
+  {"valeur": "Aucun"}, {"valeur": "Un sinistre"}, {"valeur": "Plusieurs sinistres"}, {"valeur": "Nouvelle entreprise"}], aide="Un historique sans sinistre aide souvent à obtenir de meilleures conditions.") }}
+
+{{ e.situations("autres_besoins", "D'autres besoins pour votre entreprise ?", "Facultatif. Cochez ce dont vous aimeriez parler : le conseiller vous en dit plus lors de son appel.", [
+  ("balance", "Protection juridique", "Client qui ne paie pas, litige avec un fournisseur, un bailleur ou un employé."),
+  ("cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues."),
+  ("colis", "Inventaire et choses", "Machines, marchandises et mobilier contre l'incendie, l'eau et le vol."),
+  ("croix", "Accidents (LAA)", "Assurance accidents obligatoire pour vos employés, et complémentaire."),
+  ("thermometre", "Perte de gain maladie", "Indemnités journalières quand un collaborateur est malade."),
+  ("tirelire", "Prévoyance (LPP)", "2e pilier de vos collaborateurs et de vous-même.")]) }}
+
 {{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
-{{ e.resultat("chiffre_affaires") }}
+{{ e.resultat("chiffre_affaires", prestations=[
+  ("bouclier", "Les dommages que vous causez", "Dommages corporels et matériels causés à des clients ou à des tiers dans le cadre de votre activité, et les pertes qui en découlent."),
+  ("balance", "Votre défense", "L'assureur examine chaque réclamation et refuse de payer celles qui ne sont pas fondées, y compris devant un tribunal."),
+  ("calcul", "Les pertes financières", "Pour les métiers de conseil, les pertes subies par un client à cause d'une erreur peuvent être couvertes, selon le contrat."),
+  ("groupe", "Toute votre équipe", "Vos collaborateurs sont couverts pour les dommages qu'ils causent en travaillant pour vous."),
+  ("valide", "Une attestation pour vos contrats", "Vous recevez une attestation d'assurance à remettre à vos clients, régies ou maîtres d'ouvrage."),
+  ("bulle", "Un conseiller pour vous", "Il compare les offres selon votre activité et vérifie les exclusions avant que vous signiez.")], titre_prestations="Ce que fait votre RC professionnelle") }}
 {% endblock %}

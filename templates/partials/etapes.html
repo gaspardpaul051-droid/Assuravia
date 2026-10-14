@@ -190,8 +190,8 @@
 {%- endmacro %}
 
 {# Choix en cartes : `choix` = liste de dicts {valeur, titre, detail, icone, attrs} #}
-{% macro cartes(cle, question, choix, aide=None, auto=True, colonnes=2) -%}
-{{ ouvrir(cle, question, aide) }}
+{% macro cartes(cle, question, choix, aide=None, auto=True, colonnes=2, premier=False) -%}
+{{ ouvrir(cle, question, aide, premier=premier) }}
   <div class="choix-cartes{% if colonnes == 3 %} choix-cartes--3{% endif %}">
     {% for c in choix %}
     <label class="choix-carte{% if not c.icone and not c.detail %} choix-carte--compact{% endif %}"><input type="radio" name="{{ cle }}" value="{{ c.valeur }}" required{% if auto %} data-fe-auto{% endif %} {{ (c.attrs or '')|safe }}>{% if c.icone %}<span class="choix-carte__icone">{{ i.icone(c.icone) }}</span>{% endif %}<span class="choix-carte__titre">{{ c.titre or c.valeur }}</span>{% if c.detail %}<span class="choix-carte__detail">{{ c.detail }}</span>{% endif %}</label>
