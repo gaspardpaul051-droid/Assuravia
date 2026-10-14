@@ -1727,3 +1727,10 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 .merci-page .merci__suite { padding-left: 0; margin-inline: 0; list-style: none; }
 .merci-page .merci__titre { overflow-wrap: anywhere; }
 .merci-page { overflow-x: clip; }
+
+/* Fenêtre « Une question ? » ouverte : redescend et tient dans l'écran */
+.contact-volant__panneau { max-height: calc(100dvh - 190px); padding: var(--e-4) var(--e-5); }
+.contact-volant__titre { font-size: var(--t-m); }
+.contact-volant__fermer { width: 36px; height: 36px; }
+.contact-volant .avancee { display: none; }
+.contact-volant__whatsapp { min-height: 46px; }
