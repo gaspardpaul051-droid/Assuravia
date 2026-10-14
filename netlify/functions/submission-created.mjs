@@ -12,6 +12,10 @@ export const handler = async (event) => {
     console.log("Espace conseillers non configuré (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY manquants) : lead non enregistré.");
     return { statusCode: 200, body: "ignoré" };
   }
+  try {
+    const r = JSON.parse(Buffer.from(CLE.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString()).role;
+    if (r && r !== "service_role") console.error("SUPABASE_SERVICE_ROLE_KEY contient la clé « " + r + " » au lieu de la clé service_role : le lead ne pourra pas être enregistré.");
+  } catch (e) { /* clé d'un autre format */ }
   const entetes = { apikey: CLE, Authorization: "Bearer " + CLE, "Content-Type": "application/json" };
   const api = async (chemin, options = {}) => {
     const r = await fetch(URL + "/rest/v1/" + chemin, { ...options, headers: { ...entetes, ...(options.headers || {}) } });

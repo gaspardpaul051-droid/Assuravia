@@ -11,6 +11,12 @@ export const handler = async (event) => {
   if (event.httpMethod !== "POST") return reponse(405, { erreur: "Méthode non autorisée" });
   if (!URL || !CLE) return reponse(500, { erreur: "Espace non configuré" });
 
+  // La clé doit être la clé « service_role » (et non la clé « anon ») : on lit son rôle dans le jeton
+  let roleCle = "";
+  try { roleCle = JSON.parse(Buffer.from(CLE.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString()).role || ""; } catch (e) { roleCle = CLE.startsWith("sb_secret_") ? "service_role" : ""; }
+  if (roleCle !== "service_role") {
+    return reponse(500, { erreur: "Dans Netlify, la variable SUPABASE_SERVICE_ROLE_KEY ne contient pas la clé service_role (c'est sans doute la clé anon). Remplacez-la puis republiez." });
+  }
   const service = { apikey: CLE, Authorization: "Bearer " + CLE, "Content-Type": "application/json" };
   try {
     // Qui appelle ? On vérifie le jeton auprès de Supabase, puis le rôle administrateur.
@@ -20,7 +26,8 @@ export const handler = async (event) => {
     if (!moi.ok) return reponse(401, { erreur: "Session expirée" });
     const utilisateur = await moi.json();
     const role = await (await fetch(URL + "/rest/v1/conseillers?select=role&id=eq." + utilisateur.id, { headers: service })).json();
-    if (!role[0] || role[0].role !== "admin") return reponse(403, { erreur: "Réservé à l'administrateur" });
+    if (!Array.isArray(role) || !role[0]) return reponse(403, { erreur: "Votre compte n'a pas de fiche conseiller dans la base." });
+    if (role[0].role !== "admin") return reponse(403, { erreur: "Réservé à l'administrateur" });
 
     const corps = JSON.parse(event.body || "{}");
     const email = String(corps.email || "").trim().toLowerCase();
