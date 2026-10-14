@@ -163,7 +163,7 @@ def lire_glossaire(path: Path) -> list[dict]:
         if not ligne.strip() or ligne.startswith("#"):
             continue
         champs = [c.strip() for c in ligne.split("|")]
-        if len(champs) < 3 or champs[0] not in ("Assurance", "Prévoyance", "Placement"):
+        if len(champs) < 3 or champs[0] not in ("Assurance", "Prévoyance", "Placement", "Immobilier"):
             raise ValueError(f"Ligne de glossaire invalide : {ligne}")
         terme = champs[1]
         ident = re.sub(r"[^a-z0-9]+", "-", terme.lower().translate(str.maketrans("àâäéèêëîïôöùûüç", "aaaeeeeiioouuuc"))).strip("-")

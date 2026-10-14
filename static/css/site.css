@@ -560,6 +560,7 @@ tr:nth-child(even) td { background: var(--surface); }
 .terme { padding: var(--e-4) var(--e-5); border: 1px solid var(--bordure); border-radius: var(--r-m); background: var(--fond); border-top: 4px solid var(--bleu-vif); scroll-margin-top: 150px; }
 .terme--prevoyance { border-top-color: var(--marine); }
 .terme--placement { border-top-color: var(--or); }
+.terme--immobilier { border-top-color: var(--succes); }
 .terme:target { box-shadow: 0 0 0 3px var(--or-clair); }
 .terme dt { display: flex; justify-content: space-between; gap: var(--e-3); align-items: baseline; font-weight: 700; color: var(--marine); font-size: var(--t-l); margin-bottom: var(--e-2); }
 .terme__cat { font-size: var(--t-xs); font-weight: 700; color: var(--texte-doux); white-space: nowrap; }

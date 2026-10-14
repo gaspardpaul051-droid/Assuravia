@@ -1,5 +1,5 @@
 # Glossaire Assuravia. Une ligne par terme : catégorie | terme | définition | lien facultatif
-# Catégories : Assurance, Prévoyance, Placement. Vérifier chaque chiffre avant de l'ajouter.
+# Catégories : Assurance, Prévoyance, Placement, Immobilier. Vérifier chaque chiffre avant de l'ajouter.
 Assurance | Assurance de base (LAMal) | Assurance maladie obligatoire pour toute personne domiciliée en Suisse. Les prestations sont fixées par la loi et identiques chez tous les assureurs ; seules les primes varient. |
 Assurance | Assurance complémentaire (LCA) | Assurance maladie facultative qui couvre ce que la LAMal ne paie pas : chambre privée, soins dentaires, médecines complémentaires. L'assureur peut refuser une demande ou émettre des réserves. | /particuliers/complementaire-maladie/
 Assurance | Franchise | Montant des frais que vous payez vous-même chaque année avant que l'assurance rembourse. En LAMal, elle va de CHF 300 à CHF 2'500 pour un adulte : plus elle est haute, plus la prime baisse. |
@@ -59,3 +59,58 @@ Placement | Inflation | Hausse générale des prix, qui réduit le pouvoir d'ach
 Placement | Dividende | Part du bénéfice qu'une entreprise verse à ses actionnaires. |
 Placement | Impôt anticipé | Impôt fédéral de 35 % prélevé sur les dividendes et les intérêts suisses. Il est remboursé si vous déclarez ces revenus et cette fortune dans votre déclaration d'impôts. |
 Placement | LSFin | Loi fédérale sur les services financiers. Elle impose aux prestataires des règles d'information et de vérification de l'adéquation des services à votre profil. |
+Assurance | Assurance ménage | Assurance de vos biens mobiliers (meubles, vêtements, appareils) contre l'incendie, les dégâts d'eau, le vol et les éléments naturels. Elle se combine souvent avec la RC privée. | /particuliers/assurance-menage/
+Assurance | RC privée | Assurance responsabilité civile des particuliers. Elle paie les dommages que vous ou les membres de votre ménage causez à d'autres personnes ou à leurs biens. La plupart des régies l'exigent. | /particuliers/rc-privee/
+Assurance | Assurance bâtiment | Assurance du bâtiment lui-même (murs, toit, installations fixes) contre l'incendie, les éléments naturels et, en option, les dégâts d'eau. Dans la plupart des cantons, l'incendie et les éléments naturels relèvent d'un établissement cantonal obligatoire. | /particuliers/assurance-batiment/
+Assurance | Établissement cantonal d'assurance | Assureur public qui couvre obligatoirement les bâtiments contre l'incendie et les éléments naturels dans la majorité des cantons, par exemple l'ECA dans le canton de Vaud. |
+Assurance | Éléments naturels | Dommages causés par les hautes eaux, les inondations, la tempête, la grêle, les avalanches, la pression de la neige, les éboulements et les glissements de terrain. |
+Assurance | Bris de glace | Couverture des vitres, plaques de cuisson vitrocéramiques, lavabos ou miroirs cassés. Elle s'ajoute en option à l'assurance ménage ou bâtiment. |
+Assurance | Faute grave | Négligence importante qui permet en principe à l'assureur de réduire ses prestations, par exemple brûler un feu rouge. Beaucoup de contrats renoncent à cette réduction, sauf en cas d'ivresse ou d'excès de vitesse marqué. |
+Assurance | Objets de valeur | Bijoux, montres, œuvres d'art ou instruments de musique, que l'assurance ménage ne couvre souvent que de façon limitée. Une assurance spécifique les protège à leur valeur réelle, y compris hors du domicile. | /particuliers/objets-de-valeur/
+Assurance | Assurance voyage | Assurance qui couvre les frais d'annulation, l'assistance, les frais médicaux à l'étranger au-delà de l'assurance de base et le rapatriement. | /particuliers/voyage/
+Assurance | Rapatriement | Retour organisé et pris en charge vers la Suisse d'une personne malade ou blessée à l'étranger, souvent prévu dans l'assurance voyage. | /particuliers/voyage/
+Assurance | Modèle alternatif (LAMal) | Formule d'assurance de base qui limite le libre choix du premier interlocuteur (médecin de famille, centre HMO ou conseil par téléphone) en échange d'une prime plus basse. | /particuliers/lamal/
+Assurance | Réduction des primes | Subside versé par le canton aux personnes à revenu modeste pour diminuer leur prime d'assurance de base. Les conditions et les montants varient d'un canton à l'autre. | /particuliers/lamal/
+Assurance | Changement de caisse maladie | Pour l'assurance de base, la résiliation doit parvenir à l'assureur au plus tard le 30 novembre pour un changement au 1er janvier. L'assureur ne peut pas refuser de vous assurer en base. | /particuliers/comparateur-lamal/
+Assurance | Questionnaire de santé | Questions sur votre état de santé que posent les assureurs avant d'accepter une assurance complémentaire. Des réponses inexactes peuvent permettre à l'assureur de résilier le contrat. | /particuliers/complementaire-maladie/
+Assurance | Division privée ou demi-privée | Hospitalisation en chambre à un ou deux lits, avec libre choix du médecin, couverte par une assurance complémentaire hospitalisation. | /particuliers/assurance-hospitalisation/
+Assurance | Médecines complémentaires | Thérapies comme l'ostéopathie, l'acupuncture ou la naturopathie. L'assurance de base n'en rembourse qu'une partie, pratiquée par des médecins ; une complémentaire couvre les thérapeutes reconnus. | /particuliers/complementaire-ambulatoire/
+Assurance | Indemnité journalière | Montant versé pour chaque jour d'incapacité de travail ou d'hospitalisation, selon le contrat. |
+Assurance | Suva | Assureur accidents de droit public. Il assure obligatoirement les employés de certaines branches, comme la construction et l'industrie. Les autres entreprises choisissent un assureur privé. | /entreprises/laa/
+Assurance | Complémentaire LAA | Assurance qui améliore les prestations de la LAA : salaires au-delà du plafond, indemnité journalière jusqu'à 100 %, hospitalisation en division privée. | /entreprises/laa/
+Assurance | Cyberassurance | Assurance qui couvre les conséquences d'une attaque informatique ou d'une fuite de données : experts, remise en état, perte d'exploitation et réclamations de tiers. | /entreprises/cyberassurance/
+Assurance | Bris de machines | Assurance technique qui couvre les dommages soudains et imprévus aux machines et appareils, par exemple une fausse manœuvre ou une surtension, mais pas l'usure. | /entreprises/techniques/
+Assurance | Assurance transport | Assurance des marchandises pendant leur transport, au-delà de la responsabilité limitée du transporteur. | /entreprises/transport/
+Assurance | Assurance inventaire | Assurance des biens d'une entreprise (mobilier, machines, marchandises) contre l'incendie, l'eau, le vol et les éléments naturels. | /entreprises/commerce-inventaire/
+Assurance | Intermédiaire d'assurance | Personne ou entreprise qui propose ou conclut des contrats d'assurance pour le compte d'un assureur (intermédiaire lié) ou du client (intermédiaire non lié, comme un courtier). |
+Assurance | Courtier | Intermédiaire non lié qui recherche pour son client les offres de plusieurs assureurs. |
+Prévoyance | Seuil d'entrée LPP | Salaire annuel à partir duquel un employé doit être affilié au 2e pilier obligatoire : CHF 22'680 en 2026 chez le même employeur. | /entreprises/lpp/
+Prévoyance | Déduction de coordination | Montant retranché du salaire pour calculer le salaire assuré obligatoire en LPP, soit CHF 26'460 en 2026. Elle évite d'assurer deux fois la part déjà couverte par l'AVS. | /entreprises/lpp/
+Prévoyance | Bonifications de vieillesse | Cotisations d'épargne du 2e pilier, en pourcentage du salaire coordonné : au minimum 7 % de 25 à 34 ans, 10 % de 35 à 44 ans, 15 % de 45 à 54 ans et 18 % dès 55 ans. | /entreprises/lpp/
+Prévoyance | Avoir de vieillesse | Capital accumulé dans le 2e pilier avec les bonifications et les intérêts. Il sert à financer la rente ou le capital à la retraite. |
+Prévoyance | Fondation collective | Institution de prévoyance qui regroupe de nombreuses entreprises. C'est la solution la plus courante pour les PME qui n'ont pas leur propre caisse de pension. | /entreprises/lpp/
+Prévoyance | Institution supplétive | Fondation qui affilie les employeurs qui n'ont pas choisi de caisse de pension et gère les avoirs de libre passage oubliés. | /particuliers/libre-passage/
+Prévoyance | Retraite anticipée | Départ à la retraite avant l'âge de référence. La rente AVS peut être anticipée avec une réduction à vie ; le règlement de la caisse de pension fixe les conditions du 2e pilier. |
+Prévoyance | Retrait du 3e pilier | L'argent du 3e pilier A est en principe versé au plus tôt 5 ans avant l'âge de référence. Il peut être retiré avant pour l'achat d'un logement principal, un départ définitif de Suisse ou le passage à une activité indépendante. | /particuliers/3e-pilier/
+Prévoyance | Compte ou assurance 3a | Le 3e pilier A se place sur un compte bancaire, en titres ou dans une assurance-vie. L'assurance ajoute une protection en cas de décès ou d'invalidité, mais engage sur la durée. | /particuliers/3e-pilier/
+Prévoyance | Déclaration d'impôts | Document annuel où vous déclarez revenus et fortune au canton. Les versements au 3e pilier A et les rachats LPP y sont déductibles. | /particuliers/declaration-impots/
+Placement | Indice boursier | Panier d'actions qui mesure l'évolution d'un marché, par exemple le SMI pour les grandes entreprises suisses. Les ETF répliquent souvent un indice. |
+Placement | Fonds immobilier | Fonds de placement qui investit dans des immeubles. Il permet d'investir dans l'immobilier sans acheter de bien. |
+Placement | Rééquilibrage | Opération qui ramène un portefeuille à l'allocation choisie, en vendant ce qui a beaucoup progressé et en achetant ce qui a reculé. |
+Placement | Droits de garde | Frais annuels prélevés par une banque pour conserver vos titres. Ils s'ajoutent aux frais des fonds et aux frais de courtage. |
+Placement | Investissement durable | Placements qui tiennent compte de critères environnementaux, sociaux et de bonne gouvernance (ESG) en plus du rendement. |
+Immobilier | Hypothèque | Prêt accordé pour acheter, construire ou rénover un bien immobilier, garanti par ce bien. | /particuliers/comparateur-hypothecaire/
+Immobilier | Hypothèque à taux fixe | Hypothèque dont le taux reste le même pendant toute la durée choisie, en général de 2 à 15 ans. Vous connaissez vos intérêts à l'avance. | /particuliers/comparateur-hypothecaire/
+Immobilier | Hypothèque SARON | Hypothèque dont le taux suit le SARON, taux de référence du marché monétaire suisse, plus une marge de la banque. Le taux peut monter ou baisser à chaque période. | /particuliers/comparateur-hypothecaire/
+Immobilier | SARON | Swiss Average Rate Overnight : taux d'intérêt de référence du marché monétaire suisse, calculé chaque jour à partir de transactions réelles et publié par SIX. |
+Immobilier | Fonds propres | Part du prix d'achat que vous financez sans emprunt. En règle générale, au moins 20 % du prix, dont au moins 10 % qui ne proviennent pas du 2e pilier. | /particuliers/comparateur-hypothecaire/
+Immobilier | Amortissement | Remboursement progressif de l'hypothèque. Le 2e rang, au-delà des deux tiers de la valeur du bien, doit en général être remboursé en 15 ans ou avant la retraite. | /particuliers/comparateur-hypothecaire/
+Immobilier | Amortissement indirect | L'hypothèque n'est pas remboursée directement : les versements vont sur un 3e pilier mis en gage, ce qui garde les intérêts déductibles plus longtemps. |
+Immobilier | Capacité financière | Calcul de la banque pour vérifier que vous pouvez porter un financement : intérêts à un taux théorique d'environ 5 %, amortissement et entretien ne doivent en général pas dépasser un tiers du revenu brut. | /particuliers/comparateur-hypothecaire/
+Immobilier | Taux d'avance | Part du prix du bien financée par l'hypothèque, au plus 80 % en règle générale. |
+Immobilier | Cédule hypothécaire | Papier-valeur inscrit au registre foncier qui sert de garantie à la banque pour une hypothèque. |
+Immobilier | PPE | Propriété par étages : forme de propriété d'un appartement dans un immeuble, avec des parties communes gérées par la communauté des propriétaires. |
+Immobilier | Valeur locative | Revenu fictif que le propriétaire qui habite son logement doit déclarer aux impôts. Sa suppression a été acceptée en votation populaire en septembre 2025 ; la date d'entrée en vigueur est fixée par la Confédération. |
+Immobilier | Droits de mutation | Impôt ou émolument cantonal payé lors du transfert de propriété d'un bien immobilier. Le taux et la répartition entre acheteur et vendeur varient selon le canton. |
+Immobilier | Pénalité de remboursement anticipé | Indemnité demandée par la banque si vous remboursez ou quittez une hypothèque à taux fixe avant son échéance. |
+Immobilier | Taux d'intérêt de référence | Taux publié chaque trimestre par l'Office fédéral du logement. Il sert de base pour adapter les loyers en Suisse, pas pour fixer le taux de votre hypothèque. |
