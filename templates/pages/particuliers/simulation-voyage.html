@@ -8,10 +8,12 @@
 {{ e.identite() }}
 {{ e.adresse("Quelle est votre adresse ?") }}
 {{ e.personnes() }}
+{{ e.cartes("frequence", "Combien de fois voyagez-vous par an ?", [{"valeur": "Une fois", "icone": "avion"}, {"valeur": "2 à 3 fois", "icone": "avion"}, {"valeur": "4 fois ou plus", "icone": "avion"}], aide="Avec une assurance annuelle, chaque voyage de l'année est couvert.", colonnes=3) }}
+{{ e.situations("destinations", "Où partez-vous en général ?", "Cochez vos destinations habituelles : les frais médicaux varient beaucoup d'une région à l'autre.", [("repere", "Europe", "Week-ends, vacances au soleil, ski."), ("avion", "États-Unis et Canada", "Les frais médicaux y sont parmi les plus élevés du monde."), ("repere", "Asie et Océanie", "Longs séjours, rapatriement plus complexe."), ("repere", "Afrique et Amérique latine", "Assistance et rapatriement particulièrement utiles."), ("mallette", "Voyages d'affaires", "Déplacements professionnels fréquents."), ("groupe", "Voyages en famille", "Enfants et proches voyageant avec vous.")]) }}
 {{ e.option_pj() }}
 {{ e.option_cyber() }}
 {{ e.interet_menage() }}
 {{ e.impots() }}
 {{ e.coordonnees() }}
-{{ e.resultat("option_pj") }}
+{{ e.resultat("option_pj", prestations=[("calcul", "Annulation", "Vous devez annuler pour maladie, accident ou décès d'un proche : les frais non remboursables sont pris en charge."), ("croix", "Frais médicaux à l'étranger", "Les frais de traitement au-delà de ce que paie l'assurance de base, en particulier hors d'Europe."), ("avion", "Rapatriement", "Retour en Suisse organisé et payé si votre état de santé l'exige."), ("telephone", "Assistance 24 h sur 24", "Une centrale joignable jour et nuit pour vous orienter vers un médecin ou un hôpital."), ("fleches", "Interruption de voyage", "Retour anticipé pour un événement grave : les jours perdus peuvent être remboursés."), ("groupe", "Tous les voyages de l'année", "Une couverture annuelle pour tout le ménage, sans rien faire avant chaque départ.")], titre_prestations="Ce que couvre votre assurance voyage") }}
 {% endblock %}

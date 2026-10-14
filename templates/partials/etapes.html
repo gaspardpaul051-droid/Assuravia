@@ -124,7 +124,34 @@
 </fieldset>
 {%- endmacro %}
 
-{% macro resultat(modifier) -%}
+{# Écran « situations » : cartes illustrées à cocher (facultatif), pour faire découvrir les prestations #}
+{% macro situations(cle, question, aide, items) -%}
+{{ ouvrir(cle, question, aide) }}
+  <div class="situations">
+    {% for icone, titre, texte in items %}
+    <label class="situation"><input type="checkbox" name="{{ cle }}" value="{{ titre }}">
+      <span class="situation__icone">{{ i.icone(icone) }}</span>
+      <span class="situation__titre">{{ titre }}</span>
+      <span class="situation__texte">{{ texte }}</span>
+      <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
+    </label>
+    {% endfor %}
+  </div>
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{# Prestations détaillées sur le résultat : liste de (icone, titre, texte) #}
+{% macro prestations_detail(titre, items) -%}
+<div class="prestations-detail">
+  <p class="fe__sous-question">{{ titre }}</p>
+  <div class="prestations-detail__grille">
+    {% for icone, t, texte in items %}<div class="prestation-detail"><span class="prestation-detail__icone">{{ i.icone(icone) }}</span><div><strong>{{ t }}</strong><p>{{ texte }}</p></div></div>{% endfor %}
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro resultat(modifier, prestations=None, titre_prestations="Ce que comprend votre couverture") -%}
 {{ ouvrir("resultat", '<span data-affiche="prenom"></span>, voici votre estimation', final=True) }}
   <div class="resultat-prime">
     <p class="resultat-prime__label">Prime annuelle estimée</p>
@@ -133,6 +160,7 @@
     <ul class="resultat-prime__detail" data-affiche="detail"></ul>
     <p class="resultat__avertissement">Estimation indicative selon les informations fournies. L'offre définitive, les conditions et la prime exacte sont établies par l'assureur.</p>
   </div>
+  {% if prestations %}{{ prestations_detail(titre_prestations, prestations) }}{% endif %}
   <div class="resultat-actions" data-si-contact>
     <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Envoyer ma demande de souscription</button>
     <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être recontacté par un conseiller</button>
