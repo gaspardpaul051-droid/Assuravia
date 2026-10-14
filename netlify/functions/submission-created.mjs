@@ -3,7 +3,7 @@
 // selon les pourcentages définis par l'administrateur.
 // Variables d'environnement Netlify : SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 
-import { choisirConseiller, extraireLead, memeContact } from "../lib/leads.mjs";
+import { choisirConseiller, extraireLead, memeContact, sourceDuLead } from "../lib/leads.mjs";
 
 export const handler = async (event) => {
   const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
@@ -45,11 +45,24 @@ export const handler = async (event) => {
       }
     }
 
-    // Répartition : conseillers actifs avec un pourcentage, et leurs leads des 30 derniers jours
-    const conseillers = await api("conseillers?select=id,nom,poids&actif=eq.true&poids=gt.0");
+    // Répartition : d'abord une règle propre à la page ou au formulaire, sinon les pourcentages généraux
+    const actifs = (await api("conseillers?select=id,nom,poids&actif=eq.true")) || [];
+    let regles = [];
+    try { regles = (await api("regles?select=source,conseiller_id,poids&poids=gt.0")) || []; } catch (e) { regles = []; }
+    regles = regles.filter((r) => actifs.some((c) => c.id === r.conseiller_id));
+    const source = sourceDuLead(regles, lead);
     const mois = new Date(Date.now() - 30 * 86400 * 1000).toISOString();
-    const attribues = await api("leads?select=conseiller_id&cree_le=gte." + mois + "&conseiller_id=not.is.null");
-    const choisi = choisirConseiller(conseillers || [], attribues || []);
+    let candidats, filtreSource = "";
+    if (source) {
+      candidats = regles.filter((r) => r.source === source).map((r) => ({ ...actifs.find((c) => c.id === r.conseiller_id), poids: r.poids }));
+      filtreSource = source.startsWith("/") ? "&page=like." + encodeURIComponent(source + "*") : "&formulaire=eq." + encodeURIComponent(source);
+    } else {
+      candidats = actifs.filter((c) => Number(c.poids) > 0);
+    }
+    let attribues = (await api("leads?select=conseiller_id,formulaire,page&cree_le=gte." + mois + "&conseiller_id=not.is.null" + filtreSource)) || [];
+    // Pourcentages généraux : on ne compte que les leads qui ne relèvent d'aucune règle
+    if (!source) attribues = attribues.filter((l) => !sourceDuLead(regles, l));
+    const choisi = choisirConseiller(candidats, attribues || []);
     lead.conseiller_id = choisi ? choisi.id : null;
 
     const cree = await api("leads", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(lead) });
@@ -57,7 +70,7 @@ export const handler = async (event) => {
     if (id) {
       await api("commentaires", {
         method: "POST",
-        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom : " (aucun conseiller actif : à attribuer)") + ".", automatique: true }),
+        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom + (source ? " (règle « " + source + " »)" : "") : " (aucun conseiller actif : à attribuer)") + ".", automatique: true }),
       });
     }
     return { statusCode: 200, body: "enregistré " + id };

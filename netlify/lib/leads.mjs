@@ -56,3 +56,13 @@ export function choisirConseiller(conseillers, attribues) {
   return meilleur;
 }
 
+
+// Règle de répartition applicable à un lead : une page précise (ou début d'adresse, ex. « /lp/ »)
+// passe avant le formulaire. Renvoie la source retenue, ou null (répartition générale).
+export function sourceDuLead(regles, lead) {
+  const sources = [...new Set(regles.filter((r) => Number(r.poids) > 0).map((r) => r.source))];
+  const page = lead.page || "";
+  const pages = sources.filter((s) => s.startsWith("/") && page.startsWith(s)).sort((a, b) => b.length - a.length);
+  if (pages.length) return pages[0];
+  return sources.includes(lead.formulaire) ? lead.formulaire : null;
+}

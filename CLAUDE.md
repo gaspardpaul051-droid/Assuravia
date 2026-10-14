@@ -37,7 +37,9 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Page `/espace/` (`static/espace/` : `index.html`, `espace.css`, `espace.js`), `noindex`, bloquée dans robots.txt, jamais liée depuis le site. `build.py` écrit `dist/espace/config.js` (URL et clé anon Supabase depuis les variables d'environnement, noms des produits).
 - Base Supabase : `espace/schema.sql` (tables `conseillers`, `leads`, `commentaires`, règles d'accès : un conseiller ne voit que ses leads, l'admin voit tout). Mise en service : `espace/LISEZMOI.md`.
 - Chaque envoi de formulaire Netlify déclenche `netlify/functions/submission-created.mjs` : doublon (même e-mail ou téléphone en moins de 3 h) fusionné, sinon attribution au conseiller actif le plus en retard sur son pourcentage (30 derniers jours). Logique dans `netlify/lib/leads.mjs`.
-- `netlify/functions/espace-admin.mjs` : invitation et réinitialisation du mot de passe (clé service_role, réservé aux admins).
+- Règles par source (table `regles`, mise à jour `espace/maj-1-repartition-par-source.sql`) : parts par conseiller pour un formulaire (`form-name`) ou un début d'adresse de page (`/lp/`) ; la page passe avant le formulaire ; sans règle, répartition générale (`conseillers.poids`, comptée sur les seuls leads hors règles). `build.py` liste formulaires et pages dans `config.js`.
+- `netlify/functions/espace-admin.mjs` (clé service_role, réservé aux admins) : `creer` (compte avec mot de passe provisoire, `user_metadata.doit_changer` : le conseiller choisit son mot de passe à la première connexion), `provisoire`, `inviter`, `reinitialiser`.
+- L'admin peut sélectionner plusieurs leads et les attribuer d'un coup.
 - Statuts : nouveau, a_rappeler, injoignable, faux_numero, rdv, offre, signe, pas_interesse, doublon (liste `STATUTS` dans `espace.js`).
 
 ## Téléphone

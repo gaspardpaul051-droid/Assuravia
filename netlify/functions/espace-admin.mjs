@@ -1,5 +1,6 @@
 // Actions réservées à l'administrateur de l'espace conseillers, qui demandent la clé de service Supabase :
-// inviter un conseiller (il reçoit un e-mail pour choisir son mot de passe) et réinitialiser un mot de passe.
+// créer un conseiller avec un mot de passe provisoire (à changer à la première connexion), l'inviter par e-mail,
+// lui donner un nouveau mot de passe provisoire, ou lui envoyer un e-mail de réinitialisation.
 // Appel : POST /.netlify/functions/espace-admin  { action, email, nom, poids }  avec l'en-tête Authorization: Bearer <jeton du connecté>
 
 export const handler = async (event) => {
@@ -38,6 +39,34 @@ export const handler = async (event) => {
         body: JSON.stringify({ nom: corps.nom || email, poids: Math.max(0, parseInt(corps.poids, 10) || 0) }),
       });
       return reponse(200, { ok: true, id: res.id });
+    }
+    const mdp = String(corps.mot_de_passe || "");
+    if (corps.action === "creer") {
+      if (mdp.length < 10) return reponse(400, { erreur: "Mot de passe provisoire : au moins 10 caractères" });
+      const r = await fetch(URL + "/auth/v1/admin/users", {
+        method: "POST", headers: service,
+        body: JSON.stringify({ email, password: mdp, email_confirm: true, user_metadata: { nom: corps.nom || "", doit_changer: true } }),
+      });
+      const res = await r.json();
+      if (!r.ok) {
+        const msg = res.msg || res.message || res.error_description || "";
+        return reponse(400, { erreur: /already|exists|registered/i.test(msg) ? "Un compte existe déjà avec cet e-mail" : "Création impossible : " + msg });
+      }
+      await fetch(URL + "/rest/v1/conseillers?id=eq." + res.id, {
+        method: "PATCH", headers: service,
+        body: JSON.stringify({ nom: corps.nom || email, poids: Math.max(0, parseInt(corps.poids, 10) || 0) }),
+      });
+      return reponse(200, { ok: true, id: res.id });
+    }
+    if (corps.action === "provisoire") {
+      if (mdp.length < 10) return reponse(400, { erreur: "Mot de passe provisoire : au moins 10 caractères" });
+      if (!/^[0-9a-f-]{36}$/i.test(String(corps.id || ""))) return reponse(400, { erreur: "Conseiller inconnu" });
+      const r = await fetch(URL + "/auth/v1/admin/users/" + corps.id, {
+        method: "PUT", headers: service,
+        body: JSON.stringify({ password: mdp, user_metadata: { doit_changer: true } }),
+      });
+      if (!r.ok) return reponse(400, { erreur: "Modification impossible" });
+      return reponse(200, { ok: true });
     }
     if (corps.action === "reinitialiser") {
       const r = await fetch(URL + "/auth/v1/recover", { method: "POST", headers: service, body: JSON.stringify({ email, redirect_to: SITE }) });

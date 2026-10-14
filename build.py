@@ -306,14 +306,6 @@ def main() -> None:
         "rc-pro": "RC professionnelle", "complementaire-maladie": "Complémentaire maladie",
         "complementaire-ambulatoire": "Soins ambulatoires", "assurance-hospitalisation": "Hospitalisation",
     })
-    (DIST / "espace" / "config.js").write_text(
-        "window.ESPACE = " + json.dumps({
-            "url": re.sub(r"/(rest|auth)/v1/?$|/$", "", os.environ.get("SUPABASE_URL", "").strip()),
-            "anon": os.environ.get("SUPABASE_ANON_KEY", ""),
-            "produits": noms_produits,
-        }, ensure_ascii=False) + ";\n",
-        encoding="utf-8",
-    )
 
     articles = sorted(
         (a for a in (lire_article(p) for p in (ROOT / "content" / "articles").glob("*.md"))
@@ -375,6 +367,39 @@ def main() -> None:
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "\n".join(lignes) + "\n</urlset>\n",
+        encoding="utf-8",
+    )
+    # Espace conseillers : sources des leads (formulaires et pages où ils apparaissent)
+    formulaires, pages = {}, []
+    for f in sorted(DIST.rglob("*.html")):
+        chemin = "/" + str(f.relative_to(DIST).parent).replace("\\", "/").strip(".") + "/"
+        chemin = re.sub(r"/+", "/", chemin)
+        if chemin.startswith("/espace/"):
+            continue
+        html = f.read_text(encoding="utf-8")
+        trouve = False
+        for m in re.finditer(r'<form\b[^>]*\bname="([^"]+)"[^>]*>(.*?)</form>', html, re.S):
+            if "netlify" not in m.group(0)[:600]:
+                continue
+            trouve = True
+            prod = re.search(r'name="produit" value="([^"]*)"', m.group(2))
+            info = formulaires.setdefault(m.group(1), {"nom": "", "pages": []})
+            if not info["nom"] and prod and prod.group(1) in noms_produits:
+                info["nom"] = noms_produits[prod.group(1)]
+            if chemin not in info["pages"]:
+                info["pages"].append(chemin)
+        if trouve:
+            pages.append(chemin)
+    for nom, info in formulaires.items():
+        info["nom"] = noms_produits.get(nom) or info["nom"] or nom.replace("-", " ").capitalize()
+    (DIST / "espace" / "config.js").write_text(
+        "window.ESPACE = " + json.dumps({
+            "url": re.sub(r"/(rest|auth)/v1/?$|/$", "", os.environ.get("SUPABASE_URL", "").strip()),
+            "anon": os.environ.get("SUPABASE_ANON_KEY", ""),
+            "produits": noms_produits,
+            "formulaires": formulaires,
+            "pages": sorted(pages),
+        }, ensure_ascii=False) + ";\n",
         encoding="utf-8",
     )
     print(f"Site généré : {len(sitemap)} pages indexables, {len(tous)} produits, {len(articles)} articles.")

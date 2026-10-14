@@ -14,3 +14,6 @@
 
 Chaque demande envoyée sur le site (Netlify Forms) déclenche `netlify/functions/submission-created.mjs`, qui crée le lead et l'attribue.
 Les e-mails de notification Netlify continuent de fonctionner en parallèle.
+
+## Mises à jour de la base
+- `maj-1-repartition-par-source.sql` : répartition par page ou formulaire. À exécuter une fois dans Supabase › SQL Editor (inutile si `schema.sql` a été exécuté après cette mise à jour).
