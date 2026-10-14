@@ -45,6 +45,15 @@
       {% include "partials/simulateur-interets.html" %}
       <button type="button" class="bouton bouton--action interets__cta" data-ouvrir-modale="placements">Construire ma stratégie avec un spécialiste</button>
       <p class="interets__rassure">{{ i.icone("valide", "icone icone--petite") }} Premier entretien gratuit et sans engagement</p>
+      {% elif produit.formulaire == "impots" %}
+      <h2 class="form-titre">Votre déclaration, faite avec un spécialiste</h2>
+      <p class="form-sous-titre">Remplir votre déclaration sans stress, ou payer moins d'impôts grâce aux bonnes déductions.</p>
+      <ul class="entree-simulation__points">
+        <li>{{ i.icone("valide", "icone icone--petite") }} Toutes les déductions auxquelles vous avez droit</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Salariés, indépendants, retraités, frontaliers</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Demande en 2 minutes, sans engagement</li>
+      </ul>
+      <a class="bouton bouton--action" href="{{ produit.url }}demande/">{{ produit.bouton }}</a>
       {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
@@ -70,7 +79,7 @@
       {% endif %}
       <div class="mini-cta mini-cta--{{ produit.theme }}">
         <p>{{ produit.nom }} : un conseil gratuit, sans engagement.</p>
-        <a class="bouton bouton--action bouton--petit" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
+        <a class="bouton bouton--action bouton--petit" href="{% if produit.formulaire == 'impots' %}{{ produit.url }}demande/{% else %}#demande{% endif %}"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </div>
     </aside>
     <div class="article__corps texte-long">
@@ -85,7 +94,7 @@
       <aside class="encart encart--milieu">
         <p class="encart__titre">Un doute sur votre couverture ?</p>
         <p>Un spécialiste regarde votre situation et vous explique ce qui vous convient. C'est gratuit et sans engagement.</p>
-        <a class="bouton bouton--action" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
+        <a class="bouton bouton--action" href="{% if produit.formulaire == 'impots' %}{{ produit.url }}demande/{% else %}#demande{% endif %}"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </aside>
       {% endif %}
       {{ produit.html_fin|safe }}
@@ -121,7 +130,7 @@
       <aside class="encart">
         <p class="encart__titre">{{ produit.bouton }}</p>
         <p>Un spécialiste vous rappelle au moment qui vous arrange, avec des propositions claires. Gratuit et sans engagement.</p>
-        <a class="bouton bouton--action" href="#demande"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
+        <a class="bouton bouton--action" href="{% if produit.formulaire == 'impots' %}{{ produit.url }}demande/{% else %}#demande{% endif %}"{% if produit.widget_hero == "interets" %} data-ouvrir-modale="placements"{% endif %}>{{ produit.bouton }}</a>
       </aside>
     </div>
   </div>

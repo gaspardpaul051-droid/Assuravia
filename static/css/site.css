@@ -1476,3 +1476,8 @@ body.modale-ouverte { overflow: hidden; }
 .sante__recap .sante__detail li { background: var(--surface); color: var(--marine); }
 .sante__recap-total { display: flex; justify-content: space-between; margin: var(--e-2) 0 0; font-weight: 700; color: var(--marine); }
 .sante__recap-total strong { font-size: var(--t-l); }
+.demande-etapes { list-style: none; margin: var(--e-5) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--e-3); }
+.demande-etapes li { display: flex; align-items: center; gap: 10px; padding: var(--e-3); border-radius: var(--r-m); background: #fff; border: 1px solid var(--bordure); font-size: var(--t-s); font-weight: 600; color: var(--marine); }
+.demande-etapes span { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--bleu); color: #fff; font-weight: 800; }
+.demande-impots .panneau-form { margin-top: var(--e-5); }
+@media (max-width: 640px) { .demande-etapes { grid-template-columns: 1fr; } }

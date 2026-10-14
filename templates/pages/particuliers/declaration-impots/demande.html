@@ -1,0 +1,30 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Être aidé pour ma déclaration d'impôts | Assuravia{% endblock %}
+{% block description %}Un spécialiste remplit votre déclaration d'impôts avec vous et vérifie toutes les déductions possibles. Gratuit et sans engagement pour la demande.{% endblock %}
+{% block content %}
+{% set p = par_slug["declaration-impots"] %}
+<section class="cmp-page demande-impots">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="{{ p.url }}">{{ p.nom }}</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone(p.icone, "icone icone--petite") }} Demande</p>
+    <h1 class="cmp-page__titre">Être aidé pour ma déclaration d'impôts</h1>
+    <p class="chapeau">Dites-nous en quelques mots votre situation : un spécialiste vous rappelle pour remplir votre déclaration ou trouver les déductions qui vous font payer moins d'impôts.</p>
+    <ol class="demande-etapes">
+      <li><span>1</span> Vous décrivez votre situation</li>
+      <li><span>2</span> Un spécialiste vous rappelle</li>
+      <li><span>3</span> Votre déclaration est préparée avec vous</li>
+    </ol>
+    <div class="panneau-form">
+      {% include "partials/form-impots.html" %}
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
