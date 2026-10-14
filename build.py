@@ -302,7 +302,7 @@ def main() -> None:
     noms_produits = {p["slug"]: p["nom"] for p in tous}
     noms_produits.update({
         "contact": "Message de contact", "contact-rapide": "Demande de rappel", "lamal": "LAMal",
-        "complementaire-sante-eco": "Complémentaire santé (Assuravie)", "pgm": "Perte de gain maladie",
+        "complementaire-sante-eco": "Complémentaire santé (Assuravia)", "pgm": "Perte de gain maladie",
         "rc-pro": "RC professionnelle", "complementaire-maladie": "Complémentaire maladie",
         "complementaire-ambulatoire": "Soins ambulatoires", "assurance-hospitalisation": "Hospitalisation",
     })

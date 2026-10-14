@@ -34,6 +34,28 @@
     var j = Math.round(h / 24);
     return "il y a " + j + " j";
   };
+  var NOMS_CHAMPS = {
+    date_naissance: "Date de naissance", annee_naissance: "Année de naissance", sexe: "Sexe", canton: "Canton", franchise: "Franchise",
+    adultes: "Adultes", enfants: "Enfants", pour_qui: "Pour qui", formule: "Formule", formule_choisie: "Formule choisie",
+    logement: "Logement", pieces: "Pièces", logement_rue: "Rue", logement_numero: "N°", logement_npa: "NPA", logement_localite: "Localité",
+    inventaire: "Valeur de l'inventaire", somme_assuree: "Somme assurée", somme_corrigee: "Somme corrigée", somme_ok: "Somme confirmée",
+    option_rc: "Option RC", option_pj: "Option protection juridique", option_cyber: "Option cyber", capital: "Capital",
+    dentaire: "Dentaire", voyage: "Voyage", alternatives: "Médecines alternatives", division: "Hospitalisation",
+    fam_base: "Base", fam_hop: "Hospitalisation", fam_alt: "Médecines alternatives", fam_dent: "Dentaire", fam_voyage: "Voyage", fam_capital: "Capital",
+    economiser_impots: "Économiser des impôts", suite_souhaitee: "Suite souhaitée", message: "Message", description: "Description",
+    complement: "Complément", statut: "Situation", revoir_batiment: "Revoir le bâtiment", date_debut: "Début souhaité", npa: "NPA", localite: "Localité"
+  };
+  function nomChamp(k) { return NOMS_CHAMPS[k] || libelle(k); }
+  var VALEURS = { hop_commune: "Chambre commune", hop_flex: "Hospitalisation flexible", hop_demi: "Demi-privée", hop_privee: "Privée", hop_monde: "Privée, monde entier", base_plus: "Base plus", alt_therap: "Médecines alternatives (thérapeutes)", alt_medecin: "Médecines alternatives (médecins)", dent_essentiel: "Dentaire essentiel", dent_confort: "Dentaire confort", appartement: "Appartement", maison: "Maison", h: "Homme", f: "Femme" };
+  function valeurChamp(v) {
+    v = String(v == null ? "" : v);
+    if (/^[a-z_]+(,\s*[a-z_]+)*$/.test(v) && v.split(/,\s*/).every(function (x) { return VALEURS[x]; })) return v.split(/,\s*/).map(function (x) { return VALEURS[x]; }).join(", ");
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v.split("-").reverse().join(".");
+    if (/^(on|true|oui)$/i.test(v)) return "Oui";
+    if (/^(off|false|non)$/i.test(v)) return "Non";
+    return v.replace(/_/g, " ");
+  }
+  function formatPrime(p) { return /^\d+([.,]\d+)?$/.test(String(p).trim()) ? "CHF " + p : p; }
   var libelle = function (k) {
     var s = k.replace(/_/g, " ").replace(/\s+/g, " ").trim();
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -201,7 +223,7 @@
           (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
           avatar(nomLead(l)) +
           '<span class="ligne__qui"><strong class="ligne__nom">' + esc(nomLead(l)) + '</strong><span class="ligne__tel">' + esc(l.telephone || l.email || "Sans coordonnées") + "</span></span>" +
-          '<span class="ligne__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(l.prime) + "</small>" : "") + "</span>" +
+          '<span class="ligne__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(formatPrime(l.prime)) + "</small>" : "") + "</span>" +
           dernierMot(l) +
           (estAdmin() ? '<span class="ligne__conseiller">' + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") +
           '<span class="ligne__date">' + (l.statut === "nouveau" ? '<span class="point-vif"></span>' : "") + depuis(l.cree_le) + (l.rappel_le ? '<small class="' + (aRappeler(l) ? "urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</small>" : "") + "</span>" +
@@ -265,25 +287,42 @@
     var wa = tel.replace(/^\+/, "").replace(/^0/, "41");
     var infos = Object.keys(l.donnees || {}).filter(function (k) { return ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name"].indexOf(k) < 0; });
     var s0 = statut(l.statut);
+    var d = l.donnees || {};
+    var TECH = ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name", "page", "produit", "prime_totale", "prime_mensuelle_estimee", "prime_estimee", "prime_principale", "etape_atteinte", "gclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "canton"];
+    var reponses = Object.keys(d).filter(function (k) { return TECH.indexOf(k) < 0; });
+    var origine = [["Page", l.page], ["Formulaire", l.formulaire], ["Source", d.utm_source], ["Campagne", d.utm_campaign], ["Mot-clé", d.utm_term], ["Google Ads", d.gclid ? "Oui (clic publicitaire)" : ""]].filter(function (x) { return x[1]; });
+    var tuile = function (ic, label, val, lien) { return '<div class="tuile"><span class="tuile__ic">' + ic + '</span><span class="tuile__txt"><small>' + label + "</small>" + (lien ? '<a href="' + esc(lien) + '">' + esc(val) + "</a>" : "<b>" + esc(val) + "</b>") + "</span></div>"; };
+    var IC = {
+      tel: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
+      mail: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>',
+      lieu: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+      prime: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>'
+    };
     fiche.innerHTML =
-      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + (l.prime ? " · <b>" + esc(l.prime) + "</b>" : "") + (l.canton ? " · " + esc(l.canton) : "") + '</p></div></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
+      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + '</p></div></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
       '<div class="fiche__actions">' +
-      (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '" data-appel>Appeler <b>' + esc(l.telephone) + "</b></a>" : "") +
+      (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '">Appeler</a>' : "") +
       (wa ? '<a class="btn btn--wa btn--gros" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
       (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
-      '<section class="fiche__bloc"><h3>Où en êtes-vous ?</h3><div class="statuts" data-statuts>' + STATUTS.map(function (s) { return '<button type="button" class="statut-choix statut-choix--' + s.couleur + (l.statut === s.cle ? " statut-choix--actif" : "") + '" data-statut="' + s.cle + '">' + s.nom + "</button>"; }).join("") + "</div>" +
-      '<div class="fiche__suivi"><label>Rappel prévu<input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label>' +
+      '<section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
+      '<label class="statut-champ"><span>Rappel prévu</span><input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label></div>' +
       '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
-      (estAdmin() ? '<label>Conseiller<select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
-      "</div></section>" +
+      (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
+      "</section>" +
+      '<section class="fiche__bloc"><h3>Informations du client</h3><div class="tuiles">' +
+        (l.telephone ? tuile(IC.tel, "Téléphone", l.telephone, "tel:" + tel) : "") +
+        (l.email ? tuile(IC.mail, "E-mail", l.email, "mailto:" + l.email) : "") +
+        (l.canton ? tuile(IC.lieu, "Canton / NPA", l.canton) : "") +
+        (l.prime ? tuile(IC.prime, "Prime estimée", formatPrime(l.prime)) : "") +
+      "</div>" +
+      (reponses.length ? '<h4 class="sous-titre">Sa demande</h4><dl class="details">' + reponses.map(function (k) { return '<div class="details__ligne"><dt>' + esc(nomChamp(k)) + "</dt><dd>" + esc(valeurChamp(d[k])) + "</dd></div>"; }).join("") + "</dl>" : "") +
+      (origine.length ? '<h4 class="sous-titre">Provenance</h4><dl class="details details--doux">' + origine.map(function (x) { return '<div class="details__ligne"><dt>' + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "") +
+      "</section>" +
       '<section class="fiche__bloc"><h3>Commentaires</h3><form class="commentaire-form" data-commenter>' +
       '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
       '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
       '<div class="commentaire-form__pied"><small>Ctrl + Entrée pour publier</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
-      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section>' +
-      '<section class="fiche__bloc"><h3>Coordonnées</h3><dl class="infos infos--forts">' +
-      [["Prénom", l.prenom], ["Nom", l.nom], ["Téléphone", l.telephone], ["E-mail", l.email], ["Canton / NPA", l.canton], ["Prime estimée", l.prime], ["Formulaire", l.formulaire], ["Page", l.page]].filter(function (x) { return x[1]; }).map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl></section>" +
-      (infos.length ? '<section class="fiche__bloc"><h3>Réponses du client</h3><dl class="infos infos--forts">' + infos.map(function (k) { return "<div><dt>" + esc(libelle(k)) + "</dt><dd>" + esc(l.donnees[k]) + "</dd></div>"; }).join("") + "</dl></section>" : "");
+      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section>';
     fiche.querySelector("[data-fermer]").onclick = fermerFiche;
     var maj = function (champs, note) {
       return sb.from("leads").update(champs).eq("id", l.id).select().single().then(function (r) {
@@ -298,18 +337,17 @@
         if (etat.vue === "leads") vueLeads();
       });
     };
-    fiche.querySelectorAll("[data-statut]").forEach(function (b) {
-      b.onclick = function () {
-        var cle = b.getAttribute("data-statut"); if (cle === l.statut) return;
-        var avant = statut(l.statut).nom;
-        fiche.querySelectorAll("[data-statut]").forEach(function (x) { x.classList.toggle("statut-choix--actif", x === b); });
-        maj({ statut: cle }, "Statut : " + avant + " → " + statut(cle).nom).then(function () {
-          if (cle === "signe") { confettis(); toast("Bravo, contrat signé ! +40 points"); }
-          else if (cle === "rdv") toast("RDV prévu : +10 points");
-          ouvrirFiche(l.id, true);
-        });
-      };
-    });
+    var choixStatut = fiche.querySelector("[data-statut-select]");
+    choixStatut.onchange = function () {
+      var cle = choixStatut.value; if (cle === l.statut) return;
+      var avant = statut(l.statut).nom;
+      choixStatut.parentNode.className = "statut-select statut-select--" + statut(cle).couleur;
+      maj({ statut: cle }, "Statut : " + avant + " → " + statut(cle).nom).then(function () {
+        if (cle === "signe") { confettis(); toast("Bravo, contrat signé ! +40 points"); }
+        else if (cle === "rdv") toast("RDV prévu : +10 points");
+        ouvrirFiche(l.id, true);
+      });
+    };
     var poserRappel = function (v) { maj({ rappel_le: v }, v ? "Rappel prévu le " + date(v) : "Rappel supprimé").then(function () { ouvrirFiche(l.id, true); }); };
     fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
     fiche.querySelectorAll("[data-dans]").forEach(function (b) {
