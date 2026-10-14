@@ -1492,3 +1492,12 @@ body.modale-ouverte { overflow: hidden; }
 .adresse__repere::after { content: ""; position: absolute; left: 9px; top: 9px; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
 .adresse__attribution { position: absolute; right: 6px; bottom: 4px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,.85); font-size: 0.6875rem; color: var(--texte-doux); }
 @keyframes repere-tombe { from { transform: translateY(-20px) rotate(-45deg); opacity: 0; } }
+/* Rappel facultatif dans les simulations */
+.apercu-prime__mois { margin: 0; color: var(--texte-doux); font-size: var(--t-s); }
+.rappel-choix { display: grid; gap: 4px; padding-top: var(--e-2); border-top: 1px dashed var(--bordure); }
+.rappel-choix .fe__sous-question, .rappel-choix .fe__aide { margin: 0; }
+.rappel-boutons { display: flex; flex-wrap: wrap; gap: var(--e-3); align-items: center; }
+.rappel-boutons .fe__suivant { min-width: 220px; }
+[data-si-sans-contact] { display: none !important; }
+[data-sans-contact] [data-si-sans-contact] { display: grid !important; }
+[data-sans-contact] [data-si-contact] { display: none !important; }

@@ -25,6 +25,6 @@
   {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"], aucun="Non merci") }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.coordonnees(naissance=False, flou=False) }}
+{{ e.coordonnees(naissance=False) }}
 {{ e.resultat_lca("besoins") }}
 {% endblock %}

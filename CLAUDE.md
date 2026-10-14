@@ -9,7 +9,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
   et page produit générée avec `templates/produit.html`). Un produit avec un champ `url` a une page fixe.
   Groupes et catégories autorisées : `GROUPES` dans `build.py`.
 - `templates/pages/` : pages fixes ; le chemin donne l'URL.
-- Simulations (parcours en plusieurs écrans) : toutes héritent de `templates/simulation.html` et utilisent les écrans de `templates/partials/etapes.html`. Tarifs : attributs `data-prime-base`, `data-taux-fixe`, `data-taux` (formules), `data-prix-base` × `data-facteur`, options `data-prix`. Un produit pointe vers sa simulation avec le champ `simulateur:` (et `entree: logement` pour commencer par appartement ou maison).
+- Simulations (parcours en plusieurs écrans) : toutes héritent de `templates/simulation.html` et utilisent les écrans de `templates/partials/etapes.html`. Tarifs : attributs `data-prime-base`, `data-taux-fixe`, `data-taux` (formules), `data-prix-base` × `data-facteur`, options `data-prix`. Écran `coordonnees` : la prime s'affiche en clair, le rappel est facultatif (« Être rappelé » envoie la demande, « Voir le détail sans être rappelé » mène au résultat). Un produit pointe vers sa simulation avec le champ `simulateur:` (et `entree: logement` pour commencer par appartement ou maison).
 - Charte graphique : `design-system/assuravia/MASTER.md` (couleurs Privé bleu clair, Pro marine et or).
 - `templates/pages/lp/` : pages publicitaires (Google Ads), sans menu, `noindex`. Ne jamais les lier depuis le site.
 - Formulaire sur une page à part : un produit avec `demande_titre`, `demande_texte`, `demande_points` affiche un bouton vers `<url>demande/` (page dans `templates/pages/.../demande.html`). Formulaires en étapes : `{% from "partials/questions.html" import question %}` dans une zone `data-etapes`.
@@ -24,7 +24,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 
 ## Complémentaires maladie
 - Pages publiques NEUTRES : aucune référence à un assureur, ni dans les noms, ni dans la structure, ni dans les chiffres. Couverture organisée par besoin (hospitalisation par type de chambre, soins ambulatoires à la carte avec niveau Standard ou Étendu, dentaire par plafond annuel, indemnité par jour, protection juridique santé).
-- Grille : `content/complementaires.json` (primes indicatives par âge, sexe, canton). Utilisée par le simulateur de la page Privé (`partials/simulateur-sante.html`) et les trois simulations (hospitalisation, ambulatoire, complète, avec `"lca": True`). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `niveau_amb`, `resultat_lca`). Pas de prix sur les cartes de choix ; la prime estimée s'affiche en clair avant les coordonnées et à la fin.
+- Grille : `content/complementaires.json` (primes indicatives par âge, sexe, canton). Utilisée par le simulateur de la page Privé (`partials/simulateur-sante.html`) et les trois simulations (hospitalisation, ambulatoire, complète, avec `"lca": True`). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `niveau_amb`, `resultat_lca`). Pas de prix sur les cartes de choix.
 - Les pages orientées assureur (Helsana, Assura…) seront des pages publicitaires `templates/pages/lp/`, non liées au site. Grille inspirée d'Helsana conservée dans `archives/complementaires-helsana/`.
 
 ## Article hebdomadaire

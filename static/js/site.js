@@ -602,12 +602,12 @@
       funnel.querySelectorAll("[data-prix-formule]").forEach(function (el) {
         el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")))) + " / an";
       });
-      set("total_floute", chf2(c.total || 999));
+      set("total_floute", c.surMesure ? "Sur mesure" : chf2(c.total));
       var prenom = valeur("prenom");
       set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
       if (T) {
         funnel.querySelectorAll("[data-prix-lca]").forEach(function (el) { el.textContent = "≈ " + chf2(primeLca(el.getAttribute("data-prix-lca"))) + " / mois"; });
-        set("total_floute", chf2(c.total || 99) + " / mois");
+        set("total_floute", chf2(c.total) + " / mois");
         set("total", chf2(c.total));
         set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
         set("prestations", c.lca.map(function (x) {
@@ -665,6 +665,7 @@
       b.addEventListener("click", function () {
         if (b.hasAttribute("data-fe-envoi")) {
           if (!verifier(etapesF[courante])) return;
+          funnel.removeAttribute("data-sans-contact");
           afficher();
           funnel.querySelector("[data-funnel-etat]").value = "prime affichée";
           // Le lead est enregistré dès que la prime est affichée ; on continue même hors ligne.
@@ -683,6 +684,17 @@
           return;
         }
         avancer();
+      });
+    });
+    // Voir le résultat sans laisser ses coordonnées (le rappel reste proposé ensuite)
+    funnel.querySelectorAll("[data-fe-sans-contact]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        funnel.setAttribute("data-sans-contact", "");
+        funnel.querySelector("[data-funnel-etat]").value = "prime affichée sans coordonnées";
+        etapesF[courante].querySelectorAll("[aria-invalid]").forEach(function (el) { el.removeAttribute("aria-invalid"); });
+        etapesF[courante].querySelectorAll(".champ__erreur").forEach(function (el) { el.remove(); });
+        historique.push(courante);
+        montrer(courante + 1);
       });
     });
     funnel.querySelectorAll("[data-fe-auto]").forEach(function (r) {

@@ -91,13 +91,17 @@
 {% macro interet_menage(question="Souhaitez-vous aussi revoir votre assurance ménage ?") -%}{{ oui_non("interet_menage", question, "Un spécialiste compare votre assurance ménage actuelle et vous montre ce qui peut être amélioré.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
 {% macro impots() -%}{{ oui_non("economiser_impots", "Souhaitez-vous aussi payer moins d'impôts ?", "Un spécialiste peut vous montrer ce que le 3e pilier ou votre déclaration peuvent vous faire gagner.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
 
-{# Coordonnées : la prime reste floutée jusqu'à l'envoi #}
-{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=True) -%}
-{{ ouvrir("coordonnees", "Votre prime est prête" if flou else "Recevoir cette offre") }}
+{# Coordonnées : la prime s'affiche en clair ; laisser ses coordonnées pour être rappelé reste un choix. #}
+{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=False) -%}
+{{ ouvrir("coordonnees", "Votre prime est prête") }}
   <div class="apercu-prime">
-    <p class="apercu-prime__label">{{ "Votre prime annuelle estimée" if flou else "Votre prime estimée" }}</p>
-    <p class="apercu-prime__montant{% if flou %} floute{% endif %}" data-affiche="total_floute">CHF 000.00</p>
-    <p class="fe__aide">{{ "Indiquez où vous joindre pour l'afficher et recevoir votre récapitulatif." if flou else "Cette couverture existe chez plusieurs assureurs. Laissez vos coordonnées : un conseiller vous dit lesquels la proposent et vous envoie l'offre détaillée." }}</p>
+    <p class="apercu-prime__label">Votre prime estimée</p>
+    <p class="apercu-prime__montant" data-affiche="total_floute">CHF 000.00</p>
+    <p class="apercu-prime__mois" data-affiche="mois"></p>
+  </div>
+  <div class="rappel-choix">
+    <p class="fe__sous-question">Souhaitez-vous être rappelé ?</p>
+    <p class="fe__aide">C'est facultatif. Laissez vos coordonnées : un conseiller vérifie votre estimation avec vous et vous envoie l'offre détaillée.</p>
   </div>
   <div class="grille-champs">
     {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{% endif %}
@@ -113,7 +117,10 @@
     <input id="consentement-{{ sim.id }}" name="consentement" type="checkbox" value="oui" required>
     <label for="consentement-{{ sim.id }}">J'accepte d'être contacté par téléphone ou e-mail au sujet de ma demande, par un conseiller Assuravia ou par un partenaire spécialisé à qui elle peut être transmise. Mes données sont traitées selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>
   </div>
-  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">{{ "Afficher ma prime" if flou else "Être rappelé pour recevoir cette offre" }}</button>
+  <div class="rappel-boutons">
+    <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Être rappelé</button>
+    <button type="button" class="bouton bouton--secondaire" data-fe-sans-contact>Voir le détail sans être rappelé</button>
+  </div>
 </fieldset>
 {%- endmacro %}
 
@@ -126,9 +133,13 @@
     <ul class="resultat-prime__detail" data-affiche="detail"></ul>
     <p class="resultat__avertissement">Estimation indicative selon les informations fournies. L'offre définitive, les conditions et la prime exacte sont établies par l'assureur.</p>
   </div>
-  <div class="resultat-actions">
+  <div class="resultat-actions" data-si-contact>
     <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Envoyer ma demande de souscription</button>
     <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être recontacté par un conseiller</button>
+    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+  </div>
+  <div class="resultat-actions" data-si-sans-contact>
+    <button type="button" class="bouton bouton--action" data-fe-modifier="coordonnees">Être rappelé pour recevoir cette offre</button>
     <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
   </div>
 </fieldset>
@@ -142,7 +153,7 @@
     <label class="formule{% if x.badge %} formule--conseil{% endif %}"><input type="radio" name="formule" value="{{ x.nom }}" data-taux="{{ x.taux }}" required data-fe-auto>
       {% if x.badge %}<span class="formule__badge">{{ x.badge }}</span>{% endif %}
       <span class="formule__nom">{{ x.nom }}</span>
-      {% if x.taux %}<span class="formule__prix floute" data-prix-formule="{{ x.taux }}">CHF 000 / an</span>{% else %}<span class="formule__prix">Offre personnalisée</span>{% endif %}
+      {% if x.taux %}<span class="formule__prix" data-prix-formule="{{ x.taux }}">CHF 000 / an</span>{% else %}<span class="formule__prix">Offre personnalisée</span>{% endif %}
       <ul>{% for p in x.points %}<li>{{ p }}</li>{% endfor %}</ul></label>
     {% endfor %}
   </div>
@@ -226,9 +237,13 @@
     <div data-affiche="prestations"></div>
   </div>
   <p class="resultat__avertissement">Estimation indicative pour une personne, établie à partir d'une grille moyenne du marché. Les prestations sont des exemples : elles varient selon l'assureur et la formule. Une complémentaire est conclue après un questionnaire de santé ; l'assureur peut émettre des réserves ou refuser. Seule l'offre de l'assureur fait foi.</p>
-  <div class="resultat-actions">
+  <div class="resultat-actions" data-si-contact>
     <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Recevoir une offre détaillée</button>
     <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être conseillé par téléphone</button>
+    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+  </div>
+  <div class="resultat-actions" data-si-sans-contact>
+    <button type="button" class="bouton bouton--action" data-fe-modifier="coordonnees">Être rappelé pour recevoir cette offre</button>
     <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
   </div>
 </fieldset>
