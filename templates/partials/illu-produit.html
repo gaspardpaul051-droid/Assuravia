@@ -1,0 +1,11 @@
+{# Illustration animée du haut des pages produit : une fiche de couverture avec les points forts du produit #}
+<div class="illu-produit" aria-hidden="true">
+  <div class="ip-halo"></div>
+  <div class="ip-carte">
+    <div class="ip-tete"><span class="ip-icone">{{ i.icone(produit.icone) }}</span><span class="ip-titre">{{ produit.nom }}</span></div>
+    <div class="ip-lignes"><span></span><span></span><span></span></div>
+    <div class="ip-barre"><span></span></div>
+    <span class="ip-sceau">{{ i.icone("coche") }}</span>
+  </div>
+  {% for pt in produit.points[:3] %}<span class="ip-puce ip-puce--{{ loop.index }}">{{ i.icone("valide", "icone icone--petite") }} {{ pt }}</span>{% endfor %}
+</div>

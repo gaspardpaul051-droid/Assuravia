@@ -1235,3 +1235,38 @@ a.contact__ligne:hover span { text-decoration: underline; }
 .resultat-prestations__bloc { padding: var(--e-4); border-radius: var(--r-m); background: var(--bleu-pale); }
 .resultat-prestations__bloc p { margin: 0 0 var(--e-2); font-weight: 800; color: var(--marine); }
 .resultat-prestations__bloc ul { margin: 0; padding-left: 1.1em; font-size: var(--t-s); display: grid; gap: 4px; }
+
+/* Illustration animée du haut des pages produit */
+.illu-produit { position: relative; max-width: 520px; height: 250px; margin-top: var(--e-6); }
+.ip-halo { position: absolute; inset: 20px 40px 0 20px; border-radius: 50%; background: radial-gradient(circle, var(--accent-pale), transparent 70%); animation: ip-respire 5s ease-in-out infinite; }
+.ip-carte { position: absolute; left: 24px; top: 24px; width: 240px; padding: 18px; border-radius: var(--r-l); background: #fff; border: 1px solid var(--bordure); box-shadow: var(--ombre-2); display: grid; gap: 14px; animation: ip-flotte 6s ease-in-out infinite; }
+.ip-tete { display: flex; align-items: center; gap: 10px; }
+.ip-icone { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-pale); color: var(--accent-texte); flex: none; }
+.ip-icone .icone { width: 24px; height: 24px; }
+.ip-titre { font-weight: 800; font-size: var(--t-s); color: var(--marine); line-height: 1.2; }
+.ip-lignes { display: grid; gap: 8px; }
+.ip-lignes span { display: block; height: 8px; border-radius: var(--r-plein); background: var(--surface); position: relative; overflow: hidden; }
+.ip-lignes span::after { content: ""; position: absolute; inset: 0; width: 0; border-radius: inherit; background: var(--accent-pale); animation: ip-ligne 4.5s ease-in-out infinite; }
+.ip-lignes span:nth-child(2)::after { animation-delay: .4s; } .ip-lignes span:nth-child(3)::after { animation-delay: .8s; }
+.ip-lignes span:nth-child(2) { width: 82%; } .ip-lignes span:nth-child(3) { width: 64%; }
+.ip-barre { height: 10px; border-radius: var(--r-plein); background: var(--surface); overflow: hidden; }
+.ip-barre span { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--accent-decor), var(--accent-texte)); animation: ip-barre 4.5s cubic-bezier(.2,.8,.2,1) infinite; }
+.ip-sceau { position: absolute; right: -14px; top: -14px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--succes); color: #fff; box-shadow: 0 6px 14px -6px rgba(30,127,79,.8); animation: ip-sceau 4.5s ease-in-out infinite; }
+.ip-sceau .icone { width: 20px; height: 20px; }
+.ip-puce { position: absolute; display: inline-flex; align-items: center; gap: 6px; max-width: 230px; padding: 8px 12px; border-radius: var(--r-plein); background: #fff; border: 1px solid var(--bordure); box-shadow: var(--ombre-1); font-size: var(--t-xs); font-weight: 700; color: var(--marine); line-height: 1.25; opacity: 0; animation: ip-puce 9s ease-in-out infinite; }
+.ip-puce .icone { color: var(--succes); flex: none; }
+.ip-puce--1 { left: 236px; top: 62px; }
+.ip-puce--2 { left: 256px; top: 128px; animation-delay: 3s; }
+.ip-puce--3 { left: 206px; top: 196px; animation-delay: 6s; }
+.theme-pro .ip-puce .icone { color: var(--or-texte); }
+@keyframes ip-flotte { 50% { transform: translateY(-8px) rotate(-1deg); } }
+@keyframes ip-respire { 50% { transform: scale(1.06); opacity: .8; } }
+@keyframes ip-ligne { 0% { width: 0; } 40%, 80% { width: 100%; } 100% { width: 100%; opacity: 0; } }
+@keyframes ip-barre { 0%, 10% { width: 0; } 55%, 90% { width: 100%; } 100% { width: 100%; } }
+@keyframes ip-sceau { 0%, 45% { transform: scale(0); } 55% { transform: scale(1.15); } 62%, 92% { transform: scale(1); } 100% { transform: scale(0); } }
+@keyframes ip-puce { 0% { opacity: 0; transform: translateX(16px); } 6%, 30% { opacity: 1; transform: none; } 36%, 100% { opacity: 0; transform: translateY(-6px); } }
+@media (max-width: 900px) { .illu-produit { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ip-halo, .ip-carte, .ip-lignes span::after, .ip-barre span, .ip-sceau, .ip-puce { animation: none; }
+  .ip-puce, .ip-sceau { opacity: 1; transform: none; } .ip-barre span, .ip-lignes span::after { width: 100%; }
+}

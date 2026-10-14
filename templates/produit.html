@@ -21,6 +21,7 @@
       <ul class="points">
         {% for pt in produit.points %}<li>{{ pt }}</li>{% endfor %}
       </ul>
+      {% include "partials/illu-produit.html" %}
     </div>
     <aside class="panneau-form" id="demande">
       {% if produit.simulateur %}
