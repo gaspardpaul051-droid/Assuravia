@@ -41,10 +41,46 @@
 
 <section class="lp-chiffres" aria-label="En bref">
   <div class="cadre lp-chiffres__liste">
-    <div><strong><span data-compte="6">6</span></strong><span>modules à combiner</span></div>
-    <div><strong><span data-compte="24">24</span></strong><span>thérapies alternatives couvertes</span></div>
-    <div><strong><span data-compte="2">2</span> min</strong><span>pour voir votre prime</span></div>
-    <div><strong>0</strong><span>engagement</span></div>
+    {% for val, suffixe, txt, icone in [("6", "", "modules à combiner", "bouclier"), ("24", "", "thérapies alternatives", "coeur"), ("2", " min", "pour voir votre prime", "horloge"), ("0", "", "engagement", "valide")] %}
+    <div class="lp-chiffre"><span class="lp-chiffre__icone">{{ i.icone(icone) }}</span><p class="lp-chiffre__val"><span data-compte="{{ val }}">{{ val }}</span>{{ suffixe }}</p><p class="lp-chiffre__txt">{{ txt }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre">
+    <div class="bloc__entete"><p class="surtitre">Pourquoi compléter la LAMal ?</p><h2>Ce que la complémentaire change pour vous</h2><p>L'assurance de base garantit les soins nécessaires. La complémentaire vous donne le choix, le confort et la tranquillité.</p></div>
+    <div class="lp-avantages">
+      {% for icone, titre, texte in [
+        ("repere", "Le choix de votre hôpital", "Avec l'assurance de base, un séjour hors de votre canton peut laisser des frais à votre charge. Avec une complémentaire, vous choisissez votre hôpital dans toute la Suisse, sans mauvaise surprise."),
+        ("utilisateur", "Le choix de votre médecin", "En demi-privée ou en privée, c'est vous qui choisissez le chirurgien ou le spécialiste qui vous opère, et vous profitez d'une chambre plus calme pour récupérer."),
+        ("coeur", "Les médecines qui vous font du bien", "Ostéopathie, acupuncture, shiatsu, naturopathie : chez un thérapeute non médecin, l'assurance de base ne rembourse rien. La complémentaire prend le relais séance après séance."),
+        ("diamant", "Les frais du quotidien", "Lunettes, lentilles, médicaments hors liste, transports : ce sont de petites dépenses qui reviennent chaque année. La complémentaire en prend une partie."),
+        ("valide", "Un sourire entretenu", "Contrôles et détartrage ne sont presque jamais payés par l'assurance de base. Avec un module dentaire, l'entretien devient un réflexe, et les gros traitements pèsent moins."),
+        ("avion", "Partir l'esprit libre", "À l'étranger, l'assurance de base rembourse au plus le double du tarif suisse. Dans certains pays, une hospitalisation coûte bien plus. Le module voyage couvre les urgences dans le monde entier.")] %}
+      <article class="lp-avantage"><span class="lp-avantage__icone">{{ i.icone(icone) }}</span><h3>{{ titre }}</h3><p>{{ texte }}</p></article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre">
+    <div class="bloc__entete"><h2>Trois situations de tous les jours</h2><p>Ce que la complémentaire change, concrètement.</p></div>
+    <div class="lp-cas">
+      {% for icone, qui, situation, sans, avec in [
+        ("coeur", "Léa, 29 ans", "Elle consulte un ostéopathe pour son dos, quelques fois par an.", "La LAMal ne rembourse pas un ostéopathe non médecin : chaque séance est à sa charge.", "Avec le module médecines alternatives, une grande partie de chaque séance lui est remboursée."),
+        ("croix", "Marc, 45 ans", "Il doit se faire opérer du genou et souhaite un chirurgien précis, dans une clinique d'un autre canton.", "En division commune, le médecin est attribué et un séjour hors canton peut coûter.", "Avec l'hospitalisation au choix, il décide le jour venu : commune sans frais, ou demi-privée avec une participation limitée."),
+        ("groupe", "Famille Rossi", "Deux enfants, des lunettes, un appareil dentaire en vue et des vacances à l'étranger.", "Lunettes, orthodontie et urgences à l'étranger restent en grande partie à leur charge.", "Avec le complément essentiel, le dentaire et le voyage, ces frais sont en partie couverts, et les enfants sont assurés tôt.")] %}
+      <article class="lp-cas__carte">
+        <p class="lp-cas__qui"><span>{{ i.icone(icone) }}</span>{{ qui }}</p>
+        <p class="lp-cas__situation">{{ situation }}</p>
+        <p class="lp-cas__sans"><strong>Avec la LAMal seule</strong>{{ sans }}</p>
+        <p class="lp-cas__avec"><strong>Avec une complémentaire</strong>{{ avec }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="lp-sante__note">Situations données à titre d'exemple. Les remboursements exacts dépendent du contrat choisi.</p>
   </div>
 </section>
 
@@ -124,6 +160,14 @@
       <li><strong>Quel confort à l'hôpital ?</strong> La formule au choix le jour venu garde la prime basse tout en laissant la possibilité d'une chambre demi-privée ou privée.</li>
       <li><strong>Y a-t-il des doublons ?</strong> Un spécialiste vérifie que votre nouvelle couverture ne répète pas ce que vous avez déjà, et qu'il ne reste pas de lacune.</li>
     </ol>
+
+    <h2>Le bon moment pour s'assurer</h2>
+    <p>Contrairement à l'assurance de base, une complémentaire n'est pas automatique : l'assureur examine votre état de santé avant d'accepter. Plus vous vous assurez tôt, plus c'est simple :</p>
+    <ul>
+      <li><strong>Pour un enfant</strong>, idéalement avant la naissance ou dans ses premiers mois, avant tout problème de santé ou besoin d'orthodontie.</li>
+      <li><strong>Pour un adulte</strong>, tant que vous êtes en bonne santé : une maladie déclarée peut entraîner une réserve, c'est-à-dire une exclusion.</li>
+      <li><strong>Avant un projet</strong>, comme une grossesse, un traitement dentaire ou un long voyage : beaucoup de prestations prévoient un délai d'attente.</li>
+    </ul>
 
     <blockquote><p><strong>Le saviez-vous ?</strong> Les complémentaires sont accordées après un questionnaire de santé. L'assureur peut émettre une réserve ou refuser. Plus vous vous assurez tôt, plus c'est simple.</p></blockquote>
   </div>

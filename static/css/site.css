@@ -1792,8 +1792,6 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 .lp-depart__rassure .icone { color: var(--succes); }
 .lp-chiffres { background: var(--marine); color: #fff; }
 .lp-chiffres__liste { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--e-4); padding-block: var(--e-6); text-align: center; }
-.lp-chiffres strong { display: block; font-size: clamp(1.8rem, 3.5vw, 2.4rem); color: var(--or-clair); font-variant-numeric: tabular-nums; }
-.lp-chiffres span { font-size: var(--t-s); color: #DCE4EF; }
 @media (max-width: 700px) { .lp-chiffres__liste { grid-template-columns: 1fr 1fr; } }
 .lp-module { transition: transform var(--duree) var(--courbe), box-shadow var(--duree) var(--courbe); }
 .lp-module:hover { transform: translateY(-3px); box-shadow: var(--ombre-2); }
@@ -1812,3 +1810,28 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 @media (max-width: 640px) { .lp-collant { left: 12px; right: 84px; width: auto; transform: none; padding-left: 14px; } .lp-collant p span { display: none; } @keyframes lp-monte { from { transform: translateY(20px); opacity: 0; } } .lp-module__tete { flex-wrap: wrap; } }
 @media (prefers-reduced-motion: reduce) { .lp-collant, .lp-depart__carte:has(input:checked) .lp-depart__icone { animation: none; } }
 @media (max-width: 640px) { .lp-collant { padding: 8px; } .lp-collant p { display: none; } .lp-collant .bouton { width: 100%; } }
+
+.lp-chiffres { background: linear-gradient(135deg, var(--marine), #123A6B); }
+.lp-chiffres__liste { padding-block: var(--e-7); }
+.lp-chiffre { display: grid; justify-items: center; gap: 4px; }
+.lp-chiffre__icone { width: 44px; height: 44px; border-radius: var(--r-plein); display: grid; place-items: center; background: rgba(255,255,255,.1); color: var(--or-clair); margin-bottom: 4px; }
+.lp-chiffre__val { margin: 0; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
+.lp-chiffre__txt { margin: 0; font-size: var(--t-s); color: #C9D5E6; }
+.lp-avantages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-5); }
+@media (max-width: 900px) { .lp-avantages { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .lp-avantages { grid-template-columns: 1fr; } }
+.lp-avantage { padding: var(--e-6); border-radius: var(--r-l); background: var(--fond); border: 1px solid var(--bordure); box-shadow: var(--ombre-1); transition: transform var(--duree) var(--courbe), box-shadow var(--duree) var(--courbe); }
+.lp-avantage:hover { transform: translateY(-4px); box-shadow: var(--ombre-2); }
+.lp-avantage__icone { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: linear-gradient(135deg, var(--bleu-pale), #fff); color: var(--bleu); box-shadow: inset 0 0 0 1px var(--bleu-ciel); }
+.lp-avantage h3 { margin: var(--e-4) 0 var(--e-2); color: var(--marine); }
+.lp-avantage p { margin: 0; color: var(--texte-doux); font-size: var(--t-s); line-height: 1.6; }
+.lp-cas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-5); }
+@media (max-width: 900px) { .lp-cas { grid-template-columns: 1fr; } }
+.lp-cas__carte { display: grid; gap: var(--e-3); align-content: start; padding: var(--e-6); border-radius: var(--r-l); background: var(--fond); box-shadow: var(--ombre-1); }
+.lp-cas__qui { display: flex; align-items: center; gap: 10px; margin: 0; font-weight: 800; color: var(--marine); font-size: var(--t-l); }
+.lp-cas__qui span { width: 40px; height: 40px; border-radius: var(--r-plein); display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); }
+.lp-cas__situation { margin: 0; color: var(--texte); }
+.lp-cas__sans, .lp-cas__avec { margin: 0; padding: var(--e-3) var(--e-4); border-radius: var(--r-m); font-size: var(--t-s); line-height: 1.5; }
+.lp-cas__sans { background: #FDECEC; color: #7A1F1F; }
+.lp-cas__avec { background: #E7F5EC; color: #14532D; }
+.lp-cas__sans strong, .lp-cas__avec strong { display: block; font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
