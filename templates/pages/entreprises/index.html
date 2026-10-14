@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block theme %}pro{% endblock %}
 {% block title %}Assurances entreprises et PME en Suisse romande | Assuravia{% endblock %}
-{% block description %}RC professionnelle, LPP, LAA, perte de gain, inventaire, cyber : un conseiller analyse les contrats de votre PME et compare le marché. Gratuit.{% endblock %}
+{% block description %}RC professionnelle, LPP, LAA, perte de gain, inventaire, cyber : un conseiller analyse les contrats de votre PME et simule les offres. Gratuit.{% endblock %}
 {% block content %}
 <section class="hero-univers">
   <div class="cadre hero-univers__grille">
@@ -17,7 +17,7 @@
     </div>
     <ul class="promesses promesses--pro">
       <li>{{ i.icone("valide") }}<span><strong>Vos obligations couvertes</strong> LAA, LPP, CCT : vous êtes en règle, sans y passer vos soirées.</span></li>
-      <li>{{ i.icone("balance") }}<span><strong>Le marché comparé</strong> Primes, prestations et conditions mises côte à côte.</span></li>
+      <li>{{ i.icone("balance") }}<span><strong>Des offres simulées</strong> Primes, prestations et conditions mises côte à côte.</span></li>
       <li>{{ i.icone("groupe") }}<span><strong>Un interlocuteur unique</strong> Pour tous vos contrats, de la RC professionnelle à la caisse de pension.</span></li>
       <li>{{ i.icone("horloge") }}<span><strong>Au rythme de votre activité</strong> Nouvel employé, nouveau client, nouveau local : on adapte.</span></li>
     </ul>
@@ -29,7 +29,7 @@
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Nos solutions pour les entreprises</h2>
-      <p>Cliquez sur l'assurance qui vous concerne pour recevoir des offres comparées, ou demandez une analyse de tous vos contrats.</p>
+      <p>Cliquez sur l'assurance qui vous concerne pour simuler votre offre, ou demandez une analyse de tous vos contrats.</p>
       <ul class="pastilles pastilles--pro"><li>{{ i.icone("valide", "icone icone--petite") }} Gratuit</li><li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li><li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li></ul>
     </div>
     {% with groupe="entreprises" %}{% include "partials/catalogue.html" %}{% endwith %}
@@ -76,11 +76,11 @@
       </div>
     </div>
     <ul class="obligations">
-      <li><span class="obligations__icone">{{ i.icone("croix") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>Assurance accidents (LAA)</strong> Pour tous les employés, dès la première heure de travail. <a href="/entreprises/laa/">Comparer les offres LAA</a></span></li>
-      <li><span class="obligations__icone">{{ i.icone("groupe") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>Prévoyance professionnelle (LPP)</strong> Pour les employés dont le salaire annuel dépasse CHF 22'680 en 2026. <a href="/entreprises/lpp/">Comparer les caisses de pension</a></span></li>
+      <li><span class="obligations__icone">{{ i.icone("croix") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>Assurance accidents (LAA)</strong> Pour tous les employés, dès la première heure de travail. <a href="/entreprises/laa/">Simuler mon assurance LAA</a></span></li>
+      <li><span class="obligations__icone">{{ i.icone("groupe") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>Prévoyance professionnelle (LPP)</strong> Pour les employés dont le salaire annuel dépasse CHF 22'680 en 2026. <a href="/entreprises/lpp/">Simuler ma solution LPP</a></span></li>
       <li><span class="obligations__icone">{{ i.icone("batiment") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>AVS, AI, APG et chômage</strong> Cotisations décomptées par votre caisse de compensation.</span></li>
       <li><span class="obligations__icone">{{ i.icone("coeur") }}</span><span><span class="obligations__badge">Obligatoire</span><strong>Allocations familiales</strong> Affiliation à une caisse d'allocations familiales, qui verse les allocations à vos employés.</span></li>
-      <li><span class="obligations__icone">{{ i.icone("thermometre") }}</span><span><span class="obligations__badge obligations__badge--souvent">Souvent exigée</span><strong>Perte de gain maladie</strong> Pas imposée par la loi, mais souvent par votre CCT, et elle vous évite de payer seul le salaire d'un employé malade. <a href="/entreprises/pgm/">Comparer les offres</a></span></li>
+      <li><span class="obligations__icone">{{ i.icone("thermometre") }}</span><span><span class="obligations__badge obligations__badge--souvent">Souvent exigée</span><strong>Perte de gain maladie</strong> Pas imposée par la loi, mais souvent par votre CCT, et elle vous évite de payer seul le salaire d'un employé malade. <a href="/entreprises/pgm/">Simuler mon offre</a></span></li>
     </ul>
   </div>
 </section>

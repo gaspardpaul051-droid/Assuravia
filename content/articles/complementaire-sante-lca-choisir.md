@@ -5,9 +5,9 @@ description: Hospitalisation, dentaire, médecines alternatives : ce que couvren
 date: 2026-10-02
 categorie: Santé
 cta_titre: Faites vérifier vos complémentaires
-cta_texte: Un conseiller repère les doublons et les lacunes de vos contrats actuels, et compare le marché. Gratuit.
+cta_texte: Un conseiller repère les doublons et les lacunes de vos contrats actuels, et simule les offres adaptées. Gratuit.
 cta_url: /particuliers/complementaire-maladie/
-cta_bouton: Comparer les complémentaires
+cta_bouton: Simuler mes complémentaires
 retenir: La LAMal est la même partout, les complémentaires (LCA) sont libres et très différentes d'un assureur à l'autre | L'assureur peut refuser une complémentaire ou poser des réserves selon votre santé | Ne résiliez jamais avant d'avoir été accepté ailleurs | Vous pouvez garder la LAMal chez un assureur et les complémentaires chez un autre
 produits_lies: complementaire-maladie, voyage, declaration-impots
 quiz: Les complémentaires doivent être chez le même assureur que la LAMal. | faux | Vous pouvez séparer l'assurance de base et les complémentaires chez des assureurs différents. ;; Un assureur peut refuser une demande de complémentaire pour raison de santé. | vrai | Contrairement à la LAMal, les complémentaires sont des contrats privés : l'assureur peut refuser ou émettre des réserves. ;; À l'étranger, la LAMal rembourse toujours la totalité des soins d'urgence. | faux | Elle rembourse au maximum le double de ce qui aurait été payé en Suisse, et pas le rapatriement.
@@ -76,7 +76,7 @@ Pensez aussi à vos impôts : les primes d'assurance maladie font partie des dé
 Oui. Les deux contrats sont indépendants. Vous pouvez avoir la LAMal chez un assureur et les complémentaires chez un autre, ou changer de LAMal tout en gardant vos complémentaires.
 
 ### Que se passe-t-il si l'assureur émet une réserve ?
-La maladie concernée est exclue de la complémentaire, en général pendant une durée indiquée dans le contrat. Le reste est couvert normalement. Le conseiller compare alors les offres avec et sans réserve.
+La maladie concernée est exclue de la complémentaire, en général pendant une durée indiquée dans le contrat. Le reste est couvert normalement. Le conseiller simule alors les offres avec et sans réserve.
 
 ### Faut-il une complémentaire hospitalisation privée ?
 Pas forcément. La division commune de la LAMal assure les soins nécessaires. Une semi-privée ou privée apporte surtout le libre choix du médecin et le confort d'une chambre à deux ou à un lit. Tout dépend de ce qui compte pour vous et de votre budget.

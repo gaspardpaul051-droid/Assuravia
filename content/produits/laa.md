@@ -10,14 +10,14 @@ description: Assurance accidents LAA obligatoire pour vos employés : qui est as
 desc: L'assurance accidents obligatoire de vos employés, et les compléments qui comptent.
 points: Accidents professionnels et non professionnels | Complémentaire LAA au-delà de CHF 148'200 | Couverture facultative pour indépendants
 badge: Analyse gratuite
-bouton: Comparer les offres LAA
+bouton: Simuler mon assurance LAA
 h1: Assurance accidents LAA : protégez vos employés et votre entreprise
 chapeau: Tout employeur doit assurer ses employés contre les accidents dès la première heure de travail. L'assurance obligatoire couvre l'essentiel. Les compléments font souvent la différence en cas d'accident grave.
 retenir: Tout employé doit être assuré contre les accidents dès son premier jour de travail | Dès 8 heures par semaine chez vous, il est aussi couvert pendant ses loisirs | Le salaire est assuré jusqu'à CHF 148'200 par an et l'indemnité journalière atteint 80 % | Une complémentaire LAA comble les lacunes pour les cadres et en cas d'hospitalisation
 pour_qui: Vous engagez votre premier employé | Vous ouvrez une entreprise et devez choisir entre la Suva et un assureur privé | Vous avez des cadres dont le salaire dépasse le plafond LAA | Vous êtes indépendant et vos accidents ne sont couverts que par votre caisse maladie
 quiz: Un employé qui travaille 6 heures par semaine chez vous est couvert pour ses accidents de loisirs. | faux | La couverture des accidents non professionnels commence à 8 heures de travail par semaine chez le même employeur. En dessous, l'employé doit couvrir ce risque par son assurance maladie. ;; L'indemnité journalière LAA correspond à 80 % du salaire assuré en cas d'incapacité totale. | vrai | La loi prévoit 80 % du gain assuré, versés dès le troisième jour qui suit l'accident. Une complémentaire peut porter l'indemnité jusqu'à 100 %. ;; Une entreprise de construction peut choisir librement son assureur accidents. | faux | La construction fait partie des branches qui doivent assurer leurs employés auprès de la Suva. Les autres entreprises choisissent un assureur privé autorisé.
 demande_titre: Votre assurance accidents LAA
-demande_texte: Quelques questions sur votre équipe : un conseiller compare la LAA et les complémentaires, puis vous rappelle.
+demande_texte: Quelques questions sur votre équipe : un conseiller étudie la LAA et les complémentaires, puis vous rappelle.
 demande_points: Obligatoire dès le premier employé | Complémentaires et couverture du dirigeant | Demande en 2 minutes, sans engagement
 ---
 

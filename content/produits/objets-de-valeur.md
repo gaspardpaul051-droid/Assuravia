@@ -78,7 +78,7 @@ En cas de vol, déposez plainte à la police sans tarder et informez l'assureur.
 ## Questions fréquentes
 
 ### À partir de quelle valeur une assurance dédiée est-elle utile ?
-Dès que vos objets de valeur dépassent le plafond prévu par votre assurance ménage, ou si vous les portez souvent hors de chez vous. Le conseiller compare avec votre contrat actuel.
+Dès que vos objets de valeur dépassent le plafond prévu par votre assurance ménage, ou si vous les portez souvent hors de chez vous. Le conseiller fait le point avec votre contrat actuel.
 
 ### Faut-il un coffre-fort ?
 Certains assureurs l'exigent au-delà d'une certaine valeur, ou accordent une réduction. Les conditions de conservation font partie du contrat.

@@ -17,7 +17,7 @@ retenir: La protection juridique vous aide à faire valoir vos droits, la RC pro
 pour_qui: Vous avez des employés et voulez être épaulé en cas de conflit de travail | Vous louez des locaux commerciaux ou un atelier | Vous signez régulièrement des contrats avec des clients et des fournisseurs | Vous êtes indépendant et votre protection juridique privée exclut votre activité
 quiz: Une protection juridique privée couvre en général aussi les litiges liés à une activité indépendante | faux | Les contrats privés excluent en général l'activité professionnelle indépendante. Il faut une protection juridique d'entreprise ;; Un litige dont la cause existait déjà avant la signature du contrat est couvert | faux | Les contrats couvrent les besoins juridiques qui naissent après l'entrée en vigueur de l'assurance. Il faut donc s'assurer avant le conflit ;; En cas de procédure judiciaire, vous pouvez proposer l'avocat de votre choix | vrai | Le libre choix de l'avocat s'applique lorsqu'une procédure judiciaire ou administrative est engagée, ainsi qu'en cas de conflit d'intérêts
 demande_titre: Votre protection juridique d'entreprise
-demande_texte: Quelques questions sur votre activité et les litiges à couvrir : un conseiller compare les offres et vous rappelle.
+demande_texte: Quelques questions sur votre activité et les litiges à couvrir : un conseiller prépare votre offre et vous rappelle.
 demande_points: Travail, contrats, recouvrement et bail commercial | Conseil juridique par téléphone inclus | Demande en 2 minutes, sans engagement
 ---
 
@@ -84,7 +84,7 @@ Oui, la loi vous garantit ce libre choix dès qu'une procédure judiciaire ou ad
 Non. Les contrats privés excluent en général les litiges liés à une activité professionnelle indépendante.
 
 ### Quel prix pour une PME ?
-La prime dépend du nombre d'employés, du chiffre d'affaires, de la branche et des domaines choisis. Le conseiller compare les offres adaptées à votre entreprise.
+La prime dépend du nombre d'employés, du chiffre d'affaires, de la branche et des domaines choisis. Le conseiller prépare les offres adaptées à votre entreprise.
 
 ### Que faire dès qu'un litige apparaît ?
 Annoncez-le rapidement à l'assureur, avant de mandater un avocat ou d'engager des frais. Gardez les contrats, factures et échanges écrits : ils serviront à évaluer votre dossier.

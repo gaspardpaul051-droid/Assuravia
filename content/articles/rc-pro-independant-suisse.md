@@ -5,7 +5,7 @@ description: Qui doit avoir une RC professionnelle, ce qu'elle couvre vraiment, 
 date: 2026-09-21
 categorie: Entreprises
 cta_titre: Recevez des offres de RC pro adaptées à votre activité
-cta_texte: Décrivez votre entreprise en 2 minutes, un conseiller compare les offres et vous rappelle.
+cta_texte: Décrivez votre entreprise en 2 minutes, un conseiller simule les offres et vous rappelle.
 cta_url: /entreprises/rc-professionnelle/
 cta_bouton: Recevoir mes offres
 retenir: La RC pro paie les dommages que votre activité cause à des clients ou à des tiers, et vous défend contre les réclamations injustifiées | Elle n'est obligatoire que pour certaines professions, mais beaucoup de clients l'exigent | Votre RC privée ne couvre pas votre activité professionnelle | La somme d'assurance et la période couverte comptent autant que la prime
@@ -59,7 +59,7 @@ La somme d'assurance est le montant maximal que l'assureur paiera par sinistre, 
 2. **Évaluez le pire scénario réaliste.** Un dommage corporel grave ou l'arrêt de la production d'un client coûte vite plusieurs millions.
 3. **Vérifiez si la somme est par sinistre ou par année.** Une somme annuelle unique peut être épuisée par deux sinistres importants.
 
-La différence de prime entre 3 et 5 millions est souvent modeste par rapport à la protection gagnée. Le conseiller compare plusieurs niveaux pour vous.
+La différence de prime entre 3 et 5 millions est souvent modeste par rapport à la protection gagnée. Le conseiller simule plusieurs niveaux pour vous.
 
 ## Ce qui fait varier le prix
 

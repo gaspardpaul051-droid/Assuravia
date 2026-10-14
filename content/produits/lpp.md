@@ -8,16 +8,16 @@ ordre: 2
 titre_seo: Caisse de pension LPP pour PME : obligations et choix
 description: Caisse de pension LPP pour vos employés : obligations de l'employeur, seuils 2026, fondation collective et points à comparer avant d'affilier votre PME.
 desc: Une caisse de pension adaptée à votre entreprise, au bon coût pour vous et vos employés.
-points: Obligatoire dès CHF 22'680 de salaire annuel | Comparaison des fondations collectives | Solutions pour dirigeants et cadres
+points: Obligatoire dès CHF 22'680 de salaire annuel | Analyse des fondations collectives | Solutions pour dirigeants et cadres
 badge: Analyse gratuite
-bouton: Comparer les caisses LPP
+bouton: Simuler ma solution LPP
 h1: LPP : choisir la bonne caisse de pension pour votre entreprise
 chapeau: La prévoyance professionnelle est obligatoire dès votre premier employé qui dépasse le seuil d'entrée. Le choix de la caisse de pension pèse sur vos charges, sur la retraite de vos collaborateurs et sur leur protection en cas d'invalidité ou de décès.
 retenir: Un employé qui gagne plus de CHF 22'680 par an chez vous doit être affilié à une caisse de pension | L'employeur finance au moins la moitié des cotisations | Le minimum légal assure peu les salaires moyens et élevés, un plan plus large est souvent utile | Une caisse se compare sur sa solidité, ses frais, la rémunération des avoirs et la qualité de son service
 pour_qui: Vous engagez un premier employé au-dessus du seuil LPP | Vous créez une Sàrl ou une SA et vous vous versez un salaire | Vous voulez mieux protéger vos cadres ou vous-même | Votre caisse actuelle augmente ses frais ou baisse ses prestations
 quiz: Un employé qui gagne CHF 20'000 par an chez vous doit être affilié à la LPP obligatoire. | faux | En 2026, l'assurance obligatoire commence au-delà de CHF 22'680 de salaire annuel chez le même employeur. La caisse peut toutefois prévoir un seuil plus bas dans son règlement. ;; La part de l'employeur doit être au moins égale à celle des employés. | vrai | La loi exige que les cotisations de l'employeur soient au moins égales à celles de l'ensemble des salariés. Beaucoup d'entreprises paient davantage. ;; Les jeunes employés cotisent pour leur retraite dès leur premier emploi à 18 ans. | faux | Avant 25 ans, l'assurance obligatoire couvre seulement l'invalidité et le décès. L'épargne retraite commence le 1er janvier qui suit le 24e anniversaire.
 demande_titre: Une caisse de pension adaptée à votre entreprise
-demande_texte: Quelques questions sur vos collaborateurs : un spécialiste compare les fondations collectives et vous rappelle.
+demande_texte: Quelques questions sur vos collaborateurs : un spécialiste étudie les fondations collectives et vous rappelle.
 demande_points: Premier employé, création ou changement de caisse | Solutions pour dirigeants et cadres | Analyse gratuite, sans engagement
 ---
 

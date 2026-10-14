@@ -10,7 +10,7 @@ description: Annulation, rapatriement, frais médicaux à l'étranger : ce que l
 desc: Annulation, rapatriement et frais médicaux à l'étranger pour voyager l'esprit tranquille.
 points: Frais d'annulation remboursés | Rapatriement et assistance 24 h sur 24 | Frais médicaux à l'étranger
 badge: Offre gratuite
-bouton: Comparer les offres
+bouton: Simuler mon assurance voyage
 h1: Assurance voyage : annulation, assistance et frais médicaux à l'étranger
 chapeau: Une maladie avant le départ, une hospitalisation aux États-Unis ou un rapatriement d'urgence peuvent coûter très cher. Voici ce qui est couvert, ce qui ne l'est pas, et comment vérifier ce que vous avez déjà.
 retenir: À l'étranger, la LAMal paie les urgences au maximum au double du tarif suisse. | L'assurance de base ne paie pas le rapatriement. | Une assurance voyage combine annulation, assistance et frais médicaux. | Vérifiez votre carte de crédit et vos complémentaires pour éviter les doublons.

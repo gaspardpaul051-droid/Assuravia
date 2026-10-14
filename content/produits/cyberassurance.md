@@ -85,7 +85,7 @@ En général non, ou de façon très limitée. Les dommages à vos propres donn�
 Oui. Les attaques automatisées touchent toutes les entreprises qui ont une messagerie et des ordinateurs connectés, quelle que soit leur taille.
 
 ### Combien coûte une cyberassurance ?
-La prime dépend du chiffre d'affaires, de la branche, du volume de données sensibles et des mesures de sécurité en place. Le conseiller compare les offres pour vous.
+La prime dépend du chiffre d'affaires, de la branche, du volume de données sensibles et des mesures de sécurité en place. Le conseiller prépare les offres pour vous.
 
 ### Mon prestataire informatique gère mes données : qui doit annoncer une fuite ?
 L'annonce au PFPDT incombe à votre entreprise, en tant que responsable du traitement. Votre prestataire doit vous informer de toute violation de la sécurité des données qu'il constate.

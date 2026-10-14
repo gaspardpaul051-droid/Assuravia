@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
 {% block title %}Assurances particuliers en Suisse romande | Assuravia{% endblock %}
-{% block description %}Complémentaire maladie, 3e pilier, ménage, véhicule, garantie de loyer : un conseiller fait le point sur vos contrats et compare le marché. Gratuit.{% endblock %}
+{% block description %}Complémentaire maladie, 3e pilier, ménage, véhicule, garantie de loyer : un conseiller fait le point sur vos contrats et simule les offres. Gratuit.{% endblock %}
 {% block content %}
 <section class="hero-univers">
   <div class="cadre hero-univers__grille">
@@ -17,7 +17,7 @@
     </div>
     <ul class="promesses promesses--prive">
       <li>{{ i.icone("valide") }}<span><strong>Vos contrats passés en revue</strong> Doublons, lacunes, sous-assurance : on repère ce qui ne va pas.</span></li>
-      <li>{{ i.icone("balance") }}<span><strong>Le marché comparé pour vous</strong> Vous n'avez pas à demander dix offres vous-même.</span></li>
+      <li>{{ i.icone("balance") }}<span><strong>Des offres simulées pour vous</strong> Vous n'avez pas à demander dix offres vous-même.</span></li>
       <li>{{ i.icone("livre") }}<span><strong>Des explications claires</strong> Franchise, 3e pilier, placements : on vous explique simplement.</span></li>
       <li>{{ i.icone("horloge") }}<span><strong>Au bon moment</strong> Échéances, délais de résiliation, versement avant le 31 décembre.</span></li>
     </ul>
@@ -29,7 +29,7 @@
   <div class="cadre">
     <div class="bloc__entete">
       <h2>Nos solutions pour les particuliers</h2>
-      <p>Cliquez sur l'assurance qui vous intéresse. Calcul immédiat pour le 3e pilier et la garantie de loyer, offres comparées par un conseiller pour le reste.</p>
+      <p>Cliquez sur l'assurance qui vous intéresse. Calcul immédiat pour le 3e pilier et la garantie de loyer, offres simulées par un conseiller pour le reste.</p>
       <ul class="pastilles"><li>{{ i.icone("valide", "icone icone--petite") }} Gratuit</li><li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li><li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li></ul>
     </div>
     {% with groupe="particuliers" %}{% include "partials/catalogue.html" %}{% endwith %}
@@ -76,7 +76,7 @@
     <div class="bloc__entete"><h2>Comment ça marche</h2></div>
     <ol class="etapes">
       <li><h3>Vous nous dites où vous en êtes</h3><p>Un formulaire de 2 minutes, ou un message sur WhatsApp. Pas de compte à créer.</p></li>
-      <li><h3>On fait le point avec vous</h3><p>Un conseiller vous rappelle, regarde vos contrats actuels et compare le marché.</p></li>
+      <li><h3>On fait le point avec vous</h3><p>Un conseiller vous rappelle, regarde vos contrats actuels et simule les offres.</p></li>
       <li><h3>Vous choisissez</h3><p>Vous recevez des propositions claires. Rien ne change tant que vous n'avez rien signé.</p></li>
     </ol>
   </div>

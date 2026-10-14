@@ -10,7 +10,7 @@ description: Protection juridique privée et circulation : avocat, frais de just
 desc: Avocat, expertises et frais de justice pris en charge en cas de litige au travail, au logement ou sur la route.
 points: Conseil juridique par des spécialistes | Frais d'avocat et de procédure | Litiges privés et de la circulation
 badge: Offre gratuite
-bouton: Comparer les offres
+bouton: Simuler ma protection juridique
 h1: Protection juridique : défendez vos droits sans craindre les frais
 chapeau: Un litige avec un employeur, une régie ou un garagiste peut vite coûter cher en conseils, expertises et frais d'avocat, avant même d'aller au tribunal. La protection juridique vous aide à faire valoir vos droits et prend ces frais en charge selon votre contrat.
 retenir: La protection juridique paie le conseil juridique, l'avocat, les expertises et les frais de procédure. | Un litige déjà en cours lors de la souscription n'est pas couvert. | Un délai d'attente s'applique souvent à certains domaines, comme le droit du travail. | La formule combinée privée et circulation couvre les situations les plus courantes.

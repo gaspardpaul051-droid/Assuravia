@@ -10,7 +10,7 @@ description: Assurance auto et moto en Suisse : RC obligatoire, casco partielle 
 desc: RC obligatoire, casco partielle ou complète : la bonne couverture pour votre voiture ou votre moto.
 points: Responsabilité civile obligatoire | Casco partielle ou complète | Assistance et véhicule de remplacement
 badge: Offre gratuite
-bouton: Comparer les offres auto
+bouton: Simuler mon assurance auto
 h1: Assurance voiture et moto : RC, casco partielle ou complète ?
 chapeau: Pour une même voiture, les contrats diffèrent beaucoup : étendue de la casco, franchises, indemnité en cas de perte totale, assistance. Choisir la bonne couverture compte autant que la prime.
 retenir: La responsabilité civile est obligatoire pour tout véhicule immatriculé en Suisse. | La casco partielle couvre surtout le vol, les éléments naturels, le bris de glace et les animaux. | La casco complète ajoute les dégâts à votre propre véhicule quand vous êtes responsable de l'accident. | Le mode d'indemnisation en cas de perte totale fait une grande différence les premières années.
@@ -75,7 +75,7 @@ Après un accident, un litige peut naître sur la responsabilité, l'expertise o
 ## Questions fréquentes
 
 ### Quand passer de la casco complète à la casco partielle ?
-Quand la valeur du véhicule devient faible par rapport à la prime de casco complète. Il n'y a pas d'âge fixe : le conseiller compare le coût de la prime avec ce que vous toucheriez en cas de sinistre, selon votre capacité à remplacer le véhicule vous-même.
+Quand la valeur du véhicule devient faible par rapport à la prime de casco complète. Il n'y a pas d'âge fixe : le conseiller met en balance le coût de la prime avec ce que vous toucheriez en cas de sinistre, selon votre capacité à remplacer le véhicule vous-même.
 
 ### Puis-je changer d'assureur auto en cours d'année ?
 En principe à l'échéance, en respectant le délai de résiliation de votre contrat. Un contrat de plusieurs années peut être résilié pour la fin de la troisième année, puis chaque année, avec un préavis de trois mois. Une hausse de prime ou un sinistre peut aussi ouvrir un droit de résiliation selon les conditions.
