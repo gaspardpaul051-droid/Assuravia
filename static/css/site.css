@@ -1746,3 +1746,10 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 @media (prefers-reduced-motion: reduce) { .merci__carte { animation: none; } }
 .merci__carte { min-width: 0; line-height: 1.3; }
 @media (max-width: 480px) { .merci__grille { grid-template-columns: 1fr; } }
+/* Cartes « autre simulation » : 3 par ligne, centrées, texte toujours dans la carte */
+.merci__grille { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--e-3); }
+.merci__carte { flex: 0 1 calc((100% - 2 * var(--e-3)) / 3); }
+.merci__carte b { flex: 1; min-width: 0; font-weight: 700; overflow-wrap: break-word; hyphens: auto; }
+@media (max-width: 700px) { .merci__carte { flex-basis: calc((100% - var(--e-3)) / 2); } }
+@media (max-width: 480px) { .merci__carte { flex-basis: 100%; } }
+.merci-page .merci__actions { margin-top: var(--e-6); }
