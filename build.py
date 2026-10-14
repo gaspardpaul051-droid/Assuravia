@@ -29,7 +29,7 @@ SITE_URL = "https://assuravia.ch"
 WHATSAPP = "41782653473"
 # Mesure d'audience : laisser vide pour désactiver. Chargées seulement après accord du visiteur (bandeau cookies).
 GA_ID = "G-R2RMM7B9GV"          # Google Analytics 4, par exemple "G-ABC123XYZ"
-CLARITY_ID = ""     # Microsoft Clarity, par exemple "abcd1234ef"
+CLARITY_ID = "yxnykqujjc"     # Microsoft Clarity, par exemple "abcd1234ef"
 GSC_VERIF = ""      # Google Search Console : contenu de la balise meta google-site-verification
 
 MOIS = [
