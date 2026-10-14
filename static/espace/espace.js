@@ -54,7 +54,7 @@
   var typeLien = (location.hash.match(/type=([a-z_]+)/) || [])[1] || "";
   var sb = window.supabase.createClient(C.url, C.anon, { auth: { persistSession: true, detectSessionInUrl: true } });
 
-  var etat = { moi: null, profil: null, conseillers: [], leads: [], regles: [], brouillons: [], selection: {}, vue: "leads", filtre: "tous", recherche: "", conseillerFiltre: "", leadOuvert: null, commentaires: [], message: "" };
+  var etat = { moi: null, profil: null, conseillers: [], leads: [], activite: [], regles: [], brouillons: [], selection: {}, vue: "leads", filtre: "tous", recherche: "", conseillerFiltre: "", leadOuvert: null, commentaires: [], message: "" };
   var estAdmin = function () { return etat.profil && etat.profil.role === "admin"; };
   var nomConseiller = function (id) { var c = etat.conseillers.filter(function (x) { return x.id === id; })[0]; return c ? c.nom : "Non attribué"; };
 
@@ -125,6 +125,9 @@
   function chargerConseillers() {
     return sb.from("conseillers").select("*").order("nom").then(function (r) { etat.conseillers = r.data || []; });
   }
+  function chargerActivite() {
+    return sb.from("commentaires").select("lead_id,auteur_id,texte,automatique,cree_le").order("cree_le", { ascending: false }).limit(5000).then(function (r) { etat.activite = r.data || []; });
+  }
   function chargerLeads() {
     var q = sb.from("leads").select("*").order("cree_le", { ascending: false }).limit(1000);
     if (!estAdmin()) q = q.eq("conseiller_id", etat.moi.id);
@@ -140,16 +143,17 @@
       sb.from("conseillers").select("*").eq("id", etat.moi.id).single().then(function (p) {
         etat.profil = p.data;
         if (!etat.profil) { app.innerHTML = '<div class="ecran-centre"><div class="carte-connexion"><h1>Compte sans fiche</h1><p>Votre compte n\'est pas encore activé comme conseiller. Contactez l\'administrateur.</p><button class="btn" data-sortir>Se déconnecter</button></div></div>'; app.querySelector("[data-sortir]").onclick = sortir; return; }
-        Promise.all([chargerConseillers(), chargerLeads(), estAdmin() ? chargerRegles() : null]).then(rendre);
+        Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), estAdmin() ? chargerRegles() : null]).then(rendre);
       });
     });
   }
-  function sortir() { sb.auth.signOut().then(function () { etat = { moi: null, profil: null, conseillers: [], leads: [], regles: [], brouillons: [], selection: {}, vue: "leads", filtre: "tous", recherche: "", conseillerFiltre: "", leadOuvert: null, commentaires: [] }; ecranConnexion("Vous êtes déconnecté."); }); }
+  function sortir() { sb.auth.signOut().then(function () { etat = { moi: null, profil: null, conseillers: [], leads: [], activite: [], regles: [], brouillons: [], selection: {}, vue: "leads", filtre: "tous", recherche: "", conseillerFiltre: "", leadOuvert: null, commentaires: [] }; ecranConnexion("Vous êtes déconnecté."); }); }
 
   // ---------- Mise en page ----------
   function rendre() {
     var onglets = [["leads", estAdmin() ? "Tous les leads" : "Mes leads"]];
     if (estAdmin()) onglets.push(["conseillers", "Conseillers et répartition"], ["stats", "Statistiques"]);
+    else onglets.push(["perf", "Mes statistiques"]);
     app.innerHTML =
       '<header class="barre"><div class="marque"><img src="/marque/embleme.svg" alt="" width="34" height="34"><div><strong>Assuravia</strong><span>Espace conseillers</span></div></div>' +
       '<nav class="onglets">' + onglets.map(function (o) { return '<button class="onglet' + (etat.vue === o[0] ? " onglet--actif" : "") + '" data-vue="' + o[0] + '">' + o[1] + "</button>"; }).join("") + "</nav>" +
@@ -159,7 +163,7 @@
     app.querySelector("[data-sortir]").onclick = sortir;
     app.querySelector("[data-mon-mdp]").onclick = function () { ecranMotDePasse("changer"); };
     app.querySelector("[data-voile]").onclick = fermerFiche;
-    if (etat.vue === "conseillers") vueConseillers(); else if (etat.vue === "stats") vueStats(); else vueLeads();
+    if (etat.vue === "conseillers") vueConseillers(); else if (etat.vue === "stats") vueStats(); else if (etat.vue === "perf") vuePerf(); else vueLeads();
     if (etat.leadOuvert) ouvrirFiche(etat.leadOuvert, true);
   }
 
@@ -195,10 +199,12 @@
         var s = statut(l.statut);
         return '<div role="button" tabindex="0" class="ligne' + (estAdmin() ? " ligne--admin" : "") + (l.statut === "nouveau" ? " ligne--nouveau" : "") + (etat.selection[l.id] ? " ligne--choisie" : "") + '" data-lead="' + l.id + '">' +
           (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
-          '<span class="ligne__qui"><strong>' + esc([l.prenom, l.nom].filter(Boolean).join(" ") || "Sans nom") + '</strong><small>' + esc(l.telephone || l.email || "") + "</small></span>" +
-          '<span class="ligne__produit">' + esc(produitNom(l)) + (l.prime ? "<small>" + esc(l.prime) + "</small>" : "") + "</span>" +
+          avatar(nomLead(l)) +
+          '<span class="ligne__qui"><strong class="ligne__nom">' + esc(nomLead(l)) + '</strong><span class="ligne__tel">' + esc(l.telephone || l.email || "Sans coordonnées") + "</span></span>" +
+          '<span class="ligne__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(l.prime) + "</small>" : "") + "</span>" +
+          dernierMot(l) +
           (estAdmin() ? '<span class="ligne__conseiller">' + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") +
-          '<span class="ligne__date">' + depuis(l.cree_le) + (l.rappel_le ? '<small class="' + (aRappeler(l) ? "urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</small>" : "") + "</span>" +
+          '<span class="ligne__date">' + (l.statut === "nouveau" ? '<span class="point-vif"></span>' : "") + depuis(l.cree_le) + (l.rappel_le ? '<small class="' + (aRappeler(l) ? "urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</small>" : "") + "</span>" +
           '<span class="badge badge--' + s.couleur + '">' + s.nom + "</span></div>";
       }).join("") : '<div class="vide"><p><strong>Aucun lead ici.</strong></p><p>Les nouvelles demandes du site apparaissent automatiquement.</p></div>';
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
@@ -240,7 +246,7 @@
         });
       };
     }
-    zone.querySelector("[data-rafraichir]").onclick = function () { chargerLeads().then(function () { vueLeads(); toast("Liste à jour."); }); };
+    zone.querySelector("[data-rafraichir]").onclick = function () { Promise.all([chargerLeads(), chargerActivite()]).then(function () { vueLeads(); toast("Liste à jour."); }); };
   }
 
   // ---------- Fiche d'un lead ----------
@@ -258,41 +264,82 @@
     var tel = (l.telephone || "").replace(/[^\d+]/g, "");
     var wa = tel.replace(/^\+/, "").replace(/^0/, "41");
     var infos = Object.keys(l.donnees || {}).filter(function (k) { return ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name"].indexOf(k) < 0; });
+    var s0 = statut(l.statut);
     fiche.innerHTML =
-      '<div class="fiche__tete"><div><p class="fiche__produit">' + esc(produitNom(l)) + " · reçu le " + date(l.cree_le) + '</p><h2>' + esc([l.prenom, l.nom].filter(Boolean).join(" ") || "Sans nom") + '</h2></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
+      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + (l.prime ? " · <b>" + esc(l.prime) + "</b>" : "") + (l.canton ? " · " + esc(l.canton) : "") + '</p></div></div><button class="fermer" data-fermer aria-label="Fermer">×</button></div>' +
       '<div class="fiche__actions">' +
-      (tel ? '<a class="btn btn--plein" href="tel:' + esc(tel) + '">Appeler ' + esc(l.telephone) + "</a>" : "") +
-      (wa ? '<a class="btn btn--wa" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
-      (l.email ? '<a class="btn" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
-      '<div class="fiche__suivi">' +
-      '<label>Statut<select class="select" data-statut>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + "</select></label>" +
-      '<label>Rappel prévu<input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label>' +
+      (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '" data-appel>Appeler <b>' + esc(l.telephone) + "</b></a>" : "") +
+      (wa ? '<a class="btn btn--wa btn--gros" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
+      (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
+      '<section class="fiche__bloc"><h3>Où en êtes-vous ?</h3><div class="statuts" data-statuts>' + STATUTS.map(function (s) { return '<button type="button" class="statut-choix statut-choix--' + s.couleur + (l.statut === s.cle ? " statut-choix--actif" : "") + '" data-statut="' + s.cle + '">' + s.nom + "</button>"; }).join("") + "</div>" +
+      '<div class="fiche__suivi"><label>Rappel prévu<input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label>' +
+      '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
       (estAdmin() ? '<label>Conseiller<select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
-      "</div>" +
-      '<section class="fiche__bloc"><h3>Coordonnées</h3><dl class="infos">' +
+      "</div></section>" +
+      '<section class="fiche__bloc"><h3>Commentaires</h3><form class="commentaire-form" data-commenter>' +
+      '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
+      '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
+      '<div class="commentaire-form__pied"><small>Ctrl + Entrée pour publier</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
+      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section>' +
+      '<section class="fiche__bloc"><h3>Coordonnées</h3><dl class="infos infos--forts">' +
       [["Prénom", l.prenom], ["Nom", l.nom], ["Téléphone", l.telephone], ["E-mail", l.email], ["Canton / NPA", l.canton], ["Prime estimée", l.prime], ["Formulaire", l.formulaire], ["Page", l.page]].filter(function (x) { return x[1]; }).map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl></section>" +
-      (infos.length ? '<section class="fiche__bloc"><h3>Réponses du client</h3><dl class="infos">' + infos.map(function (k) { return "<div><dt>" + esc(libelle(k)) + "</dt><dd>" + esc(l.donnees[k]) + "</dd></div>"; }).join("") + "</dl></section>" : "") +
-      '<section class="fiche__bloc"><h3>Suivi et commentaires</h3><form class="commentaire-form" data-commenter><textarea name="texte" rows="3" placeholder="Ex. Rappelé, pas disponible. RDV proposé jeudi 14 h." required></textarea><button class="btn btn--plein" type="submit">Ajouter</button></form><ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section>';
+      (infos.length ? '<section class="fiche__bloc"><h3>Réponses du client</h3><dl class="infos infos--forts">' + infos.map(function (k) { return "<div><dt>" + esc(libelle(k)) + "</dt><dd>" + esc(l.donnees[k]) + "</dd></div>"; }).join("") + "</dl></section>" : "");
     fiche.querySelector("[data-fermer]").onclick = fermerFiche;
     var maj = function (champs, note) {
       return sb.from("leads").update(champs).eq("id", l.id).select().single().then(function (r) {
         if (r.error) { toast("Enregistrement impossible : " + r.error.message, true); return; }
         Object.assign(l, r.data);
-        if (note) sb.from("commentaires").insert({ lead_id: l.id, auteur_id: etat.moi.id, texte: note, automatique: true }).then(chargerCommentaires);
+        if (note) {
+          var c = { lead_id: l.id, auteur_id: etat.moi.id, texte: note, automatique: true };
+          etat.activite.unshift(Object.assign({ cree_le: new Date().toISOString() }, c));
+          sb.from("commentaires").insert(c).then(chargerCommentaires);
+        }
         toast("Enregistré.");
         if (etat.vue === "leads") vueLeads();
       });
     };
-    fiche.querySelector("[data-statut]").onchange = function (e) { var avant = statut(l.statut).nom; maj({ statut: e.target.value }, "Statut : " + avant + " → " + statut(e.target.value).nom); };
-    fiche.querySelector("[data-rappel]").onchange = function (e) { var v = e.target.value ? new Date(e.target.value).toISOString() : null; maj({ rappel_le: v }, v ? "Rappel prévu le " + date(v) : "Rappel supprimé"); };
+    fiche.querySelectorAll("[data-statut]").forEach(function (b) {
+      b.onclick = function () {
+        var cle = b.getAttribute("data-statut"); if (cle === l.statut) return;
+        var avant = statut(l.statut).nom;
+        fiche.querySelectorAll("[data-statut]").forEach(function (x) { x.classList.toggle("statut-choix--actif", x === b); });
+        maj({ statut: cle }, "Statut : " + avant + " → " + statut(cle).nom).then(function () {
+          if (cle === "signe") { confettis(); toast("Bravo, contrat signé ! +40 points"); }
+          else if (cle === "rdv") toast("RDV prévu : +10 points");
+          ouvrirFiche(l.id, true);
+        });
+      };
+    });
+    var poserRappel = function (v) { maj({ rappel_le: v }, v ? "Rappel prévu le " + date(v) : "Rappel supprimé").then(function () { ouvrirFiche(l.id, true); }); };
+    fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
+    fiche.querySelectorAll("[data-dans]").forEach(function (b) {
+      b.onclick = function () {
+        var k = b.getAttribute("data-dans"), d = new Date();
+        if (k === "aucun") return poserRappel(null);
+        if (k === "1h") d = new Date(Date.now() + 3600000);
+        else { if (k === "demain") d.setDate(d.getDate() + 1); else d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); d.setHours(9, 0, 0, 0); }
+        poserRappel(d.toISOString());
+      };
+    });
     var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); };
     var form = fiche.querySelector("[data-commenter]");
+    var zoneTexte = form.texte;
+    var ajuster = function () { zoneTexte.style.height = "auto"; zoneTexte.style.height = Math.min(zoneTexte.scrollHeight + 2, 260) + "px"; };
+    zoneTexte.addEventListener("input", ajuster);
+    zoneTexte.addEventListener("keydown", function (e) { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.onsubmit(e); } });
+    form.querySelectorAll("[data-suggestion]").forEach(function (b) {
+      b.onclick = function () { zoneTexte.value = (zoneTexte.value ? zoneTexte.value.replace(/\s*$/, "") + ". " : "") + b.textContent; zoneTexte.focus(); ajuster(); };
+    });
     form.onsubmit = function (e) {
       e.preventDefault();
-      var texte = form.texte.value.trim(); if (!texte) return;
+      var texte = zoneTexte.value.trim(); if (!texte) return;
+      var bouton = form.querySelector("button[type=submit]"); bouton.disabled = true;
       sb.from("commentaires").insert({ lead_id: l.id, auteur_id: etat.moi.id, texte: texte }).then(function (r) {
+        bouton.disabled = false;
         if (r.error) { toast("Commentaire non enregistré : " + r.error.message, true); return; }
-        form.texte.value = ""; chargerCommentaires();
+        etat.activite.unshift({ lead_id: l.id, auteur_id: etat.moi.id, texte: texte, automatique: false, cree_le: new Date().toISOString() });
+        zoneTexte.value = ""; ajuster(); chargerCommentaires();
+        if (etat.vue === "leads") vueLeads();
       });
     };
     function chargerCommentaires() {
@@ -300,8 +347,10 @@
         var ol = fiche.querySelector("[data-commentaires]"); if (!ol) return;
         var liste = r.data || [];
         ol.innerHTML = liste.length ? liste.map(function (c) {
-          return '<li class="' + (c.automatique ? "auto" : "") + '"><p class="fil-suivi__tete"><strong>' + esc(c.auteur_id ? nomConseiller(c.auteur_id) : "Système") + "</strong> · " + date(c.cree_le) + "</p><p>" + esc(c.texte).replace(/\n/g, "<br>") + "</p></li>";
-        }).join("") : '<li class="vide-mini">Aucun commentaire pour l\'instant.</li>';
+          var auteur = c.auteur_id ? nomConseiller(c.auteur_id) : "Assuravia";
+          if (c.automatique) return '<li class="auto"><span class="auto__point"></span><span>' + esc(c.texte) + ' <em>· ' + esc(auteur) + ", " + depuis(c.cree_le) + "</em></span></li>";
+          return '<li class="bulle' + (c.auteur_id === etat.moi.id ? " bulle--moi" : "") + '">' + avatar(auteur, "petit") + '<div class="bulle__corps"><p class="fil-suivi__tete"><strong>' + esc(auteur) + "</strong> <span>" + depuis(c.cree_le) + " · " + date(c.cree_le) + "</span></p><p class=\"bulle__texte\">" + esc(c.texte).replace(/\n/g, "<br>") + "</p></div></li>";
+        }).join("") : '<li class="vide-mini">Aucun commentaire pour l\'instant. Notez ici chaque échange avec le client.</li>';
       });
     }
     chargerCommentaires();
@@ -464,6 +513,147 @@
     });
   }
 
+
+  // ---------- Petits éléments visuels ----------
+  function nomLead(l) { return [l.prenom, l.nom].filter(Boolean).join(" ") || "Sans nom"; }
+  function initiales(n) { return (n || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(function (m) { return m.charAt(0).toUpperCase(); }).join("") || "?"; }
+  function teinte(n) { var h = 0; for (var i = 0; i < (n || "").length; i++) h = (h * 31 + n.charCodeAt(i)) % 360; return h; }
+  function avatar(n, taille) { return '<span class="pastille' + (taille ? " pastille--" + taille : "") + '" style="--h:' + teinte(n) + '" aria-hidden="true">' + esc(initiales(n)) + "</span>"; }
+  function dernierMot(l) {
+    var c = etat.activite.filter(function (x) { return x.lead_id === l.id && !x.automatique; });
+    if (!c.length) return '<span class="ligne__dernier ligne__dernier--vide">' + (l.statut === "nouveau" ? "À appeler en premier" : "Aucun commentaire") + "</span>";
+    return '<span class="ligne__dernier"><span class="ligne__bulle">' + c.length + "</span>" + esc(c[0].texte.length > 90 ? c[0].texte.slice(0, 88) + "…" : c[0].texte) + "</span>";
+  }
+  function confettis() {
+    var couleurs = ["#E2BE52", "#1565A8", "#1E8E5A", "#C2413A", "#6D4BC3", "#0E8A9E"], boite = document.createElement("div");
+    boite.className = "confettis";
+    for (var i = 0; i < 90; i++) {
+      var c = document.createElement("i");
+      c.style.left = Math.random() * 100 + "vw"; c.style.background = couleurs[i % couleurs.length];
+      c.style.animationDelay = Math.random() * 0.4 + "s"; c.style.animationDuration = 1.6 + Math.random() * 1.4 + "s";
+      c.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+      boite.appendChild(c);
+    }
+    document.body.appendChild(boite); setTimeout(function () { boite.remove(); }, 3400);
+  }
+
+  // ---------- Points, niveaux et badges ----------
+  var RANG = { nouveau: 0, injoignable: 1, faux_numero: 1, doublon: 1, a_rappeler: 1, pas_interesse: 1, rdv: 2, offre: 3, signe: 4 };
+  var NIVEAUX = [[0, "Débutant"], [60, "En route"], [180, "Confirmé"], [400, "Expert"], [800, "Champion"], [1500, "Légende"]];
+  function bilan(id, depuisDate) {
+    var leads = etat.leads.filter(function (l) { return l.conseiller_id === id && (!depuisDate || new Date(l.cree_le) >= depuisDate); });
+    var mesCom = etat.activite.filter(function (c) { return c.auteur_id === id && (!depuisDate || new Date(c.cree_le) >= depuisDate); });
+    var b = { recus: leads.length, contactes: 0, rdv: 0, offres: 0, signes: 0, commentaires: mesCom.filter(function (c) { return !c.automatique; }).length, points: 0 };
+    leads.forEach(function (l) {
+      var r = RANG[l.statut] || 0;
+      if (r >= 1) b.contactes++; if (r >= 2) b.rdv++; if (r >= 3) b.offres++; if (r >= 4) b.signes++;
+    });
+    b.points = b.contactes * 3 + b.rdv * 10 + b.offres * 8 + b.signes * 40 + Math.min(b.commentaires, b.recus * 3) * 1;
+    // Réactivité : délai entre l'arrivée du lead et la première action du conseiller
+    var delais = [];
+    leads.forEach(function (l) {
+      var a = mesCom.filter(function (c) { return c.lead_id === l.id; });
+      if (a.length) delais.push((new Date(a[a.length - 1].cree_le) - new Date(l.cree_le)) / 60000);
+    });
+    delais.sort(function (x, y) { return x - y; });
+    b.reaction = delais.length ? delais[Math.floor(delais.length / 2)] : null;
+    // Série : jours consécutifs avec au moins une action
+    var jours = {}; mesCom.forEach(function (c) { jours[new Date(c.cree_le).toDateString()] = true; });
+    var serie = 0, d = new Date(); if (!jours[d.toDateString()]) d.setDate(d.getDate() - 1);
+    while (jours[d.toDateString()]) { serie++; d.setDate(d.getDate() - 1); }
+    b.serie = serie;
+    return b;
+  }
+  function niveau(points) {
+    var i = 0; while (i + 1 < NIVEAUX.length && points >= NIVEAUX[i + 1][0]) i++;
+    var suivant = NIVEAUX[i + 1];
+    return { num: i + 1, nom: NIVEAUX[i][1], suivant: suivant ? suivant[0] : null, base: NIVEAUX[i][0], pct: suivant ? Math.round((points - NIVEAUX[i][0]) / (suivant[0] - NIVEAUX[i][0]) * 100) : 100 };
+  }
+  function dureeLisible(min) {
+    if (min === null) return "–";
+    if (min < 60) return Math.max(1, Math.round(min)) + " min";
+    if (min < 1440) return Math.round(min / 60) + " h";
+    return Math.round(min / 1440) + " j";
+  }
+  function badges(b, tout) {
+    var ouverts = etat.leads.filter(function (l) { return l.conseiller_id === etat.moi.id && l.statut === "nouveau" && Date.now() - new Date(l.cree_le) > 86400000; }).length;
+    return [
+      ["Premier contrat", "Signer un premier contrat", tout.signes, 1, "trophee"],
+      ["Closer", "Signer 10 contrats", tout.signes, 10, "couronne"],
+      ["Agenda plein", "Obtenir 10 rendez-vous", tout.rdv, 10, "agenda"],
+      ["Éclair", "Réagir en moins d'1 h (médiane, 5 leads min.)", b.reaction !== null && tout.recus >= 5 && b.reaction <= 60 ? 1 : 0, 1, "eclair"],
+      ["Régulier", "5 jours d'affilée avec une action", b.serie, 5, "flamme"],
+      ["Bavard", "Écrire 50 commentaires", tout.commentaires, 50, "bulle"],
+      ["Zéro oubli", "Aucun nouveau lead en attente depuis plus de 24 h", tout.recus && !ouverts ? 1 : 0, 1, "cible"]
+    ].map(function (x) { return { nom: x[0], desc: x[1], fait: Math.min(x[2], x[3]), but: x[3], ok: x[2] >= x[3], icone: x[4] }; });
+  }
+  var ICONES = {
+    trophee: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+    couronne: '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z"/>',
+    agenda: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/>',
+    eclair: '<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
+    flamme: '<path d="M12 22c4 0 7-3 7-7 0-5-5-7-5-12-3 2-4 5-4 7-1-1-2-2-2-4-2 2-3 5-3 9 0 4 3 7 7 7z"/>',
+    bulle: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+    cible: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>'
+  };
+  function icone(n) { return '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[n] + "</svg>"; }
+
+  // ---------- Mes statistiques (conseiller) ----------
+  function vuePerf() {
+    var zone = app.querySelector("[data-contenu]");
+    var moi = etat.moi.id, debutMois = new Date(); debutMois.setDate(1); debutMois.setHours(0, 0, 0, 0);
+    var mois = bilan(moi, debutMois), tout = bilan(moi, null), niv = niveau(tout.points);
+    var objectif = Number((etat.moi.user_metadata || {}).objectif_signes) || 5;
+    var pctObj = Math.min(100, Math.round(mois.signes / objectif * 100));
+    var aFaire = etat.leads.filter(function (l) { return l.conseiller_id === moi && (l.statut === "nouveau" || aRappeler(l)); }).length;
+    var prenom = (etat.profil.nom || "").split(" ")[0];
+    var heure = new Date().getHours();
+    var phrase = pctObj >= 100 ? "Objectif du mois atteint. Impressionnant !" : mois.signes ? "Encore " + (objectif - mois.signes) + " contrat" + (objectif - mois.signes > 1 ? "s" : "") + " pour atteindre votre objectif du mois." : aFaire ? "Vos clients attendent votre appel : c'est le moment de marquer des points." : "Tout est à jour. Bravo !";
+    // 8 dernières semaines
+    var semaines = [];
+    for (var i = 7; i >= 0; i--) {
+      var deb = new Date(); deb.setHours(0, 0, 0, 0); deb.setDate(deb.getDate() - ((deb.getDay() + 6) % 7) - i * 7);
+      var fin = new Date(deb); fin.setDate(fin.getDate() + 7);
+      var ls = etat.leads.filter(function (l) { return l.conseiller_id === moi && new Date(l.cree_le) >= deb && new Date(l.cree_le) < fin; });
+      semaines.push({ nom: deb.toLocaleDateString("fr-CH", { day: "2-digit", month: "2-digit" }), recus: ls.length, signes: ls.filter(function (l) { return l.statut === "signe"; }).length });
+    }
+    var maxS = Math.max.apply(null, semaines.map(function (s) { return s.recus; }).concat([1]));
+    var entonnoir = [["Leads reçus", tout.recus], ["Contactés", tout.contactes], ["RDV obtenus", tout.rdv], ["Offres", tout.offres], ["Signés", tout.signes]];
+    var bs = badges(mois, tout);
+    var r = 54, circ = 2 * Math.PI * r;
+    zone.innerHTML =
+      '<div class="perf-tete"><div><p class="perf-salut">' + (heure < 18 ? "Bonjour" : "Bonsoir") + " " + esc(prenom) + '</p><h1>Mes statistiques</h1><p class="sous">' + phrase + "</p></div>" +
+      (aFaire ? '<button class="btn btn--plein btn--gros" data-a-faire>' + aFaire + " lead" + (aFaire > 1 ? "s" : "") + " à traiter →</button>" : "") + "</div>" +
+      '<div class="perf-haut">' +
+        '<div class="carte niveau"><div class="niveau__rang"><span class="niveau__num">' + niv.num + '</span><div><span class="niveau__label">Niveau</span><strong>' + niv.nom + '</strong></div></div>' +
+        '<p class="niveau__points"><b>' + tout.points + "</b> points</p>" +
+        '<div class="jauge"><span style="width:' + niv.pct + '%"></span></div>' +
+        '<p class="sous">' + (niv.suivant ? "Encore " + (niv.suivant - tout.points) + " points pour le niveau " + (niv.num + 1) : "Niveau maximum atteint") + "</p>" +
+        '<p class="bareme">Contact +3 · RDV +10 · Offre +8 · Signé +40 · Commentaire +1</p></div>' +
+        '<div class="carte objectif"><div class="anneau"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="' + r + '" class="anneau__fond"/><circle cx="60" cy="60" r="' + r + '" class="anneau__plein" style="stroke-dasharray:' + circ + ";stroke-dashoffset:" + circ * (1 - pctObj / 100) + '"/></svg><div class="anneau__centre"><strong>' + mois.signes + "/" + objectif + "</strong><span>signés</span></div></div>" +
+        '<div><span class="niveau__label">Objectif du mois</span><p class="objectif__txt">' + pctObj + ' % atteint</p><button class="lien" data-objectif>Modifier mon objectif</button></div></div>' +
+        '<div class="carte serie"><span class="serie__icone">' + icone("flamme") + '</span><strong>' + tout.serie + '</strong><span>jour' + (tout.serie > 1 ? "s" : "") + " d'affilée</span><p class=\"sous\">" + (tout.serie ? "Continuez demain pour garder la série." : "Une action aujourd'hui lance votre série.") + "</p></div>" +
+      "</div>" +
+      '<div class="kpis kpis--5"><div><span>Leads ce mois</span><strong>' + mois.recus + "</strong></div><div><span>Taux de contact</span><strong>" + (mois.recus ? Math.round(mois.contactes / mois.recus * 100) : 0) + " %</strong></div><div><span>RDV ce mois</span><strong>" + mois.rdv + "</strong></div><div><span>Signés ce mois</span><strong>" + mois.signes + "</strong></div><div><span>Temps de réaction</span><strong>" + dureeLisible(tout.reaction) + "</strong></div></div>" +
+      '<div class="perf-grille">' +
+        '<div class="carte"><h2>Mon parcours client</h2><div class="entonnoir">' + entonnoir.map(function (e, i) { var pc = tout.recus ? Math.round(e[1] / tout.recus * 100) : 0; return '<div class="entonnoir__ligne"><span>' + e[0] + '</span><span class="entonnoir__barre"><span style="width:' + Math.max(pc, e[1] ? 4 : 0) + "%;--i:" + i + '"></span></span><strong>' + e[1] + "</strong><em>" + pc + " %</em></div>"; }).join("") + "</div></div>" +
+        '<div class="carte"><h2>Mes 8 dernières semaines</h2><div class="histo">' + semaines.map(function (s) { return '<div class="histo__col" title="' + s.recus + " reçus, " + s.signes + ' signés"><div class="histo__barres"><span class="histo__recus" style="height:' + Math.round(s.recus / maxS * 100) + '%"></span><span class="histo__signes" style="height:' + Math.round(s.signes / maxS * 100) + '%"></span></div><b>' + s.recus + "</b><small>" + s.nom + "</small></div>"; }).join("") + '</div><p class="legende"><span class="leg leg--recus"></span>Reçus <span class="leg leg--signes"></span>Signés</p></div>' +
+      "</div>" +
+      '<h2 class="titre-section">Mes badges <small>' + bs.filter(function (b) { return b.ok; }).length + " / " + bs.length + "</small></h2>" +
+      '<div class="badges">' + bs.map(function (b) { return '<div class="badge-jeu' + (b.ok ? " badge-jeu--ok" : "") + '"><span class="badge-jeu__icone">' + icone(b.icone) + "</span><strong>" + b.nom + "</strong><small>" + b.desc + "</small>" + (b.ok ? '<span class="badge-jeu__etat">Obtenu</span>' : '<span class="jauge jauge--mini"><span style="width:' + Math.round(b.fait / b.but * 100) + '%"></span></span><span class="badge-jeu__etat">' + b.fait + " / " + b.but + "</span>") + "</div>"; }).join("") + "</div>";
+    var af = zone.querySelector("[data-a-faire]");
+    if (af) af.onclick = function () { etat.vue = "leads"; etat.filtre = "tous"; rendre(); };
+    zone.querySelector("[data-objectif]").onclick = function () {
+      var v = prompt("Combien de contrats voulez-vous signer ce mois ?", objectif);
+      var n = parseInt(v, 10); if (!n || n < 1) return;
+      sb.auth.updateUser({ data: { objectif_signes: n } }).then(function (res) {
+        if (res && res.error) { toast("Erreur : " + res.error.message, true); return; }
+        etat.moi.user_metadata = Object.assign({}, etat.moi.user_metadata, { objectif_signes: n });
+        vuePerf(); toast("Objectif : " + n + " contrats ce mois. Allez-y !");
+      });
+    };
+  }
+
   // ---------- Statistiques (admin) ----------
   function vueStats() {
     var zone = app.querySelector("[data-contenu]");
@@ -474,9 +664,14 @@
     var parProduit = {};
     etat.leads.forEach(function (l) { var k = produitNom(l); parProduit[k] = (parProduit[k] || 0) + 1; });
     var max = Math.max.apply(null, Object.keys(parProduit).map(function (k) { return parProduit[k]; }).concat([1]));
+    var debutMois = new Date(); debutMois.setDate(1); debutMois.setHours(0, 0, 0, 0);
+    var classement = etat.conseillers.filter(function (c) { return c.actif; }).map(function (c) { var b = bilan(c.id, debutMois); b.c = c; return b; }).sort(function (x, y) { return y.points - x.points || y.signes - x.signes; });
+    var podium = '<div class="carte"><h2>Classement du mois</h2><ol class="classement">' + classement.map(function (b, i) {
+      return '<li class="classement__ligne' + (i < 3 && b.points ? " classement__ligne--" + (i + 1) : "") + '"><span class="classement__rang">' + (i + 1) + "</span>" + avatar(b.c.nom, "petit") + "<strong>" + esc(b.c.nom) + '</strong><span class="classement__det">' + b.recus + " reçus · " + b.rdv + " RDV · " + b.signes + " signés · réaction " + dureeLisible(b.reaction) + '</span><b class="classement__pts">' + b.points + " pts</b></li>";
+    }).join("") + "</ol></div>";
     zone.innerHTML =
       '<div class="tete"><div><h1>Statistiques</h1><p class="sous">Sur les ' + etat.leads.length + " derniers leads.</p></div></div>" +
-      '<div class="kpis"><div><span>Leads (30 jours)</span><strong>' + recents.length + '</strong></div><div><span>Traités</span><strong>' + (etat.leads.length ? Math.round(traites / etat.leads.length * 100) : 0) + ' %</strong></div><div><span>Signés</span><strong>' + signes + '</strong></div><div><span>Taux de signature</span><strong>' + (etat.leads.length ? Math.round(signes / etat.leads.length * 100) : 0) + " %</strong></div></div>" +
+      '<div class="kpis"><div><span>Leads (30 jours)</span><strong>' + recents.length + '</strong></div><div><span>Traités</span><strong>' + (etat.leads.length ? Math.round(traites / etat.leads.length * 100) : 0) + ' %</strong></div><div><span>Signés</span><strong>' + signes + '</strong></div><div><span>Taux de signature</span><strong>' + (etat.leads.length ? Math.round(signes / etat.leads.length * 100) : 0) + " %</strong></div></div>" + podium +
       '<div class="tableau"><table><thead><tr><th>Conseiller</th>' + STATUTS.map(function (s) { return "<th>" + s.nom + "</th>"; }).join("") + "<th>Total</th></tr></thead><tbody>" +
       etat.conseillers.concat([{ id: null, nom: "Non attribués" }]).map(function (c) {
         var siens = etat.leads.filter(function (l) { return (l.conseiller_id || null) === c.id; });
