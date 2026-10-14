@@ -1484,3 +1484,11 @@ body.modale-ouverte { overflow: hidden; }
 .demande-page .panneau-form { margin-top: var(--e-5); }
 .demande-etapes-form .formulaire { display: grid; gap: var(--e-4); }
 .demande-etapes-form .avancee { display: none; }
+/* Carte de l'adresse choisie */
+.adresse__carte { position: relative; height: 180px; border-radius: var(--r-m); overflow: hidden; border: 1px solid var(--bordure); background: #EEF2F6; animation: cmp-entree .4s var(--courbe) both; }
+.adresse__tuiles { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.adresse__tuiles img { position: absolute; width: 256px; height: 256px; max-width: none; }
+.adresse__repere { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -28px 0 0 -14px; border-radius: 50% 50% 50% 0; background: var(--bleu); transform: rotate(-45deg); box-shadow: 0 6px 12px -4px rgba(11,37,69,.6); animation: repere-tombe .5s cubic-bezier(.3,1.6,.5,1) both; }
+.adresse__repere::after { content: ""; position: absolute; left: 9px; top: 9px; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
+.adresse__attribution { position: absolute; right: 6px; bottom: 4px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,.85); font-size: 0.6875rem; color: var(--texte-doux); }
+@keyframes repere-tombe { from { transform: translateY(-20px) rotate(-45deg); opacity: 0; } }

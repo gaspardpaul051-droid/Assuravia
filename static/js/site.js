@@ -900,7 +900,7 @@
     var m = /^(.*)\s+(\d{4})\s+([^\d].*)$/.exec(label);
     if (!m) return null;
     var mm = /^(.*?)\s+(\d+[a-zA-Z]?(?:\s?[-–\/]\s?\d+[a-zA-Z]?)?)$/.exec(m[1]);
-    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim(), suisse: true };
+    return { rue: mm ? mm[1] : m[1], no: mm ? mm[2] : "", npa: m[2], localite: m[3].trim(), suisse: true, lat: res.attrs.lat, lon: res.attrs.lon };
   };
   var chercherSuisse = function (q, signal) {
     return fetch("https://api3.geo.admin.ch/rest/services/api/SearchServer?type=locations&origins=address&limit=8&searchText=" + encodeURIComponent(q), { signal: signal })
@@ -914,9 +914,28 @@
         return (j.features || []).map(function (ft) {
           var p = ft.properties || {}, ville = p.city || p.town || p.village || p.locality || p.district;
           if (!p.street || !p.postcode || !ville) return null;
-          return { rue: p.street, no: p.housenumber || "", npa: String(p.postcode), localite: ville, code: String(p.countrycode || "").toUpperCase() };
+          var co = (ft.geometry && ft.geometry.coordinates) || [];
+          return { rue: p.street, no: p.housenumber || "", npa: String(p.postcode), localite: ville, code: String(p.countrycode || "").toUpperCase(), lat: co[1], lon: co[0] };
         }).filter(function (x) { return x && (!code || x.code === code); });
       });
+  };
+  // Petite carte de l'adresse choisie : tuiles swisstopo (Suisse) ou OpenStreetMap (étranger), repère au centre
+  var carteAdresse = function (lat, lon, suisse) {
+    var z = 17, n = Math.pow(2, z), rad = lat * Math.PI / 180;
+    var xf = (lon + 180) / 360 * n, yf = (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * n;
+    var tx = Math.floor(xf), ty = Math.floor(yf), html = "";
+    for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
+      var x = tx + dx, y = ty + dy;
+      var url = suisse ? "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/" + z + "/" + x + "/" + y + ".jpeg"
+        : "https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png";
+      html += '<img src="' + url + '" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'" style="left:' + (dx * 256) + "px;top:" + (dy * 256) + 'px">';
+    }
+    var div = document.createElement("div");
+    div.className = "adresse__carte";
+    div.innerHTML = '<div class="adresse__tuiles" style="transform:translate(' + (-(xf - tx) * 256) + "px," + (-(yf - ty) * 256) + 'px)">' + html + "</div>" +
+      '<span class="adresse__repere" aria-hidden="true"></span><small class="adresse__attribution">' + (suisse ? "© swisstopo" : "© OpenStreetMap") + "</small>";
+    div.setAttribute("role", "img"); div.setAttribute("aria-label", "Carte de l'adresse choisie");
+    return div;
   };
   document.querySelectorAll("[data-adresse]").forEach(function (bloc, nBloc) {
     var champ = bloc.querySelector("[data-adresse-recherche]"), liste = bloc.querySelector("[data-adresse-resultats]");
@@ -943,6 +962,7 @@
     };
     var montrerRecherche = function () {
       zoneChamps.hidden = true; zoneRecherche.hidden = false;
+      var carte = zoneChamps.querySelector(".adresse__carte"); if (carte) carte.remove();
       if (requis) champ.required = true;
       [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.value = ""; });
       champ.value = ""; fermer(); statut("Commencez à taper : les adresses s'affichent au fur et à mesure.");
@@ -952,6 +972,8 @@
       f.rue.value = it.rue; f.no.value = it.no; f.npa.value = it.npa; f.localite.value = it.localite;
       [f.rue, f.no, f.npa, f.localite].forEach(function (c) { c.dispatchEvent(new Event("change", { bubbles: true })); });
       montrerChamps(it.suisse ? "✓ Adresse vérifiée dans le registre suisse des adresses" : "✓ Adresse trouvée");
+      var ancienne = zoneChamps.querySelector(".adresse__carte"); if (ancienne) ancienne.remove();
+      if (it.lat && it.lon) zoneChamps.insertBefore(carteAdresse(Number(it.lat), Number(it.lon), !!it.suisse), badge.nextSibling);
       if (!f.no.value) f.no.focus();
     };
     var afficherListe = function (res) {
