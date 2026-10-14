@@ -29,6 +29,10 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Page `templates/pages/particuliers/comparateur-hypothecaire.html`, script `static/js/hypotheque.js`, données `static/data/hypotheques.json` (aussi intégrées au HTML par `build.py`, variable `taux_hypo`).
 - Source : BNS, cube `zikrepro` (taux des nouveaux contrats : moyenne, 1er et 3e quartile). Mise à jour automatique chaque lundi par `.github/workflows/taux-hypothecaires.yml`, qui lance `python3 outils/maj_taux_hypothecaires.py` et pousse le JSON s'il a changé. Toujours citer la source BNS.
 
+## Mesure d'audience et contact
+- `build.py` : `WHATSAPP` (41782653473), `GA_ID` (Google Analytics 4), `CLARITY_ID` (Microsoft Clarity), `GSC_VERIF` (Google Search Console). Vides = désactivés. GA et Clarity ne se chargent qu'après « Accepter » dans le bandeau cookies (`base.html`) ; lien « Gérer les cookies » dans le pied de page. Les formulaires ont `data-clarity-mask`.
+- Éditeur : Assuravia Sàrl, 33 chemin Charles-Poluzzi, 1227 Carouge, info@assuravia.ch. La plateforme transmet les demandes à des compagnies, courtiers et conseillers agréés ; elle n'est pas intermédiaire d'assurance.
+
 ## Téléphone
 - Indicatifs : `content/indicatifs.txt` (indicatif | pays | code ISO). Drapeaux SVG dans `static/drapeaux/` (flag-icons, licence MIT). Liste à drapeaux construite en JS sur le select, qui reste le champ envoyé.
 

@@ -1,7 +1,7 @@
 {# Champs communs aux formulaires de leads (Netlify Forms). #}
 
 {% macro ouvrir(nom, produit, titre_bouton=None) -%}
-<form class="formulaire" name="{{ nom }}" method="POST" action="/merci/?f={{ nom }}" data-netlify="true" netlify-honeypot="bot-field" data-lead>
+<form class="formulaire" name="{{ nom }}" method="POST" action="/merci/?f={{ nom }}" data-netlify="true" netlify-honeypot="bot-field" data-lead data-clarity-mask="true">
   <input type="hidden" name="form-name" value="{{ nom }}">
   <input type="hidden" name="produit" value="{{ produit }}" data-produit>
   <input type="hidden" name="page" value="" data-champ="page">

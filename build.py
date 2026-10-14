@@ -26,7 +26,11 @@ ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
 SITE_URL = "https://assuravia.ch"
 # Numéro WhatsApp au format international sans + ni espaces, par exemple 41791234567.
-WHATSAPP = "41XXXXXXXXX"
+WHATSAPP = "41782653473"
+# Mesure d'audience : laisser vide pour désactiver. Chargées seulement après accord du visiteur (bandeau cookies).
+GA_ID = ""          # Google Analytics 4, par exemple "G-ABC123XYZ"
+CLARITY_ID = ""     # Microsoft Clarity, par exemple "abcd1234ef"
+GSC_VERIF = ""      # Google Search Console : contenu de la balise meta google-site-verification
 
 MOIS = [
     "janvier", "février", "mars", "avril", "mai", "juin",
@@ -284,6 +288,9 @@ def main() -> None:
     env.globals.update(
         site_url=SITE_URL,
         whatsapp=WHATSAPP,
+        ga_id=GA_ID,
+        clarity_id=CLARITY_ID,
+        gsc_verif=GSC_VERIF,
         cantons=CANTONS,
         groupes=GROUPES,
         produits=produits,

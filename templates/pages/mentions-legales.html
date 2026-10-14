@@ -1,19 +1,35 @@
 {% extends "base.html" %}
 {% block title %}Mentions légales | Assuravia{% endblock %}
-{% block description %}Mentions légales du site assuravia.ch : éditeur, hébergement, propriété intellectuelle, responsabilité et liens externes. Assurance en Suisse romande.{% endblock %}
+{% block description %}Mentions légales du site assuravia.ch : éditeur, rôle de la plateforme, partenaires, hébergement, propriété intellectuelle et responsabilité.{% endblock %}
 {% block content %}
 <section class="produit produit--simple">
   <div class="cadre texte-long">
     <h1>Mentions légales</h1>
+
     <h2>Éditeur du site</h2>
-    <p class="a-completer">[À COMPLÉTER : raison sociale, forme juridique, adresse, numéro IDE (CHE-xxx.xxx.xxx), e-mail de contact]</p>
-    <h2>Activité d'intermédiaire</h2>
-    <p>Assuravia met en relation des particuliers et des entreprises avec des conseillers et des partenaires du domaine de l'assurance et de la prévoyance. Nous sommes rémunérés par les assureurs et partenaires auprès desquels un contrat est conclu. Le service est gratuit pour vous.</p>
-    <p class="a-completer">[À COMPLÉTER : numéro d'inscription au registre des intermédiaires d'assurance FINMA, s'il y a lieu, et organe de médiation]</p>
+    <p>Assuravia Sàrl<br>33, chemin Charles-Poluzzi<br>1227 Carouge (GE)<br>Suisse</p>
+    <p>E-mail : <a href="mailto:info@assuravia.ch">info@assuravia.ch</a><br>WhatsApp : <a href="https://wa.me/{{ whatsapp }}" rel="noopener" target="_blank">+41 78 265 34 73</a></p>
+
+    <h2>Rôle de la plateforme</h2>
+    <p>Assuravia est une plateforme de mise en relation. Elle n'est ni une compagnie d'assurance, ni une banque, ni un intermédiaire d'assurance, et ne conclut aucun contrat. Lorsque vous envoyez une demande, nous la transmettons à des compagnies d'assurance, des courtiers, des institutions de prévoyance, des banques ou des conseillers en placement partenaires, qui vous contactent et vous conseillent sous leur propre responsabilité.</p>
+    <p>Les demandes relatives aux placements, au 2e et au 3e pilier et aux financements hypothécaires sont transmises à des conseillers agréés pour ces activités. Les partenaires sont tenus de respecter les règles qui s'appliquent à leur activité, notamment la loi sur la surveillance des assurances (LSA), la loi sur les services financiers (LSFin) et l'accord de branche sur la prospection et la rémunération des intermédiaires dans l'assurance maladie.</p>
+    <p>Le service est gratuit pour vous. Assuravia peut être rémunérée par ses partenaires pour la transmission des demandes.</p>
+
+    <h2>Calculateurs et simulations</h2>
+    <p>Les primes, taux et montants affichés par les simulateurs et comparateurs sont des estimations indicatives établies à partir des informations que vous saisissez et de données de marché. Ils ne constituent pas une offre. L'offre définitive, les conditions et la prime exacte sont établies par l'assureur ou le prêteur.</p>
+    <p>Sources de données publiques : primes de l'assurance de base publiées par l'Office fédéral de la santé publique (OFSP, licence CC BY) ; taux hypothécaires publiés par la Banque nationale suisse (BNS). Assuravia n'est affiliée ni à l'OFSP ni à la BNS.</p>
+
     <h2>Responsabilité</h2>
-    <p>Les informations de ce site, y compris les résultats des calculateurs, sont fournies à titre indicatif. Elles ne remplacent pas un conseil personnalisé et ne constituent pas une offre d'assurance.</p>
-    <h2>Contact</h2>
-    <p>contact@assuravia.ch</p>
+    <p>Les informations de ce site sont fournies à titre général et indicatif. Elles ne remplacent pas un conseil personnalisé. Malgré le soin apporté à leur mise à jour, Assuravia ne garantit pas leur exactitude ou leur exhaustivité et décline toute responsabilité pour les décisions prises sur leur seule base. Les liens vers des sites tiers sont fournis pour information ; Assuravia n'en contrôle pas le contenu.</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>Les textes, illustrations, le logo et la mise en page de ce site appartiennent à Assuravia Sàrl. Toute reproduction sans autorisation est interdite. Les drapeaux affichés dans les champs téléphone proviennent du projet open source flag-icons (licence MIT).</p>
+
+    <h2>Hébergement</h2>
+    <p>Le site est hébergé par Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis.</p>
+
+    <h2>Protection des données</h2>
+    <p>Le traitement de vos données personnelles est décrit dans notre <a href="/confidentialite/">politique de protection des données</a>.</p>
   </div>
 </section>
 {% endblock %}
