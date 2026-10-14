@@ -16,6 +16,9 @@ chapeau: Pour une même voiture, les contrats diffèrent beaucoup : étendue de 
 retenir: La responsabilité civile est obligatoire pour tout véhicule immatriculé en Suisse. | La casco partielle couvre surtout le vol, les éléments naturels, le bris de glace et les animaux. | La casco complète ajoute les dégâts à votre propre véhicule quand vous êtes responsable de l'accident. | Le mode d'indemnisation en cas de perte totale fait une grande différence les premières années.
 pour_qui: Vous achetez une voiture neuve ou d'occasion et devez l'assurer avant l'immatriculation. | Vous prenez un véhicule en leasing et le contrat exige une casco complète. | Votre enfant vient d'obtenir son permis et conduira la voiture familiale. | Votre véhicule vieillit et vous vous demandez si la casco complète reste utile.
 quiz: La responsabilité civile véhicule est facultative pour une voiture qui roule peu. | faux | Sans assurance RC, aucune plaque de contrôle n'est délivrée. Elle est obligatoire pour tout véhicule immatriculé. ;; Les dégâts causés par une fouine aux câbles du moteur relèvent en général de la casco partielle. | vrai | La plupart des contrats couvrent ces dégâts en casco partielle, parfois avec un plafond pour les dommages consécutifs. ;; La casco partielle paie la réparation de votre voiture après un accrochage dont vous êtes responsable. | faux | Les dégâts de collision à votre propre véhicule relèvent de la casco complète.
+demande_titre: Votre assurance véhicule, sur mesure
+demande_texte: Décrivez votre véhicule et la couverture souhaitée en 2 minutes : un conseiller vous recontacte avec une offre adaptée.
+demande_points: Voiture, moto, scooter ou camping-car | RC, casco partielle ou complète | Un conseiller vous rappelle, sans engagement
 ---
 
 ## Les trois niveaux de couverture

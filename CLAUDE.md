@@ -16,7 +16,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Adresse : macro `f.adresse(prefixe)`, quatre champs saisis à la main (rue, n°, NPA, localité), sans suggestions automatiques (choix du propriétaire du site).
 - `content/articles/*.md` : articles du blog, publiés sous `/blog/<nom-du-fichier>/`.
 - Formulaires : Netlify Forms. Ne pas renommer les attributs `name` des formulaires existants
-  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`, `simulation-hospitalisation`, `simulation-ambulatoire`, `simulation-complementaires`, `placements`, `complementaires-rappel`, `libre-passage`), sinon Netlify crée un nouveau formulaire.
+  (`rc-pro`, `3e-pilier`, `garantie-loyer`, `demande`, `demande-prive`, `demande-pro`, `contact`, `contact-rapide`, `declaration-impots`, `simulation-menage`, `simulation-rc-privee`, `simulation-protection-juridique`, `simulation-voyage`, `simulation-objets-de-valeur`, `simulation-batiment`, `simulation-rc-pro`, `comparateur-lamal`, `simulation-hospitalisation`, `simulation-ambulatoire`, `simulation-complementaires`, `placements`, `complementaires-rappel`, `libre-passage`, `vehicule`), sinon Netlify crée un nouveau formulaire.
 
 ## Comparateur LAMal
 - Page `templates/pages/particuliers/comparateur-lamal.html`, script `static/js/comparateur-lamal.js`, données `static/data/lamal/` (une fichier JSON par canton + `index.json`).

@@ -1,10 +1,10 @@
 {# Question en plein écran pour les formulaires en étapes ([data-etape]) #}
-{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False) -%}
+{% macro question(titre, nom, options, aide=None, type="radio", premier=False, dernier=False, facultatif=False) -%}
 <fieldset class="modale__etape" data-etape{% if not premier %} hidden{% endif %}>
   <legend class="modale__question">{{ titre }}</legend>
   {% if aide %}<p class="fe__aide">{{ aide }}</p>{% endif %}
   <div class="choix-cartes modale__choix">
-    {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if type == 'radio' %} required data-etape-auto{% else %} data-groupe-requis="{{ nom }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
+    {% for o in options %}<label class="choix-carte choix-carte--compact"><input type="{{ type }}" name="{{ nom }}" value="{{ o }}"{% if type == 'radio' %} required data-etape-auto{% elif not facultatif %} data-groupe-requis="{{ nom }}"{% endif %}><span>{{ o }}</span></label>{% endfor %}
   </div>
   <div class="modale__actions">
     {% if not premier %}<button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>{% endif %}

@@ -1,0 +1,81 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurer mon véhicule | Assuravia{% endblock %}
+{% block description %}Voiture, moto ou scooter : décrivez votre véhicule et la couverture souhaitée, un conseiller vous recontacte avec une offre adaptée.{% endblock %}
+{% block content %}
+{% set p = par_slug["vehicule"] %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="{{ p.url }}">{{ p.nom }}</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone("voiture", "icone icone--petite") }} Demande d'offre</p>
+    <h1 class="cmp-page__titre">Assurer mon véhicule</h1>
+    <p class="chapeau">Quelques questions sur votre véhicule et la couverture souhaitée. Un conseiller étudie votre demande et vous recontacte avec une offre adaptée.</p>
+
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir("vehicule", "vehicule") }}
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {{ question("Quel véhicule souhaitez-vous assurer ?", "type_vehicule", ["Voiture", "Moto", "Scooter", "Camping-car", "Véhicule utilitaire", "Autre"], premier=True) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Parlez-nous de votre véhicule</legend>
+          <div class="grille-champs">
+            <div class="champ"><label for="marque-ve">Marque</label><input id="marque-ve" name="marque" required placeholder="Ex. Volkswagen"></div>
+            <div class="champ"><label for="modele-ve">Modèle</label><input id="modele-ve" name="modele" required placeholder="Ex. Golf 1.5 TSI"></div>
+            <div class="champ"><label for="annee-ve">Première mise en circulation</label>
+              <select id="annee-ve" name="annee_circulation" required><option value="">Choisir</option><option>Véhicule neuf</option>{% for a in range(annee, annee - 25, -1) %}<option>{{ a }}</option>{% endfor %}<option>Plus ancien</option></select>
+            </div>
+            <div class="champ"><label for="prix-ve">Prix catalogue <span class="facultatif">(facultatif)</span></label>
+              <select id="prix-ve" name="prix_catalogue"><option value="">Je ne sais pas</option>{% for x in ["Moins de CHF 20'000", "CHF 20'000 à 40'000", "CHF 40'000 à 60'000", "CHF 60'000 à 100'000", "Plus de CHF 100'000"] %}<option>{{ x }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          <div class="modale__actions">
+            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+          </div>
+        </fieldset>
+
+        {{ question("Comment le véhicule est-il financé ?", "financement", ["Payé comptant", "En leasing", "Avec un crédit", "Pas encore acheté"]) }}
+        {{ question("Combien de kilomètres roulez-vous par an ?", "km_annuels", ["Moins de 10'000 km", "10'000 à 15'000 km", "15'000 à 20'000 km", "20'000 à 30'000 km", "Plus de 30'000 km"]) }}
+        {{ question("Quelle couverture souhaitez-vous ?", "couverture", ["Responsabilité civile seule", "RC et casco partielle", "RC et casco complète", "Je ne sais pas, conseillez-moi"], aide="Casco partielle : vol, éléments naturels, bris de glace, animaux. Casco complète : en plus, les dégâts à votre véhicule lors d'un accident dont vous êtes responsable.") }}
+        {{ question("Des options vous intéressent-elles ?", "options", ["Assistance et dépannage", "Protection du bonus", "Faute grave couverte", "Véhicule de remplacement", "Effets personnels transportés", "Accidents des occupants"], aide="Facultatif : cochez ce qui vous intéresse, ou continuez directement.", type="checkbox", facultatif=True) }}
+        {{ question("Depuis combien de temps avez-vous le permis ?", "anciennete_permis", ["Moins de 3 ans", "3 à 10 ans", "Plus de 10 ans"]) }}
+        {{ question("Combien de sinistres avez-vous déclarés ces 5 dernières années ?", "sinistres", ["Aucun", "1", "2 ou plus", "Je préfère en parler au conseiller"]) }}
+        {{ question("Quand souhaitez-vous que la couverture commence ?", "debut", ["Dès que possible", "Dans le mois", "Dans 1 à 3 mois", "À l'échéance de mon contrat actuel"]) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <p class="fe__aide">Un conseiller étudie votre demande et vous recontacte avec une offre adaptée. Gratuit et sans engagement.</p>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-ve">Prénom</label><input id="prenom-ve" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-ve">Nom</label><input id="nom-ve" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("ve") }}
+            <div class="champ"><label for="email-ve">E-mail</label><input id="email-ve" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+            {{ f.naissance("ve") }}
+            <div class="champ">
+              <label for="moment-ve">Quand vous rappeler ?</label>
+              <select id="moment-ve" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          {{ f.adresse("domicile") }}
+          <div class="champ">
+            <label for="message-ve">Une précision ? <span class="facultatif">(facultatif)</span></label>
+            <textarea id="message-ve" name="message" placeholder="Ex. Je change de voiture le mois prochain."></textarea>
+          </div>
+          {{ f.fermer("Être recontacté par un conseiller", "ve") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
