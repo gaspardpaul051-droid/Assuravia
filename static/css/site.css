@@ -1772,3 +1772,43 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 .lp-sante__pourqui li { display: flex; gap: var(--e-3); align-items: flex-start; padding: var(--e-4); border-radius: var(--r-m); background: var(--fond); box-shadow: var(--ombre-1); }
 .lp-sante__pourqui .icone { color: var(--succes); flex: none; margin-top: 3px; }
 @media (max-width: 640px) { .lp-module { padding: var(--e-4); } .lp-module__tete { flex-direction: column; gap: var(--e-2); } }
+
+/* Page Assuravie : départ, chiffres, prix, barre collante */
+.lp-prix { display: inline-flex; align-items: baseline; gap: 8px; margin: var(--e-4) 0 0; padding: 8px 16px; border-radius: var(--r-plein); background: var(--fond); box-shadow: var(--ombre-1); color: var(--texte-doux); font-weight: 600; }
+.lp-prix strong { font-size: 1.6rem; color: var(--succes); font-variant-numeric: tabular-nums; }
+.lp-depart__choix { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-2); margin: var(--e-4) 0; }
+.lp-depart__carte { position: relative; display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 10px 12px; border-radius: var(--r-m); border: 1.5px solid var(--bordure); background: var(--fond); font-weight: 700; font-size: var(--t-s); color: var(--marine); cursor: pointer; transition: border-color .2s, background-color .2s, transform .2s; }
+.lp-depart__carte:hover { transform: translateY(-2px); border-color: var(--bleu-vif); }
+.lp-depart__carte input { position: absolute; opacity: 0; pointer-events: none; }
+.lp-depart__carte:has(input:checked) { border-color: var(--bleu); background: var(--bleu-pale); }
+.lp-depart__carte:has(input:focus-visible) { outline: 3px solid var(--or); outline-offset: 2px; }
+.lp-depart__icone { flex: none; width: 36px; height: 36px; border-radius: var(--r-plein); display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); transition: background-color .2s, color .2s; }
+.lp-depart__carte:has(input:checked) .lp-depart__icone { background: var(--bleu); color: #fff; animation: lp-pop .35s ease; }
+.lp-depart__icone .icone { width: 18px; height: 18px; }
+@keyframes lp-pop { 50% { transform: scale(1.18); } }
+.lp-depart__go { width: 100%; }
+.lp-depart__rassure { list-style: none; margin: var(--e-3) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; font-size: var(--t-xs); color: var(--texte-doux); }
+.lp-depart__rassure li { display: inline-flex; align-items: center; gap: 4px; }
+.lp-depart__rassure .icone { color: var(--succes); }
+.lp-chiffres { background: var(--marine); color: #fff; }
+.lp-chiffres__liste { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--e-4); padding-block: var(--e-6); text-align: center; }
+.lp-chiffres strong { display: block; font-size: clamp(1.8rem, 3.5vw, 2.4rem); color: var(--or-clair); font-variant-numeric: tabular-nums; }
+.lp-chiffres span { font-size: var(--t-s); color: #DCE4EF; }
+@media (max-width: 700px) { .lp-chiffres__liste { grid-template-columns: 1fr 1fr; } }
+.lp-module { transition: transform var(--duree) var(--courbe), box-shadow var(--duree) var(--courbe); }
+.lp-module:hover { transform: translateY(-3px); box-shadow: var(--ombre-2); }
+.lp-module__tete > div { flex: 1; min-width: 0; }
+.lp-module__prix { flex: none; padding: 6px 12px; border-radius: var(--r-plein); background: #E7F5EC; color: var(--succes); font-size: var(--t-xs); font-weight: 600; white-space: nowrap; }
+.lp-module__prix strong { font-size: var(--t-m); }
+.lp-module__lien { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--e-4); font-weight: 700; color: var(--bleu); text-decoration: none; }
+.lp-module__lien:hover { gap: 10px; }
+.lp-module__lien .icone { transition: transform .2s; }
+.lp-collant { position: fixed; z-index: 55; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(560px, calc(100% - 96px)); display: flex; align-items: center; justify-content: space-between; gap: var(--e-3); padding: 10px 10px 10px 18px; border-radius: var(--r-plein); background: var(--marine); color: #fff; box-shadow: var(--ombre-2); animation: lp-monte .35s ease; }
+.lp-collant[hidden] { display: none; }
+.lp-collant p { margin: 0; display: grid; font-size: var(--t-s); }
+.lp-collant p span { color: #B9C6D8; font-size: var(--t-xs); }
+.lp-collant .bouton { min-height: 44px; padding-inline: 18px; white-space: nowrap; }
+@keyframes lp-monte { from { transform: translate(-50%, 20px); opacity: 0; } }
+@media (max-width: 640px) { .lp-collant { left: 12px; right: 84px; width: auto; transform: none; padding-left: 14px; } .lp-collant p span { display: none; } @keyframes lp-monte { from { transform: translateY(20px); opacity: 0; } } .lp-module__tete { flex-wrap: wrap; } }
+@media (prefers-reduced-motion: reduce) { .lp-collant, .lp-depart__carte:has(input:checked) .lp-depart__icone { animation: none; } }
+@media (max-width: 640px) { .lp-collant { padding: 8px; } .lp-collant p { display: none; } .lp-collant .bouton { width: 100%; } }

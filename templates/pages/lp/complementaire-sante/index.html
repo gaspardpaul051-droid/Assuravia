@@ -11,30 +11,40 @@
 {% block title %}Complémentaire santé à prime maîtrisée | Assuravie{% endblock %}
 {% block description %}Complémentaire maladie à la carte : hospitalisation, médecines alternatives, dentaire, voyage. Ne payez que ce qui vous sert. Estimation gratuite en 2 minutes.{% endblock %}
 {% block content %}
-<section class="produit lp-sante">
-  <div class="cadre produit__grille">
-    <div class="produit__texte">
+<section class="hero-produit lp-sante">
+  <div class="cadre hero-produit__grille">
+    <div class="hero-produit__texte">
       <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span>Complémentaires santé</span></nav>
       <p class="etiquette etiquette--prive">{{ i.icone("coeur", "icone icone--petite") }} Complémentaires santé à la carte</p>
       <h1>Votre complémentaire santé, sans payer pour ce qui ne vous sert pas</h1>
-      <p class="chapeau">Gardez votre assurance de base et ajoutez seulement les modules utiles : un complément essentiel, l'hospitalisation, les médecines alternatives, le dentaire ou le voyage. Chaque module se prend seul, avec une prime de départ basse.</p>
-      <ul class="points">
-        <li>Des modules dès quelques francs par mois</li>
-        <li>Hôpital au choix en division commune dans toute la Suisse</li>
-        <li>Plus de vingt médecines alternatives remboursées</li>
-        <li>Estimation immédiate, gratuite et sans engagement</li>
-      </ul>
+      <p class="chapeau">Gardez votre assurance de base et ajoutez seulement les modules utiles : hôpital, médecines alternatives, dentaire ou voyage. Chaque module se prend seul, avec une prime de départ basse.</p>
+      <p class="lp-prix"><span>Modules dès</span> <strong>CHF <span data-compte="4">4</span>.–</strong> <span>par mois</span></p>
+      {% with produit = {"icone": "coeur", "nom": "Ma complémentaire", "points": ["Hôpital au choix dans toute la Suisse", "Ostéopathie et acupuncture remboursées", "Contrôle dentaire pris en charge"]} %}{% include "partials/illu-produit.html" %}{% endwith %}
     </div>
-    <aside class="produit__form">
-      <h2 class="form-titre">Composez votre couverture</h2>
-      <p class="form-sous-titre">Choisissez vos modules et voyez votre prime estimée tout de suite. Un spécialiste vous envoie ensuite l'offre détaillée.</p>
-      <ul class="entree-simulation__points">
-        <li>{{ i.icone("valide", "icone icone--petite") }} Estimation en 2 minutes</li>
-        <li>{{ i.icone("valide", "icone icone--petite") }} Six modules à combiner librement</li>
-        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+    <aside class="panneau-form lp-depart" data-lp-depart>
+      <h2 class="form-titre">Qu'est-ce qui compte pour vous ?</h2>
+      <p class="form-sous-titre">Touchez ce qui vous intéresse, puis voyez votre prime en 2 minutes.</p>
+      <div class="lp-depart__choix">
+        {% for cle, titre, icone in [("fam_hop", "L'hôpital", "croix"), ("fam_alt", "Médecines alternatives", "coeur"), ("fam_dent", "Les dents", "valide"), ("fam_base", "Lunettes et l'essentiel", "bouclier"), ("fam_voyage", "Les voyages", "avion"), ("fam_capital", "Un capital si hospitalisé", "tirelire")] %}
+        <label class="lp-depart__carte"><input type="checkbox" value="{{ cle }}"><span class="lp-depart__icone">{{ i.icone(icone) }}</span><span>{{ titre }}</span></label>
+        {% endfor %}
+      </div>
+      <a class="bouton bouton--action lp-depart__go" href="{{ sim_url }}" data-lp-go>Voir ma prime</a>
+      <ul class="lp-depart__rassure">
+        <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit, sans engagement</li>
+        <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées</li>
       </ul>
-      <a class="bouton bouton--action" href="{{ sim_url }}">Estimer ma prime</a>
     </aside>
+  </div>
+</section>
+
+<section class="lp-chiffres" aria-label="En bref">
+  <div class="cadre lp-chiffres__liste">
+    <div><strong><span data-compte="6">6</span></strong><span>modules à combiner</span></div>
+    <div><strong><span data-compte="24">24</span></strong><span>thérapies alternatives couvertes</span></div>
+    <div><strong><span data-compte="2">2</span> min</strong><span>pour voir votre prime</span></div>
+    <div><strong>0</strong><span>engagement</span></div>
   </div>
 </section>
 
@@ -71,15 +81,16 @@
   </div>
   <div class="cadre">
     <div class="lp-sante__modules-detail">
-      {% for titre, icone, cles, texte in [
-        ("Complément essentiel", "bouclier", ["base_plus"], "Le premier module à prendre : il comble les principaux trous de l'assurance de base pour une petite prime."),
-        ("Hospitalisation", "croix", ["hop_flex", "hop_demi", "hop_privee", "hop_monde"], "Quatre niveaux de confort, de la chambre choisie le jour venu à la division privée en Suisse et à l'étranger."),
-        ("Médecines alternatives", "coeur", ["alt_therap", "alt_medecin"], "Chez un thérapeute reconnu ou chez un médecin : les deux formules se combinent."),
-        ("Dentaire", "valide", ["dent_essentiel", "dent_confort"], "Pour l'entretien de vos dents ou pour des traitements plus importants, orthodontie comprise."),
-        ("Voyage", "avion", ["voyage"], "Les urgences médicales à l'étranger, dans le monde entier, avec une assistance jour et nuit."),
-        ("Capital hospitalisation", "tirelire", ["capital"], "Un montant versé directement à vous pour faire face aux frais imprévus d'un séjour à l'hôpital.")] %}
+      {% for titre, icone, cles, texte, fam in [
+        ("Complément essentiel", "bouclier", ["base_plus"], "Le premier module à prendre : il comble les principaux trous de l'assurance de base pour une petite prime.", "fam_base"),
+        ("Hospitalisation", "croix", ["hop_flex", "hop_demi", "hop_privee", "hop_monde"], "Quatre niveaux de confort, de la chambre choisie le jour venu à la division privée en Suisse et à l'étranger.", "fam_hop"),
+        ("Médecines alternatives", "coeur", ["alt_therap", "alt_medecin"], "Chez un thérapeute reconnu ou chez un médecin : les deux formules se combinent.", "fam_alt"),
+        ("Dentaire", "valide", ["dent_essentiel", "dent_confort"], "Pour l'entretien de vos dents ou pour des traitements plus importants, orthodontie comprise.", "fam_dent"),
+        ("Voyage", "avion", ["voyage"], "Les urgences médicales à l'étranger, dans le monde entier, avec une assistance jour et nuit.", "fam_voyage"),
+        ("Capital hospitalisation", "tirelire", ["capital"], "Un montant versé directement à vous pour faire face aux frais imprévus d'un séjour à l'hôpital.", "fam_capital")] %}
       <article class="lp-module">
-        <div class="lp-module__tete"><span class="atout__icone">{{ i.icone(icone) }}</span><div><h3>{{ titre }}</h3><p>{{ texte }}</p></div></div>
+        {% set ns = namespace(p=999) %}{% for k in cles %}{% if M[k].base < ns.p %}{% set ns.p = M[k].base %}{% endif %}{% endfor %}{% set prix_min = ns.p %}
+        <div class="lp-module__tete"><span class="atout__icone">{{ i.icone(icone) }}</span><div><h3>{{ titre }}</h3><p>{{ texte }}</p></div><span class="lp-module__prix">dès <strong>CHF {{ prix_min }}.–</strong> / mois</span></div>
         <div class="lp-module__formules">
           {% for k in cles %}{% set m = M[k] %}
           <div class="lp-module__formule">
@@ -88,6 +99,7 @@
           </div>
           {% endfor %}
         </div>
+        <a class="lp-module__lien" href="{{ sim_url }}?{{ fam }}=oui">Ajouter ce module à ma simulation {{ i.icone("fleche", "icone icone--petite") }}</a>
       </article>
       {% endfor %}
     </div>
@@ -145,4 +157,40 @@
     </div>
   </div>
 </section>
+<div class="lp-collant" data-lp-collant hidden>
+  <p><strong>Votre prime en 2 minutes</strong><span>Modules dès CHF 4.– par mois</span></p>
+  <a class="bouton bouton--action" href="{{ sim_url }}">Estimer ma prime</a>
+</div>
+<script>
+(function () {
+  // Choix de départ : on préremplit la simulation avec les modules cochés
+  var bloc = document.querySelector("[data-lp-depart]");
+  if (bloc) {
+    var go = bloc.querySelector("[data-lp-go]"), base = go.getAttribute("href");
+    bloc.addEventListener("change", function () {
+      var q = Array.prototype.map.call(bloc.querySelectorAll("input:checked"), function (c) { return c.value + "=oui"; });
+      go.setAttribute("href", base + (q.length ? "?" + q.join("&") : ""));
+      go.textContent = q.length ? "Voir ma prime (" + q.length + (q.length > 1 ? " modules)" : " module)") : "Voir ma prime";
+    });
+  }
+  // Compteurs qui montent à l'apparition
+  var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduit && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (ent) {
+      ent.forEach(function (e) {
+        if (!e.isIntersecting) return; io.unobserve(e.target);
+        var fin = Number(e.target.getAttribute("data-compte")), t0 = null;
+        var pas = function (t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 900); e.target.textContent = Math.round(fin * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(pas); };
+        requestAnimationFrame(pas);
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll("[data-compte]").forEach(function (el) { io.observe(el); });
+  }
+  // Barre « Estimer ma prime » qui apparaît après le haut de page
+  var barre = document.querySelector("[data-lp-collant]"), haut = document.querySelector(".lp-depart");
+  if (barre && haut && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (ent) { barre.hidden = ent[0].isIntersecting || ent[0].boundingClientRect.top > 0; }).observe(haut);
+  }
+})();
+</script>
 {% endblock %}
