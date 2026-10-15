@@ -486,3 +486,13 @@ td:last-child { white-space: nowrap; }
 .btn--danger { background: var(--rouge); border-color: var(--rouge); color: #fff; }
 .btn--danger:hover { background: #a3342e; border-color: #a3342e; color: #fff; }
 .modale__boite label { color: var(--texte); }
+
+/* Mes statistiques (simple) */
+.periodes { display: flex; gap: .4rem; flex-wrap: wrap; }
+.kpis--4 { grid-template-columns: repeat(4, 1fr); margin-bottom: .9rem; }
+.kpi small { display: block; margin-top: .2rem; font-size: .78rem; }
+.kpi--vert strong { color: var(--vert); }
+.a-faire { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; background: #FBF1D3; border: 1px solid #EBD38A; color: #6b4f0c; border-radius: var(--r); padding: .7rem 1rem; margin-bottom: 1rem; }
+.a-faire .btn { margin-left: auto; }
+.barre-ligne .badge { font-size: .8rem; }
+@media (max-width: 860px) { .kpis--4 { grid-template-columns: 1fr 1fr; } }

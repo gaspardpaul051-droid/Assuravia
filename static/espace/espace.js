@@ -343,8 +343,7 @@
       var avant = statut(l.statut).nom;
       choixStatut.parentNode.className = "statut-select statut-select--" + statut(cle).couleur;
       maj({ statut: cle }, "Statut : " + avant + " → " + statut(cle).nom).then(function () {
-        if (cle === "signe") { confettis(); toast("Bravo, contrat signé ! +40 points"); }
-        else if (cle === "rdv") toast("RDV prévu : +10 points");
+        if (cle === "signe") { confettis(); toast("Bravo, contrat signé !"); }
         ouvrirFiche(l.id, true);
       });
     };
@@ -663,57 +662,40 @@
   // ---------- Mes statistiques (conseiller) ----------
   function vuePerf() {
     var zone = app.querySelector("[data-contenu]");
-    var moi = etat.moi.id, debutMois = new Date(); debutMois.setDate(1); debutMois.setHours(0, 0, 0, 0);
-    var mois = bilan(moi, debutMois), tout = bilan(moi, null), niv = niveau(tout.points);
-    var objectif = Number((etat.moi.user_metadata || {}).objectif_signes) || 5;
-    var pctObj = Math.min(100, Math.round(mois.signes / objectif * 100));
-    var aFaire = etat.leads.filter(function (l) { return l.conseiller_id === moi && (l.statut === "nouveau" || aRappeler(l)); }).length;
-    var prenom = (etat.profil.nom || "").split(" ")[0];
-    var heure = new Date().getHours();
-    var phrase = pctObj >= 100 ? "Objectif du mois atteint. Impressionnant !" : mois.signes ? "Encore " + (objectif - mois.signes) + " contrat" + (objectif - mois.signes > 1 ? "s" : "") + " pour atteindre votre objectif du mois." : aFaire ? "Vos clients attendent votre appel : c'est le moment de marquer des points." : "Tout est à jour. Bravo !";
-    // 8 dernières semaines
-    var semaines = [];
-    for (var i = 7; i >= 0; i--) {
-      var deb = new Date(); deb.setHours(0, 0, 0, 0); deb.setDate(deb.getDate() - ((deb.getDay() + 6) % 7) - i * 7);
-      var fin = new Date(deb); fin.setDate(fin.getDate() + 7);
-      var ls = etat.leads.filter(function (l) { return l.conseiller_id === moi && new Date(l.cree_le) >= deb && new Date(l.cree_le) < fin; });
-      semaines.push({ nom: deb.toLocaleDateString("fr-CH", { day: "2-digit", month: "2-digit" }), recus: ls.length, signes: ls.filter(function (l) { return l.statut === "signe"; }).length });
-    }
-    var maxS = Math.max.apply(null, semaines.map(function (s) { return s.recus; }).concat([1]));
-    var entonnoir = [["Leads reçus", tout.recus], ["Contactés", tout.contactes], ["RDV obtenus", tout.rdv], ["Offres", tout.offres], ["Signés", tout.signes]];
-    var bs = badges(mois, tout);
-    var r = 54, circ = 2 * Math.PI * r;
+    var moi = etat.moi.id;
+    var periode = etat.periodePerf || "mois";
+    var debut = null;
+    if (periode === "mois") { debut = new Date(); debut.setDate(1); debut.setHours(0, 0, 0, 0); }
+    else if (periode === "30") debut = new Date(Date.now() - 30 * 86400000);
+    var b = bilan(moi, debut);
+    var pc = function (n, d) { return d ? Math.round(n / d * 100) + " %" : "–"; };
+    var mesLeads = etat.leads.filter(function (l) { return l.conseiller_id === moi && (!debut || new Date(l.cree_le) >= debut); });
+    var aTraiter = etat.leads.filter(function (l) { return l.conseiller_id === moi && l.statut === "nouveau"; }).length;
+    var rappels = etat.leads.filter(function (l) { return l.conseiller_id === moi && aRappeler(l); }).length;
+    var kpi = function (label, valeur, detail, mod) { return '<div class="kpi' + (mod ? " kpi--" + mod : "") + '"><span>' + label + "</span><strong>" + valeur + "</strong>" + (detail ? "<small>" + detail + "</small>" : "") + "</div>"; };
+    var parStatut = STATUTS.map(function (s) { return [s, mesLeads.filter(function (l) { return l.statut === s.cle; }).length]; }).filter(function (x) { return x[1]; });
+    var maxS = Math.max.apply(null, parStatut.map(function (x) { return x[1]; }).concat([1]));
     zone.innerHTML =
-      '<div class="perf-tete"><div><p class="perf-salut">' + (heure < 18 ? "Bonjour" : "Bonsoir") + " " + esc(prenom) + '</p><h1>Mes statistiques</h1><p class="sous">' + phrase + "</p></div>" +
-      (aFaire ? '<button class="btn btn--plein btn--gros" data-a-faire>' + aFaire + " lead" + (aFaire > 1 ? "s" : "") + " à traiter →</button>" : "") + "</div>" +
-      '<div class="perf-haut">' +
-        '<div class="carte niveau"><div class="niveau__rang"><span class="niveau__num">' + niv.num + '</span><div><span class="niveau__label">Niveau</span><strong>' + niv.nom + '</strong></div></div>' +
-        '<p class="niveau__points"><b>' + tout.points + "</b> points</p>" +
-        '<div class="jauge"><span style="width:' + niv.pct + '%"></span></div>' +
-        '<p class="sous">' + (niv.suivant ? "Encore " + (niv.suivant - tout.points) + " points pour le niveau " + (niv.num + 1) : "Niveau maximum atteint") + "</p>" +
-        '<p class="bareme">Contact +3 · RDV +10 · Offre +8 · Signé +40 · Commentaire +1</p></div>' +
-        '<div class="carte objectif"><div class="anneau"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="' + r + '" class="anneau__fond"/><circle cx="60" cy="60" r="' + r + '" class="anneau__plein" style="stroke-dasharray:' + circ + ";stroke-dashoffset:" + circ * (1 - pctObj / 100) + '"/></svg><div class="anneau__centre"><strong>' + mois.signes + "/" + objectif + "</strong><span>signés</span></div></div>" +
-        '<div><span class="niveau__label">Objectif du mois</span><p class="objectif__txt">' + pctObj + ' % atteint</p><button class="lien" data-objectif>Modifier mon objectif</button></div></div>' +
-        '<div class="carte serie"><span class="serie__icone">' + icone("flamme") + '</span><strong>' + tout.serie + '</strong><span>jour' + (tout.serie > 1 ? "s" : "") + " d'affilée</span><p class=\"sous\">" + (tout.serie ? "Continuez demain pour garder la série." : "Une action aujourd'hui lance votre série.") + "</p></div>" +
+      '<div class="tete"><div><h1>Mes statistiques</h1><p class="sous">Vos résultats sur les leads qui vous sont attribués.</p></div>' +
+      '<div class="periodes">' + [["mois", "Ce mois"], ["30", "30 jours"], ["tout", "Depuis le début"]].map(function (x) { return '<button class="puce' + (periode === x[0] ? " puce--active" : "") + '" data-periode="' + x[0] + '">' + x[1] + "</button>"; }).join("") + "</div></div>" +
+      (aTraiter || rappels ? '<div class="a-faire">' + (aTraiter ? "<b>" + aTraiter + "</b> nouveau" + (aTraiter > 1 ? "x" : "") + " lead" + (aTraiter > 1 ? "s" : "") + " à appeler" : "") + (aTraiter && rappels ? " · " : "") + (rappels ? "<b>" + rappels + "</b> rappel" + (rappels > 1 ? "s" : "") + " aujourd'hui" : "") + ' <button class="btn btn--petit btn--plein" data-voir-leads>Voir mes leads</button></div>' : "") +
+      '<div class="kpis kpis--4">' +
+        kpi("Leads reçus", b.recus) +
+        kpi("RDV fixés", b.rdv, pc(b.rdv, b.recus) + " des leads, offres et signés compris") +
+        kpi("Contrats signés", b.signes, b.offres + " offre" + (b.offres > 1 ? "s" : "") + " envoyée" + (b.offres > 1 ? "s" : "")) +
+        kpi("Taux de conversion", pc(b.signes, b.recus), "leads → signés", "vert") +
       "</div>" +
-      '<div class="kpis kpis--5"><div><span>Leads ce mois</span><strong>' + mois.recus + "</strong></div><div><span>Taux de contact</span><strong>" + (mois.recus ? Math.round(mois.contactes / mois.recus * 100) : 0) + " %</strong></div><div><span>RDV ce mois</span><strong>" + mois.rdv + "</strong></div><div><span>Signés ce mois</span><strong>" + mois.signes + "</strong></div><div><span>Temps de réaction</span><strong>" + dureeLisible(tout.reaction) + "</strong></div></div>" +
-      '<div class="perf-grille">' +
-        '<div class="carte"><h2>Mon parcours client</h2><div class="entonnoir">' + entonnoir.map(function (e, i) { var pc = tout.recus ? Math.round(e[1] / tout.recus * 100) : 0; return '<div class="entonnoir__ligne"><span>' + e[0] + '</span><span class="entonnoir__barre"><span style="width:' + Math.max(pc, e[1] ? 4 : 0) + "%;--i:" + i + '"></span></span><strong>' + e[1] + "</strong><em>" + pc + " %</em></div>"; }).join("") + "</div></div>" +
-        '<div class="carte"><h2>Mes 8 dernières semaines</h2><div class="histo">' + semaines.map(function (s) { return '<div class="histo__col" title="' + s.recus + " reçus, " + s.signes + ' signés"><div class="histo__barres"><span class="histo__recus" style="height:' + Math.round(s.recus / maxS * 100) + '%"></span><span class="histo__signes" style="height:' + Math.round(s.signes / maxS * 100) + '%"></span></div><b>' + s.recus + "</b><small>" + s.nom + "</small></div>"; }).join("") + '</div><p class="legende"><span class="leg leg--recus"></span>Reçus <span class="leg leg--signes"></span>Signés</p></div>' +
+      '<div class="kpis kpis--4">' +
+        kpi("Leads contactés", b.contactes, pc(b.contactes, b.recus) + " des leads") +
+        kpi("RDV → signés", pc(b.signes, b.rdv), "taux de signature après RDV") +
+        kpi("Faux numéros", mesLeads.filter(function (l) { return l.statut === "faux_numero"; }).length, "") +
+        kpi("Temps de réaction", dureeLisible(b.reaction), "délai médian avant 1re action") +
       "</div>" +
-      '<h2 class="titre-section">Mes badges <small>' + bs.filter(function (b) { return b.ok; }).length + " / " + bs.length + "</small></h2>" +
-      '<div class="badges">' + bs.map(function (b) { return '<div class="badge-jeu' + (b.ok ? " badge-jeu--ok" : "") + '"><span class="badge-jeu__icone">' + icone(b.icone) + "</span><strong>" + b.nom + "</strong><small>" + b.desc + "</small>" + (b.ok ? '<span class="badge-jeu__etat">Obtenu</span>' : '<span class="jauge jauge--mini"><span style="width:' + Math.round(b.fait / b.but * 100) + '%"></span></span><span class="badge-jeu__etat">' + b.fait + " / " + b.but + "</span>") + "</div>"; }).join("") + "</div>";
-    var af = zone.querySelector("[data-a-faire]");
-    if (af) af.onclick = function () { etat.vue = "leads"; etat.filtre = "tous"; rendre(); };
-    zone.querySelector("[data-objectif]").onclick = function () {
-      var v = prompt("Combien de contrats voulez-vous signer ce mois ?", objectif);
-      var n = parseInt(v, 10); if (!n || n < 1) return;
-      sb.auth.updateUser({ data: { objectif_signes: n } }).then(function (res) {
-        if (res && res.error) { toast("Erreur : " + res.error.message, true); return; }
-        etat.moi.user_metadata = Object.assign({}, etat.moi.user_metadata, { objectif_signes: n });
-        vuePerf(); toast("Objectif : " + n + " contrats ce mois. Allez-y !");
-      });
-    };
+      '<div class="carte"><h2>Mes leads par statut</h2>' + (parStatut.length ? '<div class="barres">' + parStatut.map(function (x) {
+        return '<div class="barre-ligne"><span><span class="badge badge--' + x[0].couleur + '">' + x[0].nom + '</span></span><span class="barre-fond"><span style="width:' + Math.round(x[1] / maxS * 100) + '%"></span></span><strong>' + x[1] + "</strong></div>";
+      }).join("") + "</div>" : '<p class="sous">Aucun lead sur cette période.</p>') + "</div>";
+    zone.querySelectorAll("[data-periode]").forEach(function (bt) { bt.onclick = function () { etat.periodePerf = bt.getAttribute("data-periode"); vuePerf(); }; });
+    var v = zone.querySelector("[data-voir-leads]"); if (v) v.onclick = function () { etat.vue = "leads"; etat.filtre = "tous"; rendre(); };
   }
 
   // ---------- Statistiques (admin) ----------
@@ -727,9 +709,9 @@
     etat.leads.forEach(function (l) { var k = produitNom(l); parProduit[k] = (parProduit[k] || 0) + 1; });
     var max = Math.max.apply(null, Object.keys(parProduit).map(function (k) { return parProduit[k]; }).concat([1]));
     var debutMois = new Date(); debutMois.setDate(1); debutMois.setHours(0, 0, 0, 0);
-    var classement = etat.conseillers.filter(function (c) { return c.actif; }).map(function (c) { var b = bilan(c.id, debutMois); b.c = c; return b; }).sort(function (x, y) { return y.points - x.points || y.signes - x.signes; });
+    var classement = etat.conseillers.filter(function (c) { return c.actif; }).map(function (c) { var b = bilan(c.id, debutMois); b.c = c; return b; }).sort(function (x, y) { return y.signes - x.signes || y.rdv - x.rdv; });
     var podium = '<div class="carte"><h2>Classement du mois</h2><ol class="classement">' + classement.map(function (b, i) {
-      return '<li class="classement__ligne' + (i < 3 && b.points ? " classement__ligne--" + (i + 1) : "") + '"><span class="classement__rang">' + (i + 1) + "</span>" + avatar(b.c.nom, "petit") + "<strong>" + esc(b.c.nom) + '</strong><span class="classement__det">' + b.recus + " reçus · " + b.rdv + " RDV · " + b.signes + " signés · réaction " + dureeLisible(b.reaction) + '</span><b class="classement__pts">' + b.points + " pts</b></li>";
+      return '<li class="classement__ligne' + (i < 3 && b.signes ? " classement__ligne--" + (i + 1) : "") + '"><span class="classement__rang">' + (i + 1) + "</span>" + avatar(b.c.nom, "petit") + "<strong>" + esc(b.c.nom) + '</strong><span class="classement__det">' + b.recus + " reçus · " + b.rdv + " RDV · " + b.signes + " signés · réaction " + dureeLisible(b.reaction) + '</span><b class="classement__pts">' + (b.recus ? Math.round(b.signes / b.recus * 100) : 0) + " % conv.</b></li>";
     }).join("") + "</ol></div>";
     zone.innerHTML =
       '<div class="tete"><div><h1>Statistiques</h1><p class="sous">Sur les ' + etat.leads.length + " derniers leads.</p></div></div>" +

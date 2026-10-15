@@ -40,7 +40,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Règles par source (table `regles`, mise à jour `espace/maj-1-repartition-par-source.sql`) : parts par conseiller pour un formulaire (`form-name`) ou un début d'adresse de page (`/lp/`) ; la page passe avant le formulaire ; sans règle, répartition générale (`conseillers.poids`, comptée sur les seuls leads hors règles). `build.py` liste formulaires et pages dans `config.js`.
 - `netlify/functions/espace-admin.mjs` (clé service_role, réservé aux admins) : `supprimer` (ses leads réattribués puis compte supprimé), `creer` (compte avec mot de passe provisoire, `user_metadata.doit_changer` : le conseiller choisit son mot de passe à la première connexion), `provisoire`, `inviter`, `reinitialiser`.
 - L'admin peut sélectionner plusieurs leads et les attribuer d'un coup.
-- Conseillers : onglet « Mes statistiques » (`vuePerf` : points, niveaux, objectif mensuel dans `user_metadata.objectif_signes`, série de jours, badges, parcours client) ; l'admin voit le « Classement du mois ». Barème dans `bilan()` : contact +3, RDV +10, offre +8, signé +40, commentaire +1.
+- Conseillers : onglet « Mes statistiques » simple (`vuePerf` : période ce mois / 30 jours / tout ; leads reçus, contactés, RDV fixés, signés, taux de conversion, RDV → signés, faux numéros, temps de réaction, leads par statut ; pas de points ni de badges). L'admin voit le « Classement du mois » (signés, RDV, taux de conversion). Calculs dans `bilan()`.
 - Statuts : nouveau, a_rappeler, injoignable, faux_numero, rdv, offre, signe, pas_interesse, doublon (liste `STATUTS` dans `espace.js`).
 
 ## Téléphone
