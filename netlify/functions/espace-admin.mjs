@@ -30,6 +30,17 @@ export const handler = async (event) => {
     if (role[0].role !== "admin") return reponse(403, { erreur: "Réservé à l'administrateur" });
 
     const corps = JSON.parse(event.body || "{}");
+    const uuid = (v) => /^[0-9a-f-]{36}$/i.test(String(v || ""));
+    if (corps.action === "supprimer") {
+      if (!uuid(corps.id)) return reponse(400, { erreur: "Conseiller inconnu" });
+      if (corps.id === utilisateur.id) return reponse(400, { erreur: "Vous ne pouvez pas supprimer votre propre compte." });
+      // Ses leads vont au conseiller choisi (ou restent non attribués)
+      const vers = uuid(corps.vers) ? corps.vers : null;
+      await fetch(URL + "/rest/v1/leads?conseiller_id=eq." + corps.id, { method: "PATCH", headers: service, body: JSON.stringify({ conseiller_id: vers }) });
+      const r = await fetch(URL + "/auth/v1/admin/users/" + corps.id, { method: "DELETE", headers: service });
+      if (!r.ok) return reponse(400, { erreur: "Suppression impossible" });
+      return reponse(200, { ok: true });
+    }
     const email = String(corps.email || "").trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reponse(400, { erreur: "E-mail invalide" });
 

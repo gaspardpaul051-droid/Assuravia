@@ -414,7 +414,7 @@
           '<td><span class="part"><span style="width:' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + '%"></span></span>' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + " %</td>" +
           '<td><label class="interrupteur"><input type="checkbox" data-actif' + (c.actif ? " checked" : "") + "><span></span></label></td>" +
           "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
-          '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button></td></tr>';
+          '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? ' <button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<div data-regles></div>' +
       '<form class="carte inviter" data-inviter><h2>Ajouter un conseiller</h2><p class="sous">Vous créez son accès avec un mot de passe provisoire à lui transmettre. À sa première connexion, il doit choisir son propre mot de passe.</p>' +
@@ -428,6 +428,8 @@
           chargerConseillers().then(function () { vueConseillers(); toast("Répartition enregistrée."); });
         });
       };
+      var sup = tr.querySelector("[data-supprimer]");
+      if (sup) sup.onclick = function () { supprimerConseiller(id); };
       tr.querySelector("[data-reinit]").onclick = function () {
         var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
         var mdp = prompt("Nouveau mot de passe provisoire pour " + c.nom + " (au moins 10 caractères). Il devra le changer à sa prochaine connexion.", motProvisoire());
@@ -529,6 +531,27 @@
     };
   }
 
+  function supprimerConseiller(id) {
+    var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
+    var nb = etat.leads.filter(function (l) { return l.conseiller_id === id; }).length;
+    var d = document.createElement("div");
+    d.className = "modale";
+    d.innerHTML = '<div class="modale__boite"><h2>Supprimer ' + esc(c.nom) + " ?</h2><p class=\"sous\">Son accès à l'espace sera supprimé définitivement. Ses commentaires restent dans l'historique des leads.</p>" +
+      (nb ? '<label>Ses ' + nb + " lead" + (nb > 1 ? "s" : "") + ' vont à<select class="select" data-vers><option value="">Personne (non attribués)</option>' + etat.conseillers.filter(function (x) { return x.id !== id; }).map(function (x) { return '<option value="' + x.id + '">' + esc(x.nom) + "</option>"; }).join("") + "</select></label>" : "") +
+      '<div class="modale__actions"><button class="btn btn--danger" data-confirmer>Supprimer définitivement</button><button class="btn" data-annuler>Annuler</button></div></div>';
+    document.body.appendChild(d);
+    d.querySelector("[data-annuler]").onclick = function () { d.remove(); };
+    d.querySelector("[data-confirmer]").onclick = function () {
+      var b = this; b.disabled = true;
+      var vers = d.querySelector("[data-vers]") ? d.querySelector("[data-vers]").value : "";
+      appelAdmin({ action: "supprimer", id: id, vers: vers }).then(function (ok) {
+        b.disabled = false;
+        if (!ok) return;
+        d.remove();
+        Promise.all([chargerConseillers(), chargerLeads(), chargerRegles()]).then(function () { vueConseillers(); toast(c.nom + " a été supprimé."); });
+      });
+    };
+  }
   function motProvisoire() {
     var a = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789", s = "";
     var v = new Uint32Array(12); (window.crypto || window.msCrypto).getRandomValues(v);

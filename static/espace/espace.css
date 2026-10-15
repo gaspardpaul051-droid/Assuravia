@@ -481,3 +481,8 @@ td:last-child { white-space: nowrap; }
 .fiche__bloc--com .fil-suivi__tete strong { font-size: .95rem; }
 .fiche__bloc--com .pastille--petit { width: 38px; height: 38px; font-size: .85rem; }
 .fiche__bloc--com .fil-suivi .auto { font-size: .9rem; }
+
+.lien--rouge { color: var(--rouge); }
+.btn--danger { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+.btn--danger:hover { background: #a3342e; border-color: #a3342e; color: #fff; }
+.modale__boite label { color: var(--texte); }
