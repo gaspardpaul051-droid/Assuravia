@@ -137,11 +137,12 @@
 </div>
 {% endif %}
 {% if ga_id or clarity_id or ads_id %}
-<div class="cookies" data-cookies hidden role="dialog" aria-label="Cookies">
-  <p>Ce site utilise des <a href="/confidentialite/#cookies">cookies</a>.</p>
-  <div class="cookies__actions">
-    <button type="button" class="cookies__non" data-cookies-choix="non">Refuser</button>
-    <button type="button" class="cookies__oui" data-cookies-choix="oui">OK</button>
+<div class="cookies" data-cookies hidden role="dialog" aria-modal="true" aria-labelledby="cookies-titre">
+  <div class="cookies__boite">
+    <p class="cookies__titre" id="cookies-titre">Avant de continuer</p>
+    <p>Nous utilisons des cookies de mesure d'audience pour améliorer le site et nos simulateurs. <a href="/confidentialite/#cookies">En savoir plus</a></p>
+    <button type="button" class="cookies__oui" data-cookies-choix="oui">OK, continuer</button>
+    <button type="button" class="cookies__non" data-cookies-choix="non">Continuer sans accepter</button>
   </div>
 </div>
 <script>
@@ -166,11 +167,11 @@
   };
   var bandeau = document.querySelector("[data-cookies]");
   var choix = lire();
-  if (choix === "oui") activer(); else if (choix !== "non") bandeau.hidden = false;
+  if (choix === "oui") activer(); else if (choix !== "non" && !/^\/(confidentialite|mentions-legales)\//.test(location.pathname)) { bandeau.hidden = false; document.documentElement.classList.add("cookies-ouvert"); }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-cookies-choix]");
-    if (b) { var v = b.getAttribute("data-cookies-choix"); ecrire(v); bandeau.hidden = true; if (v === "oui") activer(); else if (charge) location.reload(); }
-    if (e.target.closest("[data-cookies-gerer]")) bandeau.hidden = false;
+    if (b) { var v = b.getAttribute("data-cookies-choix"); ecrire(v); bandeau.hidden = true; document.documentElement.classList.remove("cookies-ouvert"); if (v === "oui") activer(); else if (charge) location.reload(); }
+    if (e.target.closest("[data-cookies-gerer]")) { bandeau.hidden = false; document.documentElement.classList.add("cookies-ouvert"); }
   });
 })();
 </script>

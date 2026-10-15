@@ -1693,14 +1693,16 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 .hypo-table .hypo-table__choisie > * { background: var(--bleu-pale); }
 
 /* Bandeau cookies (discret) */
-.cookies { position: fixed; z-index: 60; left: 16px; bottom: 16px; max-width: calc(100% - 96px); display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; border-radius: var(--r-m); background: var(--marine); color: #fff; box-shadow: var(--ombre-2); font-size: var(--t-xs); }
-.cookies p { margin: 0; color: #DCE4EF; }
-.cookies a { color: #fff; }
-.cookies__actions { display: flex; gap: 6px; flex: none; }
-.cookies__actions button { min-height: 32px; padding: 0 12px; border-radius: var(--r-plein); font: inherit; font-weight: 700; cursor: pointer; }
-.cookies__non { background: none; color: #DCE4EF; border: 1px solid rgba(255,255,255,.35); }
-.cookies__oui { background: var(--or-clair); color: var(--marine); border: 0; }
+.cookies { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; background: rgba(11, 37, 69, .55); backdrop-filter: blur(3px); }
+.cookies__boite { width: min(420px, 100%); background: #fff; color: var(--texte); border-radius: var(--r-l); border-top: 5px solid var(--or); box-shadow: 0 24px 60px -20px rgba(11,37,69,.6); padding: 24px; display: grid; gap: 12px; text-align: center; }
+.cookies__boite .cookies__titre { margin: 0; font-weight: 800; font-size: var(--t-l); color: var(--marine); }
+.cookies__boite p { margin: 0; color: var(--texte-doux); font-size: var(--t-s); }
+.cookies__boite a { color: var(--bleu); }
+.cookies__oui { min-height: 52px; border: 0; border-radius: var(--r-plein); background: var(--marine); color: #fff; font: inherit; font-weight: 800; font-size: var(--t-m); cursor: pointer; }
+.cookies__oui:hover { background: var(--marine-2); }
+.cookies__non { background: none; border: 0; color: var(--texte-doux); font: inherit; font-size: var(--t-xs); text-decoration: underline; cursor: pointer; padding: 4px; }
 .cookies[hidden] { display: none; }
+html.cookies-ouvert { overflow: hidden; }
 .pied__cookies { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
 
 /* ---------- Téléphone : tableaux, cibles tactiles ---------- */
