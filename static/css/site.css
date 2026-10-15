@@ -1693,16 +1693,20 @@ circle.hypo-graphe__ligne--saron, circle.hypo-graphe__ligne--fixe5, circle.hypo-
 .hypo-table .hypo-table__choisie > * { background: var(--bleu-pale); }
 
 /* Bandeau cookies (discret) */
-.cookies { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; background: rgba(11, 37, 69, .55); backdrop-filter: blur(3px); }
-.cookies__boite { width: min(420px, 100%); background: #fff; color: var(--texte); border-radius: var(--r-l); border-top: 5px solid var(--or); box-shadow: 0 24px 60px -20px rgba(11,37,69,.6); padding: 24px; display: grid; gap: 12px; text-align: center; }
-.cookies__boite .cookies__titre { margin: 0; font-weight: 800; font-size: var(--t-l); color: var(--marine); }
-.cookies__boite p { margin: 0; color: var(--texte-doux); font-size: var(--t-s); }
+.cookies { position: fixed; inset: 0; z-index: 200; display: flex; align-items: flex-end; justify-content: center; padding: 16px; background: rgba(11, 37, 69, .18); animation: cookies-fondu .3s ease; }
+.cookies__boite { width: min(560px, 100%); display: flex; align-items: center; gap: 14px; padding: 14px 14px 14px 18px; background: #fff; color: var(--texte); border-radius: var(--r-l); box-shadow: 0 12px 40px -12px rgba(11,37,69,.45); animation: cookies-monte .35s ease; }
+.cookies__boite p { margin: 0; flex: 1; font-size: var(--t-xs); color: var(--texte-doux); line-height: 1.45; }
 .cookies__boite a { color: var(--bleu); }
-.cookies__oui { min-height: 52px; border: 0; border-radius: var(--r-plein); background: var(--marine); color: #fff; font: inherit; font-weight: 800; font-size: var(--t-m); cursor: pointer; }
+.cookies__actions { display: flex; gap: 8px; flex: none; }
+.cookies__actions button { min-height: 40px; padding: 0 16px; border-radius: var(--r-plein); font: inherit; font-weight: 700; font-size: var(--t-xs); cursor: pointer; }
+.cookies__oui { background: var(--marine); color: #fff; border: 0; min-width: 72px; }
 .cookies__oui:hover { background: var(--marine-2); }
-.cookies__non { background: none; border: 0; color: var(--texte-doux); font: inherit; font-size: var(--t-xs); text-decoration: underline; cursor: pointer; padding: 4px; }
+.cookies__non { background: none; color: var(--texte-doux); border: 1px solid var(--bordure); }
 .cookies[hidden] { display: none; }
 html.cookies-ouvert { overflow: hidden; }
+@keyframes cookies-fondu { from { background: rgba(11,37,69,0); } }
+@keyframes cookies-monte { from { transform: translateY(24px); opacity: 0; } }
+@media (max-width: 520px) { .cookies__boite { flex-direction: column; align-items: stretch; text-align: center; } .cookies__actions button { flex: 1; } }
 .pied__cookies { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
 
 /* ---------- Téléphone : tableaux, cibles tactiles ---------- */

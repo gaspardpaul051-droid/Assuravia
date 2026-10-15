@@ -137,14 +137,16 @@
 </div>
 {% endif %}
 {% if ga_id or clarity_id or ads_id %}
-<div class="cookies" data-cookies hidden role="dialog" aria-modal="true" aria-labelledby="cookies-titre">
+<div class="cookies" data-cookies hidden role="dialog" aria-modal="true" aria-label="Cookies">
   <div class="cookies__boite">
-    <p class="cookies__titre" id="cookies-titre">Avant de continuer</p>
-    <p>Nous utilisons des cookies de mesure d'audience pour améliorer le site et nos simulateurs. <a href="/confidentialite/#cookies">En savoir plus</a></p>
-    <button type="button" class="cookies__oui" data-cookies-choix="oui">OK, continuer</button>
-    <button type="button" class="cookies__non" data-cookies-choix="non">Continuer sans accepter</button>
+    <p>🍪 Ce site utilise des cookies pour améliorer votre visite. <a href="/confidentialite/#cookies">En savoir plus</a></p>
+    <div class="cookies__actions">
+      <button type="button" class="cookies__non" data-cookies-choix="non">Non merci</button>
+      <button type="button" class="cookies__oui" data-cookies-choix="oui">OK</button>
+    </div>
   </div>
 </div>
+
 <script>
 (function () {
   var GA = {{ ga_id|tojson }}, CL = {{ clarity_id|tojson }}, ADS = {{ ads_id|tojson }};
