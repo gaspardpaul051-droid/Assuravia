@@ -502,3 +502,26 @@ td:last-child { white-space: nowrap; }
 .fiche__bloc--com textarea { min-height: 90px !important; }
 @media (max-width: 1100px) { .fiche__bloc--com .fil-suivi { max-height: 60vh; } }
 .fiche__bloc--com .commentaire-form { margin-bottom: 0; }
+
+/* Fiche plein écran, commentaires sur toute la hauteur */
+.fiche { width: 100%; }
+.fiche__tete { position: static; }
+@media (min-width: 1101px) {
+  .fiche__corps { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .fiche__col--com { position: sticky; top: 1rem; }
+  .fiche__bloc--com { height: calc(100vh - 2rem); max-height: none; display: flex; flex-direction: column; }
+  .fiche__bloc--com .fil-suivi { flex: 1; max-height: none; min-height: 0; overflow-y: auto; }
+}
+.fiche__bloc--com .suggestions { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.fiche__bloc--com .suggestions .mini { flex: none; }
+.fiche__bloc--com textarea { min-height: 72px !important; }
+.fiche__bloc--com .fil-suivi { align-content: start; }
+@media (min-width: 1101px) {
+  .fiche:not([hidden]) { display: flex; flex-direction: column; overflow: hidden; }
+  .fiche__tete, .fiche__actions { flex: none; }
+  .fiche__corps { flex: 1; min-height: 0; padding-bottom: 1.2rem; }
+  .fiche__corps > .fiche__col { height: 100%; min-height: 0; }
+  .fiche__corps > .fiche__col:first-child { overflow-y: auto; padding-right: .3rem; }
+  .fiche__col--com { position: static; }
+  .fiche__bloc--com { height: 100%; }
+}
