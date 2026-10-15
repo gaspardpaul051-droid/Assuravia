@@ -14,15 +14,21 @@
     <h1 class="cmp-page__titre">Être conseillé pour mon 3e pilier</h1>
     <p class="chapeau">Répondez à quelques questions : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.</p>
 
-    <div class="cmp-recap" data-recap-3a hidden>
-      <span class="cmp-recap__icone">{{ i.icone("tirelire") }}</span>
-      <div class="cmp-recap__texte">
-        <p class="cmp-recap__label">Votre simulation</p>
-        <p class="cmp-recap__offre"><strong>Économie d'impôts estimée</strong></p>
-        <p class="cmp-recap__detail" data-recap-3a-detail></p>
+    <div class="estim-3a" data-estim-3a aria-live="polite">
+      <p class="estim-3a__titre">{{ i.icone("calcul", "icone icone--petite") }} Votre estimation en direct</p>
+      <div class="estim-3a__chiffres">
+        <div class="estim-3a__bloc">
+          <p class="estim-3a__label">Économie d'impôts par an</p>
+          <p class="estim-3a__val" data-estim="economie">–</p>
+          <p class="estim-3a__detail" data-estim="economie-detail">Se précise à chaque réponse</p>
+        </div>
+        <div class="estim-3a__bloc estim-3a__bloc--capital">
+          <p class="estim-3a__label">Capital estimé à 65 ans</p>
+          <p class="estim-3a__val" data-estim="capital">–</p>
+          <p class="estim-3a__detail" data-estim="capital-detail">Indiquez votre date de naissance</p>
+        </div>
       </div>
-      <p class="cmp-recap__prix"><strong data-recap-3a-economie></strong><span>cette année</span></p>
-      <a class="cmp-recap__modifier" href="/particuliers/3e-pilier/" data-retour-3a>Refaire le calcul</a>
+      <p class="estim-3a__note">Estimation indicative : taux d'impôt moyens par canton, rendements hypothétiques, frais et impôt sur le retrait non déduits. Votre conseiller vous donne les chiffres exacts.</p>
     </div>
 
     <div class="panneau-form demande-etapes-form" data-etapes>
@@ -42,6 +48,16 @@
           {"v": "Épargner au-delà du 3a (3b)", "icone": "coeur", "detail": "Assurance vie, épargne libre, protection des proches"},
           {"v": "Préparer ma retraite", "icone": "horloge", "detail": "Plan de retrait, coordination avec la caisse de pension"},
           {"v": "Financer un logement", "icone": "maison", "detail": "Retrait, mise en gage, amortissement indirect"}], premier=True) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Quelle est votre date de naissance ?</legend>
+          <p class="fe__aide">Elle sert à calculer le nombre d'années jusqu'à la retraite et votre capital possible.</p>
+          {{ f.naissance("3a") }}
+          <div class="modale__actions">
+            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+          </div>
+        </fieldset>
 
         {{ question("Quelle est votre situation professionnelle ?", "statut_pro", [
           {"v": "Salarié avec caisse de pension", "icone": "utilisateur"},
@@ -80,7 +96,6 @@
             <div class="champ"><label for="nom-3a">Nom</label><input id="nom-3a" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
             {{ f.telephone("3a") }}
             <div class="champ"><label for="email-3a">E-mail</label><input id="email-3a" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
-            {{ f.naissance("3a") }}
             <div class="champ">
               <label for="canton-3a">Canton de domicile</label>
               <select id="canton-3a" name="canton" required>
@@ -115,14 +130,6 @@
 (function () {
   var q = new URLSearchParams(location.search);
   document.querySelectorAll("[data-sim-cache]").forEach(function (el) { el.value = q.get(el.getAttribute("data-sim-cache")) || ""; });
-  var eco = Number(q.get("economie"));
-  if (eco > 0) {
-    var chf = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
-    document.querySelector("[data-recap-3a-economie]").textContent = chf(Math.round(eco / 10) * 10);
-    var noms = { seul: "personne seule", couple: "couple marié", salarie: "salarié", independant: "indépendant" };
-    document.querySelector("[data-recap-3a-detail]").textContent = [q.get("canton"), noms[q.get("situation")], noms[q.get("statut")], "versement de " + chf(Number(q.get("versement")) || 0)].filter(Boolean).join(" · ");
-    document.querySelector("[data-recap-3a]").hidden = false;
-  }
   var canton = document.querySelector('.demande-3a select[name="canton"]');
   if (canton && q.get("canton")) canton.value = q.get("canton");
   // Retour au calcul : page précédente si on vient du simulateur, pour garder les valeurs
@@ -131,5 +138,55 @@
     a.addEventListener("click", function (ev) { if (depuis && history.length > 1) { ev.preventDefault(); history.back(); } });
   });
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Estimation en direct : économie d'impôts (taux du simulateur) et capital à 65 ans
+  var A = window.Assuravia3a, form = document.querySelector('form[name="3e-pilier"]'), zone = document.querySelector("[data-estim-3a]");
+  if (!A || !form || !zone) return;
+  var q = new URLSearchParams(location.search);
+  var chf = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+  var choix = function (n) { var el = form.querySelector('[name="' + n + '"]:checked'); return el ? el.value : ""; };
+  var REVENU = { "Moins de CHF 50'000": 40000, "CHF 50'000 à 80'000": 65000, "CHF 80'000 à 120'000": 100000, "CHF 120'000 à 180'000": 150000, "CHF 180'000 à 250'000": 215000, "Plus de CHF 250'000": 300000 };
+  var MOIS = { "Moins de CHF 200": 150, "CHF 200 à 400": 300, "CHF 400 à 605 (maximum 3a)": 500 };
+  var RENDEMENT = { "Prudent": [0.02, "profil prudent, hypothèse 2 % par an"], "Équilibré": [0.035, "profil équilibré, hypothèse 3,5 % par an"], "Dynamique": [0.05, "profil dynamique, hypothèse 5 % par an"] };
+  var anim = {};
+  var afficher = function (cle, val) {
+    var el = zone.querySelector('[data-estim="' + cle + '"]'), depart = Number(el.getAttribute("data-v")) || 0, t0 = null;
+    if (Math.round(depart) === Math.round(val)) { el.textContent = chf(val); return; }
+    el.setAttribute("data-v", val); cancelAnimationFrame(anim[cle]);
+    zone.classList.remove("estim-3a--maj"); void zone.offsetWidth; zone.classList.add("estim-3a--maj");
+    var pas = function (t) { if (!t0) t0 = t; var k = Math.min((t - t0) / 600, 1); el.textContent = chf(depart + (val - depart) * (1 - Math.pow(1 - k, 3))); if (k < 1) anim[cle] = requestAnimationFrame(pas); };
+    anim[cle] = requestAnimationFrame(pas);
+  };
+  var texte = function (cle, t) { zone.querySelector('[data-estim="' + cle + '"]').textContent = t; };
+  var calculer = function () {
+    var cantonEl = form.querySelector('[name="canton"]');
+    var canton = (cantonEl && cantonEl.value) || q.get("canton") || "VD";
+    var statut = choix("statut_pro");
+    var independant = statut ? statut === "Indépendant sans caisse de pension" : q.get("statut") === "independant";
+    var famille = choix("situation_familiale");
+    var couple = famille ? famille === "Marié ou en partenariat enregistré" : q.get("situation") === "couple";
+    var revenu = REVENU[choix("revenu_annuel")] || Number(q.get("revenu")) || 85000;
+    var plafond = independant ? Math.min(A.MAX_INDEPENDANT, revenu * 0.2) : A.MAX_SALARIE;
+    var ep = choix("epargne_mensuelle"), versement = MOIS[ep] ? Math.min(MOIS[ep] * 12, plafond) : plafond;
+    var taux = A.tauxMarginal(canton, revenu * 0.85 * (couple ? 0.62 : 1)) / 100;
+    var eco = Math.round(versement * taux / 10) * 10;
+    afficher("economie", eco);
+    texte("economie-detail", "pour " + chf(versement) + " versés par an" + (choix("revenu_annuel") || q.get("revenu") ? "" : " (revenu à préciser)"));
+    var naissance = form.querySelector('[name="date_naissance"]').value;
+    var age = naissance ? Math.floor((Date.now() - new Date(naissance).getTime()) / 31557600000) : 0;
+    if (age >= 16 && age < 65) {
+      var annees = 65 - age, r = RENDEMENT[choix("profil_risque")] || [0.035, "hypothèse 3,5 % par an"], k = 0;
+      for (var n = 0; n < annees; n++) k = (k + versement) * (1 + r[0]);
+      afficher("capital", Math.round(k / 100) * 100);
+      texte("capital-detail", "en " + annees + " ans, " + r[1] + ". Soit environ " + chf(Math.round(eco * annees / 100) * 100) + " d'impôts en moins d'ici là.");
+    } else if (age >= 65) {
+      texte("capital", "–"); texte("capital-detail", "Votre conseiller étudie avec vous le retrait de votre 3e pilier.");
+    }
+  };
+  form.addEventListener("change", calculer);
+  form.addEventListener("input", calculer);
+  calculer();
+});
 </script>
 {% endblock %}

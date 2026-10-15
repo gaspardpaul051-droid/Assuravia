@@ -1945,3 +1945,27 @@ html.cookies-ouvert { overflow: hidden; }
   .p3-avantages, .p3-ages, .p3-trio, .p3-erreurs, .p3-verif { grid-template-columns: 1fr; }
   .p3-corps .p3-piliers { grid-template-columns: 1fr; }
 }
+/* 3e pilier : estimation en direct sur la page de demande */
+.estim-3a { position: relative; margin: 0 0 var(--e-5); padding: var(--e-4) var(--e-5); border-radius: var(--r-l); background: linear-gradient(135deg, var(--marine), #123A6B); color: #fff; box-shadow: var(--ombre-2); border-bottom: 4px solid var(--or-clair); }
+.estim-3a__titre { display: flex; align-items: center; gap: 8px; margin: 0 0 var(--e-3); font-size: var(--t-xs); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--or-clair); }
+.estim-3a__chiffres { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-4); }
+.estim-3a__bloc + .estim-3a__bloc { padding-left: var(--e-4); border-left: 1px solid rgba(255,255,255,.18); }
+.estim-3a__label { margin: 0; font-size: var(--t-s); color: #C9D5E6; font-weight: 600; }
+.estim-3a__val { margin: 2px 0; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; line-height: 1.1; color: #fff; font-variant-numeric: tabular-nums; }
+.estim-3a__bloc--capital .estim-3a__val { color: var(--or-clair); }
+.estim-3a__detail { margin: 0; font-size: var(--t-xs); color: #C9D5E6; line-height: 1.45; }
+.estim-3a__note { margin: var(--e-3) 0 0; font-size: 11px; line-height: 1.4; color: #9FB2CC; }
+.estim-3a--maj { animation: estim-pulse .6s ease; }
+@keyframes estim-pulse { 0% { box-shadow: 0 0 0 0 rgba(226,190,82,.6); } 100% { box-shadow: 0 0 0 14px rgba(226,190,82,0); } }
+@media (max-width: 600px) {
+  .estim-3a { position: fixed; top: auto; bottom: 0; left: 0; right: 0; z-index: 60; margin: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-radius: 18px 18px 0 0; border-bottom: 0; border-top: 3px solid var(--or-clair); }
+  .estim-3a__titre { margin-bottom: 4px; font-size: 10px; }
+  .estim-3a__chiffres { gap: var(--e-3); }
+  .estim-3a__bloc + .estim-3a__bloc { padding-left: var(--e-3); }
+  .estim-3a__val { font-size: 1.3rem; }
+  .estim-3a__label { font-size: 11px; }
+  .estim-3a__detail, .estim-3a__note { display: none; }
+  .demande-3a { padding-bottom: 120px; }
+  body:has(.estim-3a) .contact-volant { bottom: 108px; }
+}
+@media (prefers-reduced-motion: reduce) { .estim-3a--maj { animation: none; } }

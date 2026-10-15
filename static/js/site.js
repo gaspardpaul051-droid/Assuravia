@@ -1061,6 +1061,9 @@
     return t[t.length - 1];
   }
 
+  // Réutilisé par l'estimation en direct de /particuliers/3e-pilier/demande/
+  window.Assuravia3a = { tauxMarginal: tauxMarginal, MAX_SALARIE: MAX_SALARIE, MAX_INDEPENDANT: MAX_INDEPENDANT };
+
   document.querySelectorAll("[data-simulateur]").forEach(function (sim) {
     var get = function (n) { return sim.querySelector('[data-sim="' + n + '"]'); };
     var sortie = function (n) { return sim.querySelector('[data-sim-sortie="' + n + '"]'); };
