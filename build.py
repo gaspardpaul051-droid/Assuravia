@@ -31,6 +31,8 @@ WHATSAPP = "41782653473"
 # Mesure d'audience : laisser vide pour désactiver. Chargées seulement après accord du visiteur (bandeau cookies).
 GA_ID = "G-R2RMM7B9GV"          # Google Analytics 4, par exemple "G-ABC123XYZ"
 CLARITY_ID = "yxnykqujjc"     # Microsoft Clarity, par exemple "abcd1234ef"
+ADS_ID = "AW-18207426103"     # Google Ads (balise Google), chargée après accord cookies
+ADS_CONV = ""                 # Libellé de conversion Google Ads, par exemple "AW-18207426103/AbCdEfGh" (vide = conversion importée depuis GA4)
 GSC_VERIF = ""      # Google Search Console : contenu de la balise meta google-site-verification
 
 MOIS = [
@@ -318,6 +320,8 @@ def main() -> None:
         whatsapp=WHATSAPP,
         ga_id=GA_ID,
         clarity_id=CLARITY_ID,
+        ads_id=ADS_ID,
+        ads_conv=ADS_CONV,
         gsc_verif=GSC_VERIF,
         cantons=CANTONS,
         groupes=GROUPES,

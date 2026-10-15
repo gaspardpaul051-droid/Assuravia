@@ -262,6 +262,7 @@
     var f = e.target;
     if (f.matches && f.matches("form[data-lead]") && typeof window.gtag === "function") {
       window.gtag("event", "generate_lead", { form_name: f.getAttribute("name"), page_path: location.pathname });
+      if (window.ADS_CONV) window.gtag("event", "conversion", { send_to: window.ADS_CONV });
     }
   }, true);
 

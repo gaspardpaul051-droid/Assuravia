@@ -30,7 +30,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Source : BNS, cube `zikrepro` (taux des nouveaux contrats : moyenne, 1er et 3e quartile). Mise à jour automatique chaque lundi par `.github/workflows/taux-hypothecaires.yml`, qui lance `python3 outils/maj_taux_hypothecaires.py` et pousse le JSON s'il a changé. Toujours citer la source BNS.
 
 ## Mesure d'audience et contact
-- `build.py` : `WHATSAPP` (41782653473), `GA_ID` (Google Analytics 4), `CLARITY_ID` (Microsoft Clarity), `GSC_VERIF` (Google Search Console). Vides = désactivés. GA et Clarity ne se chargent qu'après « Accepter » dans le bandeau cookies (`base.html`) ; lien « Gérer les cookies » dans le pied de page. Les formulaires ont `data-clarity-mask`.
+- `build.py` : `WHATSAPP` (41782653473), `GA_ID` (Google Analytics 4), `CLARITY_ID` (Microsoft Clarity), `ADS_ID` (balise Google Ads AW-18207426103) et `ADS_CONV` (libellé de conversion, envoyé avec `generate_lead` s'il est rempli), `GSC_VERIF` (Google Search Console). Vides = désactivés. GA et Clarity ne se chargent qu'après « Accepter » dans le bandeau cookies (`base.html`) ; lien « Gérer les cookies » dans le pied de page. Les formulaires ont `data-clarity-mask`.
 - Éditeur : Assuravia Sàrl, 33 chemin Charles-Poluzzi, 1227 Carouge, info@assuravia.ch. La plateforme transmet les demandes à des compagnies, courtiers et conseillers agréés ; elle n'est pas intermédiaire d'assurance.
 
 ## Espace conseillers (CRM des leads)
