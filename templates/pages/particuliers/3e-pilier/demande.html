@@ -1,16 +1,18 @@
 {% set noindex = true %}
 {% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
 {% block title %}Être conseillé pour mon 3e pilier | Assuravia{% endblock %}
-{% block description %}Un conseiller vérifie votre calcul, vous présente les solutions bancaires et d'assurance, et vous aide à verser avant le 31 décembre.{% endblock %}
+{% block description %}Quelques questions sur votre situation, puis un conseiller fait le point sur votre 3e pilier : impôts, rachats, banque ou assurance. Gratuit et sans engagement.{% endblock %}
 {% block content %}
-<section class="cmp-page demande-3a">
+<section class="cmp-page demande-page demande-3a">
   <div class="cadre cadre--etroit">
     <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/3e-pilier/" data-retour-3a>3e pilier</a></nav>
-    <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Demande de conseil</p>
+    <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Bilan 3e pilier gratuit</p>
     <h1 class="cmp-page__titre">Être conseillé pour mon 3e pilier</h1>
-    <p class="chapeau">Un conseiller vérifie votre calcul, vous présente les solutions (banque ou assurance) et vous aide à verser avant le 31 décembre. Gratuit et sans engagement.</p>
+    <p class="chapeau">Répondez à quelques questions : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.</p>
 
     <div class="cmp-recap" data-recap-3a hidden>
       <span class="cmp-recap__icone">{{ i.icone("tirelire") }}</span>
@@ -23,8 +25,82 @@
       <a class="cmp-recap__modifier" href="/particuliers/3e-pilier/" data-retour-3a>Refaire le calcul</a>
     </div>
 
-    <div class="panneau-form">
-      {% include "partials/form-3a.html" %}
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir("3e-pilier", "3e-pilier") }}
+        <input type="hidden" name="sim_canton" data-sim-cache="canton">
+        <input type="hidden" name="sim_situation" data-sim-cache="situation">
+        <input type="hidden" name="sim_statut" data-sim-cache="statut">
+        <input type="hidden" name="sim_revenu" data-sim-cache="revenu">
+        <input type="hidden" name="sim_versement" data-sim-cache="versement">
+        <input type="hidden" name="sim_economie" data-sim-cache="economie">
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {{ question("Qu'est-ce qui vous amène ?", "besoin", [
+          {"v": "Ouvrir un 3e pilier", "icone": "tirelire", "detail": "Je n'en ai pas encore"},
+          {"v": "Optimiser mon 3e pilier", "icone": "courbe", "detail": "J'en ai un, je veux vérifier qu'il est bien placé"},
+          {"v": "Rattraper des années", "icone": "fleches", "detail": "Rachat des lacunes depuis 2025"},
+          {"v": "Épargner au-delà du 3a (3b)", "icone": "coeur", "detail": "Assurance vie, épargne libre, protection des proches"},
+          {"v": "Préparer ma retraite", "icone": "horloge", "detail": "Plan de retrait, coordination avec la caisse de pension"},
+          {"v": "Financer un logement", "icone": "maison", "detail": "Retrait, mise en gage, amortissement indirect"}], premier=True) }}
+
+        {{ question("Quelle est votre situation professionnelle ?", "statut_pro", [
+          {"v": "Salarié avec caisse de pension", "icone": "utilisateur"},
+          {"v": "Indépendant sans caisse de pension", "icone": "mallette"},
+          {"v": "Indépendant avec caisse de pension", "icone": "mallette"},
+          {"v": "Frontalier", "icone": "avion"},
+          {"v": "Sans activité lucrative ou retraité", "icone": "horloge"}], aide="Le plafond 3a dépend de votre affiliation à une caisse de pension.") }}
+
+        {{ question("Quelle est votre situation familiale ?", "situation_familiale", ["Célibataire", "Marié ou en partenariat enregistré", "En concubinage", "Divorcé ou séparé", "Veuf"]) }}
+
+        {{ question("Avez-vous des enfants à charge ?", "enfants", ["Non", "1 enfant", "2 enfants", "3 enfants ou plus"]) }}
+
+        {{ question("Quel est votre revenu annuel brut ?", "revenu_annuel", ["Moins de CHF 50'000", "CHF 50'000 à 80'000", "CHF 80'000 à 120'000", "CHF 120'000 à 180'000", "CHF 180'000 à 250'000", "Plus de CHF 250'000"], aide="Revenu de votre ménage s'il s'agit d'une déclaration commune. Une fourchette suffit.") }}
+
+        {{ question("Combien payez-vous d'impôts par an, environ ?", "impots_annuels", ["Moins de CHF 5'000", "CHF 5'000 à 10'000", "CHF 10'000 à 20'000", "CHF 20'000 à 40'000", "Plus de CHF 40'000", "Je ne sais pas"], aide="Impôt fédéral, cantonal et communal. Il figure sur votre dernier bordereau.") }}
+
+        {{ question("À combien s'élève votre épargne et votre fortune ?", "fortune", ["Moins de CHF 20'000", "CHF 20'000 à 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "Plus de CHF 500'000", "Je préfère ne pas répondre"], aide="Comptes, placements et 3e pilier, hors immobilier.") }}
+
+        {{ question("Avez-vous déjà un 3e pilier ?", "pilier_actuel", ["Non, pas encore", "Oui, un compte 3a bancaire", "Oui, en fonds de placement", "Oui, une assurance 3a", "Oui, plusieurs solutions", "Je ne sais pas"]) }}
+
+        {{ question("Combien pourriez-vous épargner par mois ?", "epargne_mensuelle", ["Moins de CHF 200", "CHF 200 à 400", "CHF 400 à 605 (maximum 3a)", "Plus de CHF 605", "Je ne sais pas encore"], aide="CHF 605 par mois correspondent environ au maximum 3a de CHF 7'258 par an.") }}
+
+        {{ question("Face aux variations de la bourse, vous êtes plutôt…", "profil_risque", [
+          {"v": "Prudent", "detail": "Je préfère la sécurité, même avec un rendement faible"},
+          {"v": "Équilibré", "detail": "J'accepte quelques variations pour un meilleur rendement"},
+          {"v": "Dynamique", "detail": "Je vise la croissance à long terme et j'accepte les baisses passagères"},
+          {"v": "Je ne sais pas", "detail": "Le conseiller m'aidera à le déterminer"}]) }}
+
+        {{ question("Qu'est-ce qui compte le plus pour vous ?", "priorites", ["Payer moins d'impôts", "Préparer ma retraite", "Protéger mes proches", "Acheter un logement", "Faire fructifier mon épargne", "Garder mon argent disponible"], type="checkbox", aide="Plusieurs réponses possibles.") }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <p class="fe__aide">Votre conseiller prépare votre bilan avec vos réponses et vous rappelle au moment choisi.</p>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-3a">Prénom</label><input id="prenom-3a" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-3a">Nom</label><input id="nom-3a" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("3a") }}
+            <div class="champ"><label for="email-3a">E-mail</label><input id="email-3a" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+            {{ f.naissance("3a") }}
+            <div class="champ">
+              <label for="canton-3a">Canton de domicile</label>
+              <select id="canton-3a" name="canton" required>
+                <option value="">Choisir…</option>
+                {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="champ">
+              <label for="moment-3a">Quand vous rappeler ?</label>
+              <select id="moment-3a" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          <div class="champ">
+            <label for="message-3a">Une précision ? <span class="facultatif">(facultatif)</span></label>
+            <textarea id="message-3a" name="message" placeholder="Ex. J'ai une assurance 3a depuis 2015 et je ne sais pas si elle est encore adaptée."></textarea>
+          </div>
+          {{ f.fermer("Recevoir mon bilan 3e pilier", "3a") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
     </div>
     <ul class="funnel__garanties">
       <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
@@ -47,11 +123,6 @@
     document.querySelector("[data-recap-3a-detail]").textContent = [q.get("canton"), noms[q.get("situation")], noms[q.get("statut")], "versement de " + chf(Number(q.get("versement")) || 0)].filter(Boolean).join(" · ");
     document.querySelector("[data-recap-3a]").hidden = false;
   }
-  // Le titre du formulaire est déjà celui de la page
-  var titre = document.getElementById("conseil-3a");
-  if (titre) titre.textContent = "Vos coordonnées";
-  var intro = document.querySelector(".demande-3a .formulaire__intro");
-  if (intro) intro.remove();
   var canton = document.querySelector('.demande-3a select[name="canton"]');
   if (canton && q.get("canton")) canton.value = q.get("canton");
   // Retour au calcul : page précédente si on vient du simulateur, pour garder les valeurs

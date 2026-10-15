@@ -7,7 +7,15 @@
   ("Quand puis-je retirer mon 3e pilier 3a ?", "Au plus tôt 5 ans avant l'âge de référence AVS, et au plus tard 5 ans après si vous continuez de travailler. Un retrait anticipé est possible pour acheter ou amortir votre logement principal, vous mettre à votre compte, quitter définitivement la Suisse, racheter des années dans votre caisse de pension ou en cas de rente d'invalidité entière."),
   ("Faut-il ouvrir plusieurs comptes 3a ?", "Souvent oui. Un compte 3a se retire en une seule fois. Avec plusieurs comptes, vous pouvez échelonner les retraits sur plusieurs années, ce qui peut réduire l'impôt sur le capital. Le conseiller vous indique ce qui est pertinent dans votre canton."),
   ("Puis-je rattraper les années où je n'ai pas versé ?", "Oui, depuis la réforme entrée en vigueur en 2025. Le premier rachat est possible en 2026, pour une lacune de l'année 2025. Il faut avoir eu un revenu soumis à l'AVS l'année de la lacune et l'année du rachat, et avoir d'abord versé le maximum de l'année en cours. Chaque année, le rachat est limité à CHF 7'258 et il est entièrement déductible."),
+  ("Puis-je changer mon 3e pilier de banque ou d'assureur ?", "Un compte 3a bancaire peut en général être transféré vers un autre prestataire. Pour une assurance 3a, une résiliation avant terme peut faire perdre une partie de l'épargne : faites d'abord calculer la valeur de rachat et comparez avec ce que vous gardez en continuant."),
   ("Je suis frontalier, puis-je déduire un 3e pilier ?", "Cela dépend de votre statut fiscal (imposition à la source, quasi-résident ou non). Indiquez-le au conseiller : il vérifie si la déduction s'applique à votre situation.")
+] %}
+{% set sommaire = [
+  ("essentiel", "L'essentiel"), ("trois-piliers", "Les 3 piliers"), ("3a-ou-3b", "3a ou 3b ?"), ("avantages", "Ce que vous y gagnez"),
+  ("erreurs", "Les erreurs à éviter"), ("selon-age", "Que faire selon votre âge"), ("banque-assurance", "Banque ou assurance"),
+  ("logement", "3e pilier et logement"), ("rachat", "Rattraper les années"), ("retrait", "Retirer son 3e pilier"),
+  ("conseiller", "Ce que vérifie le conseiller"), ("pour-qui", "Est-ce pour vous ?"), ("quiz-titre", "Vrai ou faux"),
+  ("questions-frequentes", "Questions fréquentes"), ("capital", "Simuler votre capital")
 ] %}
 {% block theme %}prive{% endblock %}
 {% block title %}3e pilier 3a et 3b : vos impôts 2026 en 2 min | Assuravia{% endblock %}
@@ -16,12 +24,13 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{% for q, r in faq %}{"@type":"Question","name":{{ q|tojson }},"acceptedAnswer":{"@type":"Answer","text":{{ r|tojson }}}}{% if not loop.last %},{% endif %}{% endfor %}]}</script>
 {% endblock %}
 {% block content %}
+<div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
 <section class="produit produit--simple p3-hero">
   <div class="cadre">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span>3e pilier</span></nav>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span aria-current="page">3e pilier</span></nav>
     <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Prévoyance privée</p>
     <h1>3e pilier : combien d'impôts allez-vous économiser en 2026 ?</h1>
-    <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation : le calcul se met à jour immédiatement, puis découvrez ci-dessous comment le 3a et le 3b préparent votre retraite.</p>
+    <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation : le calcul se met à jour immédiatement. Plus bas, tout ce qu'il faut savoir sur le 3a et le 3b pour faire les bons choix.</p>
     {% with formulaire_separe=true %}{% include "partials/simulateur-3a.html" %}{% endwith %}
   </div>
 </section>
@@ -35,190 +44,286 @@
 </section>
 
 <section class="bloc">
-  <div class="cadre">
-    <div class="bloc__entete"><p class="surtitre">Comprendre en 1 minute</p><h2>Le 3e pilier, la part de votre retraite qui dépend de vous</h2><p>La prévoyance suisse repose sur trois piliers. Les deux premiers sont obligatoires pour un salarié. Le troisième est volontaire : c'est lui qui comble l'écart entre votre dernier salaire et vos rentes.</p></div>
-    <ol class="p3-piliers">
-      <li class="p3-pilier">
-        <span class="p3-pilier__num">1</span>
-        <h3>AVS / AI</h3>
-        <p class="p3-pilier__role">Couvrir les besoins vitaux</p>
-        <p>Obligatoire pour toute personne qui vit ou travaille en Suisse. Financée par les cotisations prélevées sur le salaire.</p>
-      </li>
-      <li class="p3-pilier">
-        <span class="p3-pilier__num">2</span>
-        <h3>Caisse de pension (LPP)</h3>
-        <p class="p3-pilier__role">Maintenir votre niveau de vie</p>
-        <p>Obligatoire pour les salariés au-delà d'un certain revenu, facultative pour les indépendants. Employeur et salarié cotisent ensemble.</p>
-      </li>
-      <li class="p3-pilier p3-pilier--vous">
-        <span class="p3-pilier__num">3</span>
-        <h3>3e pilier</h3>
-        <p class="p3-pilier__role">Combler l'écart, à votre rythme</p>
-        <p>Volontaire. Il se divise en deux : le <strong>3a</strong>, encouragé fiscalement, et le <strong>3b</strong>, épargne libre.</p>
-      </li>
-    </ol>
-    <p class="p3-note">Ensemble, AVS et caisse de pension remplacent en général une partie seulement du dernier salaire. Plus votre revenu est élevé, plus l'écart à combler peut être important : c'est le rôle du 3e pilier.</p>
-  </div>
-</section>
+  <div class="cadre article__grille p3-grille">
+    <aside class="article__cote">
+      <nav class="sommaire" aria-label="Sommaire de la page">
+        <p class="sommaire__titre">Sur cette page</p>
+        <ol>
+          {% for id, titre in sommaire %}<li><a href="#{{ id }}" data-sommaire-lien>{{ titre }}</a></li>{% endfor %}
+        </ol>
+      </nav>
+      <div class="mini-cta mini-cta--prive">
+        <p>3e pilier : un conseil gratuit, sans engagement.</p>
+        <a class="bouton bouton--action bouton--petit" href="{{ demande }}">Être conseillé</a>
+      </div>
+    </aside>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre">
-    <div class="bloc__entete"><p class="surtitre">3a ou 3b ?</p><h2>Deux façons d'épargner, deux logiques différentes</h2><p>Le 3a fait baisser vos impôts mais bloque l'argent. Le 3b vous laisse libre mais déduit rarement. Beaucoup de personnes combinent les deux.</p></div>
-    <div class="p3-duo">
-      <article class="p3-carte p3-carte--3a">
-        <p class="p3-carte__tag">Pilier 3a · prévoyance liée</p>
-        <h3>Payer moins d'impôts, chaque année</h3>
-        <ul class="p3-liste">
-          <li>{{ i.icone("valide", "icone icone--petite") }} Versements <strong>entièrement déductibles</strong> du revenu imposable, impôt fédéral, cantonal et communal</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Plafond 2026 : <strong>CHF 7'258</strong> avec caisse de pension, ou <strong>20 % du revenu, au maximum CHF 36'288</strong> sans caisse de pension</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Intérêts et rendements non imposés pendant l'épargne, capital non soumis à l'impôt sur la fortune</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Imposé à part, à un taux réduit, au moment du retrait</li>
-          <li class="p3-liste__limite">{{ i.icone("cadenas", "icone icone--petite") }} Argent bloqué jusqu'à 5 ans avant l'âge AVS, sauf logement, indépendance, départ de Suisse</li>
+    <div class="article__corps p3-corps">
+      <aside class="retenir" id="essentiel" aria-labelledby="retenir-titre">
+        <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+        <ul>
+          <li>Le <strong>3a</strong> fait baisser vos impôts : jusqu'à <strong>CHF 7'258</strong> déductibles en 2026 si vous avez une caisse de pension, jusqu'à <strong>CHF 36'288</strong> si vous n'en avez pas.</li>
+          <li>Le <strong>3b</strong> est une épargne libre, sans plafond, avec libre choix des bénéficiaires, mais rarement déductible.</li>
+          <li>Depuis 2025, les années manquées se <strong>rattrapent</strong> : premier rachat possible en 2026.</li>
+          <li>Le versement doit être crédité <strong>avant le 31 décembre</strong>. Sur 20 ou 30 ans, le choix du produit (compte, fonds, assurance) pèse bien plus lourd que le moment du versement.</li>
         </ul>
-        <p class="p3-carte__pour"><strong>Idéal si</strong> vous avez un revenu soumis à l'AVS et voulez réduire vos impôts tout en préparant la retraite.</p>
-      </article>
-      <article class="p3-carte p3-carte--3b">
-        <p class="p3-carte__tag">Pilier 3b · prévoyance libre</p>
-        <h3>Épargner librement, protéger vos proches</h3>
-        <ul class="p3-liste">
-          <li>{{ i.icone("valide", "icone icone--petite") }} <strong>Pas de plafond</strong> : vous épargnez autant que vous le souhaitez</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Accès plus souple à l'argent, selon le produit choisi</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} <strong>Libre choix des bénéficiaires</strong>, utile en concubinage ou en famille recomposée</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Ouvert à tous, même sans revenu soumis à l'AVS</li>
-          <li class="p3-liste__limite">{{ i.icone("balance", "icone icone--petite") }} En général pas de déduction fiscale, sauf à <strong>Genève</strong> et à <strong>Fribourg</strong> pour certaines assurances vie, dans des limites cantonales</li>
-        </ul>
-        <p class="p3-carte__pour"><strong>Idéal si</strong> vous versez déjà le maximum en 3a, voulez protéger un partenaire ou garder de la souplesse.</p>
-      </article>
-    </div>
+      </aside>
 
-    <div class="tableau tableau--3col p3-tableau">
-      <table>
-        <thead><tr><th>En résumé</th><th>Pilier 3a</th><th>Pilier 3b</th></tr></thead>
-        <tbody>
-          <tr><td>Versement maximum</td><td data-label="Pilier 3a">CHF 7'258 (ou 20 % du revenu, max. CHF 36'288 sans caisse de pension)</td><td data-label="Pilier 3b">Aucun plafond légal</td></tr>
-          <tr><td>Déduction des impôts</td><td data-label="Pilier 3a">Oui, en totalité</td><td data-label="Pilier 3b">En général non (règles particulières à Genève et Fribourg)</td></tr>
-          <tr><td>Accès à l'argent</td><td data-label="Pilier 3a">Bloqué, sauf cas prévus par la loi</td><td data-label="Pilier 3b">Libre, selon le contrat</td></tr>
-          <tr><td>Bénéficiaires en cas de décès</td><td data-label="Pilier 3a">Ordre fixé par la loi</td><td data-label="Pilier 3b">Choisis librement</td></tr>
-          <tr><td>Formes possibles</td><td data-label="Pilier 3a">Compte, fonds de placement, assurance</td><td data-label="Pilier 3b">Épargne, placements, assurance vie</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="centre"><a class="bouton bouton--action" href="{{ demande }}">Faire le point sur mon 3a et mon 3b</a></p>
-  </div>
-</section>
+      <h2 id="trois-piliers">Le 3e pilier, la part de votre retraite qui dépend de vous</h2>
+      <p>La prévoyance suisse repose sur trois piliers. Les deux premiers sont obligatoires pour un salarié. Le troisième est volontaire : c'est lui qui comble l'écart entre votre dernier salaire et vos rentes.</p>
+      <ol class="p3-piliers">
+        <li class="p3-pilier">
+          <span class="p3-pilier__num">1</span>
+          <h3>AVS / AI</h3>
+          <p class="p3-pilier__role">Couvrir les besoins vitaux</p>
+          <p>Obligatoire pour toute personne qui vit ou travaille en Suisse.</p>
+        </li>
+        <li class="p3-pilier">
+          <span class="p3-pilier__num">2</span>
+          <h3>Caisse de pension</h3>
+          <p class="p3-pilier__role">Maintenir votre niveau de vie</p>
+          <p>Obligatoire pour les salariés au-delà d'un certain revenu, facultative pour les indépendants.</p>
+        </li>
+        <li class="p3-pilier p3-pilier--vous">
+          <span class="p3-pilier__num">3</span>
+          <h3>3e pilier</h3>
+          <p class="p3-pilier__role">Combler l'écart</p>
+          <p>Volontaire. Le <strong>3a</strong>, encouragé fiscalement, et le <strong>3b</strong>, épargne libre.</p>
+        </li>
+      </ol>
+      <p>Ensemble, AVS et caisse de pension remplacent en général une partie seulement du dernier salaire. Plus votre revenu est élevé, plus l'écart peut être important. Sans 3e pilier, c'est votre épargne personnelle, ou votre niveau de vie, qui fait la différence à la retraite.</p>
 
-<section class="bloc">
-  <div class="cadre">
-    <div class="bloc__entete"><p class="surtitre">Pourquoi s'y mettre</p><h2>Ce que le 3e pilier vous apporte</h2></div>
-    <div class="lp-avantages">
-      {% for icone, titre, texte in [
-        ("calcul", "Moins d'impôts dès cette année", "Le montant versé en 3a est retiré de votre revenu imposable. L'économie dépend de votre taux marginal : plus votre revenu est élevé, plus chaque franc versé vous fait économiser."),
-        ("courbe", "Une retraite plus confortable", "En versant chaque année, même un petit montant, vous construisez un capital qui complète vos rentes AVS et LPP, au moment où votre revenu baisse."),
-        ("maison", "Un coup de pouce pour votre logement", "Votre 3a peut financer l'achat de votre résidence principale ou amortir votre hypothèque, en avance sur la retraite."),
-        ("coeur", "Vos proches protégés", "Avec une solution d'assurance, un capital est versé à vos proches en cas de décès, et vos versements peuvent être pris en charge en cas d'invalidité."),
-        ("mallette", "Indispensable pour les indépendants", "Sans caisse de pension, le 3a devient votre principal outil de prévoyance, avec un plafond bien plus élevé : jusqu'à 20 % du revenu."),
-        ("fleches", "Un placement qui travaille", "En choisissant des fonds de placement plutôt qu'un simple compte, votre épargne peut profiter du rendement des marchés sur le long terme, avec un risque adapté à votre profil.")] %}
-      <article class="lp-avantage"><span class="lp-avantage__icone">{{ i.icone(icone) }}</span><h3>{{ titre }}</h3><p>{{ texte }}</p></article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+      <h2 id="3a-ou-3b">3a ou 3b : deux logiques différentes</h2>
+      <p>Le 3a fait baisser vos impôts mais bloque l'argent. Le 3b vous laisse libre mais déduit rarement. Beaucoup de personnes combinent les deux.</p>
+      <div class="p3-duo">
+        <article class="p3-carte p3-carte--3a">
+          <p class="p3-carte__tag">Pilier 3a · prévoyance liée</p>
+          <h3>Payer moins d'impôts, chaque année</h3>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} Versements <strong>entièrement déductibles</strong> du revenu imposable (impôt fédéral, cantonal et communal)</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Plafond 2026 : <strong>CHF 7'258</strong> avec caisse de pension, ou <strong>20 % du revenu, au maximum CHF 36'288</strong> sans</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Intérêts et rendements non imposés pendant l'épargne, capital non soumis à l'impôt sur la fortune</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Imposé à part, à un taux réduit, au moment du retrait</li>
+            <li class="p3-liste__limite">{{ i.icone("cadenas", "icone icone--petite") }} Argent bloqué jusqu'à 5 ans avant l'âge AVS, sauf cas prévus par la loi</li>
+          </ul>
+          <p class="p3-carte__pour"><strong>Idéal si</strong> vous avez un revenu soumis à l'AVS et voulez réduire vos impôts tout en préparant la retraite.</p>
+        </article>
+        <article class="p3-carte p3-carte--3b">
+          <p class="p3-carte__tag">Pilier 3b · prévoyance libre</p>
+          <h3>Épargner librement, protéger vos proches</h3>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} <strong>Pas de plafond</strong> : vous épargnez autant que vous le souhaitez</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Accès plus souple à l'argent, selon le produit choisi</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} <strong>Libre choix des bénéficiaires</strong>, utile en concubinage ou en famille recomposée</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Ouvert à tous, même sans revenu soumis à l'AVS</li>
+            <li class="p3-liste__limite">{{ i.icone("balance", "icone icone--petite") }} En général pas de déduction, sauf à <strong>Genève</strong> et à <strong>Fribourg</strong> pour certaines assurances vie, dans des limites cantonales. La valeur de rachat d'une assurance vie est soumise à l'impôt sur la fortune.</li>
+          </ul>
+          <p class="p3-carte__pour"><strong>Idéal si</strong> vous versez déjà le maximum en 3a, voulez protéger un partenaire ou garder de la souplesse.</p>
+        </article>
+      </div>
+      <div class="tableau tableau--3col p3-tableau">
+        <table>
+          <thead><tr><th>En résumé</th><th>Pilier 3a</th><th>Pilier 3b</th></tr></thead>
+          <tbody>
+            <tr><td>Versement maximum</td><td data-label="Pilier 3a">CHF 7'258, ou 20 % du revenu (max. CHF 36'288) sans caisse de pension</td><td data-label="Pilier 3b">Aucun plafond légal</td></tr>
+            <tr><td>Déduction des impôts</td><td data-label="Pilier 3a">Oui, en totalité</td><td data-label="Pilier 3b">En général non (règles particulières à Genève et Fribourg)</td></tr>
+            <tr><td>Accès à l'argent</td><td data-label="Pilier 3a">Bloqué, sauf cas prévus par la loi</td><td data-label="Pilier 3b">Libre, selon le contrat</td></tr>
+            <tr><td>Bénéficiaires en cas de décès</td><td data-label="Pilier 3a">Ordre fixé par la loi</td><td data-label="Pilier 3b">Choisis librement</td></tr>
+            <tr><td>Formes possibles</td><td data-label="Pilier 3a">Compte, fonds de placement, assurance</td><td data-label="Pilier 3b">Épargne, placements, assurance vie</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre">
-    <div class="bloc__entete"><p class="surtitre">Banque ou assurance ?</p><h2>Deux formules pour votre 3e pilier</h2><p>Les deux donnent droit à la même déduction en 3a. Ce qui change : la souplesse, la protection et la façon d'épargner.</p></div>
-    <div class="p3-duo">
-      <article class="p3-carte">
-        <p class="p3-carte__tag">{{ i.icone("tirelire", "icone icone--petite") }} Solution bancaire</p>
-        <h3>La souplesse</h3>
-        <ul class="p3-liste">
-          <li>{{ i.icone("valide", "icone icone--petite") }} Vous versez ce que vous voulez, quand vous voulez</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Compte épargne ou fonds de placement, selon votre profil de risque</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Aucun engagement de versement</li>
-          <li class="p3-liste__limite">{{ i.icone("cadenas", "icone icone--petite") }} Pas de protection en cas de décès ou d'invalidité</li>
-        </ul>
-        <p class="p3-carte__pour"><strong>Pour qui ?</strong> Revenus variables, personnes déjà bien assurées, épargnants qui veulent piloter eux-mêmes.</p>
-      </article>
-      <article class="p3-carte">
-        <p class="p3-carte__tag">{{ i.icone("bouclier", "icone icone--petite") }} Solution d'assurance</p>
-        <h3>La protection</h3>
-        <ul class="p3-liste">
-          <li>{{ i.icone("valide", "icone icone--petite") }} Capital versé à vos proches en cas de décès</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Libération du paiement des primes en cas d'invalidité, selon le contrat</li>
-          <li>{{ i.icone("valide", "icone icone--petite") }} Épargne régulière et disciplinée, en partie garantie selon les produits</li>
-          <li class="p3-liste__limite">{{ i.icone("horloge", "icone icone--petite") }} Engagement sur la durée : un rachat dans les premières années peut rendre moins que les primes versées</li>
-        </ul>
-        <p class="p3-carte__pour"><strong>Pour qui ?</strong> Familles, couples non mariés, propriétaires avec une hypothèque, indépendants.</p>
-      </article>
-    </div>
-    <p class="p3-note centre">Le bon choix dépend de votre âge, de votre famille et de votre capacité d'épargne. C'est précisément ce que le conseiller examine avec vous.</p>
-  </div>
-</section>
+      <h2 id="avantages">Ce que le 3e pilier vous apporte</h2>
+      <div class="lp-avantages p3-avantages">
+        {% for icone, titre, texte in [
+          ("calcul", "Moins d'impôts dès cette année", "Le montant versé en 3a est retiré de votre revenu imposable. Plus votre revenu est élevé, plus chaque franc versé vous fait économiser."),
+          ("courbe", "Une retraite plus confortable", "Un capital qui complète vos rentes AVS et caisse de pension, au moment où votre revenu baisse."),
+          ("maison", "Un coup de pouce pour votre logement", "Votre 3a peut financer l'achat de votre résidence principale ou servir à amortir votre hypothèque."),
+          ("coeur", "Vos proches protégés", "Avec une solution d'assurance, un capital est versé à vos proches en cas de décès."),
+          ("mallette", "Indispensable pour les indépendants", "Sans caisse de pension, le 3a devient votre principal outil de prévoyance, avec un plafond bien plus élevé."),
+          ("fleches", "Un placement qui travaille", "Investi en fonds plutôt que laissé sur un compte, votre 3a peut profiter du rendement des marchés sur le long terme.")] %}
+        <article class="lp-avantage"><span class="lp-avantage__icone">{{ i.icone(icone) }}</span><h3>{{ titre }}</h3><p>{{ texte }}</p></article>
+        {% endfor %}
+      </div>
 
-<section class="bloc">
-  <div class="cadre">
-    <div class="bloc__entete"><p class="surtitre">Exemples</p><h2>Trois situations, trois façons d'utiliser le 3e pilier</h2></div>
-    <div class="lp-cas">
-      {% for icone, qui, situation, sans, avec in [
-        ("utilisateur", "Sarah, 31 ans, salariée", "Elle a une caisse de pension et met de côté chaque mois, sur un compte épargne classique.", "Son épargne est imposée comme revenu et comme fortune, sans aucune déduction.", "En versant sur un 3a, elle déduit jusqu'à CHF 7'258 de son revenu en 2026 et prépare un apport pour un futur logement."),
-        ("mallette", "Julien, 44 ans, indépendant", "Il a lancé son entreprise et n'est affilié à aucune caisse de pension.", "Sa retraite repose presque uniquement sur l'AVS, et il ne profite d'aucune déduction de prévoyance.", "Sans caisse de pension, il peut verser jusqu'à 20 % de son revenu en 3a, au maximum CHF 36'288, et se protéger en cas d'invalidité."),
-        ("groupe", "Nadia et Tom, en concubinage", "Ils ont un enfant et ne sont pas mariés. Ils versent déjà le maximum en 3a.", "En cas de décès, le partenaire non marié n'est pas toujours bien protégé par l'ordre légal des bénéficiaires.", "Une assurance vie en 3b leur permet de désigner librement le partenaire comme bénéficiaire et d'épargner au-delà du plafond 3a.")] %}
-      <article class="lp-cas__carte">
-        <p class="lp-cas__qui"><span>{{ i.icone(icone) }}</span>{{ qui }}</p>
-        <p class="lp-cas__situation">{{ situation }}</p>
-        <p class="lp-cas__sans"><strong>Sans 3e pilier</strong>{{ sans }}</p>
-        <p class="lp-cas__avec"><strong>Avec le 3e pilier</strong>{{ avec }}</p>
-      </article>
-      {% endfor %}
-    </div>
-    <p class="p3-note centre">Situations données à titre d'exemple. L'économie d'impôts exacte dépend de votre revenu, de votre commune et de votre situation familiale.</p>
-  </div>
-</section>
+      <h2 id="erreurs">Six erreurs fréquentes qui coûtent cher</h2>
+      <p>Ouvrir un 3e pilier est simple. Bien l'utiliser pendant 20 ou 30 ans l'est moins. Voici ce que nos conseillers corrigent le plus souvent.</p>
+      <ol class="p3-erreurs">
+        {% for titre, texte in [
+          ("Tout garder sur un seul compte", "Un compte 3a se retire en une seule fois. Un gros capital retiré la même année est imposé à un taux plus élevé. Plusieurs comptes permettent d'échelonner les retraits."),
+          ("Laisser son 3a sur un compte épargne pendant 30 ans", "Sur un horizon long, un compte faiblement rémunéré peut laisser passer une part importante du capital possible. Le bon profil dépend de votre âge et de votre tolérance au risque."),
+          ("Signer une assurance 3a sans en comprendre le contrat", "Durée, frais, part garantie, couverture décès et invalidité : une assurance mal adaptée, résiliée dans les premières années, peut rendre moins que les primes versées."),
+          ("Oublier les rachats possibles depuis 2025", "Une année incomplète n'est plus perdue. Encore faut-il savoir quand et combien racheter, et dans quel ordre."),
+          ("Retirer 2e et 3e pilier la même année", "Les capitaux de prévoyance retirés la même année sont additionnés pour l'impôt, et ceux des époux aussi. Un plan de retrait sur plusieurs années peut alléger la facture."),
+          ("Attendre la dernière semaine de décembre", "Un versement qui arrive après le 31 décembre est déduit l'année suivante seulement. Verser plus tôt laisse aussi votre argent travailler plus longtemps.")] %}
+        <li class="p3-erreur"><h3>{{ titre }}</h3><p>{{ texte }}</p></li>
+        {% endfor %}
+      </ol>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre deux-colonnes p3-rachat">
-    <div class="texte-long">
-      <p class="surtitre">Nouveau depuis 2025</p>
-      <h2>Rattraper les années où vous n'avez pas versé</h2>
-      <p>Vous n'avez pas versé le maximum certaines années ? Depuis la réforme entrée en vigueur en 2025, vous pouvez combler ces lacunes par un rachat, lui aussi entièrement déductible.</p>
-      <ul>
-        <li><strong>Premier rachat possible en 2026</strong>, pour une lacune de l'année 2025. Seules les lacunes nées à partir de 2025 comptent, sur 10 ans au plus.</li>
-        <li>Il faut avoir eu un <strong>revenu soumis à l'AVS en Suisse</strong> l'année de la lacune et l'année du rachat.</li>
-        <li>Vous versez <strong>d'abord le maximum de l'année en cours</strong>, puis le rachat, limité à CHF 7'258 par an.</li>
-      </ul>
-    </div>
-    <div class="p3-exemple">
-      <p class="p3-exemple__titre">{{ i.icone("calcul", "icone icone--petite") }} Exemple</p>
-      <p>En 2025, Marc n'a versé que <strong>CHF 3'500</strong> sur son 3a, au lieu de CHF 7'258.</p>
-      <dl class="p3-exemple__calcul">
-        <div><dt>Lacune 2025</dt><dd>CHF 3'758</dd></div>
-        <div><dt>Versement ordinaire 2026</dt><dd>CHF 7'258</dd></div>
-        <div><dt>Rachat 2026 pour 2025</dt><dd>+ CHF 3'758</dd></div>
-        <div class="p3-exemple__total"><dt>Déductible en 2026</dt><dd>CHF 11'016</dd></div>
+      <aside class="encart encart--milieu">
+        <p class="encart__titre">Votre 3e pilier est-il bien réglé ?</p>
+        <p>Un conseiller passe en revue votre situation, vos comptes et vos contrats existants, et vous dit ce qui peut être amélioré. C'est gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="{{ demande }}">Faire vérifier mon 3e pilier</a>
+      </aside>
+
+      <h2 id="selon-age">Que faire selon votre âge ?</h2>
+      <p>Le bon 3e pilier n'est pas le même à 25 ans et à 55 ans. Votre horizon de placement change, vos priorités aussi.</p>
+      <div class="p3-ages">
+        <article class="p3-age">
+          <p class="p3-age__tranche">20 à 35 ans</p>
+          <h3>Commencer tôt</h3>
+          <ul>
+            <li>Verser même un petit montant chaque mois : le temps fait une grande partie du travail.</li>
+            <li>Avec un long horizon, envisager des fonds de placement plutôt qu'un simple compte.</li>
+            <li>Penser au projet de logement : le 3a peut servir de fonds propres.</li>
+          </ul>
+        </article>
+        <article class="p3-age">
+          <p class="p3-age__tranche">35 à 50 ans</p>
+          <h3>Optimiser et protéger</h3>
+          <ul>
+            <li>Viser le versement maximum chaque année : c'est souvent la période où l'impôt pèse le plus.</li>
+            <li>Ouvrir plusieurs comptes pour préparer des retraits échelonnés.</li>
+            <li>Avec des enfants ou un crédit, vérifier la protection en cas de décès ou d'invalidité.</li>
+          </ul>
+        </article>
+        <article class="p3-age">
+          <p class="p3-age__tranche">50 ans et plus</p>
+          <h3>Préparer la sortie</h3>
+          <ul>
+            <li>Réduire progressivement le risque des placements à l'approche du retrait.</li>
+            <li>Planifier l'ordre des retraits : 3a, caisse de pension, conjoint.</li>
+            <li>Rattraper les lacunes 3a et vérifier les rachats possibles dans la caisse de pension.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 id="banque-assurance">Banque ou assurance ?</h2>
+      <p>Les deux donnent droit à la même déduction en 3a. Ce qui change : la souplesse, la protection et la façon d'épargner.</p>
+      <div class="p3-duo">
+        <article class="p3-carte">
+          <p class="p3-carte__tag">{{ i.icone("tirelire", "icone icone--petite") }} Solution bancaire</p>
+          <h3>La souplesse</h3>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} Vous versez ce que vous voulez, quand vous voulez</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Compte épargne ou fonds de placement, selon votre profil de risque</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Aucun engagement de versement</li>
+            <li class="p3-liste__limite">{{ i.icone("cadenas", "icone icone--petite") }} Pas de protection en cas de décès ou d'invalidité</li>
+          </ul>
+          <p class="p3-carte__pour"><strong>Pour qui ?</strong> Revenus variables, personnes déjà bien assurées, épargnants qui veulent piloter eux-mêmes.</p>
+        </article>
+        <article class="p3-carte">
+          <p class="p3-carte__tag">{{ i.icone("bouclier", "icone icone--petite") }} Solution d'assurance</p>
+          <h3>La protection</h3>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} Capital versé à vos proches en cas de décès</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Libération du paiement des primes en cas d'invalidité, selon le contrat</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Épargne régulière et disciplinée, en partie garantie selon les produits</li>
+            <li class="p3-liste__limite">{{ i.icone("horloge", "icone icone--petite") }} Engagement sur la durée : un rachat dans les premières années peut rendre moins que les primes versées</li>
+          </ul>
+          <p class="p3-carte__pour"><strong>Pour qui ?</strong> Familles, couples non mariés, propriétaires avec une hypothèque, indépendants.</p>
+        </article>
+      </div>
+      <p>Le bon choix dépend de votre âge, de votre famille et de votre capacité d'épargne. Souvent, la réponse combine les deux : une part d'assurance pour la protection, une part bancaire pour la souplesse.</p>
+
+      <h2 id="logement">3e pilier et logement : trois façons de l'utiliser</h2>
+      <div class="p3-trio">
+        <article class="p3-mini"><span class="lp-avantage__icone">{{ i.icone("cle") }}</span><h3>Retrait anticipé</h3><p>Votre avoir 3a sert de fonds propres pour acheter votre résidence principale. L'argent quitte la prévoyance et le retrait est imposé.</p></article>
+        <article class="p3-mini"><span class="lp-avantage__icone">{{ i.icone("cadenas") }}</span><h3>Mise en gage</h3><p>Le 3a reste placé, mais sert de garantie à la banque. Cela peut faciliter le financement sans vider votre prévoyance.</p></article>
+        <article class="p3-mini"><span class="lp-avantage__icone">{{ i.icone("maison") }}</span><h3>Amortissement indirect</h3><p>Au lieu de rembourser directement l'hypothèque, vous versez sur un 3a mis en gage. Les versements restent déductibles, comme les intérêts hypothécaires.</p></article>
+      </div>
+      <p>Chaque solution a des effets différents sur vos impôts, votre prévoyance et votre crédit. C'est un point à regarder avec un conseiller avant de signer chez le notaire. Vous préparez un achat ? Voyez aussi notre <a href="/particuliers/comparateur-hypothecaire/">comparateur hypothécaire</a>.</p>
+
+      <h2 id="rachat">Rattraper les années où vous n'avez pas versé</h2>
+      <div class="p3-rachat">
+        <div>
+          <p>Depuis la réforme entrée en vigueur en 2025, vous pouvez combler les lacunes de votre 3a par un rachat, lui aussi entièrement déductible.</p>
+          <ul>
+            <li><strong>Premier rachat possible en 2026</strong>, pour une lacune de l'année 2025. Seules les lacunes nées à partir de 2025 comptent, sur 10 ans au plus.</li>
+            <li>Il faut avoir eu un <strong>revenu soumis à l'AVS en Suisse</strong> l'année de la lacune et l'année du rachat.</li>
+            <li>Vous versez <strong>d'abord le maximum de l'année en cours</strong>, puis le rachat, limité à CHF 7'258 par an.</li>
+          </ul>
+        </div>
+        <div class="p3-exemple">
+          <p class="p3-exemple__titre">{{ i.icone("calcul", "icone icone--petite") }} Exemple</p>
+          <p>En 2025, Marc n'a versé que <strong>CHF 3'500</strong> sur son 3a, au lieu de CHF 7'258.</p>
+          <dl class="p3-exemple__calcul">
+            <div><dt>Lacune 2025</dt><dd>CHF 3'758</dd></div>
+            <div><dt>Versement ordinaire 2026</dt><dd>CHF 7'258</dd></div>
+            <div><dt>Rachat 2026 pour 2025</dt><dd>+ CHF 3'758</dd></div>
+            <div class="p3-exemple__total"><dt>Déductible en 2026</dt><dd>CHF 11'016</dd></div>
+          </dl>
+          <a class="bouton bouton--prive" href="{{ demande }}">Vérifier mes possibilités de rachat</a>
+        </div>
+      </div>
+
+      <h2 id="retrait">Retirer votre 3a : quand et comment ?</h2>
+      <p>Votre 3a se retire <strong>au plus tôt 5 ans avant l'âge de référence AVS</strong>, et au plus tard 5 ans après si vous continuez de travailler. Avant cela, un retrait anticipé est possible dans des cas précis :</p>
+      <dl class="faits p3-faits">
+        <div><dt>{{ i.icone("maison", "icone icone--petite") }} Logement</dt><dd>Acheter votre résidence principale ou amortir son hypothèque.</dd></div>
+        <div><dt>{{ i.icone("mallette", "icone icone--petite") }} Indépendance</dt><dd>Vous mettre à votre compte.</dd></div>
+        <div><dt>{{ i.icone("avion", "icone icone--petite") }} Départ</dt><dd>Quitter définitivement la Suisse.</dd></div>
+        <div><dt>{{ i.icone("fleches", "icone icone--petite") }} Caisse de pension</dt><dd>Racheter des années dans votre 2e pilier.</dd></div>
+        <div><dt>{{ i.icone("bouclier", "icone icone--petite") }} Invalidité</dt><dd>Percevoir une rente d'invalidité entière.</dd></div>
+        <div><dt>{{ i.icone("tirelire", "icone icone--petite") }} Retraite</dt><dd>Dès 5 ans avant l'âge de référence AVS.</dd></div>
       </dl>
-      <a class="bouton bouton--prive" href="{{ demande }}">Vérifier mes possibilités de rachat</a>
+      <blockquote><p><strong>Le saviez-vous ?</strong> Un compte 3a se retire en une seule fois et le capital est imposé à part, à un taux qui augmente avec le montant. Répartir votre épargne sur plusieurs comptes permet d'échelonner les retraits sur plusieurs années et peut réduire l'impôt.</p></blockquote>
+
+      <h2 id="conseiller">Ce que votre conseiller vérifie pour vous</h2>
+      <p>Un entretien par téléphone ou en rendez-vous, pour passer en revue toute votre prévoyance privée :</p>
+      <ul class="p3-verif">
+        {% for t in [
+          "Votre économie d'impôts réelle, selon votre commune et vos autres déductions",
+          "Le montant à verser cette année et les rachats possibles",
+          "Vos comptes et contrats 3a existants : frais, rendement, garanties",
+          "Le bon équilibre entre banque et assurance pour votre famille",
+          "Votre protection en cas de décès ou d'invalidité",
+          "Un profil de placement adapté à votre âge et à votre tolérance au risque",
+          "Un plan de retrait échelonné pour la retraite",
+          "La coordination avec votre caisse de pension et votre projet de logement"] %}
+        <li>{{ i.icone("valide", "icone icone--petite") }} <span>{{ t }}</span></li>
+        {% endfor %}
+      </ul>
+      <p class="p3-cta-ligne"><a class="bouton bouton--action" href="{{ demande }}">Demander mon bilan 3e pilier gratuit</a></p>
+
+      {% with w={"pour_qui": ["Vous n'avez pas encore de 3e pilier, ou vous ne versez pas le maximum", "Votre 3e pilier dort sur un compte épargne depuis des années", "Vous avez signé une assurance 3a et ne savez plus ce qu'elle contient", "Vous prévoyez d'acheter un logement ou de prendre votre retraite d'ici 10 ans"], "theme": "prive", "bouton": "Être conseillé gratuitement", "cible": demande} %}{% include "partials/pour-qui.html" %}{% endwith %}
+
+      <section class="quiz" aria-labelledby="quiz-titre" data-quiz>
+        <h2 id="quiz-titre">Vrai ou faux ? Testez vos connaissances</h2>
+        <p class="quiz__score" aria-live="polite" data-quiz-score></p>
+        {% for aff, rep, expl in [
+          ("Pour être déduit en 2026, le versement 3a doit être crédité au plus tard le 31 décembre 2026.", "vrai", "C'est la date d'arrivée sur le compte ou la police qui compte, pas la date de l'ordre de paiement."),
+          ("Le 3b donne droit à la même déduction fiscale que le 3a, dans tous les cantons.", "faux", "Le 3b n'est en général pas déductible. Seuls Genève et Fribourg prévoient une déduction pour certaines assurances vie, dans des limites cantonales."),
+          ("Depuis 2025, on peut rattraper toutes les années sans versement des 10 dernières années.", "faux", "Seules les lacunes nées à partir de 2025 peuvent être rachetées. Le premier rachat est possible en 2026, pour 2025.")] %}
+        <div class="quiz__question" data-quiz-question data-reponse="{{ rep }}">
+          <p class="quiz__affirmation">{{ aff }}</p>
+          <div class="quiz__choix">
+            <button type="button" class="quiz__bouton" data-choix="vrai">Vrai</button>
+            <button type="button" class="quiz__bouton" data-choix="faux">Faux</button>
+          </div>
+          <p class="quiz__explication" hidden data-quiz-explication><strong data-quiz-verdict></strong> {{ expl }}</p>
+        </div>
+        {% endfor %}
+      </section>
+
+      <h2 id="questions-frequentes">Questions fréquentes</h2>
+      <div class="faq">
+        {% for q, r in faq %}
+        <details><summary>{{ q }}</summary><div class="faq__reponse"><p>{{ r }}</p></div></details>
+        {% endfor %}
+      </div>
+
+      <aside class="encart">
+        <p class="encart__titre">Être conseillé pour mon 3e pilier</p>
+        <p>Quelques questions sur votre situation, puis un conseiller vous rappelle au moment qui vous arrange. Gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="{{ demande }}">Commencer ma demande</a>
+      </aside>
     </div>
   </div>
 </section>
 
-<section class="bloc">
-  <div class="cadre texte-long">
-    <p class="surtitre">Le jour venu</p>
-    <h2>Retirer votre 3e pilier 3a : quand et comment ?</h2>
-    <p>Votre 3a se retire <strong>au plus tôt 5 ans avant l'âge de référence AVS</strong>, et au plus tard 5 ans après si vous continuez de travailler. Avant cela, un retrait anticipé est possible dans des cas précis :</p>
-    <dl class="faits p3-faits">
-      <div><dt>{{ i.icone("maison", "icone icone--petite") }} Logement</dt><dd>Acheter votre résidence principale ou amortir son hypothèque.</dd></div>
-      <div><dt>{{ i.icone("mallette", "icone icone--petite") }} Indépendance</dt><dd>Vous mettre à votre compte.</dd></div>
-      <div><dt>{{ i.icone("avion", "icone icone--petite") }} Départ</dt><dd>Quitter définitivement la Suisse.</dd></div>
-      <div><dt>{{ i.icone("fleches", "icone icone--petite") }} Caisse de pension</dt><dd>Racheter des années dans votre 2e pilier.</dd></div>
-      <div><dt>{{ i.icone("bouclier", "icone icone--petite") }} Invalidité</dt><dd>Percevoir une rente d'invalidité entière.</dd></div>
-      <div><dt>{{ i.icone("tirelire", "icone icone--petite") }} Retraite</dt><dd>Dès 5 ans avant l'âge de référence AVS.</dd></div>
-    </dl>
-    <blockquote><p><strong>Le saviez-vous ?</strong> Un compte 3a se retire en une seule fois et le capital est imposé à part, à un taux qui augmente avec le montant. Répartir votre épargne sur plusieurs comptes permet d'échelonner les retraits sur plusieurs années et peut réduire l'impôt. Le conseiller vous aide à le prévoir dès maintenant.</p></blockquote>
-  </div>
-</section>
-
-<section class="bloc bloc--capital">
+<section class="bloc bloc--capital" id="capital">
   <div class="cadre">
     <div class="bloc__entete">
       <p class="surtitre">Projection</p>
@@ -233,26 +338,11 @@
   <div class="cadre">
     <div class="bloc__entete"><h2>Comment ça se passe avec Assuravia</h2></div>
     <ol class="etapes">
-      <li><h3>Vous estimez</h3><p>Le simulateur vous montre votre économie d'impôts en 2 minutes.</p></li>
+      <li><h3>Vous répondez à quelques questions</h3><p>Votre situation, vos revenus et vos objectifs, en 2 minutes.</p></li>
       <li><h3>Un conseiller vous rappelle</h3><p>Il fait le point sur votre prévoyance : 3a, 3b, rachats, banque ou assurance.</p></li>
       <li><h3>Vous choisissez</h3><p>Vous recevez une proposition adaptée et décidez en toute tranquillité, sans engagement.</p></li>
     </ol>
     <p class="centre"><a class="bouton bouton--action" href="{{ demande }}">Être conseillé gratuitement</a></p>
-  </div>
-</section>
-
-<section class="bloc bloc--teinte">
-  <div class="cadre deux-colonnes">
-    <div>
-      <h2>Questions fréquentes</h2>
-      <p>L'essentiel sur le 3e pilier avant de vous lancer.</p>
-      <p><a class="bouton bouton--prive" href="#contenu">Refaire le calcul</a></p>
-    </div>
-    <div class="faq">
-      {% for q, r in faq %}
-      <details><summary>{{ q }}</summary><div class="faq__reponse"><p>{{ r }}</p></div></details>
-      {% endfor %}
-    </div>
   </div>
 </section>
 {% endblock %}
