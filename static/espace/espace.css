@@ -496,3 +496,9 @@ td:last-child { white-space: nowrap; }
 .a-faire .btn { margin-left: auto; }
 .barre-ligne .badge { font-size: .8rem; }
 @media (max-width: 860px) { .kpis--4 { grid-template-columns: 1fr 1fr; } }
+
+/* Fil des commentaires au-dessus de la saisie */
+.fiche__bloc--com .fil-suivi { margin-bottom: 1rem; max-height: max(180px, calc(100vh - 520px)); min-height: 0; }
+.fiche__bloc--com textarea { min-height: 90px !important; }
+@media (max-width: 1100px) { .fiche__bloc--com .fil-suivi { max-height: 60vh; } }
+.fiche__bloc--com .commentaire-form { margin-bottom: 0; }

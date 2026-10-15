@@ -318,11 +318,13 @@
       (reponses.length ? '<h4 class="sous-titre">Sa demande</h4><dl class="details">' + reponses.map(function (k) { return '<div class="details__ligne"><dt>' + esc(nomChamp(k)) + "</dt><dd>" + esc(valeurChamp(d[k])) + "</dd></div>"; }).join("") + "</dl>" : "") +
       (origine.length ? '<h4 class="sous-titre">Provenance</h4><dl class="details details--doux">' + origine.map(function (x) { return '<div class="details__ligne"><dt>' + x[0] + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "") +
       "</section></div>" +
-      '<div class="fiche__col fiche__col--com"><section class="fiche__bloc fiche__bloc--com"><h3>Suivi et commentaires <span class="compteur" data-compteur></span></h3><form class="commentaire-form" data-commenter>' +
+      '<div class="fiche__col fiche__col--com"><section class="fiche__bloc fiche__bloc--com"><h3>Suivi et commentaires <span class="compteur" data-compteur></span></h3>' +
+      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol>' +
+      '<form class="commentaire-form" data-commenter>' +
       '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
       '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
-      '<div class="commentaire-form__pied"><small>Entrée pour publier · Maj + Entrée pour aller à la ligne</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
-      '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section></div></div>';
+      '<div class="commentaire-form__pied"><small>Entrée : publier · Maj + Entrée : nouvelle ligne</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
+      '</section></div></div>';
     fiche.querySelector("[data-fermer]").onclick = fermerFiche;
     var maj = function (champs, note) {
       return sb.from("leads").update(champs).eq("id", l.id).select().single().then(function (r) {
@@ -380,7 +382,7 @@
       });
     };
     function chargerCommentaires() {
-      sb.from("commentaires").select("*").eq("lead_id", l.id).order("cree_le", { ascending: false }).then(function (r) {
+      sb.from("commentaires").select("*").eq("lead_id", l.id).order("cree_le", { ascending: true }).then(function (r) {
         var ol = fiche.querySelector("[data-commentaires]"); if (!ol) return;
         var liste = r.data || [];
         var cpt = fiche.querySelector("[data-compteur]"); if (cpt) cpt.textContent = liste.filter(function (c) { return !c.automatique; }).length || "";
@@ -389,6 +391,7 @@
           if (c.automatique) return '<li class="auto"><span class="auto__point"></span><span>' + esc(c.texte) + ' <em>· ' + esc(auteur) + ", " + depuis(c.cree_le) + "</em></span></li>";
           return '<li class="bulle' + (c.auteur_id === etat.moi.id ? " bulle--moi" : "") + '">' + avatar(auteur, "petit") + '<div class="bulle__corps"><p class="fil-suivi__tete"><strong>' + esc(auteur) + "</strong> <span>" + depuis(c.cree_le) + " · " + date(c.cree_le) + "</span></p><p class=\"bulle__texte\">" + esc(c.texte).replace(/\n/g, "<br>") + "</p></div></li>";
         }).join("") : '<li class="vide-mini">Aucun commentaire pour l\'instant. Notez ici chaque échange avec le client.</li>';
+        ol.scrollTop = ol.scrollHeight;
       });
     }
     chargerCommentaires();
