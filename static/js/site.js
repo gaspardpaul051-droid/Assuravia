@@ -262,6 +262,8 @@
     var f = e.target;
     if (f.matches && f.matches("form[data-lead]") && typeof window.gtag === "function") {
       window.gtag("event", "generate_lead", { form_name: f.getAttribute("name"), page_path: location.pathname });
+      // Événement clé déjà déclaré dans Google Analytics (repris de l'ancien site) : alimente la conversion Google Ads existante
+      window.gtag("event", "demande_confirmee", { form_name: f.getAttribute("name"), page_path: location.pathname });
       if (window.ADS_CONV) window.gtag("event", "conversion", { send_to: window.ADS_CONV });
     }
   }, true);
