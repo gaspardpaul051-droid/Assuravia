@@ -321,7 +321,7 @@
       '<div class="fiche__col fiche__col--com"><section class="fiche__bloc fiche__bloc--com"><h3>Suivi et commentaires <span class="compteur" data-compteur></span></h3><form class="commentaire-form" data-commenter>' +
       '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
       '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
-      '<div class="commentaire-form__pied"><small>Ctrl + Entrée pour publier</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
+      '<div class="commentaire-form__pied"><small>Entrée pour publier · Maj + Entrée pour aller à la ligne</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
       '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol></section></div></div>';
     fiche.querySelector("[data-fermer]").onclick = fermerFiche;
     var maj = function (champs, note) {
@@ -363,7 +363,7 @@
     var zoneTexte = form.texte;
     var ajuster = function () { zoneTexte.style.height = "auto"; zoneTexte.style.height = Math.min(zoneTexte.scrollHeight + 2, 260) + "px"; };
     zoneTexte.addEventListener("input", ajuster);
-    zoneTexte.addEventListener("keydown", function (e) { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.onsubmit(e); } });
+    zoneTexte.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.onsubmit(e); } });
     form.querySelectorAll("[data-suggestion]").forEach(function (b) {
       b.onclick = function () { zoneTexte.value = (zoneTexte.value ? zoneTexte.value.replace(/\s*$/, "") + ". " : "") + b.textContent; zoneTexte.focus(); ajuster(); };
     });
