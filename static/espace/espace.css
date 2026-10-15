@@ -525,3 +525,22 @@ td:last-child { white-space: nowrap; }
   .fiche__col--com { position: static; }
   .fiche__bloc--com { height: 100%; }
 }
+
+/* Croix de fermeture plus grande et centrée */
+.fiche .fermer { width: 52px; height: 52px; display: grid; place-items: center; padding: 0; border-radius: 50%; background: rgba(255,255,255,.18); color: #fff; align-self: center; transition: background .15s; }
+.fiche .fermer:hover { background: rgba(255,255,255,.3); }
+.fiche__tete { align-items: center; }
+
+/* Bulles compactes : plus d'historique visible */
+.fiche__bloc--com .fil-suivi { gap: .4rem; }
+.fiche__bloc--com .bulle { gap: .5rem; }
+.fiche__bloc--com .pastille--petit { width: 28px; height: 28px; font-size: .68rem; }
+.fiche__bloc--com .bulle__corps { padding: .45rem .75rem; border-radius: 4px 12px 12px 12px; }
+.fiche__bloc--com .fil-suivi__tete { font-size: .76rem; margin: 0 0 .05rem !important; }
+.fiche__bloc--com .fil-suivi__tete strong { font-size: .82rem; }
+.fiche__bloc--com .bulle__texte { font-size: .95rem; line-height: 1.4; }
+.fiche__bloc--com .fil-suivi .auto { font-size: .8rem; padding-left: .4rem; }
+.fiche__bloc--com .commentaire-form { padding: .7rem; gap: .5rem; }
+.fiche__bloc--com .mini { font-size: .8rem; padding: .3rem .65rem; }
+.fiche__bloc--com textarea { min-height: 60px !important; font-size: .98rem; }
+.fiche__bloc--com .commentaire-form__pied .btn { min-height: 40px; }
