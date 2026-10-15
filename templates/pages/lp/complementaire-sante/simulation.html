@@ -1,6 +1,5 @@
-{# Simulation des formules économiques à la carte (page publicitaire, marque Assuravie). Grille : content/complementaires-eco.json #}
+{# Simulation des formules économiques à la carte (page publicitaire, marque Assuravia). Grille : content/complementaires-eco.json #}
 {% set noindex = true %}
-{% set marque = "Assuravie" %}
 {% set complementaires = complementaires_eco %}
 {% set sim = {"id": "eco", "theme": "prive", "groupe": "particuliers", "form": "simulation-sante-eco", "produit": "complementaire-sante-eco", "produit_nom": "Complémentaires santé", "page": "/lp/complementaire-sante/", "icone": "coeur", "lca": True,
   "titre": "Complémentaire santé : estimez votre prime", "h1": "Composez votre complémentaire santé",
@@ -10,7 +9,7 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% import "partials/icones.html" as i %}
-{% block title %}{{ sim.titre }} | Assuravie{% endblock %}
+{% block title %}{{ sim.titre }} | Assuravia{% endblock %}
 {% block etapes %}
 {{ e.identite() }}
 {{ e.pour_qui_sante() }}

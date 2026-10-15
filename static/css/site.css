@@ -1761,7 +1761,7 @@ html.cookies-ouvert { overflow: hidden; }
 .merci-page .merci__actions { margin-top: var(--e-6); }
 @media (min-width: 1000px) { .lp-sante__modules { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
-/* ---------- Page publicitaire complémentaires santé (Assuravie) ---------- */
+/* ---------- Page publicitaire complémentaires santé (Assuravia) ---------- */
 .lp-sante__texte { margin-inline: auto; }
 .lp-sante__modules-detail { display: grid; gap: var(--e-5); margin-top: var(--e-5); }
 .lp-module { padding: var(--e-6); border-radius: var(--r-l); background: var(--fond); border: 1px solid var(--bordure); box-shadow: var(--ombre-1); }
@@ -1779,7 +1779,7 @@ html.cookies-ouvert { overflow: hidden; }
 .lp-sante__pourqui .icone { color: var(--succes); flex: none; margin-top: 3px; }
 @media (max-width: 640px) { .lp-module { padding: var(--e-4); } .lp-module__tete { flex-direction: column; gap: var(--e-2); } }
 
-/* Page Assuravie : départ, chiffres, prix, barre collante */
+/* Page Assuravia : départ, chiffres, prix, barre collante */
 .lp-prix { display: inline-flex; align-items: baseline; gap: 8px; margin: var(--e-4) 0 0; padding: 8px 16px; border-radius: var(--r-plein); background: var(--fond); box-shadow: var(--ombre-1); color: var(--texte-doux); font-weight: 600; }
 .lp-prix strong { font-size: 1.6rem; color: var(--succes); font-variant-numeric: tabular-nums; }
 .lp-depart__choix { display: grid; grid-template-columns: 1fr 1fr; gap: var(--e-2); margin: var(--e-4) 0; }
