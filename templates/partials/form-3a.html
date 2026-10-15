@@ -8,7 +8,7 @@
   <input type="hidden" name="sim_versement" data-sim-cache="versement">
   <input type="hidden" name="sim_economie" data-sim-cache="economie">
   {# Champs du formulaire en étapes (/particuliers/3e-pilier/demande/), déclarés ici aussi pour que Netlify les garde #}
-  {% for n in ["statut_pro", "situation_familiale", "enfants", "revenu_annuel", "impots_annuels", "fortune", "pilier_actuel", "epargne_mensuelle", "profil_risque", "priorites", "message"] %}<input type="hidden" name="{{ n }}" disabled>{% endfor %}
+  {% for n in ["statut_pro", "situation_familiale", "enfants", "revenu_annuel", "impots_annuels", "fortune", "pilier_actuel", "epargne_mensuelle", "profil_risque", "priorites", "message", "impots_annuels_inconnu", "fortune_inconnu", "epargne_mensuelle_inconnu"] %}<input type="hidden" name="{{ n }}" disabled>{% endfor %}
   <h2 class="form-titre" id="conseil-3a">Être conseillé pour mon 3e pilier</h2>
   <p class="formulaire__intro">Un conseiller vérifie votre calcul, vous explique les options (banque ou assurance) et vous aide à verser avant le 31 décembre.</p>
   <div class="champ">

@@ -2,6 +2,26 @@
 {% import "partials/icones.html" as i %}
 {% import "partials/form.html" as f %}
 {% from "partials/questions.html" import question %}
+{% macro jauge(titre, nom, aide, min, max, pas, valeur, raccourcis, apres="", passer=None) -%}
+<fieldset class="modale__etape" data-etape hidden>
+  <legend class="modale__question">{{ titre }}</legend>
+  <p class="fe__aide">{{ aide }}</p>
+  <div class="jauge-revenu" data-jauge data-apres="{{ apres }}">
+    <output class="jauge-revenu__val" for="{{ nom }}-3a" data-jauge-sortie></output>
+    <input id="{{ nom }}-3a" class="jauge-revenu__curseur" type="range" name="{{ nom }}" min="{{ min }}" max="{{ max }}" step="{{ pas }}" value="{{ valeur }}" aria-label="{{ titre }}">
+    <div class="jauge-revenu__bornes" aria-hidden="true"><span>CHF {{ "{:,}".format(min).replace(",", "'") }}</span><span>CHF {{ "{:,}".format(max).replace(",", "'") }} et plus</span></div>
+    <div class="jauge-revenu__raccourcis">
+      {% for v in raccourcis %}<button type="button" class="jauge-revenu__puce" data-jauge-valeur="{{ v }}">{{ "{:,}".format(v).replace(",", "'") }}</button>{% endfor %}
+    </div>
+    {% if passer %}<input type="hidden" name="{{ nom }}_inconnu" value="" data-jauge-inconnu>{% endif %}
+  </div>
+  <div class="modale__actions">
+    <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+    {% if passer %}<button type="button" class="jauge-revenu__passer" data-jauge-passer>{{ passer }}</button>{% endif %}
+    <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+  </div>
+</fieldset>
+{%- endmacro %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
 {% block title %}Être conseillé pour mon 3e pilier | Assuravia{% endblock %}
@@ -70,15 +90,15 @@
 
         {{ question("Avez-vous des enfants à charge ?", "enfants", ["Non", "1 enfant", "2 enfants", "3 enfants ou plus"]) }}
 
-        {{ question("Quel est votre revenu annuel brut ?", "revenu_annuel", ["Moins de CHF 50'000", "CHF 50'000 à 80'000", "CHF 80'000 à 120'000", "CHF 120'000 à 180'000", "CHF 180'000 à 250'000", "Plus de CHF 250'000"], aide="Revenu de votre ménage s'il s'agit d'une déclaration commune. Une fourchette suffit.") }}
+        {{ jauge("Quel est votre revenu annuel brut ?", "revenu_annuel", "Revenu de votre ménage s'il s'agit d'une déclaration commune. Faites glisser la jauge, une estimation suffit.", 20000, 400000, 5000, 85000, [50000, 80000, 120000, 180000, 250000]) }}
 
-        {{ question("Combien payez-vous d'impôts par an, environ ?", "impots_annuels", ["Moins de CHF 5'000", "CHF 5'000 à 10'000", "CHF 10'000 à 20'000", "CHF 20'000 à 40'000", "Plus de CHF 40'000", "Je ne sais pas"], aide="Impôt fédéral, cantonal et communal. Il figure sur votre dernier bordereau.") }}
+        {{ jauge("Combien payez-vous d'impôts par an, environ ?", "impots_annuels", "Impôt fédéral, cantonal et communal. Il figure sur votre dernier bordereau.", 0, 80000, 500, 10000, [3000, 8000, 15000, 25000, 40000], passer="Je ne sais pas") }}
 
-        {{ question("À combien s'élève votre épargne et votre fortune ?", "fortune", ["Moins de CHF 20'000", "CHF 20'000 à 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "Plus de CHF 500'000", "Je préfère ne pas répondre"], aide="Comptes, placements et 3e pilier, hors immobilier.") }}
+        {{ jauge("À combien s'élève votre épargne et votre fortune ?", "fortune", "Comptes, placements et 3e pilier, hors immobilier.", 0, 2000000, 10000, 50000, [20000, 100000, 250000, 500000, 1000000], passer="Je préfère ne pas répondre") }}
 
         {{ question("Avez-vous déjà un 3e pilier ?", "pilier_actuel", ["Non, pas encore", "Oui, un compte 3a bancaire", "Oui, en fonds de placement", "Oui, une assurance 3a", "Oui, plusieurs solutions", "Je ne sais pas"]) }}
 
-        {{ question("Combien pourriez-vous épargner par mois ?", "epargne_mensuelle", ["Moins de CHF 200", "CHF 200 à 400", "CHF 400 à 605 (maximum 3a)", "Plus de CHF 605", "Je ne sais pas encore"], aide="CHF 605 par mois correspondent environ au maximum 3a de CHF 7'258 par an.") }}
+        {{ jauge("Combien pourriez-vous épargner par mois ?", "epargne_mensuelle", "CHF 605 par mois correspondent environ au maximum 3a de CHF 7'258 par an.", 50, 1500, 25, 400, [200, 400, 605, 1000], apres=" par mois", passer="Je ne sais pas encore") }}
 
         {{ question("Face aux variations de la bourse, vous êtes plutôt…", "profil_risque", [
           {"v": "Prudent", "detail": "Je préfère la sécurité, même avec un rendement faible"},
@@ -146,8 +166,35 @@ document.addEventListener("DOMContentLoaded", function () {
   var q = new URLSearchParams(location.search);
   var chf = function (x) { return "CHF " + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
   var choix = function (n) { var el = form.querySelector('[name="' + n + '"]:checked'); return el ? el.value : ""; };
-  var REVENU = { "Moins de CHF 50'000": 40000, "CHF 50'000 à 80'000": 65000, "CHF 80'000 à 120'000": 100000, "CHF 120'000 à 180'000": 150000, "CHF 180'000 à 250'000": 215000, "Plus de CHF 250'000": 300000 };
-  var MOIS = { "Moins de CHF 200": 150, "CHF 200 à 400": 300, "CHF 400 à 605 (maximum 3a)": 500 };
+  // Jauges (revenu, impôts, fortune, épargne) : montant affiché, raccourcis, « je ne sais pas »
+  form.querySelectorAll("[data-jauge]").forEach(function (z) {
+    var curseur = z.querySelector("input[type=range]"), sortie = z.querySelector("[data-jauge-sortie]"), inconnu = z.querySelector("[data-jauge-inconnu]");
+    var etape = z.closest("[data-etape]"), passer = etape.querySelector("[data-jauge-passer]");
+    var maj = function () {
+      var v = Number(curseur.value);
+      sortie.textContent = chf(v) + (v >= Number(curseur.max) ? " et plus" : "") + (z.getAttribute("data-apres") || "");
+      curseur.style.setProperty("--rempli", ((v - curseur.min) / (curseur.max - curseur.min) * 100) + "%");
+      z.querySelectorAll("[data-jauge-valeur]").forEach(function (b) { b.classList.toggle("actif", Number(b.getAttribute("data-jauge-valeur")) === v); });
+    };
+    etape.querySelector("[data-etape-suivante]").addEventListener("click", function () { etape.setAttribute("data-vu", "oui"); form.dispatchEvent(new Event("change")); });
+    curseur.addEventListener("input", function () { etape.setAttribute("data-vu", "oui"); if (inconnu) inconnu.value = ""; z.classList.remove("jauge-revenu--inconnu"); maj(); });
+    z.querySelectorAll("[data-jauge-valeur]").forEach(function (b) {
+      b.addEventListener("click", function () { curseur.value = b.getAttribute("data-jauge-valeur"); curseur.dispatchEvent(new Event("input", { bubbles: true })); });
+    });
+    if (passer) passer.addEventListener("click", function () {
+      inconnu.value = "oui"; z.classList.add("jauge-revenu--inconnu");
+      form.dispatchEvent(new Event("change"));
+      etape.querySelector("[data-etape-suivante]").click();
+    });
+    if (curseur.name === "revenu_annuel" && Number(q.get("revenu")) > 0) curseur.value = Math.round(Number(q.get("revenu")) / 5000) * 5000;
+    maj();
+  });
+  var jauge = form.querySelector('[name="revenu_annuel"]');
+  // « Je ne sais pas » : le montant de la jauge n'est pas envoyé
+  document.addEventListener("submit", function (ev) {
+    if (ev.target !== form) return;
+    form.querySelectorAll("[data-jauge-inconnu]").forEach(function (h) { var c = h.closest("[data-jauge]").querySelector("input[type=range]"); c.disabled = h.value === "oui"; });
+  }, true);
   var RENDEMENT = { "Prudent": [0.02, "profil prudent, hypothèse 2 % par an"], "Équilibré": [0.035, "profil équilibré, hypothèse 3,5 % par an"], "Dynamique": [0.05, "profil dynamique, hypothèse 5 % par an"] };
   var anim = {};
   var afficher = function (cle, val) {
@@ -166,13 +213,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var independant = statut ? statut === "Indépendant sans caisse de pension" : q.get("statut") === "independant";
     var famille = choix("situation_familiale");
     var couple = famille ? famille === "Marié ou en partenariat enregistré" : q.get("situation") === "couple";
-    var revenu = REVENU[choix("revenu_annuel")] || Number(q.get("revenu")) || 85000;
+    var revenu = Number(jauge.value) || 85000;
     var plafond = independant ? Math.min(A.MAX_INDEPENDANT, revenu * 0.2) : A.MAX_SALARIE;
-    var ep = choix("epargne_mensuelle"), versement = MOIS[ep] ? Math.min(MOIS[ep] * 12, plafond) : plafond;
+    var epEl = form.querySelector('[name="epargne_mensuelle"]'), epInc = form.querySelector('[name="epargne_mensuelle_inconnu"]');
+    var epVu = epEl.closest("[data-etape]").getAttribute("data-vu") === "oui" && !(epInc && epInc.value);
+    var versement = epVu ? Math.min(Number(epEl.value) * 12, plafond) : plafond;
     var taux = A.tauxMarginal(canton, revenu * 0.85 * (couple ? 0.62 : 1)) / 100;
     var eco = Math.round(versement * taux / 10) * 10;
     afficher("economie", eco);
-    texte("economie-detail", "pour " + chf(versement) + " versés par an" + (choix("revenu_annuel") || q.get("revenu") ? "" : " (revenu à préciser)"));
+    texte("economie-detail", "pour " + chf(versement) + " versés par an, revenu de " + chf(revenu));
     var naissance = form.querySelector('[name="date_naissance"]').value;
     var age = naissance ? Math.floor((Date.now() - new Date(naissance).getTime()) / 31557600000) : 0;
     if (age >= 16 && age < 65) {

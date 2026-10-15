@@ -1969,3 +1969,18 @@ html.cookies-ouvert { overflow: hidden; }
   body:has(.estim-3a) .contact-volant { bottom: 108px; }
 }
 @media (prefers-reduced-motion: reduce) { .estim-3a--maj { animation: none; } }
+/* Jauge du revenu (demande 3e pilier) */
+.jauge-revenu { margin: var(--e-4) 0 var(--e-2); padding: var(--e-5); border-radius: var(--r-l); background: var(--bleu-pale); border: 1px solid var(--bleu-ciel); text-align: center; }
+.jauge-revenu__val { display: block; font-size: clamp(2rem, 6vw, 2.6rem); font-weight: 800; color: var(--marine); font-variant-numeric: tabular-nums; line-height: 1.1; margin-bottom: var(--e-4); }
+.jauge-revenu__curseur { --rempli: 17%; -webkit-appearance: none; appearance: none; width: 100%; height: 12px; border-radius: 999px; background: linear-gradient(90deg, var(--bleu) var(--rempli), #fff var(--rempli)); box-shadow: inset 0 0 0 1px var(--bleu-ciel); cursor: pointer; margin: 0; }
+.jauge-revenu__curseur::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 4px solid var(--bleu); box-shadow: 0 4px 12px -2px rgba(11,37,69,.35); }
+.jauge-revenu__curseur::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 4px solid var(--bleu); box-shadow: 0 4px 12px -2px rgba(11,37,69,.35); }
+.jauge-revenu__curseur:focus-visible { outline: 3px solid var(--or-clair); outline-offset: 6px; }
+.jauge-revenu__bornes { display: flex; justify-content: space-between; margin-top: var(--e-3); font-size: var(--t-xs); color: var(--texte-doux); font-weight: 600; }
+.jauge-revenu__raccourcis { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: var(--e-4); }
+.jauge-revenu__puce { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--bleu-ciel); background: #fff; color: var(--marine); font: inherit; font-size: var(--t-s); font-weight: 700; cursor: pointer; }
+.jauge-revenu__puce:hover, .jauge-revenu__puce.actif { background: var(--bleu); border-color: var(--bleu); color: #fff; }
+.jauge-revenu__passer { margin-right: auto; min-height: 44px; padding: 0 12px; border: 0; background: none; color: var(--texte-doux); font: inherit; font-size: var(--t-s); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.jauge-revenu__passer:hover { color: var(--marine); }
+.jauge-revenu--inconnu .jauge-revenu__val { opacity: .4; }
+.jauge-revenu input.jauge-revenu__curseur { height: 12px; }
