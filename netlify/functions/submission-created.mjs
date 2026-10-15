@@ -4,6 +4,7 @@
 // Variables d'environnement Netlify : SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 
 import { choisirConseiller, extraireLead, memeContact, sourceDuLead } from "../lib/leads.mjs";
+import { notifierLead } from "../lib/mail.mjs";
 
 export const handler = async (event) => {
   const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
@@ -50,7 +51,10 @@ export const handler = async (event) => {
     }
 
     // Répartition : d'abord une règle propre à la page ou au formulaire, sinon les pourcentages généraux
-    const actifs = (await api("conseillers?select=id,nom,poids&actif=eq.true")) || [];
+    // (notif_email et email servent à la notification ; repli si la colonne n'existe pas encore)
+    let actifs;
+    try { actifs = (await api("conseillers?select=id,nom,poids,email,notif_email&actif=eq.true")) || []; }
+    catch (e) { actifs = (await api("conseillers?select=id,nom,poids&actif=eq.true")) || []; }
     let regles = [];
     try { regles = (await api("regles?select=source,conseiller_id,poids&poids=gt.0")) || []; } catch (e) { regles = []; }
     regles = regles.filter((r) => actifs.some((c) => c.id === r.conseiller_id));
@@ -76,6 +80,10 @@ export const handler = async (event) => {
         method: "POST",
         body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom + (source ? " (règle « " + source + " »)" : "") : " (aucun conseiller actif : à attribuer)") + ".", automatique: true }),
       });
+    }
+    if (choisi) {
+      const nomProduit = String(lead.produit || lead.formulaire || "").replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+      try { await notifierLead({ conseiller: actifs.find((c) => c.id === choisi.id), lead, id, nomProduit }); } catch (e) { console.error("Notification : " + e.message); }
     }
     return { statusCode: 200, body: "enregistré " + id };
   } catch (e) {

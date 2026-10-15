@@ -185,6 +185,8 @@
       sb.from("conseillers").select("*").eq("id", etat.moi.id).single().then(function (p) {
         etat.profil = p.data;
         if (!etat.profil) { app.innerHTML = '<div class="ecran-centre"><div class="carte-connexion"><h1>Compte sans fiche</h1><p>Votre compte n\'est pas encore activé comme conseiller. Contactez l\'administrateur.</p><button class="btn" data-sortir>Se déconnecter</button></div></div>'; app.querySelector("[data-sortir]").onclick = sortir; return; }
+        var direct = location.hash.match(/lead=(\d+)/);
+        if (direct) { etat.leadOuvert = Number(direct[1]); history.replaceState(null, "", location.pathname); }
         Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), estAdmin() ? chargerRegles() : null]).then(rendre);
       });
     });
@@ -283,6 +285,7 @@
           appl.disabled = false;
           if (r.error) { toast("Erreur : " + r.error.message, true); return; }
           sb.from("commentaires").insert(ids.map(function (id) { return { lead_id: id, auteur_id: etat.moi.id, texte: "Attribué à " + nomConseiller(cible), automatique: true }; })).then(function () {});
+          if (cible) notifier(ids, cible);
           etat.selection = {};
           chargerLeads().then(function () { vueLeads(); toast(ids.length + " lead" + (ids.length > 1 ? "s" : "") + " attribué" + (ids.length > 1 ? "s" : "") + " à " + nomConseiller(cible) + "."); });
         });
@@ -380,7 +383,7 @@
         poserRappel(d.toISOString());
       };
     });
-    var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); };
+    var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); if (at.value) notifier([l.id], at.value); };
     var form = fiche.querySelector("[data-commenter]");
     var zoneTexte = form.texte;
     var ajuster = function () { zoneTexte.style.height = "auto"; zoneTexte.style.height = Math.min(zoneTexte.scrollHeight + 2, 260) + "px"; };
@@ -425,8 +428,9 @@
     var somme = etat.conseillers.filter(function (c) { return c.actif; }).reduce(function (s, c) { return s + (Number(c.poids) || 0); }, 0) || 1;
     zone.innerHTML =
       '<div class="tete"><div><h1>Conseillers et répartition</h1><p class="sous">Chaque nouveau lead va au conseiller actif le plus en retard sur sa part. Mettez 0 pour ne plus en recevoir.</p></div></div>' +
+      '' + (C.mail ? "" : '<p class="alerte">Notifications par e-mail : l\'envoi n\'est pas encore configuré. Ajoutez la variable RESEND_API_KEY dans Netlify (voir espace/LISEZMOI.md), puis republiez. Les choix faits ici seront appliqués dès que ce sera fait.</p>') +
       '<h2 class="titre-section">Répartition générale</h2><p class="sous sous--section">Pour tous les leads qui ne relèvent d\'aucune règle par page ou formulaire (plus bas).</p>' +
-      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Pourcentage</th><th>Part des leads</th><th>Actif</th><th>Leads 30 j</th><th>Signés</th><th></th></tr></thead><tbody>' +
+      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Pourcentage</th><th>Part des leads</th><th>Actif</th><th>Notif. e-mail</th><th>Leads 30 j</th><th>Signés</th><th></th></tr></thead><tbody>' +
       etat.conseillers.map(function (c) {
         var siens = etat.leads.filter(function (l) { return l.conseiller_id === c.id; });
         var recents = siens.filter(function (l) { return new Date(l.cree_le) >= mois; }).length;
@@ -435,6 +439,7 @@
           '<td><input class="select poids" type="number" min="0" max="100" value="' + (Number(c.poids) || 0) + '" data-poids></td>' +
           '<td><span class="part"><span style="width:' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + '%"></span></span>' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + " %</td>" +
           '<td><label class="interrupteur"><input type="checkbox" data-actif' + (c.actif ? " checked" : "") + "><span></span></label></td>" +
+          '<td><label class="interrupteur" title="Recevoir un e-mail à chaque lead attribué"><input type="checkbox" data-notif' + (c.notif_email ? " checked" : "") + (c.email ? "" : " disabled") + "><span></span></label></td>" +
           "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
           '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? ' <button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
@@ -445,11 +450,12 @@
     zone.querySelectorAll("tr[data-c]").forEach(function (tr) {
       var id = tr.getAttribute("data-c");
       tr.querySelector("[data-enregistrer]").onclick = function () {
-        sb.from("conseillers").update({ poids: Math.max(0, parseInt(tr.querySelector("[data-poids]").value, 10) || 0), actif: tr.querySelector("[data-actif]").checked, role: tr.querySelector("[data-role]").value }).eq("id", id).then(function (r) {
-          if (r.error) { toast("Erreur : " + r.error.message, true); return; }
+        sb.from("conseillers").update({ poids: Math.max(0, parseInt(tr.querySelector("[data-poids]").value, 10) || 0), actif: tr.querySelector("[data-actif]").checked, role: tr.querySelector("[data-role]").value, notif_email: tr.querySelector("[data-notif]").checked }).eq("id", id).then(function (r) {
+          if (r.error) { toast(/notif_email/.test(r.error.message) ? "Lancez d'abord le script espace/maj-2-notifications.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
           chargerConseillers().then(function () { vueConseillers(); toast("Répartition enregistrée."); });
         });
       };
+      tr.querySelector("[data-notif]").onchange = function () { tr.querySelector("[data-enregistrer]").click(); };
       var sup = tr.querySelector("[data-supprimer]");
       if (sup) sup.onclick = function () { supprimerConseiller(id); };
       tr.querySelector("[data-reinit]").onclick = function () {
@@ -588,6 +594,13 @@
     document.body.appendChild(d);
     d.querySelector("[data-copier]").onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(texte) : Promise.reject()).then(function () { toast("Message copié."); }, function () { toast("Copie impossible : sélectionnez le texte.", true); }); };
     d.querySelector("[data-fermer-modale]").onclick = function () { d.remove(); };
+  }
+  // Prévenir par e-mail le conseiller à qui on vient d'attribuer des leads (s'il l'a activé), sans message d'erreur
+  function notifier(ids, conseillerId) {
+    if (conseillerId === etat.moi.id) return;
+    sb.auth.getSession().then(function (s) {
+      fetch("/.netlify/functions/espace-admin", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + (s.data.session ? s.data.session.access_token : "") }, body: JSON.stringify({ action: "notifier", ids: ids, conseiller_id: conseillerId }) }).catch(function () {});
+    });
   }
   function appelAdmin(corps) {
     return sb.auth.getSession().then(function (s) {

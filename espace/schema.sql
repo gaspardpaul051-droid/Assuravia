@@ -11,6 +11,7 @@ create table if not exists public.conseillers (
   role text not null default 'conseiller' check (role in ('admin', 'conseiller')),
   poids integer not null default 1 check (poids >= 0),
   actif boolean not null default true,
+  notif_email boolean not null default false,
   cree_le timestamptz not null default now()
 );
 

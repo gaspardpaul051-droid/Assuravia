@@ -403,6 +403,7 @@ def main() -> None:
             "produits": noms_produits,
             "formulaires": formulaires,
             "pages": sorted(pages),
+            "mail": bool(os.environ.get("RESEND_API_KEY", "").strip()),
         }, ensure_ascii=False) + ";\n",
         encoding="utf-8",
     )

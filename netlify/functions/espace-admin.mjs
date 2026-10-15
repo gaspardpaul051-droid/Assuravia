@@ -1,7 +1,10 @@
 // Actions réservées à l'administrateur de l'espace conseillers, qui demandent la clé de service Supabase :
 // créer un conseiller avec un mot de passe provisoire (à changer à la première connexion), l'inviter par e-mail,
-// lui donner un nouveau mot de passe provisoire, ou lui envoyer un e-mail de réinitialisation.
+// lui donner un nouveau mot de passe provisoire, lui envoyer un e-mail de réinitialisation,
+// ou prévenir par e-mail un conseiller des leads qu'on vient de lui attribuer (action « notifier »).
 // Appel : POST /.netlify/functions/espace-admin  { action, email, nom, poids }  avec l'en-tête Authorization: Bearer <jeton du connecté>
+
+import { notifierLead } from "../lib/mail.mjs";
 
 export const handler = async (event) => {
   const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
@@ -40,6 +43,21 @@ export const handler = async (event) => {
       const r = await fetch(URL + "/auth/v1/admin/users/" + corps.id, { method: "DELETE", headers: service });
       if (!r.ok) return reponse(400, { erreur: "Suppression impossible" });
       return reponse(200, { ok: true });
+    }
+    if (corps.action === "notifier") {
+      // Leads attribués à la main : e-mail au conseiller s'il a les notifications activées
+      if (!uuid(corps.conseiller_id)) return reponse(200, { ok: true, envoyes: 0 });
+      const ids = (Array.isArray(corps.ids) ? corps.ids : []).map(Number).filter((n) => n > 0).slice(0, 50);
+      if (!ids.length) return reponse(200, { ok: true, envoyes: 0 });
+      const c = await (await fetch(URL + "/rest/v1/conseillers?select=id,nom,email,notif_email&id=eq." + corps.conseiller_id, { headers: service })).json();
+      if (!Array.isArray(c) || !c[0] || !c[0].notif_email) return reponse(200, { ok: true, envoyes: 0 });
+      const leads = await (await fetch(URL + "/rest/v1/leads?select=*&id=in.(" + ids.join(",") + ")", { headers: service })).json();
+      let envoyes = 0;
+      for (const l of Array.isArray(leads) ? leads : []) {
+        const nomProduit = String(l.produit || l.formulaire || "").replace(/-/g, " ").replace(/^./, (x) => x.toUpperCase());
+        if (await notifierLead({ conseiller: c[0], lead: l, id: l.id, nomProduit, origine: "Lead attribué par l'administrateur" })) envoyes++;
+      }
+      return reponse(200, { ok: true, envoyes });
     }
     const email = String(corps.email || "").trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reponse(400, { erreur: "E-mail invalide" });
