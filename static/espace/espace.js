@@ -45,6 +45,26 @@
     economiser_impots: "Économiser des impôts", suite_souhaitee: "Suite souhaitée", message: "Message", description: "Description",
     complement: "Complément", statut: "Situation", revoir_batiment: "Revoir le bâtiment", date_debut: "Début souhaité", npa: "NPA", localite: "Localité"
   };
+  // Téléphone lisible : +41 78 576 87 98, +33 6 12 34 56 78, sinon groupes de 2 chiffres
+  function telLisible(v) {
+    var s = String(v || "").replace(/[^\d+]/g, "");
+    if (!s) return v || "";
+    if (s.indexOf("00") === 0) s = "+" + s.slice(2);
+    if (/^0\d{9}$/.test(s)) s = "+41" + s.slice(1);
+    var m;
+    if ((m = s.match(/^\+41(\d{2})(\d{3})(\d{2})(\d{2})$/))) return "+41 " + m[1] + " " + m[2] + " " + m[3] + " " + m[4];
+    if ((m = s.match(/^\+33(\d)(\d{2})(\d{2})(\d{2})(\d{2})$/))) return "+33 " + m.slice(1).join(" ");
+    if (/^\+\d{6,}$/.test(s)) {
+      var c = s.slice(1), deux = " 20 27 30 31 32 33 34 36 39 40 41 43 44 45 46 47 48 49 51 52 53 54 55 56 57 58 60 61 62 63 64 65 66 81 82 84 86 90 91 92 93 94 95 98 ";
+      var lg = /^[17]/.test(c) ? 1 : deux.indexOf(" " + c.slice(0, 2) + " ") >= 0 ? 2 : 3;
+      m = [s, c.slice(0, lg), c.slice(lg)];
+      var reste = m[2], groupes = [];
+      if (reste.length % 2) { groupes.push(reste.slice(0, 3)); reste = reste.slice(3); }
+      while (reste.length) { groupes.push(reste.slice(0, 2)); reste = reste.slice(2); }
+      return "+" + m[1] + " " + groupes.join(" ");
+    }
+    return v;
+  }
   function nomChamp(k) { return NOMS_CHAMPS[k] || libelle(k); }
   var VALEURS = { hop_commune: "Chambre commune", hop_flex: "Hospitalisation flexible", hop_demi: "Demi-privée", hop_privee: "Privée", hop_monde: "Privée, monde entier", base_plus: "Base plus", alt_therap: "Médecines alternatives (thérapeutes)", alt_medecin: "Médecines alternatives (médecins)", dent_essentiel: "Dentaire essentiel", dent_confort: "Dentaire confort", appartement: "Appartement", maison: "Maison", h: "Homme", f: "Femme" };
   function valeurChamp(v) {
@@ -198,7 +218,7 @@
       if (etat.filtre !== "tous" && etat.filtre !== "rappel" && l.statut !== etat.filtre) return false;
       if (etat.conseillerFiltre && (l.conseiller_id || "") !== (etat.conseillerFiltre === "aucun" ? "" : etat.conseillerFiltre)) return false;
       if (!q) return true;
-      return [l.prenom, l.nom, l.email, l.telephone, l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
+      return [l.prenom, l.nom, l.email, l.telephone, telLisible(l.telephone), l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
     });
   }
   function vueLeads() {
@@ -222,7 +242,7 @@
         return '<div role="button" tabindex="0" class="ligne' + (estAdmin() ? " ligne--admin" : "") + (l.statut === "nouveau" ? " ligne--nouveau" : "") + (etat.selection[l.id] ? " ligne--choisie" : "") + '" data-lead="' + l.id + '">' +
           (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
           avatar(nomLead(l)) +
-          '<span class="ligne__qui"><strong class="ligne__nom">' + esc(nomLead(l)) + '</strong><span class="ligne__tel">' + esc(l.telephone || l.email || "Sans coordonnées") + "</span></span>" +
+          '<span class="ligne__qui"><strong class="ligne__nom">' + esc(nomLead(l)) + '</strong><span class="ligne__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</span></span>" +
           '<span class="ligne__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(formatPrime(l.prime)) + "</small>" : "") + "</span>" +
           dernierMot(l) +
           (estAdmin() ? '<span class="ligne__conseiller">' + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") +
@@ -310,7 +330,7 @@
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
       "</section>" +
       '<section class="fiche__bloc"><h3>Informations du client</h3><div class="tuiles">' +
-        (l.telephone ? tuile(IC.tel, "Téléphone", l.telephone, "tel:" + tel) : "") +
+        (l.telephone ? tuile(IC.tel, "Téléphone", telLisible(l.telephone), "tel:" + tel) : "") +
         (l.email ? tuile(IC.mail, "E-mail", l.email, "mailto:" + l.email) : "") +
         (l.canton ? tuile(IC.lieu, "Canton / NPA", l.canton) : "") +
         (l.prime ? tuile(IC.prime, "Prime estimée", formatPrime(l.prime)) : "") +
