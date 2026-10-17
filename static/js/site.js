@@ -260,7 +260,8 @@
   // 2a bis. Mesure : une demande envoyée compte comme « generate_lead » dans Google Analytics (si accepté)
   document.addEventListener("submit", function (e) {
     var f = e.target;
-    if (f.matches && f.matches("form[data-lead]") && typeof window.gtag === "function") {
+    if (f.matches && f.matches("form[data-lead]") && !f.hasAttribute("data-conversion") && typeof window.gtag === "function") {
+      f.setAttribute("data-conversion", "");
       window.gtag("event", "generate_lead", { form_name: f.getAttribute("name"), page_path: location.pathname });
       // Événement clé déjà déclaré dans Google Analytics (repris de l'ancien site) : alimente la conversion Google Ads existante
       window.gtag("event", "demande_confirmee", { form_name: f.getAttribute("name"), page_path: location.pathname });
@@ -794,6 +795,13 @@
           funnel.querySelector("[data-funnel-etat]").value = "prime affichée";
           // Le lead est enregistré dès que la prime est affichée ; on continue même hors ligne.
           try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: encoder() }).catch(function () {}); } catch (e) {}
+          // Conversion comptée dès cet envoi (le prospect peut s'arrêter sur la page de résultat), une seule fois
+          if (!formF.hasAttribute("data-conversion") && typeof window.gtag === "function") {
+            formF.setAttribute("data-conversion", "");
+            window.gtag("event", "generate_lead", { form_name: formF.getAttribute("name"), page_path: location.pathname });
+            window.gtag("event", "demande_confirmee", { form_name: formF.getAttribute("name"), page_path: location.pathname });
+            if (window.ADS_CONV) window.gtag("event", "conversion", { send_to: window.ADS_CONV });
+          }
           historique.push(courante);
           montrer(courante + 1);
           // Révélation de la prime : compteur qui monte et confettis
