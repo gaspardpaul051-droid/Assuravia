@@ -194,6 +194,7 @@
       var texte = bouton ? bouton.textContent : "";
       if (bouton) { bouton.setAttribute("aria-busy", "true"); bouton.textContent = "Envoi en cours…"; bouton.disabled = true; }
       var ancienne = form.querySelector(".envoi-erreur"); if (ancienne) ancienne.remove();
+      var st = form.querySelector("[data-statut-envoi]"); if (st) st.value = "Demande envoyée";
       var donnees = new URLSearchParams(new FormData(form));
       fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: donnees.toString() })
         .then(function (r) {
@@ -255,6 +256,37 @@
     };
     ind.addEventListener("change", function () { maj(); if (num.value) controleFormat(num); });
     num.addEventListener("input", maj);
+  });
+
+  // 2a ter. Lead enregistré dès que le téléphone et l'e-mail sont saisis et valides, même sans validation finale.
+  // Une seule fois par formulaire ; la demande finale (si elle suit) est fusionnée avec ce lead dans l'espace conseillers.
+  document.querySelectorAll("form[data-lead]").forEach(function (form) {
+    var tel = form.querySelector('input[type="tel"][name="telephone"]'), mail = form.querySelector('input[type="email"][name="email"]');
+    var statut = form.querySelector("[data-statut-envoi]");
+    if (!tel || !mail || !statut) return;
+    var capture = function () {
+      if (form.hasAttribute("data-capture") || form.hasAttribute("data-conversion")) return;
+      controleFormat(tel); controleFormat(mail);
+      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
+      form.setAttribute("data-capture", "");
+      var consent = form.querySelector('[name="consentement"]');
+      statut.value = "Coordonnées saisies, demande non finalisée" + (consent && !consent.checked ? " (case de rappel non cochée)" : "");
+      var corps = new URLSearchParams(new FormData(form)).toString();
+      statut.value = "Demande envoyée";
+      try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: corps }).catch(function () {}); } catch (e) {}
+    };
+    var minuterie;
+    var programmer = function () { clearTimeout(minuterie); minuterie = setTimeout(capture, 1500); };
+    [tel, mail].forEach(function (el) { el.addEventListener("change", capture); el.addEventListener("blur", capture); el.addEventListener("input", programmer); });
+    // Le prospect quitte la page juste après avoir tapé : dernier essai
+    window.addEventListener("pagehide", function () {
+      if (form.hasAttribute("data-capture") || form.hasAttribute("data-conversion")) return;
+      controleFormat(tel); controleFormat(mail);
+      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
+      form.setAttribute("data-capture", "");
+      statut.value = "Coordonnées saisies, page quittée avant l'envoi";
+      try { navigator.sendBeacon("/", new Blob([new URLSearchParams(new FormData(form)).toString()], { type: "application/x-www-form-urlencoded" })); } catch (e) {}
+    });
   });
 
   // 2a bis. Mesure : une demande envoyée compte comme « generate_lead » dans Google Analytics (si accepté)

@@ -34,7 +34,7 @@
     var j = Math.round(h / 24);
     return "il y a " + j + " j";
   };
-  var NOMS_CHAMPS = {
+  var NOMS_CHAMPS = { statut_envoi: "Envoi de la demande", 
     date_naissance: "Date de naissance", annee_naissance: "Année de naissance", sexe: "Sexe", canton: "Canton", franchise: "Franchise",
     adultes: "Adultes", enfants: "Enfants", pour_qui: "Pour qui", formule: "Formule", formule_choisie: "Formule choisie",
     logement: "Logement", pieces: "Pièces", logement_rue: "Rue", logement_numero: "N°", logement_npa: "NPA", logement_localite: "Localité",
