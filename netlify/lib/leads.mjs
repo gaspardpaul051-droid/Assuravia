@@ -1,7 +1,7 @@
 // Outils communs : lecture d'une demande Netlify et répartition des leads.
 
 // Champs techniques que l'on ne garde pas dans la fiche
-const IGNORES = new Set(["form-name", "bot-field", "ip", "user_agent", "referrer", "consentement"]);
+const IGNORES = new Set(["form-name", "bot-field", "envoi_direct", "ip", "user_agent", "referrer", "consentement"]);
 
 export function propre(v) {
   if (v === undefined || v === null) return "";

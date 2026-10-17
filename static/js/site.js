@@ -113,6 +113,23 @@
     if (/^(\+|00)/.test(n)) return n.replace(/^00/, "+");
     return ind + n.replace(/^0/, "");
   };
+  // Envoi d'une demande : d'abord directement à l'espace conseillers (fonction lead, sans filtre anti-spam Netlify),
+  // puis copie d'archive à Netlify Forms (marquée envoi_direct=oui si l'envoi direct a réussi, sinon c'est elle qui crée le lead).
+  // Les envois d'un même formulaire passent l'un après l'autre, pour que l'espace fusionne bien les doublons.
+  function envoyerDemande(form, corps) {
+    var precedent = form.__envoi || Promise.resolve();
+    var envoi = precedent.then(function () {
+      return fetch("/.netlify/functions/lead", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: corps })
+        .then(function (r) { return r.ok; }).catch(function () { return false; });
+    }).then(function (direct) {
+      var copie = direct ? corps.replace(/(^|&)envoi_direct=[^&]*/, "$1envoi_direct=oui") : corps;
+      return fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: copie })
+        .then(function (r) { return direct || r.ok; }).catch(function () { return direct; });
+    });
+    form.__envoi = envoi.catch(function () {});
+    return envoi;
+  }
+
   function controleFormat(el) {
     if (!el.setCustomValidity) return;
     var v = (el.value || "").trim();
@@ -196,9 +213,9 @@
       var ancienne = form.querySelector(".envoi-erreur"); if (ancienne) ancienne.remove();
       var st = form.querySelector("[data-statut-envoi]"); if (st) st.value = "Demande envoyée";
       var donnees = new URLSearchParams(new FormData(form));
-      fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: donnees.toString() })
-        .then(function (r) {
-          if (!r.ok) throw new Error("HTTP " + r.status);
+      envoyerDemande(form, donnees.toString())
+        .then(function (ok) {
+          if (!ok) throw new Error("envoi");
           window.location.href = form.action;
         })
         .catch(function () {
@@ -273,7 +290,7 @@
       statut.value = "Coordonnées saisies, demande non finalisée" + (consent && !consent.checked ? " (case de rappel non cochée)" : "");
       var corps = new URLSearchParams(new FormData(form)).toString();
       statut.value = "Demande envoyée";
-      try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: corps }).catch(function () {}); } catch (e) {}
+      try { envoyerDemande(form, corps); } catch (e) {}
     };
     var minuterie;
     var programmer = function () { clearTimeout(minuterie); minuterie = setTimeout(capture, 1500); };
@@ -285,7 +302,11 @@
       if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
       form.setAttribute("data-capture", "");
       statut.value = "Coordonnées saisies, page quittée avant l'envoi";
-      try { navigator.sendBeacon("/", new Blob([new URLSearchParams(new FormData(form)).toString()], { type: "application/x-www-form-urlencoded" })); } catch (e) {}
+      try {
+        var c = new URLSearchParams(new FormData(form)).toString();
+        navigator.sendBeacon("/.netlify/functions/lead", new Blob([c], { type: "application/x-www-form-urlencoded" }));
+        navigator.sendBeacon("/", new Blob([c.replace(/(^|&)envoi_direct=[^&]*/, "$1envoi_direct=oui")], { type: "application/x-www-form-urlencoded" }));
+      } catch (e) {}
     });
   });
 
@@ -828,7 +849,7 @@
           afficher();
           funnel.querySelector("[data-funnel-etat]").value = "prime affichée";
           // Le lead est enregistré dès que la prime est affichée ; on continue même hors ligne.
-          try { fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: encoder() }).catch(function () {}); } catch (e) {}
+          try { envoyerDemande(formF, encoder()); } catch (e) {}
           // Conversion comptée dès cet envoi (le prospect peut s'arrêter sur la page de résultat), une seule fois
           if (!formF.hasAttribute("data-conversion") && typeof window.gtag === "function") {
             formF.setAttribute("data-conversion", "");
