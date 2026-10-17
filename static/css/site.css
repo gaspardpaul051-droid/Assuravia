@@ -1984,3 +1984,5 @@ html.cookies-ouvert { overflow: hidden; }
 .jauge-revenu__passer:hover { color: var(--marine); }
 .jauge-revenu--inconnu .jauge-revenu__val { opacity: .4; }
 .jauge-revenu input.jauge-revenu__curseur { height: 12px; }
+.apercu-prime__montant--masque { filter: blur(9px); user-select: none; pointer-events: none; }
+.apercu-prime__mois:has(.icone) { display: flex; justify-content: center; align-items: center; gap: 6px; }

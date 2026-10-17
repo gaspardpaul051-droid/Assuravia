@@ -94,15 +94,15 @@
 
 {# Coordonnées : la prime s'affiche en clair ; laisser ses coordonnées pour être rappelé reste un choix. #}
 {% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=False) -%}
-{{ ouvrir("coordonnees", "Votre prime est prête") }}
+{{ ouvrir("coordonnees", "Votre prime est calculée") }}
   <div class="apercu-prime">
     <p class="apercu-prime__label">Votre prime estimée</p>
-    <p class="apercu-prime__montant" data-affiche="total_floute">CHF 000.00</p>
-    <p class="apercu-prime__mois" data-affiche="mois"></p>
+    <p class="apercu-prime__montant apercu-prime__montant--masque" data-affiche="total_floute" aria-hidden="true">CHF 888.88</p>
+    <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Affichée dès que vous indiquez vos coordonnées</p>
   </div>
   <div class="rappel-choix">
-    <p class="fe__sous-question">Souhaitez-vous être rappelé ?</p>
-    <p class="fe__aide">C'est facultatif. Laissez vos coordonnées : un conseiller vérifie votre estimation avec vous et vous envoie l'offre détaillée.</p>
+    <p class="fe__sous-question">Où vous envoyer votre estimation ?</p>
+    <p class="fe__aide">Indiquez votre téléphone et votre e-mail pour afficher votre prime. Un conseiller pourra la vérifier avec vous et vous envoyer l'offre détaillée, sans engagement.</p>
   </div>
   <div class="grille-champs">
     {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{% endif %}
@@ -119,8 +119,7 @@
     <label for="consentement-{{ sim.id }}">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>
   </div>
   <div class="rappel-boutons">
-    <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Être rappelé</button>
-    <button type="button" class="bouton bouton--secondaire" data-fe-sans-contact>Voir le détail sans être rappelé</button>
+    <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
   </div>
 </fieldset>
 {%- endmacro %}

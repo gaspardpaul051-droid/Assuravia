@@ -737,12 +737,14 @@
       funnel.querySelectorAll("[data-prix-formule]").forEach(function (el) {
         el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")))) + " / an";
       });
-      set("total_floute", c.surMesure ? "Sur mesure" : chf2(c.total));
+      // Avant les coordonnées, la prime reste masquée : chiffres remplacés (et floutés en CSS), jamais la vraie valeur
+      var masque = function (x) { return chf2(x).replace(/\d/g, "8"); };
+      set("total_floute", c.surMesure ? "Sur mesure" : masque(c.total));
       var prenom = valeur("prenom");
       set("prenom", prenom && prenom.value ? prenom.value.replace(/</g, "") : "Bonjour");
       if (T) {
         funnel.querySelectorAll("[data-prix-lca]").forEach(function (el) { el.textContent = "≈ " + chf2(primeLca(el.getAttribute("data-prix-lca"))) + " / mois"; });
-        set("total_floute", chf2(c.total));
+        set("total_floute", masque(c.total));
         set("total", chf2(c.total));
         set("mois", "par mois, soit environ " + chf(Math.round(c.total * 12)) + " par an");
         // D'autres solutions : les autres niveaux de la même couverture, avec leur prime, à choisir en un clic
