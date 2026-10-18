@@ -130,6 +130,19 @@
     return envoi;
   }
 
+  // Conversion Google Ads « Envoi de formulaire de lead », avec suivi avancé : e-mail et téléphone transmis à Google
+  // (chiffrés par la balise), seulement si le visiteur a accepté les cookies (gtag n'existe pas sinon).
+  function conversionAds(form) {
+    if (!window.ADS_CONV || typeof window.gtag !== "function") return;
+    var v = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? String(el.value || "").trim() : ""; };
+    var donnees = {};
+    if (v("email")) donnees.email = v("email").toLowerCase();
+    var tel = v("telephone_complet").replace(/[^\d+]/g, "");
+    if (/^\+\d{8,15}$/.test(tel)) donnees.phone_number = tel;
+    if (donnees.email || donnees.phone_number) window.gtag("set", "user_data", donnees);
+    window.gtag("event", "conversion", { send_to: window.ADS_CONV, value: 1.0, currency: "EUR" });
+  }
+
   function controleFormat(el) {
     if (!el.setCustomValidity) return;
     var v = (el.value || "").trim();
@@ -318,7 +331,7 @@
       window.gtag("event", "generate_lead", { form_name: f.getAttribute("name"), page_path: location.pathname });
       // Événement clé déjà déclaré dans Google Analytics (repris de l'ancien site) : alimente la conversion Google Ads existante
       window.gtag("event", "demande_confirmee", { form_name: f.getAttribute("name"), page_path: location.pathname });
-      if (window.ADS_CONV) window.gtag("event", "conversion", { send_to: window.ADS_CONV });
+      conversionAds(f);
     }
   }, true);
 
@@ -855,7 +868,7 @@
             formF.setAttribute("data-conversion", "");
             window.gtag("event", "generate_lead", { form_name: formF.getAttribute("name"), page_path: location.pathname });
             window.gtag("event", "demande_confirmee", { form_name: formF.getAttribute("name"), page_path: location.pathname });
-            if (window.ADS_CONV) window.gtag("event", "conversion", { send_to: window.ADS_CONV });
+            conversionAds(formF);
           }
           historique.push(courante);
           montrer(courante + 1);

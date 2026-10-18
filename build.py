@@ -32,7 +32,7 @@ WHATSAPP = "41782653473"
 GA_ID = "G-R2RMM7B9GV"          # Google Analytics 4, par exemple "G-ABC123XYZ"
 CLARITY_ID = "yxnykqujjc"     # Microsoft Clarity, par exemple "abcd1234ef"
 ADS_ID = "AW-18207426103"     # Google Ads (balise Google), chargée après accord cookies
-ADS_CONV = ""                 # Libellé de conversion Google Ads, par exemple "AW-18207426103/AbCdEfGh" (vide = conversion importée depuis GA4)
+ADS_CONV = "AW-18207426103/jO1iCPqbhqEdELeM_elD"                 # Libellé de conversion Google Ads, par exemple "AW-18207426103/AbCdEfGh" (vide = conversion importée depuis GA4)
 GSC_VERIF = ""      # Google Search Console : contenu de la balise meta google-site-verification
 
 MOIS = [
