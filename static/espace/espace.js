@@ -312,7 +312,7 @@
     var s0 = statut(l.statut);
     var d = l.donnees || {};
     var TECH = ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name", "page", "produit", "prime_totale", "prime_mensuelle_estimee", "prime_estimee", "prime_principale", "etape_atteinte", "gclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "canton"];
-    var reponses = Object.keys(d).filter(function (k) { return TECH.indexOf(k) < 0; });
+    var reponses = Object.keys(d).filter(function (k) { return TECH.indexOf(k) < 0 && !(/^somme/.test(k) && String(d[k]).trim() === "0"); });
     var origine = [["Page", l.page], ["Formulaire", l.formulaire], ["Source", d.utm_source], ["Campagne", d.utm_campaign], ["Mot-clé", d.utm_term], ["Google Ads", d.gclid ? "Oui (clic publicitaire)" : ""]].filter(function (x) { return x[1]; });
     var tuile = function (ic, label, val, lien) { return '<div class="tuile"><span class="tuile__ic">' + ic + '</span><span class="tuile__txt"><small>' + label + "</small>" + (lien ? '<a href="' + esc(lien) + '">' + esc(val) + "</a>" : "<b>" + esc(val) + "</b>") + "</span></div>"; };
     var IC = {
