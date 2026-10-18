@@ -67,9 +67,9 @@ Le délai d'attente est le principal levier sur la prime, et le point où les er
 
 Dans tous les cas, l'employeur doit savoir exactement ce qui reste à sa charge, y compris pour un employé ayant beaucoup d'années de service. Un délai d'attente long combiné à l'échelle bernoise peut créer des situations où l'employeur paie davantage qu'il ne le pensait.
 
-### Un exemple concret
+[[cta | Combien vous coûterait vraiment l'absence d'un employé ? Faites le calcul avec un conseiller. | /entreprises/pgm/ | Faire vérifier mon contrat]]
 
-Prenons une employée dans sa 6e année de service, en arrêt maladie pendant quatre mois. Sans assurance, l'échelle bernoise vous oblige à verser son salaire pendant 3 mois ; ensuite, elle ne reçoit plus rien de votre part. Avec une assurance à 80 % et un délai d'attente de 30 jours, vous payez le premier mois, puis l'assureur verse l'indemnité jusqu'à la reprise. Le coût pour l'entreprise est connu à l'avance, et l'employée garde un revenu même si l'absence se prolonge. Selon les règles d'équivalence et votre CCT, vous devrez peut-être compléter l'indemnité pendant une partie de la période : c'est précisément ce qu'un conseiller vérifie.
+> **Exemple : une absence de quatre mois** Prenons une employée dans sa 6e année de service, en arrêt maladie pendant quatre mois. Sans assurance, l'échelle bernoise vous oblige à verser son salaire pendant 3 mois ; ensuite, elle ne reçoit plus rien de votre part. Avec une assurance à 80 % et un délai d'attente de 30 jours, vous payez le premier mois, puis l'assureur verse l'indemnité jusqu'à la reprise. Le coût pour l'entreprise est connu à l'avance, et l'employée garde un revenu même si l'absence se prolonge. Selon les règles d'équivalence et votre CCT, vous devrez peut-être compléter l'indemnité pendant une partie de la période : c'est précisément ce qu'un conseiller vérifie.
 
 ## Ce qu'il faut vérifier avant le 1er janvier
 
@@ -83,6 +83,10 @@ Beaucoup de contrats se renouvellent au 1er janvier. C'est le bon moment pour fa
 6. **Le délai de résiliation** : quand devez-vous résilier si vous voulez changer d'assureur ?
 7. **La coordination avec la LAA** : l'accident est couvert par l'assurance accidents obligatoire, la maladie par la perte de gain. Les deux doivent s'articuler sans lacune. Voir notre page [assurance accidents LAA](/entreprises/laa/).
 
+> **Bon à savoir** Le renouvellement de fin d'année est le bon moment pour comparer : demandez les offres tôt, pour pouvoir résilier dans le délai prévu par votre contrat actuel.
+
+[[cta | Accident ou maladie : vos employés sont-ils couverts sans lacune ? | /entreprises/laa/ | Vérifier ma couverture]]
+
 ## Les erreurs fréquentes
 
 - **Ne rien assurer « parce que ce n'est pas obligatoire ».** L'obligation de payer le salaire existe, elle, dès le quatrième mois de service.
@@ -90,6 +94,8 @@ Beaucoup de contrats se renouvellent au 1er janvier. C'est le bon moment pour fa
 - **Oublier la CCT**, et découvrir lors d'un sinistre que le contrat ne respecte pas ses exigences.
 - **Promettre 100 % du salaire dans les contrats de travail** alors que l'assurance n'en couvre que 80 %.
 - **Ne pas annoncer un cas à temps** : les contrats prévoient des délais d'annonce de l'incapacité.
+
+> **Attention** Une incapacité annoncée en retard peut réduire ou retarder les prestations. Notez le délai d'annonce de votre contrat et communiquez-le à la personne qui gère les absences.
 
 ## Se faire accompagner
 

@@ -234,8 +234,25 @@ def lire_article(path: Path) -> dict:
             raise ValueError(f"Champ '{cle}' manquant dans {path}")
     date = dt.date.fromisoformat(meta["date"])
     html, faq = extraire_faq(tableaux_mobiles(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"])))
-    # Encadrés « Le saviez-vous ? » : citations qui commencent par ce titre en gras
-    html = re.sub(r"<blockquote>\s*<p><strong>(.*?)</strong>", r'<blockquote class="encadre"><p class="encadre__titre">\1</p><p>', html)
+    # Encadrés : citations qui commencent par un titre en gras ; la couleur suit le titre
+    # (Exemple, Attention, Bon à savoir / Astuce, sinon « Le saviez-vous ? »)
+    def encadre(m):
+        titre = m.group(1)
+        t = html_lib.unescape(titre).lower()
+        sorte = "exemple" if t.startswith("exemple") else "attention" if t.startswith(("attention", "piège", "piege")) else "astuce" if t.startswith(("bon à savoir", "astuce", "conseil")) else "savoir"
+        return f'<blockquote class="encadre encadre--{sorte}"><p class="encadre__titre">{titre}</p><p>'
+    html = re.sub(r"<blockquote>\s*<p><strong>(.*?)</strong>", encadre, html)
+    # Appels à l'action dans le texte : [[cta]] (champs cta_ de l'article) ou [[cta | Texte | /url/ | Bouton]]
+    def cta(m):
+        parts = [x.strip() for x in html_lib.unescape(m.group(1) or "").split("|") if x.strip()]
+        texte = parts[0] if len(parts) > 0 else meta.get("cta_titre", "")
+        url = parts[1] if len(parts) > 1 else meta.get("cta_url", "")
+        bouton = parts[2] if len(parts) > 2 else meta.get("cta_bouton", "En savoir plus")
+        if not url:
+            return ""
+        return (f'<aside class="cta-ligne"><p class="cta-ligne__texte">{html_lib.escape(texte)}</p>'
+                f'<a class="bouton bouton--action bouton--petit" href="{html_lib.escape(url)}">{html_lib.escape(bouton)}</a></aside>')
+    html = re.sub(r"<p>\[\[cta(?:\s*\|([^\]]*))?\]\]</p>", cta, html)
     sommaire = [{"id": i, "titre": html_lib.unescape(re.sub(r"<[^>]+>", "", t))}
                 for i, t in re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', html)]
     # L'encart d'appel à l'action s'insère avant le 3e intertitre

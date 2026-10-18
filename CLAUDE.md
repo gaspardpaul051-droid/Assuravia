@@ -77,7 +77,9 @@ pour_qui: 4 situations « Vous … » séparées par | (widget à cocher, facult
 widget: capital-3a (simulateur de capital, facultatif)
 ---
 Corps en Markdown, ## pour les intertitres. Un encadré se fait avec une citation commençant par un titre en gras :
-`> **Le saviez-vous ?** Texte…`. L'encart d'appel à l'action s'insère automatiquement avant le 3e intertitre.
+`> **Le saviez-vous ?** Texte…`. La couleur suit le titre : « Exemple… » (bleu), « Attention… » ou « Piège… » (orange), « Astuce », « Bon à savoir » ou « Conseil » (vert), sinon or. Deux encadrés ne doivent pas se suivre sans texte entre eux (Markdown les fusionne).
+Appel à l'action dans le texte, seul sur sa ligne : `[[cta]]` (reprend cta_titre, cta_url, cta_bouton) ou `[[cta | Phrase d'accroche | /url/ | Texte du bouton]]`.
+L'encart d'appel à l'action s'insère aussi automatiquement avant le 3e intertitre.
 ```
 
 Règles éditoriales :
@@ -86,6 +88,7 @@ Règles éditoriales :
   déclaration d'impôts en février-mars, LAMal et complémentaires en septembre-novembre).
 - 1200 à 2000 mots (le blog peut être long), au moins 4 intertitres, 2 liens internes vers des pages produit,
   un encadré « Le saviez-vous ? », un quiz de 3 questions et une FAQ de 3 questions.
+- Lecture facile et ludique : phrases courtes, paragraphes de 2 à 4 lignes, listes et tableaux, au moins un exemple concret avec un personnage (« Julie, 34 ans… »), au moins 3 encadrés de types différents (Le saviez-vous, Exemple, Attention, Astuce), 2 à 3 appels à l'action `[[cta | … ]]` répartis dans le texte, chacun avec une accroche orientée bénéfice et un bouton d'action (« Être conseillé gratuitement », « Comparer », « Faire vérifier mon contrat »).
 - Titre et description optimisés pour une recherche précise (« rc pro indépendant suisse »…), vouvoiement, phrases courtes, aucun superlatif publicitaire.
 - Chaque chiffre (plafonds, taux, délais) est vérifié sur une source officielle ou un assureur
   ou une banque suisse avant publication. En cas de doute, ne pas donner le chiffre.

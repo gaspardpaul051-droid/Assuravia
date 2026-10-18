@@ -42,7 +42,7 @@ Les autres délais :
 | Quitter un modèle médecin de famille, télémédecine ou pharmacie | Demande écrite au plus tard le 30 novembre 2026 |
 | Passer d'une assurance ordinaire à un modèle alternatif | Possible en tout temps |
 
-Attention à un point souvent ignoré : si vous avez des primes, des participations aux coûts ou des frais de rappel impayés qui ont fait l'objet d'un rappel jusqu'au 30 novembre, et qu'ils ne sont toujours pas réglés au 31 décembre, vous ne pouvez pas quitter votre caisse.
+> **Attention : les impayés bloquent le changement.** Si vous avez des primes, des participations aux coûts ou des frais de rappel impayés qui ont fait l'objet d'un rappel jusqu'au 30 novembre, et qu'ils ne sont toujours pas réglés au 31 décembre, vous ne pouvez pas quitter votre caisse.
 
 ## Changer de caisse en quatre étapes
 
@@ -58,6 +58,9 @@ Remplissez la demande d'affiliation de la nouvelle caisse. En assurance de base,
 
 Envoyez votre lettre de résiliation en recommandé, avant le 15 novembre si possible. Indiquez votre nom, votre numéro d'assuré, la date de fin souhaitée (31 décembre 2026) et signez la lettre. Une lettre par personne assurée est plus sûre, même pour une famille.
 
+
+> **Astuce** Notez dès aujourd'hui un rappel au 10 novembre dans votre agenda : c'est la date idéale pour envoyer votre résiliation en recommandé, avec une marge confortable.
+
 ### 4. Attendre la confirmation
 
 Votre ancienne caisse ne met fin au contrat qu'après avoir reçu la confirmation de la nouvelle caisse que vous êtes assuré sans interruption. Vous n'avez donc pas de risque de vous retrouver sans assurance de base. Gardez précieusement les confirmations écrites.
@@ -70,7 +73,11 @@ Changer de caisse n'est pas la seule façon d'agir sur votre prime. Deux réglag
 
 **Le modèle d'assurance.** Médecin de famille, réseau de santé, télémédecine ou pharmacie : ces modèles alternatifs réduisent la prime en échange d'un premier contact imposé. Ils conviennent si vous acceptez de toujours passer par le même point d'entrée. Le passage vers un modèle alternatif est possible en tout temps ; le retour vers le modèle ordinaire, lui, se fait pour le 1er janvier.
 
+> **Exemple** Julie, 34 ans, va chez le médecin une ou deux fois par an et ne prend pas de traitement régulier : une franchise élevée et un modèle télémédecine peuvent lui convenir. Marc, 58 ans, suit un traitement pour l'hypertension et a une opération du genou prévue : une franchise basse lui évitera de gros montants à sa charge.
+
 Le bon réglage dépend de vos habitudes de soins réelles. Reprenez vos décomptes de l'année : combien de consultations, quels médicaments, quels examens ? C'est la base la plus fiable pour décider.
+
+[[cta | Franchise, modèle, caisse : trouvez la combinaison qui vous convient pour 2027 | /particuliers/comparateur-lamal/ | Lancer le comparateur]]
 
 ## Le piège des complémentaires
 
@@ -81,6 +88,8 @@ Les assurances complémentaires (hospitalisation en demi-privée ou privée, mé
 - **Vous pouvez garder vos complémentaires** chez votre ancienne caisse en changeant d'assurance de base. La caisse ne peut ni vous obliger à les résilier, ni les résilier elle-même pour cette raison.
 
 La règle d'or : **ne résiliez jamais une complémentaire avant d'avoir reçu l'acceptation écrite de votre nouvel assureur**. Sinon, vous risquez de vous retrouver sans couverture, avec un questionnaire de santé devenu défavorable. Si vous voulez revoir vos garanties, notre page [complémentaires santé](/particuliers/complementaire-maladie/) vous aide à faire le point besoin par besoin.
+
+[[cta | Vous voulez revoir vos complémentaires sans prendre de risque ? Un conseiller vérifie tout avec vous. | /particuliers/complementaire-maladie/ | Être conseillé gratuitement]]
 
 ## Les erreurs les plus fréquentes
 

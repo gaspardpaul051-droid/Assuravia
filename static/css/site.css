@@ -1986,3 +1986,19 @@ html.cookies-ouvert { overflow: hidden; }
 .jauge-revenu input.jauge-revenu__curseur { height: 12px; }
 .apercu-prime__montant--masque { filter: blur(9px); user-select: none; pointer-events: none; }
 .apercu-prime__mois:has(.icone) { display: flex; justify-content: center; align-items: center; gap: 6px; }
+/* Articles : encadrés de couleur et appels à l'action dans le texte */
+.encadre { position: relative; }
+.encadre__titre::before { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-right: 8px; border-radius: 50%; font-size: 14px; font-weight: 800; vertical-align: 1px; }
+.encadre--savoir .encadre__titre::before { content: "i"; background: var(--or); color: #fff; }
+.encadre--exemple { border-left-color: var(--bleu); background: var(--bleu-pale); }
+.encadre--exemple .encadre__titre { color: var(--bleu); }
+.encadre--exemple .encadre__titre::before { content: "→"; background: var(--bleu); color: #fff; }
+.encadre--attention { border-left-color: #B4471F; background: #FFF4EE; }
+.encadre--attention .encadre__titre { color: #9A3412; }
+.encadre--attention .encadre__titre::before { content: "!"; background: #B4471F; color: #fff; }
+.encadre--astuce { border-left-color: #15803D; background: #EDF8F1; }
+.encadre--astuce .encadre__titre { color: #14532D; }
+.encadre--astuce .encadre__titre::before { content: "✓"; background: #15803D; color: #fff; }
+.cta-ligne { display: flex; align-items: center; justify-content: space-between; gap: var(--e-4); flex-wrap: wrap; margin: var(--e-6) 0; padding: var(--e-4) var(--e-5); border-radius: var(--r-l); background: linear-gradient(135deg, var(--marine), #123A6B); box-shadow: var(--ombre-1); }
+.cta-ligne__texte { margin: 0 !important; color: #fff; font-weight: 700; font-size: var(--t-m); flex: 1 1 260px; }
+.article__corps .cta-ligne a { color: var(--marine); text-decoration: none; }
