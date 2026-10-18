@@ -56,6 +56,8 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 - Les pages orientées assureur (Helsana, Assura…) seront des pages publicitaires `templates/pages/lp/`, non liées au site. Grille inspirée d'Helsana conservée dans `archives/complementaires-helsana/`.
 
 ## Article hebdomadaire
+Publication automatique : tâche planifiée « Article blog Assuravia » (mardi et vendredi à 8 h 53, heure de Zurich) qui rédige, vérifie et pousse un article selon ces règles.
+
 Format d'un article (`content/articles/<slug-court-sans-accents>.md`) :
 
 ```
