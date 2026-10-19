@@ -153,16 +153,24 @@
   window.ADS_CONV = {{ ads_conv|tojson }};
   var lire = function () { try { return localStorage.getItem("assuravia-cookies"); } catch (e) { return null; } };
   var ecrire = function (v) { try { localStorage.setItem("assuravia-cookies", v); } catch (e) {} };
+  // Google (Analytics et Ads) : mode consentement. Avant l'accord, la balise fonctionne sans cookies (consentement « refusé ») ;
+  // elle n'envoie que des signaux anonymes qui permettent à Google d'estimer les conversions. Clarity attend l'accord.
+  window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
+  var accord = lire() === "oui";
+  var etat = function (ok) { var v = ok ? "granted" : "denied"; return { ad_storage: v, analytics_storage: v, ad_user_data: v, ad_personalization: v }; };
+  gtag("consent", "default", Object.assign(etat(accord), { wait_for_update: 500 }));
+  gtag("set", "ads_data_redaction", true);
+  gtag("set", "url_passthrough", true);
+  if (GA || ADS) {
+    var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + (GA || ADS); document.head.appendChild(s);
+    gtag("js", new Date());
+    if (GA) gtag("config", GA, { anonymize_ip: true });
+    if (ADS) gtag("config", ADS, { allow_enhanced_conversions: true });
+  }
   var charge = false;
   var activer = function () {
+    gtag("consent", "update", etat(true));
     if (charge) return; charge = true;
-    if (GA || ADS) {
-      var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + (GA || ADS); document.head.appendChild(s);
-      window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
-      gtag("js", new Date());
-      if (GA) gtag("config", GA, { anonymize_ip: true });
-      if (ADS) gtag("config", ADS, { allow_enhanced_conversions: true });
-    }
     if (CL) {
       (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", CL);
     }
@@ -172,7 +180,7 @@
   if (choix === "oui") activer(); else if (choix !== "non" && !/^\/(confidentialite|mentions-legales)\//.test(location.pathname)) { bandeau.hidden = false; document.documentElement.classList.add("cookies-ouvert"); }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-cookies-choix]");
-    if (b) { var v = b.getAttribute("data-cookies-choix"); ecrire(v); bandeau.hidden = true; document.documentElement.classList.remove("cookies-ouvert"); if (v === "oui") activer(); else if (charge) location.reload(); }
+    if (b) { var v = b.getAttribute("data-cookies-choix"); ecrire(v); bandeau.hidden = true; document.documentElement.classList.remove("cookies-ouvert"); if (v === "oui") activer(); else { gtag("consent", "update", etat(false)); if (charge) location.reload(); } }
     if (e.target.closest("[data-cookies-gerer]")) { bandeau.hidden = false; document.documentElement.classList.add("cookies-ouvert"); }
   });
 })();

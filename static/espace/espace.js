@@ -196,7 +196,7 @@
   // ---------- Mise en page ----------
   function rendre() {
     var onglets = [["leads", estAdmin() ? "Tous les leads" : "Mes leads"]];
-    if (estAdmin()) onglets.push(["conseillers", "Conseillers et répartition"], ["stats", "Statistiques"]);
+    if (estAdmin()) onglets.push(["conseillers", "Conseillers et répartition"], ["stats", "Statistiques"], ["trafic", "Trafic"]);
     else onglets.push(["perf", "Mes statistiques"]);
     app.innerHTML =
       '<header class="barre"><div class="marque"><img src="/marque/embleme.svg" alt="" width="34" height="34"><div><strong>Assuravia</strong><span>Espace conseillers</span></div></div>' +
@@ -207,7 +207,7 @@
     app.querySelector("[data-sortir]").onclick = sortir;
     app.querySelector("[data-mon-mdp]").onclick = function () { ecranMotDePasse("changer"); };
     app.querySelector("[data-voile]").onclick = fermerFiche;
-    if (etat.vue === "conseillers") vueConseillers(); else if (etat.vue === "stats") vueStats(); else if (etat.vue === "perf") vuePerf(); else vueLeads();
+    if (etat.vue === "conseillers") vueConseillers(); else if (etat.vue === "stats") vueStats(); else if (etat.vue === "trafic" && estAdmin()) vueTrafic(); else if (etat.vue === "perf") vuePerf(); else vueLeads();
     if (etat.leadOuvert) ouvrirFiche(etat.leadOuvert, true);
   }
 
@@ -311,9 +311,9 @@
     var infos = Object.keys(l.donnees || {}).filter(function (k) { return ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name"].indexOf(k) < 0; });
     var s0 = statut(l.statut);
     var d = l.donnees || {};
-    var TECH = ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name", "page", "produit", "prime_totale", "prime_mensuelle_estimee", "prime_estimee", "prime_principale", "etape_atteinte", "gclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "canton"];
+    var TECH = ["prenom", "nom", "email", "telephone", "telephone_complet", "indicatif", "form-name", "page", "produit", "prime_totale", "prime_mensuelle_estimee", "prime_estimee", "prime_principale", "etape_atteinte", "gclid", "gad_campaignid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "canton"];
     var reponses = Object.keys(d).filter(function (k) { return TECH.indexOf(k) < 0 && !(/^somme/.test(k) && String(d[k]).trim() === "0"); });
-    var origine = [["Page", l.page], ["Formulaire", l.formulaire], ["Source", d.utm_source], ["Campagne", d.utm_campaign], ["Mot-clé", d.utm_term], ["Google Ads", d.gclid ? "Oui (clic publicitaire)" : ""]].filter(function (x) { return x[1]; });
+    var origine = [["Page", l.page], ["Formulaire", l.formulaire], ["Source", d.utm_source], ["Campagne", d.utm_campaign], ["Mot-clé", d.utm_term], ["Google Ads", d.gclid || d.gad_campaignid ? (ADS_CAMPAGNES[d.gad_campaignid] || "Oui (clic publicitaire)") : ""]].filter(function (x) { return x[1]; });
     var tuile = function (ic, label, val, lien) { return '<div class="tuile"><span class="tuile__ic">' + ic + '</span><span class="tuile__txt"><small>' + label + "</small>" + (lien ? '<a href="' + esc(lien) + '">' + esc(val) + "</a>" : "<b>" + esc(val) + "</b>") + "</span></div>"; };
     var IC = {
       tel: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>',
@@ -761,6 +761,68 @@
       '<div class="carte"><h2>Leads par produit</h2><div class="barres">' + Object.keys(parProduit).sort(function (a, b) { return parProduit[b] - parProduit[a]; }).map(function (k) {
         return '<div class="barre-ligne"><span>' + esc(k) + '</span><span class="barre-fond"><span style="width:' + Math.round(parProduit[k] / max * 100) + '%"></span></span><strong>' + parProduit[k] + "</strong></div>";
       }).join("") + "</div></div>";
+  }
+
+
+  // ---------- Trafic (administrateur uniquement) : visites sans cookies, par canal, comparées aux leads ----------
+  // Identifiants des campagnes Google Ads (paramètre gad_campaignid ajouté automatiquement par Google)
+  var ADS_CAMPAGNES = { "24357605177": "LP Assura (complémentaire santé)", "24365028139": "Demand Gen 3e pilier", "24370959241": "Search ménage" };
+  function canalVisite(v) {
+    var p = (v.provenance || "").toLowerCase(), src = (v.source || "").toLowerCase();
+    if (v.campagne_id && ADS_CAMPAGNES[v.campagne_id]) return "Pub · " + ADS_CAMPAGNES[v.campagne_id];
+    if (v.gclid || v.campagne_id || src === "google" && v.campagne) return "Pub · Google Ads (autre)";
+    if (src) return "Lien suivi · " + src + (v.campagne ? " / " + v.campagne : "");
+    if (/google\./.test(p)) return "Google (recherche naturelle)";
+    if (/bing\.|duckduckgo|yahoo|ecosia|qwant|search\.ch/.test(p)) return "Autres moteurs";
+    if (/facebook|instagram|linkedin|whatsapp|t\.co$|twitter|x\.com/.test(p)) return "Réseaux sociaux";
+    if (!p) return "Accès direct";
+    return "Autres sites · " + p.replace(/^www\./, "");
+  }
+  function canalLead(l) {
+    var d = l.donnees || {};
+    return canalVisite({ campagne_id: d.gad_campaignid, gclid: !!d.gclid, source: d.utm_source, campagne: d.utm_campaign, provenance: "?" });
+  }
+  function vueTrafic() {
+    var zone = app.querySelector("[data-contenu]");
+    var periode = etat.periodeTrafic || "7";
+    var debut = new Date(); debut.setHours(0, 0, 0, 0);
+    if (periode === "mois") debut.setDate(1); else debut = new Date(debut.getTime() - (Number(periode) - 1) * 86400000);
+    zone.innerHTML = '<div class="tete"><div><h1>Trafic</h1><p class="sous">Visites comptées sans cookies, que le visiteur ait accepté ou non. Visible par l\'administrateur uniquement.</p></div>' +
+      '<div class="periodes">' + [["1", "Aujourd\'hui"], ["7", "7 jours"], ["30", "30 jours"], ["mois", "Ce mois"]].map(function (x) { return '<button class="puce' + (periode === x[0] ? " puce--active" : "") + '" data-periode="' + x[0] + '">' + x[1] + "</button>"; }).join("") + "</div></div><p class=\"sous\">Chargement…</p>";
+    zone.querySelectorAll("[data-periode]").forEach(function (bt) { bt.onclick = function () { etat.periodeTrafic = bt.getAttribute("data-periode"); vueTrafic(); }; });
+    var lignes = [];
+    var page = function (de) {
+      return sb.from("visites").select("cree_le,page,source,campagne,campagne_id,gclid,provenance,mobile").gte("cree_le", debut.toISOString()).order("cree_le", { ascending: false }).range(de, de + 999).then(function (r) {
+        if (r.error) throw r.error;
+        lignes = lignes.concat(r.data || []);
+        if ((r.data || []).length === 1000 && lignes.length < 50000) return page(de + 1000);
+      });
+    };
+    page(0).then(function () {
+      if (etat.vue !== "trafic") return;
+      var leads = etat.leads.filter(function (l) { return new Date(l.cree_le) >= debut; });
+      var canaux = {};
+      var ajoute = function (k, champ) { canaux[k] = canaux[k] || { visites: 0, leads: 0, mobile: 0 }; canaux[k][champ]++; };
+      lignes.forEach(function (v) { ajoute(canalVisite(v), "visites"); if (v.mobile) canaux[canalVisite(v)].mobile++; });
+      leads.forEach(function (l) { ajoute(canalLead(l), "leads"); });
+      var cles = Object.keys(canaux).sort(function (a, b) { return canaux[b].visites - canaux[a].visites || canaux[b].leads - canaux[a].leads; });
+      var pages = {};
+      lignes.forEach(function (v) { pages[v.page] = (pages[v.page] || 0) + 1; });
+      var topPages = Object.keys(pages).sort(function (a, b) { return pages[b] - pages[a]; }).slice(0, 12);
+      var maxP = topPages.length ? pages[topPages[0]] : 1;
+      var pub = lignes.filter(function (v) { return v.gclid || v.campagne_id; }).length;
+      var taux = function (l, v) { return v ? (Math.round(l / v * 1000) / 10).toString().replace(".", ",") + " %" : "–"; };
+      zone.querySelector(".sous + .sous, .tete + .sous") && zone.querySelector(".tete + .sous").remove();
+      zone.insertAdjacentHTML("beforeend",
+        '<div class="kpis"><div><span>Visites</span><strong>' + lignes.length + '</strong></div><div><span>Dont pubs Google</span><strong>' + pub + '</strong></div><div><span>Leads</span><strong>' + leads.length + '</strong></div><div><span>Taux visite → lead</span><strong>' + taux(leads.length, lignes.length) + "</strong></div></div>" +
+        '<div class="tableau"><table><thead><tr><th>Canal</th><th>Visites</th><th>Sur mobile</th><th>Leads</th><th>Taux</th></tr></thead><tbody>' +
+        (cles.length ? cles.map(function (k) { var c = canaux[k]; return "<tr><td><strong>" + esc(k) + "</strong></td><td>" + c.visites + "</td><td>" + (c.visites ? Math.round(c.mobile / c.visites * 100) + " %" : "–") + "</td><td>" + (c.leads || '<span class="zero">0</span>') + "</td><td>" + taux(c.leads, c.visites) + "</td></tr>"; }).join("") : '<tr><td colspan="5">Aucune visite sur cette période.</td></tr>') +
+        "</tbody></table></div>" +
+        '<div class="carte"><h2>Pages d\'arrivée</h2><div class="barres">' + topPages.map(function (k) { return '<div class="barre-ligne"><span>' + esc(k) + '</span><span class="barre-fond"><span style="width:' + Math.round(pages[k] / maxP * 100) + '%"></span></span><strong>' + pages[k] + "</strong></div>"; }).join("") + "</div></div>" +
+        '<p class="sous">Pour comparer avec Google Ads : les clics affichés par Google sont en général plus nombreux que les visites, car une partie des clics (surtout Demand Gen, sur mobile) sont faits par erreur et quittés avant le chargement de la page.</p>');
+    }).catch(function (e) {
+      zone.querySelector(".tete + .sous").outerHTML = '<p class="alerte">Le compteur n\'est pas encore activé : lancez le script espace/maj-3-visites.sql dans Supabase (SQL Editor). ' + esc(e.message || "") + "</p>";
+    });
   }
 
   // ---------- Démarrage ----------

@@ -82,10 +82,23 @@
 
   // 1. Mémoriser la source de la visite (pub Google, etc.) pour la joindre au lead.
   var params = new URLSearchParams(window.location.search);
-  ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"].forEach(function (cle) {
+  ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid", "gad_campaignid"].forEach(function (cle) {
     var val = params.get(cle);
     if (val) stockage.ecrire("av_" + cle, val);
   });
+  // 1 bis. Compteur de visites sans cookies : une ligne par arrivée depuis l'extérieur (pub, moteur, lien, accès direct).
+  // Rien de personnel : la page, la campagne et le site d'où vient le visiteur.
+  (function () {
+    var ref = "";
+    try { ref = document.referrer ? new URL(document.referrer).hostname : ""; } catch (e) { ref = ""; }
+    if (ref === location.hostname || /^\/espace/.test(location.pathname) || navigator.webdriver) return;
+    var corps = JSON.stringify({
+      page: location.pathname, source: params.get("utm_source") || "", campagne: params.get("utm_campaign") || "",
+      terme: params.get("utm_term") || "", campagne_id: params.get("gad_campaignid") || "", gclid: !!params.get("gclid"),
+      provenance: ref, mobile: window.matchMedia("(max-width: 700px)").matches
+    });
+    try { if (!navigator.sendBeacon || !navigator.sendBeacon("/.netlify/functions/visite", new Blob([corps], { type: "application/json" }))) fetch("/.netlify/functions/visite", { method: "POST", body: corps, keepalive: true }).catch(function () {}); } catch (e) {}
+  })();
   document.querySelectorAll("[data-champ]").forEach(function (champ) {
     var cle = champ.getAttribute("data-champ");
     champ.value = cle === "page" ? window.location.pathname : (stockage.lire("av_" + cle) || "");
