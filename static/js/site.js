@@ -999,6 +999,11 @@
     // Entrée directe depuis la page produit (?logement=Appartement)
     var log = params.get("logement");
     montrer(0);
+    // Étapes déjà répondues depuis la page produit, à ne pas reposer : ?secteur=…&passer=secteur
+    (params.get("passer") || "").split(",").forEach(function (nom) {
+      var r = nom && formF.querySelector('[name="' + nom.replace(/[^\w-]/g, "") + '"]:checked');
+      if (r && r.closest("[data-fe]")) sauter[etapesF.indexOf(r.closest("[data-fe]"))] = true;
+    });
     if (log) {
       var r = formF.querySelector('[name="logement"][value="' + CSS.escape(log) + '"]');
       if (r) { r.checked = true; sauter[etapesF.indexOf(r.closest("[data-fe]"))] = true; }

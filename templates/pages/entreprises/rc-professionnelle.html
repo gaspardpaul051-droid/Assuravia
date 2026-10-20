@@ -1,74 +1,272 @@
 {% import "partials/icones.html" as i %}
 {% extends "base.html" %}
+{% set sim_url = "/entreprises/simulation-rc-pro/" %}
+{% set faq = [
+  ("Qu'est-ce qu'une RC professionnelle ?", "C'est l'assurance responsabilité civile de votre activité. Elle paie les dommages que votre entreprise cause à des clients ou à des tiers (blessures, dégâts matériels, pertes financières qui en découlent) et vous défend contre les réclamations injustifiées."),
+  ("La RC pro est-elle obligatoire en Suisse ?", "Pas pour toutes les entreprises. Elle est obligatoire pour certaines professions réglementées, comme les avocats ou les professions médicales. Beaucoup de clients, de régies et de maîtres d'ouvrage l'exigent toutefois avant de signer un contrat."),
+  ("Je suis indépendant et je travaille seul, en ai-je besoin ?", "Oui, si un client peut subir un dommage à cause de votre travail. Votre RC privée ne couvre pas votre activité professionnelle, et en raison individuelle vous répondez des dettes de l'entreprise sur vos biens personnels."),
+  ("Quelle somme d'assurance choisir ?", "Les montants courants sont de 3, 5 ou 10 millions de francs par sinistre. Le bon montant dépend de votre activité, des dommages possibles et des exigences de vos clients. Vérifiez vos contrats : certains imposent un minimum."),
+  ("Combien coûte une RC professionnelle ?", "La prime dépend surtout de votre activité, de votre chiffre d'affaires ou de votre masse salariale, de la somme d'assurance, de la franchise et de vos sinistres passés. La simulation vous donne une estimation en 2 minutes, puis un conseiller affine l'offre."),
+  ("Mon entreprise est en cours de création, puis-je déjà demander une offre ?", "Oui. C'est même le bon moment, car certains clients ou bailleurs demandent une attestation d'assurance dès le début."),
+  ("Puis-je changer d'assureur en cours de contrat ?", "En principe, à l'échéance, en respectant le délai de résiliation prévu par votre contrat. Le conseiller en tient compte pour préparer les offres à temps, sans période sans couverture.")
+] %}
+{% set sommaire = [
+  ("essentiel", "L'essentiel"), ("definition", "La RC pro en clair"), ("metiers", "Qui en a besoin ?"), ("exemples", "Exemples de sinistres"),
+  ("couverture", "Couvert ou pas couvert"), ("rc-pro-entreprise-privee", "RC pro, RC entreprise, RC privée"), ("somme", "Choisir la somme d'assurance"),
+  ("prix", "Ce qui fait varier le prix"), ("erreurs", "Les erreurs à éviter"), ("conseiller", "Ce que vérifie le conseiller"),
+  ("pour-qui", "Est-ce pour vous ?"), ("quiz-titre", "Vrai ou faux"), ("questions-frequentes", "Questions fréquentes")
+] %}
+{% set secteurs = [
+  ("Santé et thérapies", "croix", "Cabinet, physio, thérapeutes"),
+  ("Construction et artisanat", "batiment", "Gros et second œuvre, installations"),
+  ("Conseil et fiduciaire", "balance", "Fiduciaire, architecture, conseil"),
+  ("Informatique et digital", "cyber", "Développement, agence web"),
+  ("Commerce et vente", "colis", "Magasin, vente en ligne"),
+  ("Services aux personnes", "groupe", "Beauté, nettoyage, enseignement")
+] %}
 {% block theme %}pro{% endblock %}
-{% block title %}RC professionnelle PME et indépendants | Assuravia{% endblock %}
-{% block description %}RC professionnelle pour indépendants et PME de Suisse romande : ce qu'elle couvre, ce qui fait varier le prix, et votre estimation de prime en 2 minutes.{% endblock %}
+{% block title %}RC pro en Suisse : estimez votre prime en 2 min | Assuravia{% endblock %}
+{% block description %}RC professionnelle pour indépendants et PME de Suisse romande : ce qu'elle couvre, la somme à choisir, les pièges à éviter. Estimation gratuite en 2 minutes.{% endblock %}
 {% block head %}
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Je suis indépendant et je travaille seul, en ai-je besoin ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, si un client peut subir un dommage à cause de votre travail. Votre RC privée ne couvre pas votre activité professionnelle, et en raison individuelle vous répondez des dettes de l'entreprise sur vos biens personnels."}}, {"@type": "Question", "name": "Puis-je changer d'assureur en cours de contrat ?", "acceptedAnswer": {"@type": "Answer", "text": "En principe, à l'échéance, en respectant le délai de résiliation prévu par votre contrat (souvent 3 mois). Le conseiller en tient compte pour préparer les offres à temps."}}, {"@type": "Question", "name": "Mon entreprise est en cours de création, puis-je déjà demander une offre ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui. C'est même le bon moment, car certains clients ou bailleurs demandent une attestation d'assurance dès le début."}}, {"@type": "Question", "name": "Combien de temps pour recevoir une offre ?", "acceptedAnswer": {"@type": "Answer", "text": "Le conseiller vous rappelle pour compléter votre dossier, puis vous transmet les offres. Le délai dépend de votre activité et des assureurs sollicités."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{% for q, r in faq %}{"@type":"Question","name":{{ q|tojson }},"acceptedAnswer":{"@type":"Answer","text":{{ r|tojson }}}}{% if not loop.last %},{% endif %}{% endfor %}]}</script>
 <script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": "Professionnel", "item": site_url ~ "/entreprises/"}, {"@type": "ListItem", "position": 3, "name": "RC professionnelle", "item": site_url ~ "/entreprises/rc-professionnelle/"}]}|tojson }}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Service", "name": "RC professionnelle", "serviceType": "Assurance responsabilité civile professionnelle", "url": site_url ~ "/entreprises/rc-professionnelle/", "areaServed": [{"@type": "State", "name": "Genève"}, {"@type": "State", "name": "Vaud"}, {"@type": "State", "name": "Valais"}, {"@type": "State", "name": "Fribourg"}, {"@type": "State", "name": "Neuchâtel"}, {"@type": "State", "name": "Jura"}], "audience": {"@type": "Audience", "audienceType": "Entreprises"}, "provider": {"@type": "Organization", "name": "Assuravia", "url": site_url ~ "/"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Estimation et conseil gratuits, sans engagement"}}|tojson }}</script>
 {% endblock %}
 {% block content %}
-<section class="produit">
-  <div class="cadre produit__grille">
-    <div class="produit__texte">
-      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Professionnel</a></nav>
-      <h1>RC professionnelle : protégez votre entreprise contre les réclamations</h1>
-      <p class="chapeau">Un client se blesse dans vos locaux, une installation que vous avez posée provoque un dégât d'eau, un conseil erroné coûte de l'argent à un mandant : la responsabilité civile prend en charge les dommages et votre défense.</p>
+<div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
+<section class="hero-produit rcp-hero">
+  <div class="cadre hero-produit__grille">
+    <div class="hero-produit__texte">
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Professionnel</a> <span aria-hidden="true">/</span> <span aria-current="page">RC professionnelle</span></nav>
+      <p class="etiquette etiquette--pro">{{ i.icone("bouclier", "icone icone--petite") }} Responsabilité civile professionnelle</p>
+      <h1>RC professionnelle : protégez votre activité, estimez votre prime en 2 minutes</h1>
+      <p class="chapeau">Un client se blesse dans vos locaux, une installation provoque un dégât d'eau, un conseil erroné coûte de l'argent à un mandant : la RC pro paie les dommages et vous défend. Pour indépendants, Sàrl, SA et entreprises en création.</p>
       <ul class="points">
-        <li>Pour indépendants, Sàrl, SA et entreprises en création</li>
-        <li>Offres simulées selon votre activité et votre chiffre d'affaires</li>
-        <li>Un conseiller vous rappelle, gratuitement et sans engagement</li>
+        <li>Prime estimée tout de suite, selon votre activité</li>
+        <li>Attestation d'assurance pour vos clients et régies</li>
+        <li>Un conseiller vérifie les exclusions avant que vous signiez</li>
       </ul>
     </div>
-    <aside class="produit__form" id="demande">
-      <h2 class="form-titre">Recevoir des offres pour votre RC professionnelle</h2>
-      <p class="form-sous-titre">Décrivez votre activité en 2 minutes et découvrez votre prime estimée. Un conseiller prépare ensuite les offres pour vous.</p>
-      <ul class="entree-simulation__points">
-        <li>{{ i.icone("valide", "icone icone--petite") }} Indépendants, Sàrl, SA et entreprises en création</li>
-        <li>{{ i.icone("valide", "icone icone--petite") }} Prime estimée tout de suite</li>
-        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+    <aside class="panneau-form rcp-depart" id="demande">
+      <h2 class="form-titre">Quelle est votre activité ?</h2>
+      <p class="form-sous-titre">Touchez votre domaine : l'estimation démarre directement. Gratuit et sans engagement.</p>
+      <div class="rcp-depart__choix">
+        {% for nom, icone, detail in secteurs %}
+        <a class="rcp-depart__carte" href="{{ sim_url }}?secteur={{ nom|urlencode }}&amp;passer=secteur"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong><small>{{ detail }}</small></span></a>
+        {% endfor %}
+      </div>
+      <a class="bouton bouton--action rcp-depart__go" href="{{ sim_url }}">Estimer ma prime RC pro</a>
+      <ul class="lp-depart__rassure">
+        <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
+        <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées</li>
       </ul>
-      <a class="bouton bouton--action" href="/entreprises/simulation-rc-pro/">Recevoir mes offres</a>
     </aside>
   </div>
 </section>
 
-<section class="bloc bloc--teinte">
-  <div class="cadre texte-long">
-    <h2>Ce que couvre une RC professionnelle</h2>
-    <p>L'assurance responsabilité civile intervient quand votre entreprise cause un dommage à quelqu'un d'autre dans le cadre de son activité. Elle a deux rôles :</p>
-    <ul>
-      <li><strong>Indemniser</strong> les dommages corporels, matériels et les pertes financières qui en découlent, quand votre responsabilité est engagée.</li>
-      <li><strong>Vous défendre</strong> contre les réclamations injustifiées ou excessives : l'assureur examine la demande et refuse de payer à votre place quand elle n'est pas fondée.</li>
-    </ul>
-    <p>Pour les métiers de conseil (fiduciaire, informatique, architecture, ingénierie, gestion), les pertes purement financières subies par un client sont le principal risque. Elles relèvent souvent d'une couverture spécifique, appelée RC professionnelle au sens strict. Pour les artisans et commerces, on parle plutôt de RC d'entreprise. Le conseiller vous indique ce qui correspond à votre activité.</p>
+<section class="lp-chiffres" aria-label="La RC pro en bref">
+  <div class="cadre lp-chiffres__liste">
+    {% for val, txt, icone in [("2 min", "pour estimer votre prime", "horloge"), ("3 · 5 · 10", "millions de francs : sommes d'assurance courantes", "bouclier"), ("6", "domaines d'activité couverts par la simulation", "mallette"), ("0", "engagement, conseil gratuit", "valide")] %}
+    <div class="lp-chiffre"><span class="lp-chiffre__icone">{{ i.icone(icone) }}</span><p class="lp-chiffre__val">{{ val }}</p><p class="lp-chiffre__txt">{{ txt }}</p></div>
+    {% endfor %}
+  </div>
+</section>
 
-    <h2>Ce qui n'est en général pas couvert</h2>
-    <ul>
-      <li>Les dommages à vos propres biens (ils relèvent de l'assurance choses ou inventaire).</li>
-      <li>Le coût de refaire un travail mal exécuté : c'est votre obligation contractuelle, pas un dommage à un tiers.</li>
-      <li>Les dommages causés intentionnellement, les amendes et les peines conventionnelles.</li>
-      <li>Les accidents de vos employés, couverts par l'assurance accidents LAA.</li>
-    </ul>
+<section class="bloc">
+  <div class="cadre article__grille p3-grille">
+    <aside class="article__cote">
+      <nav class="sommaire" aria-label="Sommaire de la page">
+        <p class="sommaire__titre">Sur cette page</p>
+        <ol>
+          {% for id, titre in sommaire %}<li><a href="#{{ id }}" data-sommaire-lien>{{ titre }}</a></li>{% endfor %}
+        </ol>
+      </nav>
+      <div class="mini-cta">
+        <p>RC pro : votre prime estimée en 2 minutes.</p>
+        <a class="bouton bouton--action bouton--petit" href="{{ sim_url }}">Estimer ma prime</a>
+      </div>
+    </aside>
 
-    <h2>Est-ce obligatoire ?</h2>
-    <p>En Suisse, la RC professionnelle n'est pas obligatoire pour toutes les entreprises. Elle l'est pour certaines professions réglementées, comme les avocats ou les professions médicales, et de nombreux clients, régies ou maîtres d'ouvrage l'exigent avant de signer un contrat. Surtout, une seule réclamation peut dépasser ce que votre entreprise est capable de payer.</p>
+    <div class="article__corps p3-corps">
+      <aside class="retenir" id="essentiel" aria-labelledby="retenir-titre">
+        <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+        <ul>
+          <li>La RC pro paie les dommages que votre activité cause à des clients ou à des tiers, et vous <strong>défend</strong> contre les réclamations injustifiées.</li>
+          <li>Votre <strong>RC privée ne couvre pas</strong> votre activité professionnelle.</li>
+          <li>Elle n'est obligatoire que pour certaines professions, mais beaucoup de <strong>clients et de régies l'exigent</strong> avant de signer.</li>
+          <li>La <strong>somme d'assurance</strong> et les <strong>exclusions</strong> comptent autant que la prime : faites-les vérifier.</li>
+        </ul>
+      </aside>
 
-    <h2>Ce qui fait varier le prix</h2>
-    <dl class="faits faits--colonne">
-      <div><dt>L'activité</dt><dd>Un bureau de conseil et une entreprise de toiture n'ont pas le même risque.</dd></div>
-      <div><dt>Le chiffre d'affaires ou la masse salariale</dt><dd>C'est la base de calcul de la prime chez la plupart des assureurs.</dd></div>
-      <div><dt>La somme d'assurance</dt><dd>Souvent 3, 5 ou 10 millions de francs par sinistre. Certains contrats clients imposent un minimum.</dd></div>
-      <div><dt>La franchise</dt><dd>Une franchise plus élevée réduit la prime.</dd></div>
-      <div><dt>Les sinistres passés</dt><dd>Un historique sans sinistre permet souvent de négocier.</dd></div>
-    </dl>
+      <h2 id="definition">La RC professionnelle en clair</h2>
+      <p>La responsabilité civile, c'est l'obligation légale de réparer un dommage que vous causez à quelqu'un d'autre. Dans le cadre d'une activité professionnelle, ces dommages peuvent atteindre des montants très élevés, surtout quand une personne est blessée ou qu'un client subit une perte financière importante.</p>
+      <div class="p3-duo">
+        <article class="p3-carte">
+          <p class="p3-carte__tag">{{ i.icone("bouclier", "icone icone--petite") }} Mission 1</p>
+          <h3>Indemniser</h3>
+          <p>Elle paie les dommages corporels, matériels et les pertes financières qui en découlent, quand votre responsabilité est engagée.</p>
+        </article>
+        <article class="p3-carte">
+          <p class="p3-carte__tag">{{ i.icone("balance", "icone icone--petite") }} Mission 2</p>
+          <h3>Vous défendre</h3>
+          <p>L'assureur examine chaque réclamation et refuse de payer celles qui ne sont pas fondées, y compris devant un tribunal. C'est ce qu'on appelle la défense passive.</p>
+        </article>
+      </div>
 
-    <h2>Questions fréquentes</h2>
-    <details><summary>Je suis indépendant et je travaille seul, en ai-je besoin ?</summary><p>Oui, si un client peut subir un dommage à cause de votre travail. Votre RC privée ne couvre pas votre activité professionnelle, et en raison individuelle vous répondez des dettes de l'entreprise sur vos biens personnels.</p></details>
-    <details><summary>Puis-je changer d'assureur en cours de contrat ?</summary><p>En principe, à l'échéance, en respectant le délai de résiliation prévu par votre contrat (souvent 3 mois). Le conseiller en tient compte pour préparer les offres à temps.</p></details>
-    <details><summary>Mon entreprise est en cours de création, puis-je déjà demander une offre ?</summary><p>Oui. C'est même le bon moment, car certains clients ou bailleurs demandent une attestation d'assurance dès le début.</p></details>
-    <details><summary>Combien de temps pour recevoir une offre ?</summary><p>Le conseiller vous rappelle pour compléter votre dossier, puis vous transmet les offres. Le délai dépend de votre activité et des assureurs sollicités.</p></details>
-    <p><a class="bouton bouton--plein" href="/entreprises/simulation-rc-pro/">Recevoir des offres</a></p>
+      <h2 id="metiers">Qui a besoin d'une RC pro ?</h2>
+      <p>Toute entreprise dont l'activité peut causer un dommage à un client ou à un tiers. Choisissez votre domaine pour démarrer l'estimation :</p>
+      <div class="rcp-metiers">
+        {% for nom, icone, detail in secteurs %}
+        <a class="rcp-metier" href="{{ sim_url }}?secteur={{ nom|urlencode }}&amp;passer=secteur">
+          <span class="lp-avantage__icone">{{ i.icone(icone) }}</span>
+          <strong>{{ nom }}</strong>
+          <small>{{ detail }}</small>
+          <span class="rcp-metier__lien">Estimer ma prime {{ i.icone("fleche", "icone icone--petite") }}</span>
+        </a>
+        {% endfor %}
+      </div>
+      <blockquote class="encadre encadre--savoir"><p class="encadre__titre">Le saviez-vous ?</p><p>En raison individuelle, il n'y a pas de séparation entre vos biens personnels et ceux de l'entreprise. Sans assurance, une réclamation importante peut toucher directement votre épargne ou votre logement.</p></blockquote>
+
+      <h2 id="exemples">Trois situations, trois façons d'être protégé</h2>
+      <div class="lp-cas rcp-cas">
+        {% for icone, qui, situation, sans, avec in [
+          ("balance", "Graphiste indépendante, Lausanne", "Un nouveau client exige une attestation de RC professionnelle avant de signer un mandat important.", "Sans attestation, le contrat ne se signe pas, et une erreur dans ses fichiers pourrait lui coûter cher.", "Une RC pro qui couvre les pertes financières de ses clients, et une attestation reçue en quelques jours."),
+          ("cyber", "Consultant informatique, Nyon", "Une grande entreprise lui demande une couverture de 5 millions de francs pour un nouveau mandat.", "Sa somme d'assurance actuelle ne suffit pas : il risque de perdre le mandat.", "La somme est relevée au montant demandé, sans changer d'assureur ni tout réorganiser."),
+          ("croix", "Physiothérapeute en création, Vevey", "Le cabinet ouvre dans deux mois et rien n'est encore assuré.", "Un patient qui se blesse pendant un traitement pourrait engager sa responsabilité dès le premier jour.", "RC professionnelle, perte de gain et assurance des équipements, en place avant l'ouverture.")] %}
+        <article class="lp-cas__carte">
+          <p class="lp-cas__qui"><span>{{ i.icone(icone) }}</span>{{ qui }}</p>
+          <p class="lp-cas__situation">{{ situation }}</p>
+          <p class="lp-cas__sans"><strong>Sans RC pro adaptée</strong>{{ sans }}</p>
+          <p class="lp-cas__avec"><strong>Avec Assuravia</strong>{{ avec }}</p>
+        </article>
+        {% endfor %}
+      </div>
+
+      <aside class="cta-ligne"><p class="cta-ligne__texte">Votre situation ressemble à l'une de celles-ci ? Estimez votre prime en 2 minutes.</p><a class="bouton bouton--action bouton--petit" href="{{ sim_url }}">Lancer l'estimation</a></aside>
+
+      <h2 id="couverture">Ce qui est couvert, et ce qui ne l'est pas</h2>
+      <div class="p3-duo">
+        <article class="p3-carte p3-carte--3a">
+          <p class="p3-carte__tag">En général couvert</p>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} Un client ou un passant se blesse à cause de votre activité</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Un objet ou un bien d'un client est endommagé pendant votre intervention</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Les pertes financières qui découlent de ces dommages</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Pour les métiers de conseil, les pertes financières d'un client dues à une erreur, selon le contrat</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Les dommages causés par vos collaborateurs dans leur travail</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Votre défense contre les réclamations injustifiées</li>
+          </ul>
+        </article>
+        <article class="p3-carte p3-carte--3b">
+          <p class="p3-carte__tag">En général pas couvert</p>
+          <ul class="p3-liste">
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Vos propres biens : ils relèvent de l'assurance inventaire</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Le coût de refaire un travail mal exécuté</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les dommages causés intentionnellement</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les amendes et les peines conventionnelles</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les accidents de vos employés : c'est le rôle de la <a href="/entreprises/laa/">LAA</a></li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les cyberattaques : voir la <a href="/entreprises/cyberassurance/">cyberassurance</a></li>
+          </ul>
+        </article>
+      </div>
+      <blockquote class="encadre encadre--attention"><p class="encadre__titre">Attention aux exclusions</p><p>Chaque contrat a ses propres exclusions et limites, par exemple pour les travaux à l'étranger, certains matériaux ou les dommages aux objets confiés. Elles se lisent avant de signer, pas le jour du sinistre.</p></blockquote>
+
+      <h2 id="rc-pro-entreprise-privee">RC pro, RC entreprise, RC privée : quelle différence ?</h2>
+      <div class="tableau tableau--3col p3-tableau">
+        <table>
+          <thead><tr><th>Assurance</th><th>Pour qui</th><th>Ce qu'elle couvre surtout</th></tr></thead>
+          <tbody>
+            <tr><td>RC professionnelle</td><td data-label="Pour qui">Métiers de conseil : fiduciaire, informatique, architecture, ingénierie, santé</td><td data-label="Ce qu'elle couvre surtout">Les pertes financières d'un client dues à une erreur, un oubli ou un mauvais conseil</td></tr>
+            <tr><td>RC d'entreprise</td><td data-label="Pour qui">Artisans, construction, commerces, services</td><td data-label="Ce qu'elle couvre surtout">Les dommages corporels et matériels causés à des clients ou à des tiers</td></tr>
+            <tr><td>RC privée</td><td data-label="Pour qui">Vous et votre famille, dans la vie privée</td><td data-label="Ce qu'elle couvre surtout">Les dommages causés hors de toute activité professionnelle</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Dans le langage courant, on parle de « RC pro » pour les deux premières. Beaucoup d'entreprises ont besoin d'une combinaison des deux : le conseiller vous indique ce qui correspond à votre activité. Pour la vie privée, voir notre page <a href="/particuliers/rc-privee/">RC privée</a>.</p>
+
+      <h2 id="somme">Bien choisir sa somme d'assurance</h2>
+      <p>La somme d'assurance est le montant maximal que l'assureur paie pour un sinistre. Les montants les plus courants :</p>
+      <ul class="p3-verif">
+        <li>{{ i.icone("bouclier", "icone icone--petite") }} <span><strong>CHF 3 millions</strong> : courant pour les indépendants et les petites structures</span></li>
+        <li>{{ i.icone("bouclier", "icone icone--petite") }} <span><strong>CHF 5 millions</strong> : souvent demandé par les régies et les maîtres d'ouvrage</span></li>
+        <li>{{ i.icone("bouclier", "icone icone--petite") }} <span><strong>CHF 10 millions</strong> : pour les activités à risque élevé ou les gros contrats</span></li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} <span><strong>Vos contrats d'abord</strong> : certains clients imposent un minimum, vérifiez-le</span></li>
+      </ul>
+      <blockquote class="encadre encadre--exemple"><p class="encadre__titre">Exemple</p><p>Un électricien pose une installation dans un immeuble. Un défaut provoque un incendie qui endommage plusieurs appartements. Les dégâts aux logements, le relogement des habitants et les pertes de loyers peuvent vite atteindre des montants très élevés. C'est pour ce type de sinistre qu'une somme suffisante fait toute la différence.</p></blockquote>
+
+      <h2 id="prix">Ce qui fait varier le prix</h2>
+      <dl class="faits p3-faits">
+        <div><dt>{{ i.icone("mallette", "icone icone--petite") }} L'activité</dt><dd>Un bureau de conseil et une entreprise de toiture n'ont pas le même risque.</dd></div>
+        <div><dt>{{ i.icone("calcul", "icone icone--petite") }} Le chiffre d'affaires</dt><dd>Ou la masse salariale : c'est la base de calcul de la plupart des assureurs.</dd></div>
+        <div><dt>{{ i.icone("bouclier", "icone icone--petite") }} La somme d'assurance</dt><dd>3, 5 ou 10 millions : plus elle est élevée, plus la prime monte.</dd></div>
+        <div><dt>{{ i.icone("tirelire", "icone icone--petite") }} La franchise</dt><dd>Une franchise plus élevée réduit la prime.</dd></div>
+        <div><dt>{{ i.icone("horloge", "icone icone--petite") }} Les sinistres passés</dt><dd>Un historique sans sinistre aide à obtenir de meilleures conditions.</dd></div>
+        <div><dt>{{ i.icone("groupe", "icone icone--petite") }} Les collaborateurs</dt><dd>Leur nombre et leurs tâches influencent le risque.</dd></div>
+      </dl>
+      <aside class="cta-ligne"><p class="cta-ligne__texte">Activité, chiffre d'affaires, somme d'assurance : voyez votre prime estimée tout de suite.</p><a class="bouton bouton--action bouton--petit" href="{{ sim_url }}">Estimer ma prime</a></aside>
+
+      <h2 id="erreurs">Cinq erreurs fréquentes</h2>
+      <ol class="p3-erreurs">
+        {% for titre, texte in [
+          ("Compter sur sa RC privée", "Elle exclut en général toute activité professionnelle. En cas de sinistre lié au travail, elle ne paiera pas."),
+          ("Choisir une somme trop basse", "Une somme insuffisante laisse la différence à votre charge, et peut faire perdre un mandat dont le client exige un minimum."),
+          ("Oublier de déclarer une nouvelle activité", "Si votre activité évolue, le contrat doit suivre. Une activité non déclarée peut ne pas être couverte."),
+          ("Ne pas lire les exclusions", "Travaux à l'étranger, objets confiés, certains matériaux : les limites varient d'un contrat à l'autre."),
+          ("Résilier trop tard ou trop tôt", "Respectez le délai de résiliation de votre contrat, et ne résiliez qu'une fois la nouvelle couverture confirmée.")] %}
+        <li class="p3-erreur"><h3>{{ titre }}</h3><p>{{ texte }}</p></li>
+        {% endfor %}
+      </ol>
+      <blockquote class="encadre encadre--astuce"><p class="encadre__titre">Astuce</p><p>Gardez une copie de votre attestation d'assurance à jour en PDF. Les régies, maîtres d'ouvrage et grands clients la demandent souvent au moment de signer, et la fournir tout de suite fait bonne impression.</p></blockquote>
+
+      <h2 id="conseiller">Ce que votre conseiller vérifie pour vous</h2>
+      <ul class="p3-verif">
+        {% for t in [
+          "La couverture adaptée à votre activité réelle : RC pro, RC d'entreprise, ou les deux",
+          "La somme d'assurance exigée par vos clients et vos contrats",
+          "Les exclusions qui pourraient vous concerner",
+          "La franchise qui équilibre prime et risque",
+          "Votre attestation d'assurance pour vos clients et régies",
+          "Les autres besoins : protection juridique, cyber, inventaire, LAA, LPP"] %}
+        <li>{{ i.icone("valide", "icone icone--petite") }} <span>{{ t }}</span></li>
+        {% endfor %}
+      </ul>
+      <p class="p3-cta-ligne"><a class="bouton bouton--action" href="{{ sim_url }}">Recevoir mes offres RC pro</a></p>
+      <p>Pour aller plus loin, lisez notre guide <a href="/blog/rc-pro-independant-suisse/">RC pro pour indépendants et PME</a>. Et pour les litiges avec un client ou un fournisseur, voyez la <a href="/entreprises/protection-juridique-entreprise/">protection juridique d'entreprise</a>.</p>
+
+      {% with w={"pour_qui": ["Vous vous lancez comme indépendant ou créez votre société", "Un client ou une régie vous demande une attestation d'assurance", "Vous conseillez des clients ou travaillez chez eux", "Votre RC pro n'a pas été revue depuis plusieurs années"], "theme": "pro", "bouton": "Estimer ma prime RC pro", "cible": sim_url} %}{% include "partials/pour-qui.html" %}{% endwith %}
+
+      <section class="quiz" aria-labelledby="quiz-titre" data-quiz>
+        <h2 id="quiz-titre">Vrai ou faux ? Testez vos connaissances</h2>
+        <p class="quiz__score" aria-live="polite" data-quiz-score></p>
+        {% for aff, rep, expl in [
+          ("Ma RC privée couvre aussi les dommages causés dans le cadre de mon activité d'indépendant.", "faux", "La RC privée exclut en général l'activité professionnelle. Il faut une RC professionnelle ou d'entreprise."),
+          ("La RC pro paie aussi le coût pour refaire un travail mal exécuté.", "faux", "Refaire son propre travail relève de vos obligations contractuelles, pas d'un dommage à un tiers."),
+          ("Une assurance RC peut refuser une réclamation injustifiée et vous défendre.", "vrai", "C'est la défense passive : l'assureur examine la réclamation et la conteste si elle n'est pas fondée.")] %}
+        <div class="quiz__question" data-quiz-question data-reponse="{{ rep }}">
+          <p class="quiz__affirmation">{{ aff }}</p>
+          <div class="quiz__choix">
+            <button type="button" class="quiz__bouton" data-choix="vrai">Vrai</button>
+            <button type="button" class="quiz__bouton" data-choix="faux">Faux</button>
+          </div>
+          <p class="quiz__explication" hidden data-quiz-explication><strong data-quiz-verdict></strong> {{ expl }}</p>
+        </div>
+        {% endfor %}
+      </section>
+
+      <h2 id="questions-frequentes">Questions fréquentes sur la RC professionnelle</h2>
+      <div class="faq">
+        {% for q, r in faq %}
+        <details><summary>{{ q }}</summary><div class="faq__reponse"><p>{{ r }}</p></div></details>
+        {% endfor %}
+      </div>
+
+      <aside class="encart">
+        <p class="encart__titre">Votre RC pro, estimée en 2 minutes</p>
+        <p>Décrivez votre activité, voyez votre prime estimée, puis un conseiller prépare les offres et vérifie les exclusions avec vous. Gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="{{ sim_url }}">Estimer ma prime RC pro</a>
+      </aside>
+    </div>
   </div>
 </section>
 {% endblock %}
