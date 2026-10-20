@@ -766,7 +766,7 @@
 
   // ---------- Trafic (administrateur uniquement) : visites sans cookies, par canal, comparées aux leads ----------
   // Identifiants des campagnes Google Ads (paramètre gad_campaignid ajouté automatiquement par Google)
-  var ADS_CAMPAGNES = { "24357605177": "LP Assura (complémentaire santé)", "24365028139": "Demand Gen 3e pilier", "24370959241": "Search ménage" };
+  var ADS_CAMPAGNES = { "24357605177": "LP Assura (complémentaire santé)", "24365028139": "Demand Gen 3e pilier", "24370959241": "Search ménage", "24377322461": "RC pro" };
   function canalVisite(v) {
     var p = (v.provenance || "").toLowerCase(), src = (v.source || "").toLowerCase();
     if (v.campagne_id && ADS_CAMPAGNES[v.campagne_id]) return "Pub · " + ADS_CAMPAGNES[v.campagne_id];
