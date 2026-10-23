@@ -17,17 +17,6 @@
     { cle: "pas_interesse", nom: "Pas intéressé", couleur: "rouge" },
     { cle: "doublon", nom: "Doublon", couleur: "gris" }
   ];
-  // Statut proposé quand un conseiller agit sur un lead encore « Nouveau »
-  function statutDuTexte(t) {
-    t = String(t || "").toLowerCase();
-    if (/offre envoy/.test(t)) return "offre";
-    if (/\brdv\b|rendez-vous/.test(t)) return "rdv";
-    if (/faux num|mauvais num|num[ée]ro (erron|invalide|incorrect)/.test(t)) return "faux_numero";
-    if (/pas int[ée]ress/.test(t)) return "pas_interesse";
-    if (/rappeler|rappel/.test(t)) return "a_rappeler";
-    if (/pas de r[ée]ponse|messagerie|r[ée]pondeur|message vocal|injoignable|ne r[ée]pond pas/.test(t)) return "injoignable";
-    return "en_cours";
-  }
   var statut = function (cle) { return STATUTS.filter(function (s) { return s.cle === cle; })[0] || { cle: cle, nom: cle, couleur: "gris" }; };
 
   var esc = function (v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
@@ -397,7 +386,7 @@
     };
     var poserRappel = function (v) {
       var champs = { rappel_le: v }, note = v ? "Rappel prévu le " + date(v) : "Rappel supprimé";
-      if (v && l.statut === "nouveau") { champs.statut = "a_rappeler"; note += " · Statut : Nouveau → À rappeler"; }
+      if (v && l.statut === "nouveau") { champs.statut = "en_cours"; note += " · Statut : Nouveau → En cours"; }
       maj(champs, note).then(function () { ouvrirFiche(l.id, true); });
     };
     fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
@@ -428,7 +417,7 @@
         if (r.error) { toast("Commentaire non enregistré : " + r.error.message, true); return; }
         etat.activite.unshift({ lead_id: l.id, auteur_id: etat.moi.id, texte: texte, automatique: false, cree_le: new Date().toISOString() });
         zoneTexte.value = ""; ajuster(); chargerCommentaires();
-        if (l.statut === "nouveau") quitterNouveau(statutDuTexte(texte), "commentaire");
+        if (l.statut === "nouveau") quitterNouveau("en_cours", "commentaire");
         else if (etat.vue === "leads") vueLeads();
       });
     };
