@@ -83,7 +83,8 @@ label { display: grid; gap: .3rem; font-size: .85rem; font-weight: 600; color: v
 .badge--violet { background: #EEE8FB; color: var(--violet); }
 .badge--cyan { background: #DFF4F6; color: var(--cyan); }
 .badge--vert { background: #DFF3E8; color: var(--vert); }
-.puce--active.puce--bleu, .puce--active.puce--or, .puce--active.puce--gris, .puce--active.puce--rouge, .puce--active.puce--violet, .puce--active.puce--cyan, .puce--active.puce--vert { background: var(--marine); color: #fff; }
+.badge--orange { background: #FDEBDD; color: #B4561A; }
+.puce--active.puce--bleu, .puce--active.puce--or, .puce--active.puce--gris, .puce--active.puce--rouge, .puce--active.puce--violet, .puce--active.puce--cyan, .puce--active.puce--vert, .puce--active.puce--orange { background: var(--marine); color: #fff; }
 
 .vide { background: var(--blanc); border: 1px dashed var(--ligne); border-radius: var(--r); padding: 2.5rem 1rem; text-align: center; color: var(--doux); }
 .vide p { margin: .2rem 0; }
@@ -398,6 +399,7 @@ td:last-child { white-space: nowrap; }
 .statut-select--rouge { --c: var(--rouge); --f: #FBE6E4; }
 .statut-select--violet { --c: var(--violet); --f: #EEE8FB; }
 .statut-select--cyan { --c: var(--cyan); --f: #DFF4F6; }
+.statut-select--orange { --c: #B4561A; --f: #FDEBDD; }
 .statut-select--vert { --c: var(--vert); --f: #DFF3E8; }
 .statut-select option { color: var(--texte); background: #fff; font-weight: 600; }
 .fiche__actions .btn--gros { flex: 1 1 0; }

@@ -7,6 +7,7 @@
 
   var STATUTS = [
     { cle: "nouveau", nom: "Nouveau", couleur: "bleu" },
+    { cle: "en_cours", nom: "En cours", couleur: "orange" },
     { cle: "a_rappeler", nom: "À rappeler", couleur: "or" },
     { cle: "injoignable", nom: "Injoignable", couleur: "gris" },
     { cle: "faux_numero", nom: "Faux numéro", couleur: "rouge" },
@@ -16,6 +17,17 @@
     { cle: "pas_interesse", nom: "Pas intéressé", couleur: "rouge" },
     { cle: "doublon", nom: "Doublon", couleur: "gris" }
   ];
+  // Statut proposé quand un conseiller agit sur un lead encore « Nouveau »
+  function statutDuTexte(t) {
+    t = String(t || "").toLowerCase();
+    if (/offre envoy/.test(t)) return "offre";
+    if (/\brdv\b|rendez-vous/.test(t)) return "rdv";
+    if (/faux num|mauvais num|num[ée]ro (erron|invalide|incorrect)/.test(t)) return "faux_numero";
+    if (/pas int[ée]ress/.test(t)) return "pas_interesse";
+    if (/rappeler|rappel/.test(t)) return "a_rappeler";
+    if (/pas de r[ée]ponse|messagerie|r[ée]pondeur|message vocal|injoignable|ne r[ée]pond pas/.test(t)) return "injoignable";
+    return "en_cours";
+  }
   var statut = function (cle) { return STATUTS.filter(function (s) { return s.cle === cle; })[0] || { cle: cle, nom: cle, couleur: "gris" }; };
 
   var esc = function (v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
@@ -362,6 +374,17 @@
         if (etat.vue === "leads") vueLeads();
       });
     };
+    // Toute action sur un lead « Nouveau » le fait passer à un autre statut
+    var quitterNouveau = function (cle, raison) {
+      if (l.statut !== "nouveau" || !cle || cle === "nouveau") return Promise.resolve();
+      return maj({ statut: cle }, "Statut : Nouveau → " + statut(cle).nom + " (" + raison + ")").then(function () { ouvrirFiche(l.id, true); });
+    };
+    fiche.querySelectorAll('.fiche__actions a, .tuile a[href^="tel:"], .tuile a[href^="mailto:"]').forEach(function (a) {
+      a.addEventListener("click", function () {
+        var h = a.getAttribute("href") || "";
+        quitterNouveau("en_cours", /^tel:/.test(h) ? "appel" : /^mailto:/.test(h) ? "e-mail" : "WhatsApp");
+      });
+    });
     var choixStatut = fiche.querySelector("[data-statut-select]");
     choixStatut.onchange = function () {
       var cle = choixStatut.value; if (cle === l.statut) return;
@@ -372,7 +395,11 @@
         ouvrirFiche(l.id, true);
       });
     };
-    var poserRappel = function (v) { maj({ rappel_le: v }, v ? "Rappel prévu le " + date(v) : "Rappel supprimé").then(function () { ouvrirFiche(l.id, true); }); };
+    var poserRappel = function (v) {
+      var champs = { rappel_le: v }, note = v ? "Rappel prévu le " + date(v) : "Rappel supprimé";
+      if (v && l.statut === "nouveau") { champs.statut = "a_rappeler"; note += " · Statut : Nouveau → À rappeler"; }
+      maj(champs, note).then(function () { ouvrirFiche(l.id, true); });
+    };
     fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
     fiche.querySelectorAll("[data-dans]").forEach(function (b) {
       b.onclick = function () {
@@ -401,7 +428,8 @@
         if (r.error) { toast("Commentaire non enregistré : " + r.error.message, true); return; }
         etat.activite.unshift({ lead_id: l.id, auteur_id: etat.moi.id, texte: texte, automatique: false, cree_le: new Date().toISOString() });
         zoneTexte.value = ""; ajuster(); chargerCommentaires();
-        if (etat.vue === "leads") vueLeads();
+        if (l.statut === "nouveau") quitterNouveau(statutDuTexte(texte), "commentaire");
+        else if (etat.vue === "leads") vueLeads();
       });
     };
     function chargerCommentaires() {
@@ -635,7 +663,7 @@
   }
 
   // ---------- Points, niveaux et badges ----------
-  var RANG = { nouveau: 0, injoignable: 1, faux_numero: 1, doublon: 1, a_rappeler: 1, pas_interesse: 1, rdv: 2, offre: 3, signe: 4 };
+  var RANG = { nouveau: 0, en_cours: 1, injoignable: 1, faux_numero: 1, doublon: 1, a_rappeler: 1, pas_interesse: 1, rdv: 2, offre: 3, signe: 4 };
   var NIVEAUX = [[0, "Débutant"], [60, "En route"], [180, "Confirmé"], [400, "Expert"], [800, "Champion"], [1500, "Légende"]];
   function bilan(id, depuisDate) {
     var leads = etat.leads.filter(function (l) { return l.conseiller_id === id && (!depuisDate || new Date(l.cree_le) >= depuisDate); });
