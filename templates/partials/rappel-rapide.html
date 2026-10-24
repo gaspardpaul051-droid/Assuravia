@@ -1,0 +1,41 @@
+{# Demande de rappel courte (30 secondes), dans une fenêtre ouverte par [data-ouvrir-modale="<cle>"].
+   Deuxième chemin de conversion pour qui ne veut pas faire toute la simulation. #}
+{% import "partials/form.html" as f with context %}
+{% import "partials/icones.html" as i %}
+{% macro rappel(cle, form_nom, produit, surtitre, titre, texte, choix_nom, choix_question, choix) -%}
+<dialog class="modale modale--courte" data-modale="{{ cle }}" aria-labelledby="modale-{{ cle }}-titre">
+  <div class="modale__haut">
+    <div>
+      <p class="surtitre">{{ surtitre }}</p>
+      <h2 id="modale-{{ cle }}-titre" class="modale__titre">{{ titre }}</h2>
+    </div>
+    <button type="button" class="modale__fermer" data-fermer-modale aria-label="Fermer">{{ i.icone("croix-fermer") }}</button>
+  </div>
+  {{ f.ouvrir(form_nom, produit) }}
+    <input type="hidden" name="demande" value="Rappel rapide">
+    <p class="fe__aide">{{ texte }}</p>
+    <div class="champ">
+      <label for="{{ cle }}-choix">{{ choix_question }}</label>
+      <select id="{{ cle }}-choix" name="{{ choix_nom }}" class="select" required>
+        <option value="">Choisir…</option>
+        {% for c in choix %}<option>{{ c }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="grille-champs">
+      <div class="champ"><label for="{{ cle }}-prenom">Prénom</label><input id="{{ cle }}-prenom" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+      <div class="champ"><label for="{{ cle }}-nom">Nom</label><input id="{{ cle }}-nom" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+      {{ f.telephone(cle) }}
+      <div class="champ"><label for="{{ cle }}-email">E-mail</label><input id="{{ cle }}-email" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+    </div>
+    <div class="consentement">
+      <input id="{{ cle }}-consentement" name="consentement" type="checkbox" value="oui" required>
+      <label for="{{ cle }}-consentement">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>
+    </div>
+    <button class="bouton bouton--action" type="submit">Être rappelé</button>
+    <ul class="reassurance">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Vos données ne sont pas vendues (nLPD)</li>
+    </ul>
+  </form>
+</dialog>
+{%- endmacro %}

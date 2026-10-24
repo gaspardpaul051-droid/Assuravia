@@ -34,7 +34,7 @@
 {% endblock %}
 {% block content %}
 <div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
-<section class="hero-produit rcp-hero">
+<section class="hero-produit hero-produit--direct rcp-hero">
   <div class="cadre hero-produit__grille">
     <div class="hero-produit__texte">
       <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/entreprises/">Professionnel</a> <span aria-hidden="true">/</span> <span aria-current="page">RC professionnelle</span></nav>
@@ -56,6 +56,7 @@
         {% endfor %}
       </div>
       <a class="bouton bouton--action rcp-depart__go" href="{{ sim_url }}">Estimer ma prime RC pro</a>
+      <button type="button" class="entree-simulation__rappel" data-ouvrir-modale="rappel-rcpro">{{ i.icone("telephone", "icone icone--petite") }} <span><strong>Pas le temps ?</strong> Être rappelé en 30 secondes</span></button>
       <ul class="lp-depart__rassure">
         <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
         <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
@@ -269,4 +270,7 @@
     </div>
   </div>
 </section>
+{% import "partials/rappel-rapide.html" as rr with context %}
+{{ rr.rappel("rappel-rcpro", "rc-pro", "rc-pro", "RC professionnelle", "Être rappelé par un conseiller", "Indiquez votre domaine et vos coordonnées : un conseiller vous rappelle pour estimer votre RC pro avec vous.", "secteur", "Votre domaine d'activité", secteurs|map(attribute=0)|list + ["Autre activité"]) }}
+{% with barre_url = sim_url, barre_texte = "Estimer ma prime RC pro" %}{% include "partials/barre-cta.html" %}{% endwith %}
 {% endblock %}

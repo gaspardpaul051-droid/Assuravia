@@ -22,8 +22,8 @@
 </fieldset>
 {%- endmacro %}
 
-{% macro logement() -%}
-{{ ouvrir("logement", "Où habitez-vous ?") }}
+{% macro logement(premier=False, question="Où habitez-vous ?") -%}
+{{ ouvrir("logement", question, premier=premier) }}
   <div class="choix-cartes">
     <label class="choix-carte"><input type="radio" name="logement" value="Appartement" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("batiment") }}</span><span>Appartement</span></label>
     <label class="choix-carte"><input type="radio" name="logement" value="Maison" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span>Maison</span></label>
@@ -51,6 +51,34 @@
 {{ ouvrir("adresse", question, aide) }}
   {{ f.adresse("logement") }}
   {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{# Code postal seul : l'adresse complète est demandée ensuite par le conseiller #}
+{% macro npa(question="Dans quelle localité se trouve le logement ?", aide="Le code postal suffit pour estimer la prime.") -%}
+{{ ouvrir("npa", question, aide) }}
+  <div class="grille-champs">
+    <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" required inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
+    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" autocomplete="address-level2" placeholder="Lausanne"></div>
+  </div>
+  {{ continuer() }}
+</fieldset>
+{%- endmacro %}
+
+{# Options payantes regroupées sur un seul écran à cocher : liste de (cle, icone, titre, texte, prix) #}
+{% macro options(question, aide, items) -%}
+{{ ouvrir("options", question, aide) }}
+  <div class="situations">
+    {% for cle, icone, titre, texte, prix in items %}
+    <label class="situation"><input type="checkbox" name="{{ cle }}" value="oui" data-prix="{{ prix }}" data-option-nom="{{ titre }}">
+      <span class="situation__icone">{{ i.icone(icone) }}</span>
+      <span class="situation__titre">{{ titre }} <small class="situation__prix">+ CHF {{ prix }} / an</small></span>
+      <span class="situation__texte">{{ texte }}</span>
+      <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
+    </label>
+    {% endfor %}
+  </div>
+  <button type="button" class="bouton bouton--{{ sim.theme }} fe__suivant" data-fe-suivant>Continuer</button>
 </fieldset>
 {%- endmacro %}
 
@@ -121,6 +149,11 @@
   <div class="rappel-boutons">
     <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
   </div>
+  <ul class="reassurance">
+    <li>{{ i.icone("valide", "icone icone--petite") }} Un conseiller dédié vous recontacte, pas de démarchage</li>
+    <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+    <li>{{ i.icone("cadenas", "icone icone--petite") }} Vos données ne sont pas vendues (nLPD)</li>
+  </ul>
 </fieldset>
 {%- endmacro %}
 

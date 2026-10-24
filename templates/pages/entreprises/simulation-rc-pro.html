@@ -5,23 +5,23 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.cartes("statut_juridique", "Quelle est la forme juridique de votre entreprise ?", [
-  {"valeur": "Raison individuelle", "icone": "utilisateur", "detail": "Vous exercez en votre nom, en indépendant."},
-  {"valeur": "Sàrl", "icone": "groupe", "detail": "Société à responsabilité limitée."},
-  {"valeur": "SA", "icone": "batiment", "detail": "Société anonyme."},
-  {"valeur": "Société de personnes", "icone": "mallette", "detail": "Société en nom collectif ou en commandite."},
-  {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
-  {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3, premier=True) }}
-
 {{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
   {"valeur": "Santé et thérapies", "icone": "croix", "detail": "Cabinet, physiothérapie, soins, thérapeutes.", "attrs": 'data-facteur="2"'},
   {"valeur": "Construction et artisanat", "icone": "batiment", "detail": "Gros œuvre, second œuvre, installations, menuiserie.", "attrs": 'data-facteur="2"'},
   {"valeur": "Conseil et fiduciaire", "icone": "balance", "detail": "Fiduciaire, gestion, architecture, ingénierie, conseil.", "attrs": 'data-facteur="1.1"'},
   {"valeur": "Informatique et digital", "icone": "cyber", "detail": "Développement, agence web, conseil informatique.", "attrs": 'data-facteur="1.1"'},
   {"valeur": "Commerce et vente", "icone": "colis", "detail": "Magasin, vente en ligne, import et distribution.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Services aux personnes", "icone": "groupe", "detail": "Coiffure, beauté, nettoyage, enseignement, événementiel.", "attrs": 'data-facteur="1.1"'}], colonnes=3) }}
+  {"valeur": "Services aux personnes", "icone": "groupe", "detail": "Coiffure, beauté, nettoyage, enseignement, événementiel.", "attrs": 'data-facteur="1.1"'}], colonnes=3, premier=True) }}
 
-{{ e.adresse("Quelle est l'adresse de l'entreprise ?") }}
+{{ e.cartes("statut_juridique", "Quelle est la forme juridique de votre entreprise ?", [
+  {"valeur": "Raison individuelle", "icone": "utilisateur", "detail": "Vous exercez en votre nom, en indépendant."},
+  {"valeur": "Sàrl", "icone": "groupe", "detail": "Société à responsabilité limitée."},
+  {"valeur": "SA", "icone": "batiment", "detail": "Société anonyme."},
+  {"valeur": "Société de personnes", "icone": "mallette", "detail": "Société en nom collectif ou en commandite."},
+  {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
+  {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3) }}
+
+{{ e.npa("Où se trouve l'entreprise ?", "Le code postal suffit pour l'estimation.") }}
 
 {{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
   <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>

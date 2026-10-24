@@ -18,6 +18,11 @@ retenir: La RC privée paie les dommages que vous causez à d'autres personnes o
 pour_qui: Vous emménagez dans un nouvel appartement et la régie demande une attestation RC. | Vous avez acheté des meubles, un vélo ou du matériel informatique depuis votre dernier contrat. | Vous vivez en couple, en famille ou en colocation et voulez savoir qui est couvert. | Vous ne savez plus quelle somme d'assurance figure dans votre police.
 quiz: La RC privée est obligatoire par la loi fédérale pour tous les habitants de Suisse. | faux | Elle est facultative au niveau fédéral, mais la plupart des régies l'exigent pour louer un logement. ;; Si la somme d'assurance ménage est trop basse, l'assureur peut réduire l'indemnité même pour un petit dommage. | vrai | C'est la règle de la sous-assurance : l'indemnité est réduite en proportion de l'écart entre la somme assurée et la valeur réelle. ;; Le vol de votre vélo devant la gare est toujours couvert par l'assurance ménage de base. | faux | Le vol hors du domicile demande souvent l'option vol simple à l'extérieur. Vérifiez votre police.
 entree: logement
+accroche_rappel: <strong>Vous emménagez ?</strong> La régie demande une attestation RC : être rappelé
+rappel_titre: Être rappelé pour votre emménagement
+rappel_texte: Un conseiller vous rappelle pour mettre en place votre assurance ménage et votre RC privée, et vous explique comment obtenir l'attestation demandée par la régie.
+rappel_choix: J'emménage bientôt | Je viens d'emménager | Je veux revoir mon contrat actuel | Autre question
+barre_texte: Calculer ma prime ménage
 ---
 
 ## La responsabilité civile privée

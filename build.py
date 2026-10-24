@@ -160,7 +160,7 @@ def lire_produit(path: Path) -> dict:
         raise ValueError(f"Catégorie inconnue dans {path} : {meta['categorie']}")
     page_fixe = "url" in meta
     # Espace insécable avant « : », « ? » et « ! » dans les textes affichés (typographie française)
-    for cle in ("h1", "chapeau", "desc", "nom"):
+    for cle in ("h1", "chapeau", "desc", "nom", "accroche_rappel", "rappel_titre", "rappel_texte"):
         if cle in meta:
             meta[cle] = re.sub(r" ([:?!;])", "\u00a0\\1", meta[cle])
     html, faq = extraire_faq(tableaux_mobiles(markdown.markdown(corps, extensions=["tables", "toc", "attr_list"])))

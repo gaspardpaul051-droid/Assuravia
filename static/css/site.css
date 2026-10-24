@@ -2026,3 +2026,38 @@ html.cookies-ouvert { overflow: hidden; }
 @media (max-width: 1200px) { .rcp-metiers, .rcp-cas { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 700px) { .rcp-metiers, .rcp-cas { grid-template-columns: 1fr; } }
 @media (max-width: 420px) { .rcp-depart__choix { grid-template-columns: 1fr; } }
+
+/* ---------- Conversion : départ direct, rappel rapide, barre fixe ---------- */
+/* Sur mobile, le bloc de départ (#demande) remonte juste sous le titre */
+@media (max-width: 980px) {
+  .hero-produit--direct { padding-top: var(--e-4); }
+  .hero-produit--direct .hero-produit__grille { display: flex; flex-direction: column; gap: var(--e-4); }
+  .hero-produit--direct .hero-produit__texte { display: contents; }
+  .hero-produit--direct .hero-produit__texte > * { order: 3; margin-block: 0; }
+  .hero-produit--direct .hero-produit__texte > .fil,
+  .hero-produit--direct .hero-produit__texte > .etiquette,
+  .hero-produit--direct .hero-produit__texte > h1 { order: 1; }
+  .hero-produit--direct .panneau-form { order: 2; }
+  .hero-produit--direct .fil { display: none; }
+  .hero-produit--direct h1 { font-size: clamp(1.6rem, 6.4vw, 2.1rem); }
+  .rcp-depart__choix { grid-template-columns: 1fr 1fr; }
+  .rcp-depart__carte { padding: 10px; }
+  .rcp-depart__carte small { display: none; }
+}
+.entree-simulation__rappel { display: flex; align-items: center; gap: 10px; width: 100%; margin: var(--e-3) 0 0; padding: 12px 14px; border: 1.5px dashed var(--bordure); border-radius: var(--r-m); background: var(--surface); color: var(--marine); font: inherit; font-size: var(--t-s); text-align: left; cursor: pointer; transition: border-color var(--duree), background var(--duree); }
+.entree-simulation__rappel:hover, .entree-simulation__rappel:focus-visible { border-color: var(--accent-decor, var(--or)); background: #fff; }
+.entree-simulation__rappel .icone { flex: none; color: var(--accent-texte, var(--marine)); }
+.entree-simulation__rappel span::after { content: " →"; font-weight: 700; }
+.modale--courte { width: min(540px, calc(100% - 24px)); }
+.modale--courte .formulaire { display: grid; gap: var(--e-3); }
+.modale--courte .fe__aide { margin: 0; }
+.reassurance { list-style: none; margin: var(--e-3) 0 0; padding: 0; display: grid; gap: 6px; font-size: var(--t-xs); color: var(--texte-doux); }
+.reassurance li { display: flex; align-items: center; gap: 8px; }
+.reassurance .icone { flex: none; color: var(--succes); }
+.funnel__encourage { margin: 10px 0 0; padding: 8px 12px; border-radius: var(--r-m); background: #EAF6EF; color: var(--succes); font-size: var(--t-s); font-weight: 700; animation: modale-entree .35s var(--courbe); }
+.funnel__encourage[hidden] { display: none; }
+.situation__prix { display: block; margin-top: 2px; font-size: var(--t-xs); font-weight: 600; color: var(--texte-doux); }
+.barre-cta { position: fixed; left: 16px; right: 84px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 55; transition: transform .3s var(--courbe), opacity .3s; }
+.barre-cta[hidden] { display: block; transform: translateY(140%); opacity: 0; pointer-events: none; }
+.barre-cta__bouton { display: flex; justify-content: center; width: 100%; min-height: 52px; box-shadow: var(--ombre-2); }
+@media (min-width: 981px) { .barre-cta { display: none !important; } }

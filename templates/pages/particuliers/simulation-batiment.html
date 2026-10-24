@@ -6,12 +6,10 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.identite() }}
-{{ e.adresse("Quelle est l'adresse du bien ?") }}
 {{ e.cartes("type_bien", "Quel type de bien ?", [
   {"valeur": "Villa", "icone": "maison"},
   {"valeur": "Chalet", "icone": "maison"},
-  {"valeur": "Maison de vacances", "icone": "cle"}], colonnes=3) }}
+  {"valeur": "Maison de vacances", "icone": "cle"}], colonnes=3, premier=True) }}
 {{ e.ouvrir("valeur", "Quelle est la valeur de construction du bien ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure souvent sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}
   <div class="champ">
     <label for="valeur-bt">Valeur de construction (CHF)</label>
@@ -24,10 +22,11 @@
   {"nom": "Confort", "taux": 0.95, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 15'000", "Dégâts d'eau", "Faute grave couverte"]},
   {"nom": "Premium", "taux": 1.4, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 20'000", "Installations techniques jusqu'à CHF 50'000", "Dégâts d'eau", "Faute grave couverte"]},
   {"nom": "Sur mesure", "taux": 0, "points": ["Vous choisissez chaque couverture", "Piscine, panneaux solaires, dépendances", "Un spécialiste construit l'offre avec vous"]}]) }}
-{{ e.impots() }}
-{{ e.option_pj() }}
-{{ e.option_cyber() }}
+{{ e.options("Complétez votre protection", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
+  ("option_pj", "balance", "Protection juridique", "Litige avec un voisin, un artisan ou un vendeur : frais d'avocat et de procédure pris en charge.", 285),
+  ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50)]) }}
 {{ e.interet_menage() }}
-{{ e.coordonnees() }}
+{{ e.npa("Où se trouve le bien ?", "Le code postal suffit pour estimer la prime. Il détermine aussi l'assureur compétent selon le canton.") }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat("valeur") }}
 {% endblock %}

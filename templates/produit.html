@@ -11,7 +11,7 @@
 {% endblock %}
 {% block content %}
 <div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
-<section class="hero-produit">
+<section class="hero-produit{% if produit.simulateur %} hero-produit--direct{% endif %}">
   <div class="cadre hero-produit__grille">
     <div class="hero-produit__texte">
       <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="{{ g.url }}">{{ g.nom }}</a> <span aria-hidden="true">/</span> <span aria-current="page">{{ produit.nom }}</span></nav>
@@ -32,6 +32,9 @@
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
       </div>
+      {% if produit.accroche_rappel %}
+      <button type="button" class="entree-simulation__rappel" data-ouvrir-modale="rappel-{{ produit.slug }}">{{ i.icone("cle", "icone icone--petite") }} <span>{{ produit.accroche_rappel|safe }}</span></button>
+      {% endif %}
       {% else %}
       <p class="form-sous-titre">{{ produit.simulateur_texte or "Quelques questions simples, et votre prime s'affiche tout de suite." }}</p>
       <ul class="entree-simulation__points">
@@ -40,7 +43,7 @@
         <li>{{ i.icone("valide", "icone icone--petite") }} Un spécialiste à votre écoute si besoin</li>
       </ul>
       {% endif %}
-      <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Lancer la simulation" }}</a>
+      {% if produit.entree != "logement" %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Lancer la simulation" }}</a>{% endif %}
       {% elif produit.widget_hero == "interets" %}
       {% include "partials/simulateur-interets.html" %}
       <button type="button" class="bouton bouton--action interets__cta" data-ouvrir-modale="placements">Construire ma stratégie avec un spécialiste</button>
@@ -158,4 +161,9 @@
 </section>
 {% endif %}
 {% if produit.widget_hero == "interets" %}{% include "partials/form-placements.html" %}{% endif %}
+{% if produit.accroche_rappel %}
+{% import "partials/rappel-rapide.html" as rr with context %}
+{{ rr.rappel("rappel-" ~ produit.slug, "demande-prive", produit.slug, produit.nom, produit.rappel_titre, produit.rappel_texte, "besoin", "Votre situation", produit.rappel_choix.split("|")|map("trim")|list) }}
+{% endif %}
+{% if produit.simulateur %}{% with barre_url = produit.simulateur, barre_texte = produit.barre_texte or "Calculer ma prime" %}{% include "partials/barre-cta.html" %}{% endwith %}{% endif %}
 {% endblock %}

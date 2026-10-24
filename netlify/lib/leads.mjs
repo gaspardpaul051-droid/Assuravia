@@ -27,7 +27,7 @@ export function extraireLead(payload) {
     nom: propre(d.nom),
     email: propre(d.email).toLowerCase(),
     telephone: tel.replace(/\s+/g, ""),
-    canton: propre(d.canton) || propre(d.domicile_npa) || "",
+    canton: propre(d.canton) || propre(d.domicile_npa) || [propre(d.logement_npa), propre(d.logement_localite)].filter(Boolean).join(" ") || "",
     prime,
     donnees,
   };

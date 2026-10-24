@@ -845,6 +845,14 @@
       compteurF.innerHTML = (finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (n + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
       barreF.parentNode.setAttribute("aria-valuenow", pctF);
       retourF.hidden = n === 0 || (finale && n === etapesF.length - 1);
+      // Encouragement : combien de questions restent avant la prime
+      var enc = funnel.querySelector("[data-funnel-encourage]");
+      if (enc) {
+        var iCoord = etapesF.findIndex(function (e) { return e.getAttribute("data-fe") === "coordonnees"; });
+        var reste = iCoord - n;
+        enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? "Dernière question avant votre prime" : reste === 2 ? "Plus que 2 questions, votre prime est presque prête" : n === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
+        enc.hidden = !enc.textContent;
+      }
       afficher();
       etapesF[n].classList.remove("fe--entree", "fe--retour");
       void etapesF[n].offsetWidth;
@@ -1008,6 +1016,10 @@
       var r = formF.querySelector('[name="logement"][value="' + CSS.escape(log) + '"]');
       if (r) { r.checked = true; sauter[etapesF.indexOf(r.closest("[data-fe]"))] = true; }
     }
+    // Si les premières étapes sont déjà répondues (choix fait sur la page produit), commencer après
+    var depart = 0;
+    while (sauter[depart] && depart < etapesF.length - 1) { delete sauter[depart]; historique.push(depart); depart++; }
+    if (depart) montrer(depart);
   }
 
   // 4d. Garantie de loyer : comparaison des offres (tarifs publiés par les assureurs) et récapitulatif
@@ -1385,6 +1397,15 @@
   });
 
   // 10. Contact volant : WhatsApp et message rapide
+  // Barre « Calculer ma prime » fixe en bas d'écran (mobile), une fois le bloc de départ dépassé
+  var barreCta = document.querySelector("[data-barre-cta]"), cibleCta = document.getElementById("demande");
+  if (barreCta && cibleCta && "IntersectionObserver" in window) {
+    var pied = document.querySelector("footer");
+    var vuCible = true, vuPied = false;
+    var majBarre = function () { barreCta.hidden = vuCible || vuPied || cibleCta.getBoundingClientRect().top > 0; };
+    new IntersectionObserver(function (e) { vuCible = e[0].isIntersecting; majBarre(); }).observe(cibleCta);
+    if (pied) new IntersectionObserver(function (e) { vuPied = e[0].isIntersecting; majBarre(); }).observe(pied);
+  }
   var volant = document.querySelector("[data-contact-volant]");
   if (volant) {
     var boutonVolant = volant.querySelector("[data-contact-volant-bouton]");

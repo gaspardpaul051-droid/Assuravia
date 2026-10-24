@@ -22,6 +22,7 @@
         <p class="funnel__etape-num" data-funnel-compteur>Étape 1</p>
       </div>
       <div class="funnel__progression" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Avancée de la demande"><span data-funnel-barre></span></div>
+      <p class="funnel__encourage" data-funnel-encourage hidden aria-live="polite"></p>
 
       {% if sim.lca %}<script type="application/json" data-tarif-lca>{{ complementaires|tojson }}</script>{% endif %}
       {{ f.ouvrir(sim.form, sim.produit) }}
