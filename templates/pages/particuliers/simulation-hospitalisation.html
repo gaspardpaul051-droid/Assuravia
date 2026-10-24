@@ -27,6 +27,7 @@
   </div>
   <button type="button" class="bouton bouton--{{ sim.theme }} fe__suivant" data-fe-suivant>Continuer</button>
 </fieldset>
+{{ e.impots() }}
 {{ e.coordonnees(naissance=False) }}
 {{ e.resultat_lca("division") }}
 {% endblock %}

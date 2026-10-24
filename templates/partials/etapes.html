@@ -70,9 +70,9 @@
 {{ ouvrir("options", question, aide) }}
   <div class="situations">
     {% for cle, icone, titre, texte, prix in items %}
-    <label class="situation"><input type="checkbox" name="{{ cle }}" value="oui" data-prix="{{ prix }}" data-option-nom="{{ titre }}">
+    <label class="situation"><input type="checkbox" name="{{ cle }}" value="oui"{% if prix %} data-prix="{{ prix }}" data-option-nom="{{ titre }}"{% endif %}>
       <span class="situation__icone">{{ i.icone(icone) }}</span>
-      <span class="situation__titre">{{ titre }} <small class="situation__prix">+ CHF {{ prix }} / an</small></span>
+      <span class="situation__titre">{{ titre }} <small class="situation__prix">{% if prix %}+ CHF {{ prix }} / an{% else %}gratuit{% endif %}</small></span>
       <span class="situation__texte">{{ texte }}</span>
       <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
     </label>

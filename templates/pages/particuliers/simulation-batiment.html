@@ -22,9 +22,10 @@
   {"nom": "Confort", "taux": 0.95, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 15'000", "Dégâts d'eau", "Faute grave couverte"]},
   {"nom": "Premium", "taux": 1.4, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 20'000", "Installations techniques jusqu'à CHF 50'000", "Dégâts d'eau", "Faute grave couverte"]},
   {"nom": "Sur mesure", "taux": 0, "points": ["Vous choisissez chaque couverture", "Piscine, panneaux solaires, dépendances", "Un spécialiste construit l'offre avec vous"]}]) }}
-{{ e.options("Complétez votre protection", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
+{{ e.options("Complétez votre protection, et vos économies", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
   ("option_pj", "balance", "Protection juridique", "Litige avec un voisin, un artisan ou un vendeur : frais d'avocat et de procédure pris en charge.", 285),
-  ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50)]) }}
+  ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
+  ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
 {{ e.interet_menage() }}
 {{ e.npa("Où se trouve le bien ?", "Le code postal suffit pour estimer la prime. Il détermine aussi l'assureur compétent selon le canton.") }}
 {{ e.coordonnees(nom_prenom=True, naissance=False) }}
