@@ -5,15 +5,15 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.identite() }}
-{{ e.logement() }}
+{{ e.logement(premier=True, question="Pour commencer, vous habitez…") }}
 {{ e.statut() }}
-{{ e.adresse() }}
 {{ e.personnes() }}
-{{ e.option_pj() }}
-{{ e.option_cyber() }}
-{{ e.interet_menage("Combiner avec une assurance ménage ?") }}
-{{ e.impots() }}
-{{ e.coordonnees() }}
-{{ e.resultat("option_pj") }}
+{{ e.options("Complétez votre protection, et vos économies", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
+  ("option_pj", "balance", "Protection juridique", "Litige avec votre bailleur, votre employeur ou un vendeur : frais d'avocat et de procédure pris en charge.", 285),
+  ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
+  ("interet_menage", "maison", "Combiner avec une assurance ménage", "Un spécialiste revoit votre assurance ménage et vous montre ce qui peut être amélioré.", 0),
+  ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
+{{ e.npa() }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
+{{ e.resultat("options") }}
 {% endblock %}

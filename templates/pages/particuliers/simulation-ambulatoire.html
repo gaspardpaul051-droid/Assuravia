@@ -6,7 +6,6 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.identite() }}
 {{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("besoins", "De quoi avez-vous besoin ?", "Cochez tout ce qui vous concerne : vous ne payez que ce qui vous est utile.") }}
@@ -26,6 +25,6 @@
   {{ e.continuer() }}
 </fieldset>
 {{ e.impots() }}
-{{ e.coordonnees(naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat_lca("besoins") }}
 {% endblock %}

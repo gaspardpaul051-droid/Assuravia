@@ -6,7 +6,6 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.identite() }}
 {{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("division", "Quelle chambre souhaitez-vous à l'hôpital ?", "L'assurance de base couvre déjà la division commune dans votre canton. La complémentaire ajoute du choix.") }}
@@ -28,6 +27,6 @@
   <button type="button" class="bouton bouton--{{ sim.theme }} fe__suivant" data-fe-suivant>Continuer</button>
 </fieldset>
 {{ e.impots() }}
-{{ e.coordonnees(naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat_lca("division") }}
 {% endblock %}
