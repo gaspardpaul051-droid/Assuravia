@@ -1604,21 +1604,22 @@ body.modale-ouverte { overflow: hidden; }
 .pulse { animation: pulse-prix .5s ease; }
 @keyframes pulse-prix { 50% { transform: scale(1.06); } }
 /* Situations illustrées et prestations détaillées (simulations) */
-.situations { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-3); }
-.situation { position: relative; display: grid; gap: 6px; align-content: start; padding: var(--e-4); border: 1.5px solid var(--bordure); border-radius: var(--r-l); background: #fff; cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s, background .2s; }
-.situation:hover { transform: translateY(-2px); border-color: var(--bleu-vif); }
+/* Cartes à cocher compactes : icône à gauche, texte au centre, case à droite */
+.situations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.situation { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr) 24px; grid-template-areas: "ic ti co" "ic tx co"; column-gap: 12px; row-gap: 2px; align-items: center; padding: 12px 14px; border: 1.5px solid var(--bordure); border-radius: var(--r-m); background: #fff; cursor: pointer; transition: border-color .2s, box-shadow .2s, background .2s; }
+.situation:hover { border-color: var(--bleu-vif); }
 .situation input { position: absolute; opacity: 0; pointer-events: none; }
 .situation:has(input:focus-visible) { outline: 3px solid rgba(21,101,168,.35); outline-offset: 2px; }
-.situation__icone { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); transition: background .2s, color .2s, transform .2s; }
-.situation__titre { font-weight: 800; color: var(--marine); }
-.situation__texte { font-size: var(--t-xs); color: var(--texte-doux); line-height: 1.45; }
-.situation .formule__coche { position: absolute; top: var(--e-4); right: var(--e-4); margin: 0; }
-.situation:has(input:checked) { border-color: var(--bleu); background: linear-gradient(180deg, var(--bleu-pale), #fff 85%); box-shadow: 0 10px 24px -16px rgba(21,101,168,.7); }
-.situation:has(input:checked) .situation__icone { background: var(--bleu); color: #fff; transform: rotate(-6deg) scale(1.05); }
+.situation__icone { grid-area: ic; align-self: start; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); transition: background .2s, color .2s; }
+.situation__icone .icone { width: 20px; height: 20px; }
+.situation__titre { grid-area: ti; font-weight: 800; font-size: var(--t-s); line-height: 1.3; color: var(--marine); }
+.situation__texte { grid-area: tx; font-size: var(--t-xs); color: var(--texte-doux); line-height: 1.4; }
+.situation .formule__coche { grid-area: co; position: static; margin: 0; justify-self: end; }
+.situation:has(input:checked) { border-color: var(--bleu); background: var(--bleu-pale); }
+.situation:has(input:checked) .situation__icone { background: var(--bleu); color: #fff; }
 .situation:has(input:checked) .formule__coche { border-color: var(--bleu); background: var(--bleu); }
 .situation:has(input:checked) .formule__coche::after { content: ""; width: 10px; height: 6px; border-left: 2.5px solid #fff; border-bottom: 2.5px solid #fff; transform: rotate(-45deg) translate(1px, -1px); }
-@media (max-width: 720px) { .situations { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 460px) { .situations { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .situations { grid-template-columns: 1fr; } }
 .prestations-detail { display: grid; gap: var(--e-3); }
 .prestations-detail .fe__sous-question { margin: 0; }
 .prestations-detail__grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-3); }
@@ -2056,8 +2057,11 @@ html.cookies-ouvert { overflow: hidden; }
 .reassurance .icone { flex: none; color: var(--succes); }
 .funnel__encourage { margin: 10px 0 0; padding: 8px 12px; border-radius: var(--r-m); background: #EAF6EF; color: var(--succes); font-size: var(--t-s); font-weight: 700; animation: modale-entree .35s var(--courbe); }
 .funnel__encourage[hidden] { display: none; }
-.situation__prix { display: block; margin-top: 2px; font-size: var(--t-xs); font-weight: 600; color: var(--texte-doux); }
+.situation__prix { display: inline; margin-left: 4px; font-size: var(--t-xs); font-weight: 600; color: var(--texte-doux); }
 .barre-cta { position: fixed; left: 16px; right: 84px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 55; transition: transform .3s var(--courbe), opacity .3s; }
 .barre-cta[hidden] { display: block; transform: translateY(140%); opacity: 0; pointer-events: none; }
 .barre-cta__bouton { display: flex; justify-content: center; width: 100%; min-height: 52px; box-shadow: var(--ombre-2); }
 @media (min-width: 981px) { .barre-cta { display: none !important; } }
+.rappel-ligne { margin-top: var(--e-4); }
+.rappel-ligne .entree-simulation__rappel { max-width: 560px; margin-inline: auto; }
+.funnel-page .rappel-ligne .entree-simulation__rappel { justify-content: center; }

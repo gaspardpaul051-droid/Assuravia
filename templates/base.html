@@ -135,6 +135,8 @@
   </div>
   <button type="button" class="contact-volant__bouton" aria-expanded="false" aria-controls="contact-volant" data-contact-volant-bouton>{{ i.icone("bulle") }}<span>Une question ?</span></button>
 </div>
+{% import "partials/rappel-rapide.html" as rr with context %}
+{{ rr.rappel() }}
 {% endif %}
 {% if ga_id or clarity_id or ads_id %}
 <div class="cookies" data-cookies hidden role="dialog" aria-modal="true" aria-label="Cookies">

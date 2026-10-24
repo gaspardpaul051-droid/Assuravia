@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
 {% set demande = "/particuliers/3e-pilier/demande/" %}
 {% set faq = [
   ("Quelle est la différence entre le 3a et le 3b ?", "Le 3a est une prévoyance liée : versements plafonnés chaque année (CHF 7'258 en 2026 pour un salarié avec caisse de pension), entièrement déductibles du revenu imposable, et argent bloqué jusqu'à 5 ans avant l'âge de référence AVS, sauf exceptions. Le 3b est une épargne libre : pas de plafond, accès plus souple, libre choix des bénéficiaires, mais en général pas de déduction fiscale, sauf à Genève et à Fribourg pour certaines assurances vie."),
@@ -32,6 +33,7 @@
     <h1>3e pilier : combien d'impôts allez-vous économiser en 2026 ?</h1>
     <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation : le calcul se met à jour immédiatement. Plus bas, tout ce qu'il faut savoir sur le 3a et le 3b pour faire les bons choix.</p>
     {% with formulaire_separe=true %}{% include "partials/simulateur-3a.html" %}{% endwith %}
+    <div class="rappel-ligne">{{ rr.bouton("3e-pilier") }}</div>
   </div>
 </section>
 

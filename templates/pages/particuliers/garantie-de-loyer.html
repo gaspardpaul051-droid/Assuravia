@@ -1,4 +1,5 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
 {% block title %}Garantie de loyer sans dépôt en Suisse romande | Assuravia{% endblock %}
@@ -34,6 +35,7 @@
         <div class="gl-mini__ok"><small>Avec une assurance</small><strong>CHF 0 bloqué</strong><span>vous payez une petite prime annuelle</span></div>
       </div>
       <button type="button" class="bouton bouton--action" data-gl-mini-bouton>Calculer mes offres</button>
+      {{ rr.bouton("garantie-de-loyer") }}
     </div>
   </div>
 </section>

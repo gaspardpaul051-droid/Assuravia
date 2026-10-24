@@ -1,4 +1,5 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
 {% extends "base.html" %}
 {% set g = groupes[produit.groupe] %}
 {% block theme %}{{ produit.theme }}{% endblock %}
@@ -32,9 +33,6 @@
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
       </div>
-      {% if produit.accroche_rappel %}
-      <button type="button" class="entree-simulation__rappel" data-ouvrir-modale="rappel-{{ produit.slug }}">{{ i.icone("cle", "icone icone--petite") }} <span>{{ produit.accroche_rappel|safe }}</span></button>
-      {% endif %}
       {% else %}
       <p class="form-sous-titre">{{ produit.simulateur_texte or "Quelques questions simples, et votre prime s'affiche tout de suite." }}</p>
       <ul class="entree-simulation__points">
@@ -43,11 +41,13 @@
         <li>{{ i.icone("valide", "icone icone--petite") }} Un spécialiste à votre écoute si besoin</li>
       </ul>
       {% endif %}
-      {% if produit.entree != "logement" %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Lancer la simulation" }}</a>{% endif %}
+      <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>
+      {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
       {% elif produit.widget_hero == "interets" %}
       {% include "partials/simulateur-interets.html" %}
       <button type="button" class="bouton bouton--action interets__cta" data-ouvrir-modale="placements">Construire ma stratégie avec un spécialiste</button>
       <p class="interets__rassure">{{ i.icone("valide", "icone icone--petite") }} Premier entretien gratuit et sans engagement</p>
+      {{ rr.bouton(produit.slug) }}
       {% elif produit.demande_titre %}
       {# Formulaire sur une page à part : <url du produit>demande/ #}
       <h2 class="form-titre">{{ produit.demande_titre }}</h2>
@@ -56,6 +56,7 @@
         {% for pt in produit.demande_points.split("|") %}<li>{{ i.icone("valide", "icone icone--petite") }} {{ pt.strip() }}</li>{% endfor %}
       </ul>
       <a class="bouton bouton--action" href="{{ produit.url }}demande/">{{ produit.bouton }}</a>
+      {{ rr.bouton(produit.slug) }}
       {% else %}
       <h2 class="form-titre">{{ produit.bouton }}</h2>
       <p class="form-sous-titre">Un conseiller vous rappelle avec des offres adaptées. Gratuit et sans engagement.</p>
@@ -161,9 +162,5 @@
 </section>
 {% endif %}
 {% if produit.widget_hero == "interets" %}{% include "partials/form-placements.html" %}{% endif %}
-{% if produit.accroche_rappel %}
-{% import "partials/rappel-rapide.html" as rr with context %}
-{{ rr.rappel("rappel-" ~ produit.slug, "demande-prive", produit.slug, produit.nom, produit.rappel_titre, produit.rappel_texte, "besoin", "Votre situation", produit.rappel_choix.split("|")|map("trim")|list) }}
-{% endif %}
 {% if produit.simulateur %}{% with barre_url = produit.simulateur, barre_texte = produit.barre_texte or "Calculer ma prime" %}{% include "partials/barre-cta.html" %}{% endwith %}{% endif %}
 {% endblock %}

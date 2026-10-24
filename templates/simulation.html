@@ -1,5 +1,6 @@
 {# Base commune à toutes les simulations. La page définit `sim` avant extends, puis le bloc `etapes`. #}
 {% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
 {% import "partials/form.html" as f %}
 {% extends "base.html" %}
 {% block theme %}{{ sim.theme }}{% endblock %}
@@ -41,6 +42,7 @@
       <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
       <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
     </ul>
+    <div class="rappel-ligne">{{ rr.bouton(sim.produit, "<strong>Vous préférez en parler ?</strong> Être rappelé dans la journée") }}</div>
     {% if sim.note %}<p class="funnel__note">{{ sim.note }}</p>{% endif %}
   </div>
 </section>

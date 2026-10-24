@@ -1,4 +1,5 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
 {% extends "base.html" %}
 {% set T = taux_hypo %}
 {% set MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"] %}
@@ -69,6 +70,7 @@
           <div class="hypo-jauge" data-hypo-jauge="capacite"><p><span>Charges théoriques sur votre revenu</span><strong data-hypo-sortie="capacite"></strong></p><div><span></span></div><small data-hypo-sortie="capacite-msg"></small></div>
         </div>
         <a class="bouton bouton--action" href="/particuliers/comparateur-hypothecaire/demande/">Recevoir des offres de financement</a>
+        {{ rr.bouton("hypotheque") }}
         <p class="hypo-note">Estimation indicative. Capacité calculée selon les règles usuelles des prêteurs : taux théorique de 5 %, amortissement et entretien, au plus un tiers du revenu brut.</p>
       </div>
     </div>

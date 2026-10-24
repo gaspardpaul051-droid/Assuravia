@@ -1,8 +1,12 @@
-{# Demande de rappel courte (30 secondes), dans une fenêtre ouverte par [data-ouvrir-modale="<cle>"].
-   Deuxième chemin de conversion pour qui ne veut pas faire toute la simulation. #}
+{# Demande de rappel courte, dans une fenêtre ouverte par [data-ouvrir-modale="rappel"] (présente sur toutes les pages, base.html).
+   Le bouton peut préciser le produit (data-produit) et les choix proposés (data-choix="a|b|c"). #}
 {% import "partials/form.html" as f with context %}
 {% import "partials/icones.html" as i %}
-{% macro rappel(cle, form_nom, produit, surtitre, titre, texte, choix_nom, choix_question, choix) -%}
+{% macro bouton(produit="", accroche="<strong>Pas le temps ?</strong> Être rappelé dans la journée", choix=None, question=None) -%}
+<button type="button" class="entree-simulation__rappel" data-ouvrir-modale="rappel"{% if produit %} data-produit="{{ produit }}"{% endif %}{% if choix %} data-choix="{{ choix }}"{% endif %}{% if question %} data-question="{{ question }}"{% endif %}>{{ i.icone("telephone", "icone icone--petite") }} <span>{{ accroche|safe }}</span></button>
+{%- endmacro %}
+
+{% macro rappel(cle="rappel", form_nom="demande", produit="", surtitre="Rappel gratuit", titre="Être rappelé dans la journée", texte="Laissez vos coordonnées : un conseiller vous rappelle dans la journée (jours ouvrables) pour répondre à vos questions et préparer une offre adaptée.", choix_nom="besoin", choix_question="Votre demande", choix=["Recevoir une offre", "Faire vérifier mon contrat actuel", "Poser une question", "Autre"]) -%}
 <dialog class="modale modale--courte" data-modale="{{ cle }}" aria-labelledby="modale-{{ cle }}-titre">
   <div class="modale__haut">
     <div>
@@ -15,8 +19,8 @@
     <input type="hidden" name="demande" value="Rappel rapide">
     <p class="fe__aide">{{ texte }}</p>
     <div class="champ">
-      <label for="{{ cle }}-choix">{{ choix_question }}</label>
-      <select id="{{ cle }}-choix" name="{{ choix_nom }}" class="select" required>
+      <label for="{{ cle }}-choix" data-rappel-question>{{ choix_question }}</label>
+      <select id="{{ cle }}-choix" name="{{ choix_nom }}" class="select" required data-rappel-choix>
         <option value="">Choisir…</option>
         {% for c in choix %}<option>{{ c }}</option>{% endfor %}
       </select>

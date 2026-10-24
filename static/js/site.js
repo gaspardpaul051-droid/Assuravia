@@ -660,6 +660,22 @@
     majI();
   }
 
+  // 4g bis. Fenêtre « Être rappelé dans la journée » : produit et choix selon le bouton qui l'ouvre
+  var modaleRappel = document.querySelector('[data-modale="rappel"]');
+  if (modaleRappel) {
+    var selRappel = modaleRappel.querySelector("[data-rappel-choix]"), labRappel = modaleRappel.querySelector("[data-rappel-question]");
+    var choixDefaut = selRappel.innerHTML, questionDefaut = labRappel.textContent;
+    document.addEventListener("click", function (ev) {
+      var b = ev.target.closest('[data-ouvrir-modale="rappel"]');
+      if (!b) return;
+      var prod = modaleRappel.querySelector("[data-produit]");
+      if (prod) prod.value = b.getAttribute("data-produit") || prod.defaultValue || "";
+      var choix = b.getAttribute("data-choix");
+      selRappel.innerHTML = choix ? '<option value="">Choisir…</option>' + choix.split("|").map(function (c) { c = c.trim().replace(/[<>&"]/g, ""); return "<option>" + c + "</option>"; }).join("") : choixDefaut;
+      labRappel.textContent = b.getAttribute("data-question") || questionDefaut;
+    }, true);
+  }
+
   // 4h. Fenêtres (dialog) ouvertes par un bouton [data-ouvrir-modale="nom"], formulaires en étapes [data-etape]
   document.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-ouvrir-modale]");
