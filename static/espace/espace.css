@@ -546,3 +546,4 @@ td:last-child { white-space: nowrap; }
 .fiche__bloc--com .mini { font-size: .8rem; padding: .3rem .65rem; }
 .fiche__bloc--com textarea { min-height: 60px !important; font-size: .98rem; }
 .fiche__bloc--com .commentaire-form__pied .btn { min-height: 40px; }
+.lien--danger { color: var(--rouge); font-size: .85rem; margin-top: .6rem; display: inline-block; }
