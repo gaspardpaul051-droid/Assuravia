@@ -32,7 +32,7 @@
     <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/3e-pilier/" data-retour-3a>3e pilier</a></nav>
     <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Bilan 3e pilier gratuit</p>
     <h1 class="cmp-page__titre">Être conseillé pour mon 3e pilier</h1>
-    <p class="chapeau">Répondez à quelques questions : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.</p>
+    <p class="chapeau">6 questions, 1 minute : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.</p>
 
     <div class="estim-3a" data-estim-3a aria-live="polite">
       <p class="estim-3a__titre">{{ i.icone("calcul", "icone icone--petite") }} Votre estimation en direct</p>
@@ -69,15 +69,6 @@
           {"v": "Préparer ma retraite", "icone": "horloge", "detail": "Plan de retrait, coordination avec la caisse de pension"},
           {"v": "Financer un logement", "icone": "maison", "detail": "Retrait, mise en gage, amortissement indirect"}], premier=True) }}
 
-        <fieldset class="modale__etape" data-etape hidden>
-          <legend class="modale__question">Quelle est votre date de naissance ?</legend>
-          <p class="fe__aide">Elle sert à calculer le nombre d'années jusqu'à la retraite et votre capital possible.</p>
-          {{ f.naissance("3a") }}
-          <div class="modale__actions">
-            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
-            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
-          </div>
-        </fieldset>
 
         {{ question("Quelle est votre situation professionnelle ?", "statut_pro", [
           {"v": "Salarié avec caisse de pension", "icone": "utilisateur"},
@@ -86,31 +77,34 @@
           {"v": "Frontalier", "icone": "avion"},
           {"v": "Sans activité lucrative ou retraité", "icone": "horloge"}], aide="Le plafond 3a dépend de votre affiliation à une caisse de pension.") }}
 
-        {{ question("Quelle est votre situation familiale ?", "situation_familiale", ["Célibataire", "Marié ou en partenariat enregistré", "En concubinage", "Divorcé ou séparé", "Veuf"]) }}
 
-        {{ question("Avez-vous des enfants à charge ?", "enfants", ["Non", "1 enfant", "2 enfants", "3 enfants ou plus"]) }}
 
         {{ jauge("Quel est votre revenu annuel brut ?", "revenu_annuel", "Revenu de votre ménage s'il s'agit d'une déclaration commune. Faites glisser la jauge, une estimation suffit.", 20000, 400000, 5000, 85000, [50000, 80000, 120000, 180000, 250000]) }}
 
-        {{ jauge("Combien payez-vous d'impôts par an, environ ?", "impots_annuels", "Impôt fédéral, cantonal et communal. Il figure sur votre dernier bordereau.", 0, 80000, 500, 10000, [3000, 8000, 15000, 25000, 40000], passer="Je ne sais pas") }}
-
-        {{ jauge("À combien s'élève votre épargne et votre fortune ?", "fortune", "Comptes, placements et 3e pilier, hors immobilier.", 0, 2000000, 10000, 50000, [20000, 100000, 250000, 500000, 1000000], passer="Je préfère ne pas répondre") }}
-
-        {{ question("Avez-vous déjà un 3e pilier ?", "pilier_actuel", ["Non, pas encore", "Oui, un compte 3a bancaire", "Oui, en fonds de placement", "Oui, une assurance 3a", "Oui, plusieurs solutions", "Je ne sais pas"]) }}
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Votre date de naissance</legend>
+          <p class="fe__aide">Elle sert à calculer le nombre d'années jusqu'à la retraite et votre capital possible.</p>
+          {{ f.naissance("3a") }}
+          <div class="modale__actions">
+            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+          </div>
+        </fieldset>
 
         {{ jauge("Combien pourriez-vous épargner par mois ?", "epargne_mensuelle", "CHF 605 par mois correspondent environ au maximum 3a de CHF 7'258 par an.", 50, 1500, 25, 400, [200, 400, 605, 1000], apres=" par mois", passer="Je ne sais pas encore") }}
 
-        {{ question("Face aux variations de la bourse, vous êtes plutôt…", "profil_risque", [
-          {"v": "Prudent", "detail": "Je préfère la sécurité, même avec un rendement faible"},
-          {"v": "Équilibré", "detail": "J'accepte quelques variations pour un meilleur rendement"},
-          {"v": "Dynamique", "detail": "Je vise la croissance à long terme et j'accepte les baisses passagères"},
-          {"v": "Je ne sais pas", "detail": "Le conseiller m'aidera à le déterminer"}]) }}
+        {{ question("Avez-vous déjà un 3e pilier ?", "pilier_actuel", ["Non, pas encore", "Oui, un compte 3a bancaire", "Oui, en fonds de placement", "Oui, une assurance 3a", "Oui, plusieurs solutions", "Je ne sais pas"]) }}
 
-        {{ question("Qu'est-ce qui compte le plus pour vous ?", "priorites", ["Payer moins d'impôts", "Préparer ma retraite", "Protéger mes proches", "Acheter un logement", "Faire fructifier mon épargne", "Garder mon argent disponible"], type="checkbox", aide="Plusieurs réponses possibles.") }}
+
+
+
+
+
+
 
         <fieldset class="modale__etape" data-etape hidden>
           <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
-          <p class="fe__aide">Votre conseiller prépare votre bilan avec vos réponses et vous rappelle au moment choisi.</p>
+          <p class="fe__aide">Dernière étape : votre conseiller prépare votre bilan avec vos réponses et vous rappelle dans la journée (jours ouvrables).</p>
           <div class="grille-champs">
             <div class="champ"><label for="prenom-3a">Prénom</label><input id="prenom-3a" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
             <div class="champ"><label for="nom-3a">Nom</label><input id="nom-3a" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
@@ -123,23 +117,15 @@
                 {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
               </select>
             </div>
-            <div class="champ">
-              <label for="moment-3a">Quand vous rappeler ?</label>
-              <select id="moment-3a" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
-            </div>
           </div>
-          <div class="champ">
-            <label for="message-3a">Une précision ? <span class="facultatif">(facultatif)</span></label>
-            <textarea id="message-3a" name="message" placeholder="Ex. J'ai une assurance 3a depuis 2015 et je ne sais pas si elle est encore adaptée."></textarea>
-          </div>
-          {{ f.fermer("Recevoir mon bilan 3e pilier", "3a") }}
+          {{ f.fermer("Recevoir mon bilan gratuit", "3a") }}
           <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
         </fieldset>
       </form>
     </div>
     <ul class="funnel__garanties">
       <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
-      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 1 minute</li>
       <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
     </ul>
   </div>

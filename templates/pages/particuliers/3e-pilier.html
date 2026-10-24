@@ -32,7 +32,7 @@
     <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Prévoyance privée</p>
     <h1>3e pilier : combien d'impôts allez-vous économiser en 2026 ?</h1>
     <p class="chapeau">Chaque franc versé sur un pilier 3a est déduit de votre revenu imposable. Entrez votre situation : le calcul se met à jour immédiatement. Plus bas, tout ce qu'il faut savoir sur le 3a et le 3b pour faire les bons choix.</p>
-    {% with formulaire_separe=true %}{% include "partials/simulateur-3a.html" %}{% endwith %}
+    <div id="demande">{% with formulaire_separe=true %}{% include "partials/simulateur-3a.html" %}{% endwith %}</div>
     <div class="rappel-ligne">{{ rr.bouton("3e-pilier") }}</div>
   </div>
 </section>
@@ -347,4 +347,5 @@
     <p class="centre"><a class="bouton bouton--action" href="{{ demande }}">Être conseillé gratuitement</a></p>
   </div>
 </section>
+{% with barre_url = demande, barre_texte = "Recevoir mon bilan 3e pilier" %}{% include "partials/barre-cta.html" %}{% endwith %}
 {% endblock %}
