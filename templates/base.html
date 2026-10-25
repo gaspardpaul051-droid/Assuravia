@@ -165,7 +165,7 @@
   gtag("set", "ads_data_redaction", true);
   gtag("set", "url_passthrough", true);
   if (GA || ADS) {
-    var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + (GA || ADS); document.head.appendChild(s);
+    var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + (ADS || GA); document.head.appendChild(s);
     gtag("js", new Date());
     if (GA) gtag("config", GA, { anonymize_ip: true });
     if (ADS) gtag("config", ADS, { allow_enhanced_conversions: true });
