@@ -5,7 +5,7 @@ nom: Assurance véhicule
 categorie: Logement et biens
 icone: voiture
 ordre: 5
-titre_seo: Assurance voiture et moto en Suisse : RC et casco
+titre_seo: Assurance voiture et moto : RC et casco
 description: Assurance auto et moto en Suisse : RC obligatoire, casco partielle ou complète, franchise, bonus, leasing. Les points à vérifier pour bien couvrir le véhicule.
 desc: RC obligatoire, casco partielle ou complète : la bonne couverture pour votre voiture ou votre moto.
 points: Responsabilité civile obligatoire | Casco partielle ou complète | Assistance et véhicule de remplacement

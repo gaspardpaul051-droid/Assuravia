@@ -5,7 +5,7 @@ nom: LPP (2e pilier)
 categorie: Personnel
 icone: groupe
 ordre: 2
-titre_seo: Caisse de pension LPP pour PME : obligations et choix
+titre_seo: Caisse de pension LPP pour PME : obligations
 description: Caisse de pension LPP pour vos employés : obligations de l'employeur, seuils 2026, fondation collective et points à comparer avant d'affilier votre PME.
 desc: Une caisse de pension adaptée à votre entreprise, au bon coût pour vous et vos employés.
 points: Obligatoire dès CHF 22'680 de salaire annuel | Analyse des fondations collectives | Solutions pour dirigeants et cadres

@@ -5,7 +5,7 @@ nom: Placements et gestion de fortune
 categorie: Prévoyance, placement et impôts
 icone: courbe
 ordre: 2
-titre_seo: Placements et gestion de fortune en Suisse romande
+titre_seo: Placements et gestion de fortune en Suisse
 description: Placer votre épargne en Suisse selon votre horizon et votre profil de risque : fonds, ETF, mandat de gestion, prévoyance, et les frais à vérifier.
 desc: Faites travailler votre épargne selon votre horizon et votre profil de risque.
 points: Analyse de votre profil investisseur | Fonds, mandats de gestion, prévoyance | Frais transparents

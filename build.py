@@ -15,6 +15,7 @@ from __future__ import annotations
 import datetime as dt
 import html as html_lib
 import json
+import subprocess
 import os
 import re
 import shutil
@@ -356,12 +357,24 @@ def main() -> None:
 
     sitemap: list[tuple[str, str]] = []
 
+    # Date de dernière modification réelle (dernier commit du fichier source), pour un lastmod fiable
+    def date_git(*chemins) -> str:
+        dates = []
+        for c in chemins:
+            try:
+                d = subprocess.run(["git", "log", "-1", "--format=%cs", "--", str(c)], cwd=ROOT, capture_output=True, text=True, timeout=10).stdout.strip()
+                if d:
+                    dates.append(d)
+            except Exception:
+                pass
+        return max(dates) if dates else aujourd_hui.isoformat()
+
     for page in sorted((ROOT / "templates" / "pages").rglob("*.html")):
         url = url_de(page)
         contenu = env.get_template(str(page.relative_to(ROOT / "templates"))).render(url=url)
         ecrire(url, contenu)
         if 'name="robots" content="noindex' not in contenu:
-            sitemap.append((url, aujourd_hui.isoformat()))
+            sitemap.append((url, date_git(page)))
 
     tpl_produit = env.get_template("produit.html")
     for p in tous:
@@ -371,7 +384,7 @@ def main() -> None:
         voisins.sort(key=lambda q: (q["categorie"] != p["categorie"], q["ordre"]))
         lies = [a for a in articles if p["slug"] in a["produits_lies"]][:3]
         ecrire(p["url"], tpl_produit.render(url=p["url"], produit=p, voisins=voisins[:3], articles_lies=lies))
-        sitemap.append((p["url"], aujourd_hui.isoformat()))
+        sitemap.append((p["url"], date_git(ROOT / "content" / "produits" / f"{p['slug']}.md", ROOT / "templates" / "produit.html")))
 
     tpl_article = env.get_template("article.html")
     for a in articles:
