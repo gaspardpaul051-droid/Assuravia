@@ -167,8 +167,9 @@
   if (GA || ADS) {
     var s = document.createElement("script"); s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + (ADS || GA); document.head.appendChild(s);
     gtag("js", new Date());
-    if (GA) gtag("config", GA, { anonymize_ip: true });
+    // Balise Google combinée : AW-18207426103 porte aussi Analytics (G-R2RMM7B9GV). Charger un G- seul renvoie 404.
     if (ADS) gtag("config", ADS, { allow_enhanced_conversions: true });
+    else if (GA) gtag("config", GA);
   }
   var charge = false;
   var activer = function () {
