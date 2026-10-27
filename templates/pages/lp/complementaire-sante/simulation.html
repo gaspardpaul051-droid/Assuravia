@@ -11,7 +11,6 @@
 {% import "partials/icones.html" as i %}
 {% block title %}{{ sim.titre }} | Assuravia{% endblock %}
 {% block etapes %}
-{{ e.identite() }}
 {{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("familles", "Que souhaitez-vous ajouter à votre assurance de base ?", "Cochez tout ce qui vous intéresse. Vous choisirez ensuite la formule de chaque module.") }}
@@ -54,6 +53,6 @@
   </div>
   {{ e.continuer() }}
 </fieldset>
-{{ e.coordonnees(naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat_lca("familles") }}
 {% endblock %}

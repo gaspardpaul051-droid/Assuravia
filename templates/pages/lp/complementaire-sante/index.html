@@ -10,7 +10,7 @@
 {% block title %}Complémentaire santé à prime maîtrisée | Assuravia{% endblock %}
 {% block description %}Complémentaire maladie à la carte : hospitalisation, médecines alternatives, dentaire, voyage. Ne payez que ce qui vous sert. Estimation gratuite en 2 minutes.{% endblock %}
 {% block content %}
-<section class="hero-produit lp-sante">
+<section class="hero-produit hero-produit--direct lp-sante">
   <div class="cadre hero-produit__grille">
     <div class="hero-produit__texte">
       <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span>Complémentaires santé</span></nav>
@@ -134,7 +134,7 @@
           </div>
           {% endfor %}
         </div>
-        <a class="lp-module__lien" href="{{ sim_url }}?{{ fam }}=oui">Ajouter ce module à ma simulation {{ i.icone("fleche", "icone icone--petite") }}</a>
+        <a class="lp-module__lien" href="{{ sim_url }}?{{ fam }}=oui&amp;passer={{ fam }}">Ajouter ce module à ma simulation {{ i.icone("fleche", "icone icone--petite") }}</a>
       </article>
       {% endfor %}
     </div>
@@ -212,7 +212,9 @@
     var go = bloc.querySelector("[data-lp-go]"), base = go.getAttribute("href");
     bloc.addEventListener("change", function () {
       var q = Array.prototype.map.call(bloc.querySelectorAll("input:checked"), function (c) { return c.value + "=oui"; });
-      go.setAttribute("href", base + (q.length ? "?" + q.join("&") : ""));
+      // Modules déjà choisis : la question « Que souhaitez-vous ajouter ? » est sautée dans la simulation
+      var premier = bloc.querySelector("input:checked");
+      go.setAttribute("href", base + (q.length ? "?" + q.join("&") + "&passer=" + premier.value : ""));
       go.textContent = q.length ? "Voir ma prime (" + q.length + (q.length > 1 ? " modules)" : " module)") : "Voir ma prime";
     });
   }
