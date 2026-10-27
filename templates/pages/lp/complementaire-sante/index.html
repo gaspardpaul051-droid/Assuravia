@@ -210,13 +210,20 @@
   var bloc = document.querySelector("[data-lp-depart]");
   if (bloc) {
     var go = bloc.querySelector("[data-lp-go]"), base = go.getAttribute("href");
-    bloc.addEventListener("change", function () {
+    var majGo = function () {
       var q = Array.prototype.map.call(bloc.querySelectorAll("input:checked"), function (c) { return c.value + "=oui"; });
       // Modules déjà choisis : la question « Que souhaitez-vous ajouter ? » est sautée dans la simulation
       var premier = bloc.querySelector("input:checked");
       go.setAttribute("href", base + (q.length ? "?" + q.join("&") + "&passer=" + premier.value : ""));
       go.textContent = q.length ? "Voir ma prime (" + q.length + (q.length > 1 ? " modules)" : " module)") : "Voir ma prime";
+    };
+    bloc.addEventListener("change", majGo);
+    // Annonce par besoin : ?besoin=fam_dent (ou fam_alt, fam_hop…) coche la carte correspondante à l'arrivée
+    (new URLSearchParams(location.search).get("besoin") || "").split(",").forEach(function (v) {
+      var c = v && bloc.querySelector('input[value="' + v.replace(/[^\w]/g, "") + '"]');
+      if (c) c.checked = true;
     });
+    majGo();
   }
   // Compteurs qui montent à l'apparition
   var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
