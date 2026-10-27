@@ -2065,3 +2065,4 @@ html.cookies-ouvert { overflow: hidden; }
 .rappel-ligne { margin-top: var(--e-4); }
 .rappel-ligne .entree-simulation__rappel { max-width: 560px; margin-inline: auto; }
 .funnel-page .rappel-ligne .entree-simulation__rappel { justify-content: center; }
+.estim-3a--masque .estim-3a__val { filter: blur(7px); user-select: none; }

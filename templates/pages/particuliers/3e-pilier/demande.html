@@ -24,17 +24,17 @@
 {%- endmacro %}
 {% extends "base.html" %}
 {% block theme %}prive{% endblock %}
-{% block title %}Être conseillé pour mon 3e pilier | Assuravia{% endblock %}
+{% block title %}{{ titre_3a|default("Être conseillé pour mon 3e pilier") }} | Assuravia{% endblock %}
 {% block description %}Quelques questions sur votre situation, puis un conseiller fait le point sur votre 3e pilier : impôts, rachats, banque ou assurance. Gratuit et sans engagement.{% endblock %}
 {% block content %}
 <section class="cmp-page demande-page demande-3a">
   <div class="cadre cadre--etroit">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/3e-pilier/" data-retour-3a>3e pilier</a></nav>
+    {% if not landing %}<nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="/particuliers/3e-pilier/" data-retour-3a>3e pilier</a></nav>{% endif %}
     <p class="etiquette etiquette--prive">{{ i.icone("tirelire", "icone icone--petite") }} Bilan 3e pilier gratuit</p>
-    <h1 class="cmp-page__titre">Être conseillé pour mon 3e pilier</h1>
-    <p class="chapeau">6 questions, 1 minute : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.</p>
+    <h1 class="cmp-page__titre">{{ h1_3a|default("Être conseillé pour mon 3e pilier") }}</h1>
+    <p class="chapeau">{{ chapeau_3a|default("6 questions, 1 minute : le conseiller prépare votre bilan avant de vous appeler (économie d'impôts, rachats, banque ou assurance). Gratuit et sans engagement.") }}</p>
 
-    <div class="estim-3a" data-estim-3a aria-live="polite">
+    <div class="estim-3a{% if masque_3a %} estim-3a--masque{% endif %}" data-estim-3a{% if masque_3a %} data-masque{% endif %} aria-live="polite">
       <p class="estim-3a__titre">{{ i.icone("calcul", "icone icone--petite") }} Votre estimation en direct</p>
       <div class="estim-3a__chiffres">
         <div class="estim-3a__bloc">
@@ -183,7 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }, true);
   var RENDEMENT = { "Prudent": [0.02, "profil prudent, hypothèse 2 % par an"], "Équilibré": [0.035, "profil équilibré, hypothèse 3,5 % par an"], "Dynamique": [0.05, "profil dynamique, hypothèse 5 % par an"] };
   var anim = {};
+  // Page publicitaire : montants masqués (chiffres remplacés et floutés) tant que téléphone et e-mail ne sont pas saisis
+  var masque = zone.hasAttribute("data-masque");
+  var coordOk = function () {
+    var t = form.querySelector('[name="telephone"]'), m = form.querySelector('[name="email"]');
+    return t && m && t.value.replace(/\D/g, "").length >= 9 && m.value.indexOf("@") > 0 && m.checkValidity();
+  };
   var afficher = function (cle, val) {
+    if (masque) { zone.querySelector('[data-estim="' + cle + '"]').textContent = "CHF " + String(Math.round(val)).replace(/\B(?=(\d{3})+(?!\d))/g, "'").replace(/\d/g, "8"); return; }
     var el = zone.querySelector('[data-estim="' + cle + '"]'), depart = Number(el.getAttribute("data-v")) || 0, t0 = null;
     if (Math.round(depart) === Math.round(val)) { el.textContent = chf(val); return; }
     el.setAttribute("data-v", val); cancelAnimationFrame(anim[cle]);
@@ -191,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var pas = function (t) { if (!t0) t0 = t; var k = Math.min((t - t0) / 600, 1); el.textContent = chf(depart + (val - depart) * (1 - Math.pow(1 - k, 3))); if (k < 1) anim[cle] = requestAnimationFrame(pas); };
     anim[cle] = requestAnimationFrame(pas);
   };
-  var texte = function (cle, t) { zone.querySelector('[data-estim="' + cle + '"]').textContent = t; };
+  var texte = function (cle, t) { if (masque && /detail/.test(cle)) t = "Affichée dès que vous indiquez vos coordonnées"; zone.querySelector('[data-estim="' + cle + '"]').textContent = t; };
   var calculer = function () {
     var cantonEl = form.querySelector('[name="canton"]');
     var canton = (cantonEl && cantonEl.value) || q.get("canton") || "VD";
@@ -221,6 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   form.addEventListener("change", calculer);
   form.addEventListener("input", calculer);
+  if (masque) form.addEventListener("input", function () {
+    if (masque && coordOk()) { masque = false; zone.classList.remove("estim-3a--masque"); zone.removeAttribute("data-masque"); calculer(); }
+  });
   calculer();
 });
 </script>
