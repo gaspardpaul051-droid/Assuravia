@@ -5,6 +5,7 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
+<input type="hidden" name="situation" value="" data-depuis-url>
 {{ e.logement(premier=True, question="Pour commencer, vous habitez…") }}
 {{ e.statut() }}
 {{ e.ouvrir("pieces", "Votre logement et votre ménage") }}

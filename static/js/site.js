@@ -1004,7 +1004,7 @@
       if (k === "logement") return;
       formF.querySelectorAll('[name="' + k.replace(/"/g, "") + '"]').forEach(function (el) {
         if (el.type === "radio" || el.type === "checkbox") { if (el.value === v) el.checked = true; }
-        else if (el.type !== "hidden" && !el.value) el.value = v;
+        else if ((el.type !== "hidden" || el.hasAttribute("data-depuis-url")) && !el.value) el.value = v;
       });
     });
     formF.addEventListener("change", majConditions);
