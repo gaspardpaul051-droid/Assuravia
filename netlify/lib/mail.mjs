@@ -59,6 +59,9 @@ export async function notifierLead({ conseiller, lead, id, nomProduit, origine }
   return true;
 }
 
+const NOMS = { "rc-pro": "RC professionnelle", "complementaire-sante-eco": "Complémentaire santé", "complementaire-maladie": "Complémentaire santé", "assurance-menage": "Assurance ménage", "assurance-batiment": "Assurance bâtiment", "3e-pilier": "3e pilier", "rc-privee": "RC privée", "lamal": "LAMal", "hypotheque": "Hypothèque", "garantie-de-loyer": "Garantie de loyer", "assurance-hospitalisation": "Hospitalisation", "complementaire-ambulatoire": "Soins ambulatoires", "protection-juridique": "Protection juridique", "voyage": "Assurance voyage", "objets-de-valeur": "Objets de valeur", "vehicule": "Véhicule" };
+const nomLisible = (slug) => NOMS[slug] || String(slug || "Demande").replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+
 // Relance : un e-mail par conseiller listant ses leads encore « Nouveau » (envoyé même si les notifications sont désactivées)
 export async function relancerConseiller({ conseiller, leads }) {
   const cle = process.env.RESEND_API_KEY;
@@ -68,7 +71,7 @@ export async function relancerConseiller({ conseiller, leads }) {
   const titre = n > 1 ? n + " leads attendent votre appel" : "Un lead attend votre appel";
   const ligne = (l) => {
     const nom = [l.prenom, l.nom].filter(Boolean).join(" ") || "Sans nom";
-    const produit = String(l.produit || l.formulaire || "Demande").replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+    const produit = nomLisible(l.produit || l.formulaire);
     const tel = telLisible(l.telephone);
     const depuis = new Date(l.cree_le).toLocaleString("fr-CH", { timeZone: "Europe/Zurich", weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
     return `<tr><td style="padding:10px 0;border-bottom:1px solid #E6ECF3"><strong>${esc(nom)}</strong><br><span style="color:#5B6B80;font-size:14px">${esc(produit)} · reçu ${esc(depuis)}</span>${tel ? `<br><a href="tel:${esc(String(l.telephone).replace(/\s/g, ""))}" style="color:#1565A8;font-weight:700">${esc(tel)}</a>` : ""}</td><td style="padding:10px 0;border-bottom:1px solid #E6ECF3;text-align:right"><a href="${esc(espace + "#lead=" + l.id)}" style="color:#1565A8;font-weight:700">Ouvrir</a></td></tr>`;
