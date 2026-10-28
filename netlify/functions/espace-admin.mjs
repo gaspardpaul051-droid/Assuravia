@@ -4,7 +4,7 @@
 // ou prévenir par e-mail un conseiller des leads qu'on vient de lui attribuer (action « notifier »).
 // Appel : POST /.netlify/functions/espace-admin  { action, email, nom, poids }  avec l'en-tête Authorization: Bearer <jeton du connecté>
 
-import { notifierLead } from "../lib/mail.mjs";
+import { notifierLead, relancerConseiller } from "../lib/mail.mjs";
 
 export const handler = async (event) => {
   const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "") || undefined;
@@ -58,6 +58,24 @@ export const handler = async (event) => {
         if (await notifierLead({ conseiller: c[0], lead: l, id: l.id, nomProduit, origine: "Lead attribué par l'administrateur" })) envoyes++;
       }
       return reponse(200, { ok: true, envoyes });
+    }
+    if (corps.action === "relancer") {
+      // Relance immédiate demandée par l'admin : un e-mail par conseiller pour les leads choisis encore « Nouveau »
+      const ids = (Array.isArray(corps.ids) ? corps.ids : []).map(Number).filter((n) => n > 0).slice(0, 100);
+      if (!ids.length) return reponse(200, { ok: true, envoyes: 0, leads: 0 });
+      const leads = await (await fetch(URL + "/rest/v1/leads?select=id,prenom,nom,telephone,email,produit,formulaire,cree_le,conseiller_id,statut&id=in.(" + ids.join(",") + ")&statut=eq.nouveau&conseiller_id=not.is.null", { headers: service })).json();
+      if (!Array.isArray(leads) || !leads.length) return reponse(200, { ok: true, envoyes: 0, leads: 0 });
+      const cons = await (await fetch(URL + "/rest/v1/conseillers?select=id,nom,email&id=in.(" + [...new Set(leads.map((l) => l.conseiller_id))].join(",") + ")", { headers: service })).json();
+      let envoyes = 0, sansEmail = [];
+      for (const c of Array.isArray(cons) ? cons : []) {
+        const siens = leads.filter((l) => l.conseiller_id === c.id);
+        if (!c.email) { sansEmail.push(c.nom); continue; }
+        if (await relancerConseiller({ conseiller: c, leads: siens })) {
+          envoyes++;
+          await fetch(URL + "/rest/v1/commentaires", { method: "POST", headers: service, body: JSON.stringify(siens.map((l) => ({ lead_id: l.id, auteur_id: utilisateur.id, texte: "Relance e-mail envoyée au conseiller (" + c.nom + ") par l'administrateur.", automatique: true }))) });
+        }
+      }
+      return reponse(200, { ok: true, envoyes, leads: leads.length, sansEmail });
     }
     const email = String(corps.email || "").trim().toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reponse(400, { erreur: "E-mail invalide" });

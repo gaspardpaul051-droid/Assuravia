@@ -240,7 +240,7 @@
       '<button class="btn" data-rafraichir>Actualiser</button></div></div>' +
       '<div class="puces">' + puces.filter(function (p) { return p[2] || p[0] === "tous" || p[0] === etat.filtre; }).map(function (p) { return '<button class="puce puce--' + (p[3] || "neutre") + (etat.filtre === p[0] ? " puce--active" : "") + '" data-filtre="' + p[0] + '">' + p[1] + " <span>" + p[2] + "</span></button>"; }).join("") + "</div>" +
       (estAdmin() ? '<div class="selection-outils"><label class="tout"><input type="checkbox" data-tout> Tout sélectionner (liste affichée)</label></div>' +
-        '<div class="barre-attribuer" data-barre-attribuer hidden><strong data-nb></strong><select class="select" data-vers><option value="">Attribuer à…</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + (c.actif ? "" : " (inactif)") + "</option>"; }).join("") + '<option value="aucun">Personne (retirer)</option></select><button class="btn btn--plein" data-appliquer>Attribuer</button><button class="btn btn--danger" data-supprimer-lot>Supprimer</button><button class="lien" data-vider>Annuler la sélection</button></div>' : "") +
+        '<div class="barre-attribuer" data-barre-attribuer hidden><strong data-nb></strong><select class="select" data-vers><option value="">Attribuer à…</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + (c.actif ? "" : " (inactif)") + "</option>"; }).join("") + '<option value="aucun">Personne (retirer)</option></select><button class="btn btn--plein" data-appliquer>Attribuer</button><button class="btn" data-relancer-lot>Relancer par e-mail</button><button class="btn btn--danger" data-supprimer-lot>Supprimer</button><button class="lien" data-vider>Annuler la sélection</button></div>' : "") +
       '<div class="liste" data-liste></div>';
     var dessiner = function () {
       var liste = leadsFiltres();
@@ -296,6 +296,8 @@
         });
       };
     }
+    var rel = zone.querySelector("[data-relancer-lot]");
+    if (rel) rel.onclick = function () { relancerLeads(Object.keys(etat.selection).map(Number)); };
     var suppr = zone.querySelector("[data-supprimer-lot]");
     if (suppr) suppr.onclick = function () {
       var ids = Object.keys(etat.selection).map(Number);
@@ -303,6 +305,21 @@
       supprimerLeads(ids, function () { etat.selection = {}; vueLeads(); });
     };
     zone.querySelector("[data-rafraichir]").onclick = function () { Promise.all([chargerLeads(), chargerActivite()]).then(function () { vueLeads(); toast("Liste à jour."); }); };
+  }
+
+  // Relance immédiate (admin) : e-mail au conseiller de chaque lead encore « Nouveau »
+  function relancerLeads(ids) {
+    var nouveaux = ids.filter(function (id) { var l = etat.leads.filter(function (x) { return x.id === id; })[0]; return l && l.statut === "nouveau" && l.conseiller_id; });
+    if (!nouveaux.length) { toast("Aucun lead « Nouveau » attribué dans la sélection.", true); return; }
+    sb.auth.getSession().then(function (s) {
+      return fetch("/.netlify/functions/espace-admin", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + (s.data.session ? s.data.session.access_token : "") }, body: JSON.stringify({ action: "relancer", ids: nouveaux }) });
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.erreur) { toast(j.erreur, true); return; }
+      var msg = j.envoyes ? "Relance envoyée à " + j.envoyes + " conseiller" + (j.envoyes > 1 ? "s" : "") + " (" + j.leads + " lead" + (j.leads > 1 ? "s" : "") + ")." : "Aucune relance envoyée.";
+      if (j.sansEmail && j.sansEmail.length) msg += " Sans adresse e-mail : " + j.sansEmail.join(", ") + ".";
+      toast(msg, !j.envoyes);
+      chargerActivite().then(function () { if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads(); });
+    }).catch(function () { toast("Serveur injoignable.", true); });
   }
 
   // Suppression définitive (admin) : leads et leurs commentaires
@@ -356,6 +373,7 @@
       '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
       '<label class="statut-champ"><span>Rappel prévu</span><input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label></div>' +
       '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
+      (estAdmin() && l.statut === "nouveau" && l.conseiller_id ? '<button type="button" class="lien" data-relancer-lead>Relancer le conseiller par e-mail</button> ' : "") +
       (estAdmin() ? '<button type="button" class="lien lien--danger" data-supprimer-lead>Supprimer ce lead</button>' : "") +
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
       "</section>" +
@@ -425,6 +443,7 @@
         poserRappel(d.toISOString());
       };
     });
+    var rl = fiche.querySelector("[data-relancer-lead]"); if (rl) rl.onclick = function () { relancerLeads([l.id]); };
     var sl = fiche.querySelector("[data-supprimer-lead]");
     if (sl) sl.onclick = function () { supprimerLeads([l.id], function () { delete etat.selection[l.id]; fermerFiche(); rendre(); }); };
     var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); if (at.value) notifier([l.id], at.value); };
