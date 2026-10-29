@@ -154,6 +154,7 @@
 (function () {
   var GA = {{ ga_id|tojson }}, CL = {{ clarity_id|tojson }}, ADS = {{ ads_id|tojson }};
   window.ADS_CONV = {{ ads_conv|tojson }};
+  window.ADS_SECONDAIRES = {{ ads_secondaires|default({})|tojson }};
   var lire = function () { try { return localStorage.getItem("assuravia-cookies"); } catch (e) { return null; } };
   var ecrire = function (v) { try { localStorage.setItem("assuravia-cookies", v); } catch (e) {} };
   // Google (Analytics et Ads) : mode consentement. Avant l'accord, la balise fonctionne sans cookies (consentement « refusé ») ;

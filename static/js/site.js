@@ -156,6 +156,36 @@
     window.gtag("event", "conversion", { send_to: window.ADS_CONV, value: 1.0, currency: "EUR" });
   }
 
+  // Mesure des actions secondaires (observation) : événement Google Analytics, plus conversion Google Ads secondaire si un libellé est défini.
+  // Catégories : contact (WhatsApp, téléphone, e-mail, « Une question ? », rappel), engagement (début de simulation, page contact), lead partiel (coordonnées saisies).
+  var dejaMesure = {};
+  function mesure(nom, details, unique) {
+    if (unique && dejaMesure[nom]) return;
+    dejaMesure[nom] = true;
+    if (typeof window.gtag !== "function") return;
+    var p = Object.assign({ page_path: location.pathname }, details || {});
+    window.gtag("event", nom, p);
+    var lib = (window.ADS_SECONDAIRES || {})[nom];
+    if (lib) window.gtag("event", "conversion", { send_to: lib, value: 0, currency: "EUR" });
+  }
+  window.AssuraviaMesure = mesure;
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[href], button");
+    if (!a) return;
+    var h = a.getAttribute("href") || "";
+    if (/wa\.me\//.test(h)) mesure("clic_whatsapp", { lien: a.className || "whatsapp" });
+    else if (/^tel:/.test(h)) mesure("clic_telephone");
+    else if (/^mailto:/.test(h)) mesure("clic_email");
+    else if (a.matches("[data-contact-volant-bouton]") && a.getAttribute("aria-expanded") !== "true") mesure("ouverture_question");
+    else if (a.matches('[data-ouvrir-modale="rappel"]')) mesure("ouverture_rappel", { produit: a.getAttribute("data-produit") || "" });
+  }, true);
+  if (/^\/contact\/?$/.test(location.pathname)) mesure("visite_contact", null, true);
+  // Début de simulation ou de demande : première réponse donnée dans un formulaire de lead
+  document.addEventListener("change", function (e) {
+    var f = e.target.closest && e.target.closest("form[data-lead]");
+    if (f && !f.hasAttribute("data-debut")) { f.setAttribute("data-debut", ""); mesure("debut_simulation", { form_name: f.getAttribute("name") }); }
+  }, true);
+
   function controleFormat(el) {
     if (!el.setCustomValidity) return;
     var v = (el.value || "").trim();
@@ -312,6 +342,7 @@
       controleFormat(tel); controleFormat(mail);
       if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
       form.setAttribute("data-capture", "");
+      mesure("coordonnees_saisies", { form_name: form.getAttribute("name") });
       var consent = form.querySelector('[name="consentement"]');
       statut.value = "Coordonnées saisies, demande non finalisée" + (consent && !consent.checked ? " (case de rappel non cochée)" : "");
       var corps = new URLSearchParams(new FormData(form)).toString();
