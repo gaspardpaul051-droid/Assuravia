@@ -12,6 +12,7 @@ points: Dégâts d'eau et bris de glace | Installations techniques | Adapté à 
 badge: Calcul en 2 min
 bouton: Calculer ma prime bâtiment
 simulateur: /particuliers/simulation-batiment/
+url: /particuliers/assurance-batiment/
 h1: Assurance bâtiment : votre maison protégée, de la cave au toit
 chapeau: Une conduite qui lâche, une baie vitrée brisée, une pompe à chaleur en panne : les réparations d'un bâtiment coûtent vite cher. L'assurance bâtiment les prend en charge selon la formule choisie.
 retenir: L'assurance bâtiment couvre le bâtiment lui-même, pas son contenu. | Dans les cantons de Vaud, Fribourg, Neuchâtel et du Jura, l'incendie et les éléments naturels sont assurés auprès de l'établissement cantonal. | Les dégâts d'eau, le bris de glace et les installations techniques se complètent auprès d'un assureur privé. | La valeur de construction doit être à jour pour éviter la sous-assurance.

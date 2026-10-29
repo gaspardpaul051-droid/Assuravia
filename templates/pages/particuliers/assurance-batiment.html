@@ -1,0 +1,224 @@
+{# Page produit bâtiment (page fixe, sur le modèle de la RC pro) : départ par type de bâtiment, sections courtes. #}
+{% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
+{% extends "base.html" %}
+{% set sim_url = "/particuliers/simulation-batiment/" %}
+{% set dem_url = "/particuliers/assurance-batiment/demande/" %}
+{% set types = [
+  ("Maison ou villa", "maison", "Résidence principale, villa individuelle ou mitoyenne", sim_url ~ "?type_bien=Maison&passer=type_bien"),
+  ("Chalet ou maison de vacances", "cle", "Résidence secondaire, inoccupée une partie de l'année", sim_url ~ "?type_bien=Chalet&passer=type_bien"),
+  ("Immeuble ou PPE", "batiment", "Immeuble locatif, copropriété, immeuble mixte", sim_url ~ "?type_bien=Immeuble&passer=type_bien"),
+  ("Complément à l'assurance cantonale", "bouclier", "Dégâts d'eau, bris de glace, all risk", dem_url ~ "?besoin=complement")
+] %}
+{% set faq = [
+  ("L'assurance bâtiment est-elle obligatoire en Suisse ?", "Dans la plupart des cantons, l'assurance incendie et éléments naturels du bâtiment est obligatoire et se conclut auprès de l'établissement cantonal (Vaud, Fribourg, Neuchâtel, Jura, Berne…). À Genève, en Valais, au Tessin, à Uri, Schwytz, Obwald et Appenzell Rhodes-Intérieures, le propriétaire choisit un assureur privé. Les dégâts d'eau et le bris de glace restent facultatifs partout, mais les banques les demandent souvent pour une hypothèque."),
+  ("Que couvre la formule Complémentaire bâtiment ?", "Elle ajoute ce que l'assurance cantonale ne couvre pas : dégâts d'eau, bris de glace, couverture all risk pour les dommages soudains et imprévus, et la faute grave. Elle est pensée pour les propriétaires des cantons où l'incendie est déjà assuré par l'établissement cantonal."),
+  ("Quelle valeur de construction indiquer ?", "Le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure sur votre police actuelle ou sur l'estimation de l'établissement cantonal. Après une rénovation ou un agrandissement, faites-la mettre à jour pour éviter la sous-assurance."),
+  ("Comment assurer un appartement en PPE ?", "Le bâtiment est en général assuré par la communauté des copropriétaires, via l'administrateur. Chaque propriétaire peut compléter pour son lot, par exemple le bris de glace ou les aménagements intérieurs, et assure ses meubles avec une assurance ménage."),
+  ("Et pour une maison de vacances inoccupée ?", "Signalez-le à l'assureur : une maison vide une partie de l'année présente des risques particuliers, comme le gel des conduites ou le vol. Certains contrats imposent des précautions, par exemple vidanger l'eau en hiver.")
+] %}
+{% set sommaire = [
+  ("essentiel", "L'essentiel"), ("types", "Selon votre bâtiment"), ("canton", "Votre canton"), ("couverture", "Couvert ou pas couvert"),
+  ("formules", "Les formules"), ("erreurs", "Les erreurs à éviter"), ("quiz-titre", "Vrai ou faux"), ("questions-frequentes", "Questions fréquentes")
+] %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurance bâtiment : maison, chalet, immeuble | Assuravia{% endblock %}
+{% block description %}Assurance bâtiment pour maison, chalet, immeuble ou PPE, ou en complément de l'assurance cantonale. Les couvertures utiles et votre prime en 2 minutes.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{% for q, r in faq %}{"@type":"Question","name":{{ q|tojson }},"acceptedAnswer":{"@type":"Answer","text":{{ r|tojson }}}}{% if not loop.last %},{% endif %}{% endfor %}]}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": site_url ~ "/"}, {"@type": "ListItem", "position": 2, "name": "Privé", "item": site_url ~ "/particuliers/"}, {"@type": "ListItem", "position": 3, "name": "Assurance bâtiment", "item": site_url ~ "/particuliers/assurance-batiment/"}]}|tojson }}</script>
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "Service", "name": "Assurance bâtiment", "serviceType": "Assurance bâtiment", "url": site_url ~ "/particuliers/assurance-batiment/", "areaServed": {"@type": "Country", "name": "Suisse"}, "provider": {"@type": "Organization", "name": "Assuravia", "url": site_url ~ "/"}, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CHF", "description": "Estimation et conseil gratuits, sans engagement"}}|tojson }}</script>
+{% endblock %}
+{% block content %}
+<div class="progression-lecture" aria-hidden="true"><span data-progression></span></div>
+<section class="hero-produit hero-produit--direct rcp-hero">
+  <div class="cadre hero-produit__grille">
+    <div class="hero-produit__texte">
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <span aria-current="page">Assurance bâtiment</span></nav>
+      <p class="etiquette">{{ i.icone("maison", "icone icone--petite") }} Assurance bâtiment</p>
+      <h1>Assurance bâtiment&nbsp;: maison, chalet ou immeuble, votre prime en 2&nbsp;minutes</h1>
+      <p class="chapeau">Une conduite qui lâche, une baie vitrée brisée, un toit abîmé par la grêle : les réparations d'un bâtiment coûtent vite cher. Choisissez votre bâtiment, voyez votre prime, puis un conseiller adapte l'offre à votre canton.</p>
+      <ul class="points">
+        <li>Prime estimée tout de suite, selon la valeur de construction</li>
+        <li>Formule Complémentaire pour les cantons à assurance cantonale</li>
+        <li>Un conseiller vérifie la valeur assurée et les exclusions</li>
+      </ul>
+    </div>
+    <aside class="panneau-form rcp-depart" id="demande">
+      <h2 class="form-titre">Quel est votre bâtiment ?</h2>
+      <p class="form-sous-titre">Touchez votre situation : l'estimation démarre directement. Gratuit et sans engagement.</p>
+      <div class="rcp-depart__choix">
+        {% for nom, icone, detail, lien in types %}
+        <a class="rcp-depart__carte" href="{{ lien }}"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong><small>{{ detail }}</small></span></a>
+        {% endfor %}
+      </div>
+      <a class="bouton bouton--action rcp-depart__go" href="{{ sim_url }}">Calculer ma prime bâtiment</a>
+      {{ rr.bouton("assurance-batiment", choix=(types|map(attribute=0)|list + ["Autre question"])|join("|"), question="Votre bâtiment") }}
+      <ul class="lp-depart__rassure">
+        <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
+        <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="lp-chiffres" aria-label="L'assurance bâtiment en bref">
+  <div class="cadre lp-chiffres__liste">
+    {% for val, txt, icone in [("2 min", "pour estimer votre prime", "horloge"), ("4", "types de bâtiments : maison, chalet, immeuble, PPE", "maison"), ("5", "formules, du complément cantonal au sur-mesure", "bouclier"), ("0", "engagement, conseil gratuit", "valide")] %}
+    <div class="lp-chiffre"><span class="lp-chiffre__icone">{{ i.icone(icone) }}</span><p class="lp-chiffre__val">{{ val }}</p><p class="lp-chiffre__txt">{{ txt }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre article__grille p3-grille">
+    <aside class="article__cote">
+      <nav class="sommaire" aria-label="Sommaire de la page">
+        <p class="sommaire__titre">Sur cette page</p>
+        <ol>
+          {% for id, titre in sommaire %}<li><a href="#{{ id }}" data-sommaire-lien>{{ titre }}</a></li>{% endfor %}
+        </ol>
+      </nav>
+      <div class="mini-cta">
+        <p>Votre assurance bâtiment estimée en 2 minutes.</p>
+        <a class="bouton bouton--action bouton--petit" href="{{ sim_url }}">Calculer ma prime</a>
+      </div>
+    </aside>
+
+    <div class="article__corps p3-corps">
+      <aside class="retenir" id="essentiel" aria-labelledby="retenir-titre">
+        <p class="retenir__titre" id="retenir-titre">{{ i.icone("valide", "icone icone--petite") }} L'essentiel en 30 secondes</p>
+        <ul>
+          <li>L'assurance bâtiment couvre <strong>la construction</strong> : murs, toit, fenêtres, installations fixes. Les meubles relèvent de l'<a href="/particuliers/assurance-menage/">assurance ménage</a>.</li>
+          <li>Dans la plupart des cantons, l'<strong>incendie et les éléments naturels</strong> sont assurés obligatoirement auprès de l'établissement cantonal.</li>
+          <li>Les <strong>dégâts d'eau et le bris de glace</strong> se complètent auprès d'un assureur privé : c'est la formule Complémentaire bâtiment.</li>
+          <li>Une <strong>valeur de construction à jour</strong> évite la sous-assurance.</li>
+        </ul>
+      </aside>
+
+      <h2 id="types">Une couverture adaptée à votre bâtiment</h2>
+      <p>Chaque bâtiment a ses risques. Choisissez le vôtre pour démarrer l'estimation :</p>
+      <div class="rcp-metiers bt-types">
+        {% for nom, icone, detail, lien in types %}
+        <a class="rcp-metier" href="{{ lien }}">
+          <span class="lp-avantage__icone">{{ i.icone(icone) }}</span>
+          <strong>{{ nom }}</strong>
+          <small>{{ detail }}</small>
+          <span class="rcp-metier__lien">{{ "Voir l'offre" if loop.last else "Calculer ma prime" }} {{ i.icone("fleche", "icone icone--petite") }}</span>
+        </a>
+        {% endfor %}
+      </div>
+      <div class="lp-cas rcp-cas">
+        {% for icone, qui, risque, conseil in [
+          ("maison", "Maison ou villa", "Dégâts d'eau, grêle sur le toit, pompe à chaleur, panneaux solaires.", "Assurer les installations techniques et mettre la valeur à jour après chaque rénovation."),
+          ("cle", "Chalet ou maison de vacances", "Gel des conduites, poids de la neige, effraction quand le bien est vide.", "Déclarer l'occupation réelle et respecter les précautions demandées en hiver."),
+          ("batiment", "Immeuble ou PPE", "Fuite qui touche plusieurs logements, vitrages des communs, pertes de loyers.", "Ajouter la RC propriétaire d'immeuble et la couverture des pertes de loyers.")] %}
+        <article class="lp-cas__carte">
+          <p class="lp-cas__qui"><span>{{ i.icone(icone) }}</span>{{ qui }}</p>
+          <p class="lp-cas__sans"><strong>Les risques typiques</strong>{{ risque }}</p>
+          <p class="lp-cas__avec"><strong>Le conseil</strong>{{ conseil }}</p>
+        </article>
+        {% endfor %}
+      </div>
+
+      <h2 id="canton">Ce qui change selon votre canton</h2>
+      <div class="tableau tableau--3col p3-tableau">
+        <table>
+          <thead><tr><th>Cantons</th><th>Incendie et éléments naturels</th><th>Ce que vous choisissez</th></tr></thead>
+          <tbody>
+            <tr><td>VD, FR, NE, JU, BE et la plupart des autres</td><td data-label="Incendie et éléments naturels">Établissement cantonal, obligatoire</td><td data-label="Ce que vous choisissez">Le complément : dégâts d'eau, bris de glace, all risk</td></tr>
+            <tr><td>GE, VS, TI, UR, SZ, OW, AI</td><td data-label="Incendie et éléments naturels">Assureur privé, au libre choix</td><td data-label="Ce que vous choisissez">Toute l'assurance bâtiment, dans une seule police</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote class="encadre encadre--savoir"><p class="encadre__titre">Le saviez-vous ?</p><p>L'assurance cantonale ne couvre pas les dégâts d'eau. Une conduite qui fuit dans un mur reste donc à votre charge si vous n'avez pas de complément, même dans un canton où le bâtiment est assuré d'office.</p></blockquote>
+      <aside class="cta-ligne"><p class="cta-ligne__texte">Votre bâtiment est déjà assuré par le canton ? Voyez ce que coûte le complément.</p><a class="bouton bouton--action bouton--petit" href="{{ sim_url }}">Calculer mon complément</a></aside>
+
+      <h2 id="couverture">Ce qui est couvert, et ce qui ne l'est pas</h2>
+      <div class="p3-duo">
+        <article class="p3-carte p3-carte--3a">
+          <p class="p3-carte__tag">En général couvert</p>
+          <ul class="p3-liste">
+            <li>{{ i.icone("valide", "icone icone--petite") }} Incendie, foudre, grêle, tempête, inondation</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Dégâts d'eau : conduite qui fuit, refoulement, infiltration</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Bris de glace : fenêtres, baies vitrées, vitrocéramique</li>
+            <li>{{ i.icone("valide", "icone icone--petite") }} Installations techniques selon la formule</li>
+          </ul>
+        </article>
+        <article class="p3-carte p3-carte--3b">
+          <p class="p3-carte__tag">En général pas couvert</p>
+          <ul class="p3-liste">
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Vos meubles et affaires : voir l'<a href="/particuliers/assurance-menage/">assurance ménage</a></li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} L'usure et le manque d'entretien</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les dommages causés intentionnellement</li>
+            <li class="p3-liste__limite">{{ i.icone("croix-fermer", "icone icone--petite") }} Les défauts de construction : ils relèvent de la garantie de l'entreprise</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 id="formules">Cinq formules, selon ce que vous avez déjà</h2>
+      <div class="tableau tableau--3col p3-tableau">
+        <table>
+          <thead><tr><th>Formule</th><th>Pour qui</th><th>Points forts</th></tr></thead>
+          <tbody>
+            <tr><td>Complémentaire bâtiment</td><td data-label="Pour qui">Bâtiment déjà assuré par l'établissement cantonal</td><td data-label="Points forts">All risk, dégâts d'eau, bris de glace, faute grave</td></tr>
+            <tr><td>Essentiel</td><td data-label="Pour qui">Les couvertures de base dans une seule police</td><td data-label="Points forts">Incendie et éléments naturels, dégâts d'eau, bris de glace</td></tr>
+            <tr><td>Confort</td><td data-label="Pour qui">La formule la plus choisie</td><td data-label="Points forts">Ajoute le vol et une couverture élargie</td></tr>
+            <tr><td>Premium</td><td data-label="Pour qui">Maisons bien équipées</td><td data-label="Points forts">Ajoute les installations techniques</td></tr>
+            <tr><td>Sur mesure</td><td data-label="Pour qui">Immeubles, piscine, dépendances</td><td data-label="Points forts">Un spécialiste construit l'offre avec vous</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote class="encadre encadre--exemple"><p class="encadre__titre">Exemple</p><p>Marc possède une villa à Morges, assurée contre l'incendie par l'établissement cantonal vaudois. Sa valeur de construction est de CHF 800'000. Avec la formule Complémentaire bâtiment, l'estimation de la simulation est d'environ CHF 456 par an, soit CHF 0.57 pour CHF 1'000 de valeur. La prime définitive dépend de l'offre de l'assureur.</p></blockquote>
+
+      <h2 id="erreurs">Quatre erreurs fréquentes</h2>
+      <ol class="p3-erreurs">
+        {% for titre, texte in [
+          ("Croire que l'assurance cantonale suffit", "Elle couvre l'incendie et les éléments naturels, pas les dégâts d'eau ni le bris de glace."),
+          ("Garder une valeur de construction ancienne", "Après une rénovation ou une hausse des coûts de construction, une valeur trop basse réduit l'indemnité."),
+          ("Oublier les installations récentes", "Pompe à chaleur, panneaux solaires, piscine : signalez-les pour qu'ils soient couverts."),
+          ("Confondre bâtiment et ménage", "Les murs relèvent de l'assurance bâtiment, les meubles de l'assurance ménage. Il faut souvent les deux.")] %}
+        <li class="p3-erreur"><h3>{{ titre }}</h3><p>{{ texte }}</p></li>
+        {% endfor %}
+      </ol>
+      <blockquote class="encadre encadre--astuce"><p class="encadre__titre">Astuce</p><p>Gardez les factures de vos rénovations et de vos installations. Elles servent à fixer la bonne valeur d'assurance, et accélèrent le règlement en cas de sinistre.</p></blockquote>
+      <p class="p3-cta-ligne"><a class="bouton bouton--action" href="{{ sim_url }}">Calculer ma prime bâtiment</a></p>
+
+      {% with w={"pour_qui": ["Vous venez d'acheter une maison, un chalet ou un appartement en PPE", "Votre bâtiment est assuré par le canton, sans complément", "Vous avez rénové ou installé une pompe à chaleur ou des panneaux solaires", "Vous gérez un immeuble locatif ou une copropriété"], "theme": "prive", "bouton": "Calculer ma prime bâtiment", "cible": sim_url} %}{% include "partials/pour-qui.html" %}{% endwith %}
+
+      <section class="quiz" aria-labelledby="quiz-titre" data-quiz>
+        <h2 id="quiz-titre">Vrai ou faux ? Testez vos connaissances</h2>
+        <p class="quiz__score" aria-live="polite" data-quiz-score></p>
+        {% for aff, rep, expl in [
+          ("L'assurance bâtiment rembourse aussi les meubles abîmés par un dégât d'eau.", "faux", "Les meubles et affaires personnelles relèvent de l'assurance ménage. L'assurance bâtiment couvre les murs, les sols, les installations fixes."),
+          ("À Genève et en Valais, l'assurance incendie du bâtiment se conclut auprès d'un assureur privé.", "vrai", "Ces cantons n'ont pas d'établissement cantonal d'assurance des bâtiments : le propriétaire choisit son assureur."),
+          ("L'assurance cantonale couvre les dégâts d'eau.", "faux", "Elle couvre l'incendie et les éléments naturels. Les dégâts d'eau se complètent auprès d'un assureur privé.")] %}
+        <div class="quiz__question" data-quiz-question data-reponse="{{ rep }}">
+          <p class="quiz__affirmation">{{ aff }}</p>
+          <div class="quiz__choix">
+            <button type="button" class="quiz__bouton" data-choix="vrai">Vrai</button>
+            <button type="button" class="quiz__bouton" data-choix="faux">Faux</button>
+          </div>
+          <p class="quiz__explication" hidden data-quiz-explication><strong data-quiz-verdict></strong> {{ expl }}</p>
+        </div>
+        {% endfor %}
+      </section>
+
+      <h2 id="questions-frequentes">Questions fréquentes sur l'assurance bâtiment</h2>
+      <div class="faq">
+        {% for q, r in faq %}
+        <details><summary>{{ q }}</summary><div class="faq__reponse"><p>{{ r }}</p></div></details>
+        {% endfor %}
+      </div>
+
+      <aside class="encart">
+        <p class="encart__titre">Votre assurance bâtiment, estimée en 2 minutes</p>
+        <p>Choisissez votre bâtiment, voyez votre prime, puis un conseiller adapte l'offre à votre canton et vérifie la valeur assurée. Gratuit et sans engagement.</p>
+        <a class="bouton bouton--action" href="{{ sim_url }}">Calculer ma prime bâtiment</a>
+      </aside>
+    </div>
+  </div>
+</section>
+{% with barre_url = sim_url, barre_texte = "Calculer ma prime bâtiment" %}{% include "partials/barre-cta.html" %}{% endwith %}
+{% endblock %}

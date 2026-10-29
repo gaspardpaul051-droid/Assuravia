@@ -1,5 +1,5 @@
 {# Page publicitaire bâtiment (Google Ads, toute la Suisse en français). ?besoin=maison|chalet|immeuble|complement met en avant
-   la carte correspondante et adapte le titre. Maison et chalet : simulation avec prime ; immeuble et complément : demande sans prime. #}
+   la carte correspondante et adapte le titre. Maison, chalet et immeuble : simulation avec prime ; complément : demande sans prime. #}
 {% set landing = true %}
 {% set noindex = true %}
 {% import "partials/icones.html" as i %}
@@ -30,7 +30,7 @@
         {% for cle, titre, detail, icone, lien in [
           ("maison", "Maison ou villa", "Prime estimée en 2 minutes", "maison", sim_url ~ "?type_bien=Maison&amp;passer=type_bien"),
           ("chalet", "Chalet ou résidence secondaire", "Prime estimée en 2 minutes", "cle", sim_url ~ "?type_bien=Chalet&amp;passer=type_bien"),
-          ("immeuble", "Immeuble ou PPE", "Offre sur mesure d'un conseiller", "batiment", dem_url ~ "?besoin=immeuble"),
+          ("immeuble", "Immeuble ou PPE", "Prime estimée en 2 minutes", "batiment", sim_url ~ "?type_bien=Immeuble&amp;passer=type_bien"),
           ("complement", "Compléter l'assurance cantonale", "Dégâts d'eau, bris de glace, vol", "bouclier", dem_url ~ "?besoin=complement")] %}
         <a class="lp-menage__carte" data-bt-carte="{{ cle }}" href="{{ lien|safe }}"><span class="lp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong><small>{{ detail }}</small></span></a>
         {% endfor %}
@@ -86,7 +86,7 @@
 // Lien d'annonce : ?besoin=maison|chalet|immeuble|complement met la carte en avant et adapte le titre
 (function () {
   var b = new URLSearchParams(location.search).get("besoin");
-  var titres = { maison: "Assurance maison et villa : votre prime en 2 minutes", chalet: "Assurance chalet et résidence secondaire", immeuble: "Assurance immeuble et PPE : votre offre sur mesure", complement: "Complétez l'assurance cantonale de votre bâtiment" };
+  var titres = { maison: "Assurance maison et villa : votre prime en 2 minutes", chalet: "Assurance chalet et résidence secondaire", immeuble: "Assurance immeuble et PPE : votre prime en 2 minutes", complement: "Complétez l'assurance cantonale de votre bâtiment" };
   if (!titres[b]) return;
   document.querySelector("[data-bt-titre]").textContent = titres[b];
   var c = document.querySelector('[data-bt-carte="' + b + '"]');

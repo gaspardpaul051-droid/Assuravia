@@ -2026,6 +2026,8 @@ html.cookies-ouvert { overflow: hidden; }
 .p3-corps .p3-carte > p:not(.p3-carte__tag) { margin: 0; font-size: var(--t-s); line-height: 1.6; color: var(--texte-doux); }
 @media (max-width: 1200px) { .rcp-metiers, .rcp-cas { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 700px) { .rcp-metiers, .rcp-cas { grid-template-columns: 1fr; } }
+.rcp-metiers.bt-types { grid-template-columns: 1fr 1fr; }
+@media (max-width: 700px) { .rcp-metiers.bt-types { grid-template-columns: 1fr; } }
 @media (max-width: 420px) { .rcp-depart__choix { grid-template-columns: 1fr; } }
 
 /* ---------- Conversion : départ direct, rappel rapide, barre fixe ---------- */
