@@ -2,12 +2,12 @@
   "titre": "Assurance bâtiment : calculez votre prime", "h1": "Calculez votre assurance bâtiment",
   "description": "Villa, chalet ou maison de vacances : estimez la prime de votre assurance bâtiment selon la valeur de construction et la formule choisie.",
   "attrs": {"prime-nom": "Bâtiment"},
-  "note": "Dans les cantons de Vaud, Fribourg, Neuchâtel et du Jura, l'incendie et les éléments naturels des bâtiments sont assurés obligatoirement auprès de l'établissement cantonal. Le spécialiste adapte l'offre à votre canton."} %}
+  "note": "Dans les cantons de Vaud, Fribourg, Neuchâtel, du Jura et de Berne, l'incendie et les éléments naturels des bâtiments sont assurés obligatoirement auprès de l'établissement cantonal. Le spécialiste adapte l'offre à votre canton."} %}
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
 {{ e.cartes("type_bien", "Quel type de bien ?", [
-  {"valeur": "Villa", "icone": "maison"},
+  {"valeur": "Maison", "titre": "Maison ou villa", "icone": "maison"},
   {"valeur": "Chalet", "icone": "maison"},
   {"valeur": "Maison de vacances", "icone": "cle"}], colonnes=3, premier=True) }}
 {{ e.ouvrir("valeur", "Quelle est la valeur de construction du bien ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure souvent sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}

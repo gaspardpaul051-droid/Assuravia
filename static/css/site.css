@@ -2076,3 +2076,4 @@ html.cookies-ouvert { overflow: hidden; }
 .lp-menage__val { font-size: clamp(1.3rem, 3vw, 1.7rem); }
 @media (max-width: 720px) { .lp-chiffres__liste { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 980px) { .lp-menage .lp-prix, .lp-menage .lp-menage__note { order: 1; } .lp-menage .lp-prix { justify-self: start; align-self: flex-start; margin-top: 0; } }
+.lp-menage__carte--actif { border-color: var(--bleu); background: var(--bleu-pale); box-shadow: 0 8px 20px -14px rgba(21,101,168,.8); }

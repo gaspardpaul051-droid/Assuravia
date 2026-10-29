@@ -1,0 +1,89 @@
+{# Demande bâtiment sans prime affichée : immeuble, PPE, complément à l'assurance cantonale (incendie et éléments naturels obligatoires
+   auprès de l'établissement cantonal dans la plupart des cantons). ?besoin=immeuble|complement|revoir répond à la première question. #}
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurance immeuble, PPE et complément bâtiment | Assuravia{% endblock %}
+{% block description %}Immeuble, PPE ou complément à l'assurance cantonale : décrivez votre bâtiment en 1 minute, un conseiller prépare votre offre. Gratuit et sans engagement.{% endblock %}
+{% block content %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <p class="etiquette etiquette--prive">{{ i.icone("batiment", "icone icone--petite") }} Assurance bâtiment</p>
+    <h1 class="cmp-page__titre" data-bt-titre>Votre offre d'assurance bâtiment</h1>
+    <p class="chapeau">5 questions, 1 minute : un conseiller prépare une offre adaptée à votre bâtiment et à votre canton, puis vous rappelle. Gratuit et sans engagement.</p>
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir("demande-prive", "assurance-batiment") }}
+        <input type="hidden" name="demande" value="Demande bâtiment">
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {{ question("Qu'est-ce qui vous amène ?", "besoin", [
+          {"v": "Assurer un immeuble ou une PPE", "icone": "batiment", "detail": "Immeuble locatif, copropriété, immeuble mixte"},
+          {"v": "Compléter l'assurance cantonale", "icone": "bouclier", "detail": "Dégâts d'eau, bris de glace, vol, RC propriétaire"},
+          {"v": "Revoir mon contrat bâtiment", "icone": "calcul", "detail": "Valeur d'assurance, couvertures, prime"},
+          {"v": "Autre demande", "icone": "bulle", "detail": "Un conseiller vous oriente"}], premier=True) }}
+
+        {{ question("Quel type de bien ?", "type_bien", [
+          {"v": "Immeuble locatif", "icone": "batiment"},
+          {"v": "PPE ou copropriété", "icone": "groupe"},
+          {"v": "Immeuble mixte (logements et commerces)", "icone": "mallette"},
+          {"v": "Maison ou villa", "icone": "maison"},
+          {"v": "Chalet ou résidence secondaire", "icone": "cle"}]) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Dans quel canton se trouve le bâtiment ?</legend>
+          <p class="fe__aide">Dans la plupart des cantons, l'incendie et les éléments naturels sont assurés auprès de l'établissement cantonal. Le conseiller adapte l'offre à votre canton.</p>
+          <div class="champ">
+            <label for="canton-bt">Canton</label>
+            <select id="canton-bt" name="canton" required>
+              <option value="">Choisir…</option>
+              {% for code, nom in cantons %}<option value="{{ code }}">{{ nom }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="modale__actions">
+            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+          </div>
+        </fieldset>
+
+        {{ question("Que souhaitez-vous couvrir ?", "couvertures", ["Dégâts d'eau", "Bris de glace", "Vol et vandalisme", "RC propriétaire d'immeuble", "Pertes de loyers", "Incendie et éléments naturels (Genève, Valais)", "Je ne sais pas, j'ai besoin de conseil"], type="checkbox", aide="Plusieurs réponses possibles.") }}
+
+        {{ question("Quelle est la valeur d'assurance du bâtiment, environ ?", "valeur_batiment", ["Moins de CHF 1 million", "CHF 1 à 3 millions", "CHF 3 à 10 millions", "Plus de CHF 10 millions", "Je ne sais pas"], aide="C'est le coût de reconstruction à neuf, sans le terrain. Elle figure sur votre police ou sur l'estimation de l'établissement cantonal.") }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <p class="fe__aide">Dernière étape : votre conseiller prépare l'offre avec vos réponses et vous rappelle dans la journée (jours ouvrables).</p>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-bt">Prénom</label><input id="prenom-bt" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-bt">Nom</label><input id="nom-bt" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("bt") }}
+            <div class="champ"><label for="email-bt">E-mail</label><input id="email-bt" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+          </div>
+          {{ f.fermer("Recevoir mon offre", "bt") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 1 minute</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+// Lien d'annonce : ?besoin=immeuble|complement|revoir répond à la première question (le formulaire passe à la suivante)
+document.addEventListener("DOMContentLoaded", function () {
+  var cles = { immeuble: ["Assurer un immeuble ou une PPE", "Assurance immeuble et PPE"], complement: ["Compléter l'assurance cantonale", "Complétez l'assurance cantonale de votre bâtiment"], revoir: ["Revoir mon contrat bâtiment", "Faites vérifier votre assurance bâtiment"] };
+  var c = cles[new URLSearchParams(location.search).get("besoin")];
+  if (!c) return;
+  document.querySelector("[data-bt-titre]").textContent = c[1];
+  var r = document.querySelector('form [name="besoin"][value="' + c[0] + '"]');
+  if (r) setTimeout(function () { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }, 50);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{# Page publicitaire bâtiment (Google Ads, toute la Suisse en français). ?besoin=maison|chalet|immeuble|complement met en avant
+   la carte correspondante et adapte le titre. Maison et chalet : simulation avec prime ; immeuble et complément : demande sans prime. #}
+{% set landing = true %}
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/rappel-rapide.html" as rr with context %}
+{% extends "base.html" %}
+{% set sim_url = "/particuliers/simulation-batiment/" %}
+{% set dem_url = "/particuliers/assurance-batiment/demande/" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Assurance bâtiment : maison, chalet, immeuble | Assuravia{% endblock %}
+{% block description %}Assurance bâtiment en Suisse : maison, villa, chalet, immeuble, PPE ou complément à l'assurance cantonale. Votre offre en 2 minutes, sans engagement.{% endblock %}
+{% block content %}
+<section class="hero-produit hero-produit--direct lp-menage lp-batiment">
+  <div class="cadre hero-produit__grille">
+    <div class="hero-produit__texte">
+      <p class="etiquette etiquette--prive">{{ i.icone("batiment", "icone icone--petite") }} Assurance bâtiment</p>
+      <h1 data-bt-titre>Assurance bâtiment : votre offre en 2 minutes</h1>
+      <p class="chapeau">Maison, villa, chalet, immeuble ou PPE : votre bâtiment assuré à sa valeur à neuf, avec les couvertures adaptées à votre canton.</p>
+      <ul class="points">
+        <li>Dégâts d'eau, bris de glace, vol, RC propriétaire</li>
+        <li>Complément à l'assurance cantonale dans les cantons concernés</li>
+        <li>Un conseiller vérifie votre valeur d'assurance</li>
+      </ul>
+    </div>
+    <aside class="panneau-form lp-depart" id="demande">
+      <h2 class="form-titre">Quel est votre bâtiment ?</h2>
+      <p class="form-sous-titre">Touchez votre situation : la demande démarre directement.</p>
+      <div class="lp-menage__choix">
+        {% for cle, titre, detail, icone, lien in [
+          ("maison", "Maison ou villa", "Prime estimée en 2 minutes", "maison", sim_url ~ "?type_bien=Maison&amp;passer=type_bien"),
+          ("chalet", "Chalet ou résidence secondaire", "Prime estimée en 2 minutes", "cle", sim_url ~ "?type_bien=Chalet&amp;passer=type_bien"),
+          ("immeuble", "Immeuble ou PPE", "Offre sur mesure d'un conseiller", "batiment", dem_url ~ "?besoin=immeuble"),
+          ("complement", "Compléter l'assurance cantonale", "Dégâts d'eau, bris de glace, vol", "bouclier", dem_url ~ "?besoin=complement")] %}
+        <a class="lp-menage__carte" data-bt-carte="{{ cle }}" href="{{ lien|safe }}"><span class="lp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong><small>{{ detail }}</small></span></a>
+        {% endfor %}
+      </div>
+      {{ rr.bouton("assurance-batiment", "<strong>Pas le temps ?</strong> Être rappelé dans la journée", "Maison ou villa|Chalet|Immeuble ou PPE|Complément à l'assurance cantonale|Autre question", "Votre bâtiment") }}
+      <ul class="lp-depart__rassure">
+        <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit, sans engagement</li>
+        <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="lp-chiffres" aria-label="Ce qui peut être couvert">
+  <div class="cadre lp-chiffres__liste">
+    {% for titre, txt, icone in [("Dégâts d'eau", "fuite, rupture de conduite, refoulement", "goutte"), ("Bris de glace", "vitres, vitrocéramique, sanitaires", "valide"), ("Incendie et nature", "auprès de l'assureur ou de l'établissement cantonal", "bouclier"), ("RC propriétaire", "les dommages causés par votre bâtiment", "groupe")] %}
+    <div class="lp-chiffre"><span class="lp-chiffre__icone">{{ i.icone(icone) }}</span><p class="lp-chiffre__val lp-menage__val">{{ titre }}</p><p class="lp-chiffre__txt">{{ txt }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="bloc">
+  <div class="cadre texte-long">
+    <h2>Votre canton change tout</h2>
+    <p>En Suisse, l'assurance du bâtiment contre l'incendie et les éléments naturels n'est pas organisée de la même façon partout.</p>
+    <ul>
+      <li><strong>Genève et Valais</strong> (comme le Tessin, Uri, Schwyz, Obwald et Appenzell Rhodes-Intérieures) : vous choisissez librement votre assureur pour toute la couverture du bâtiment.</li>
+      <li><strong>Vaud, Fribourg, Neuchâtel, Jura, Berne</strong> et la plupart des autres cantons : l'incendie et les éléments naturels sont assurés obligatoirement auprès de l'établissement cantonal. Les dégâts d'eau, le bris de glace, le vol ou la RC propriétaire se complètent auprès d'un assureur privé.</li>
+    </ul>
+    <p>Le conseiller vérifie ce que couvre déjà votre contrat et vous propose seulement ce qui manque.</p>
+  </div>
+</section>
+
+<section class="bloc bloc--teinte">
+  <div class="cadre deux-colonnes">
+    <div>
+      <h2>Vos questions</h2>
+      <p>L'essentiel avant d'assurer votre bâtiment.</p>
+      <p><a class="bouton bouton--action" href="#demande">Commencer ma demande</a></p>
+    </div>
+    <div class="faq">
+      <details><summary>Qu'est-ce que la valeur d'assurance ?</summary><div class="faq__reponse"><p>C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Une valeur trop basse réduit l'indemnité en cas de sinistre : c'est la sous-assurance.</p></div></details>
+      <details><summary>L'assurance cantonale couvre-t-elle les dégâts d'eau ?</summary><div class="faq__reponse"><p>En général non : elle couvre l'incendie et les éléments naturels. Les dégâts d'eau, le bris de glace et le vol se complètent auprès d'un assureur privé. Le conseiller vérifie ce qui s'applique dans votre canton.</p></div></details>
+      <details><summary>Et pour un immeuble ou une PPE ?</summary><div class="faq__reponse"><p>L'offre tient compte du nombre de logements, de l'usage (habitation ou commerce) et des options utiles, comme la RC propriétaire d'immeuble ou la couverture des pertes de loyers après un sinistre.</p></div></details>
+      <details><summary>Que se passe-t-il après ma demande ?</summary><div class="faq__reponse"><p>Un conseiller vous rappelle avec une offre adaptée à votre bâtiment et à votre canton. Gratuit et sans engagement.</p></div></details>
+    </div>
+  </div>
+</section>
+{{ rr.rappel() }}
+{% with barre_url = "#demande", barre_texte = "Commencer ma demande" %}{% include "partials/barre-cta.html" %}{% endwith %}
+<script>
+// Lien d'annonce : ?besoin=maison|chalet|immeuble|complement met la carte en avant et adapte le titre
+(function () {
+  var b = new URLSearchParams(location.search).get("besoin");
+  var titres = { maison: "Assurance maison et villa : votre prime en 2 minutes", chalet: "Assurance chalet et résidence secondaire", immeuble: "Assurance immeuble et PPE : votre offre sur mesure", complement: "Complétez l'assurance cantonale de votre bâtiment" };
+  if (!titres[b]) return;
+  document.querySelector("[data-bt-titre]").textContent = titres[b];
+  var c = document.querySelector('[data-bt-carte="' + b + '"]');
+  if (c) { c.classList.add("lp-menage__carte--actif"); c.parentNode.insertBefore(c, c.parentNode.firstChild); }
+})();
+</script>
+{% endblock %}
