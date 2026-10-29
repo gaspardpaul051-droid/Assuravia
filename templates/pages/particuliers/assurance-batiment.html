@@ -49,7 +49,7 @@
       <p class="form-sous-titre">Touchez votre situation : l'estimation démarre directement. Gratuit et sans engagement.</p>
       <div class="rcp-depart__choix">
         {% for nom, icone, detail, lien in types %}
-        <a class="rcp-depart__carte" href="{{ lien }}"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong><small>{{ detail }}</small></span></a>
+        <a class="rcp-depart__carte" href="{{ lien }}"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong></span></a>
         {% endfor %}
       </div>
       <a class="bouton bouton--action rcp-depart__go" href="{{ sim_url }}">Calculer ma prime bâtiment</a>
