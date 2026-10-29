@@ -885,19 +885,22 @@
     var montrer = function (n, enArriere) {
       etapesF.forEach(function (e, k) { e.hidden = k !== n; });
       courante = n;
-      barreF.style.width = ((n + 1) / etapesF.length * 100) + "%";
+      // Les étapes déjà répondues sur la page produit (passer=) ne comptent pas : la simulation affiche « Étape 1 »
+      var avant = deja.filter(function (k) { return k < n; }).length;
+      var vue = n - avant, nb = etapesF.length - deja.length;
+      barreF.style.width = ((vue + 1) / nb * 100) + "%";
       var finale = etapesF[etapesF.length - 1].hasAttribute("data-fe-final");
-      var total = finale ? etapesF.length - 1 : etapesF.length;
-      var pctF = Math.round((n + 1) / etapesF.length * 100);
-      compteurF.innerHTML = (finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (n + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
+      var total = finale ? nb - 1 : nb;
+      var pctF = Math.round((vue + 1) / nb * 100);
+      compteurF.innerHTML = (finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (vue + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
       barreF.parentNode.setAttribute("aria-valuenow", pctF);
-      retourF.hidden = n === 0 || (finale && n === etapesF.length - 1);
+      retourF.hidden = vue === 0 || (finale && n === etapesF.length - 1);
       // Encouragement : combien de questions restent avant la prime
       var enc = funnel.querySelector("[data-funnel-encourage]");
       if (enc) {
         var iCoord = etapesF.findIndex(function (e) { return e.getAttribute("data-fe") === "coordonnees"; });
         var reste = iCoord - n;
-        enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? "Dernière question avant votre prime" : reste === 2 ? "Plus que 2 questions, votre prime est presque prête" : n === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
+        enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? "Dernière question avant votre prime" : reste === 2 ? "Plus que 2 questions, votre prime est presque prête" : vue === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
         enc.hidden = !enc.textContent;
       }
       afficher();
@@ -909,7 +912,7 @@
       var champ = etapesF[n].querySelector("input:not([type=hidden]):not([type=radio]):not([readonly])");
       if (champ && !enArriere) champ.focus({ preventScroll: true });
     };
-    var sauter = {};
+    var sauter = {}, deja = [];
     var avancer = function () {
       if (!verifier(etapesF[courante])) return;
       historique.push(courante);
@@ -1065,6 +1068,7 @@
     }
     // Si les premières étapes sont déjà répondues (choix fait sur la page produit), commencer après
     var depart = 0;
+    Object.keys(sauter).forEach(function (k) { if (+k >= 0) deja.push(+k); });
     while (sauter[depart] && depart < etapesF.length - 1) { delete sauter[depart]; historique.push(depart); depart++; }
     if (depart) montrer(depart);
   }
