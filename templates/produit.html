@@ -33,6 +33,14 @@
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
       </div>
+      {% elif produit.entree == "sante" %}
+      {# Comme la RC pro : la première question (pour qui ?) se répond ici, la simulation commence à la suivante #}
+      <p class="form-sous-titre">Pour qui est cette couverture ? Touchez votre choix : l'estimation démarre directement. Gratuit et sans engagement.</p>
+      <div class="rcp-depart__choix">
+        {% for val, titre, icone in [("Moi", "Pour moi", "utilisateur"), ("Mon enfant", "Pour mon enfant", "coeur"), ("Mon conjoint", "Pour mon conjoint", "groupe"), ("Autre personne", "Pour un proche", "bulle")] %}
+        <a class="rcp-depart__carte" href="{{ produit.simulateur }}?pour_qui={{ val|urlencode }}&amp;passer=pour_qui"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong></span></a>
+        {% endfor %}
+      </div>
       {% else %}
       <p class="form-sous-titre">{{ produit.simulateur_texte or "Quelques questions simples, et votre prime s'affiche tout de suite." }}</p>
       <ul class="entree-simulation__points">
@@ -43,6 +51,13 @@
       {% endif %}
       <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>
       {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
+      {% if produit.entree == "sante" %}
+      <ul class="lp-depart__rassure">
+        <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+        <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
+        <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées</li>
+      </ul>
+      {% endif %}
       {% elif produit.widget_hero == "interets" %}
       {% include "partials/simulateur-interets.html" %}
       <button type="button" class="bouton bouton--action interets__cta" data-ouvrir-modale="placements">Construire ma stratégie avec un spécialiste</button>
@@ -66,6 +81,15 @@
   </div>
 </section>
 
+{% if produit.chiffres %}
+<section class="lp-chiffres" aria-label="{{ produit.nom }} en bref">
+  <div class="cadre lp-chiffres__liste">
+    {% for c in produit.chiffres.split("|") %}{% set val, txt, icone = c.split(";")|map("trim")|list %}
+    <div class="lp-chiffre"><span class="lp-chiffre__icone">{{ i.icone(icone) }}</span><p class="lp-chiffre__val">{{ val }}</p><p class="lp-chiffre__txt">{{ txt }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
 <section class="bloc">
   <div class="cadre article__grille fiche">
     <aside class="article__cote">

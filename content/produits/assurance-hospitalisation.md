@@ -11,6 +11,8 @@ desc: Chambre à deux lits ou individuelle, libre choix du médecin : choisissez
 points: Commune, demi-privée ou privée | Libre choix du médecin à l'hôpital | Aide à domicile après le séjour
 badge: Estimation en 2 min
 bouton: Estimer ma prime hospitalisation
+entree: sante
+chiffres: 2 min ; pour estimer votre prime ; horloge | 4 ; niveaux de chambre au choix ; croix | Libre choix ; du médecin, selon la formule ; utilisateur | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-hospitalisation/
 simulateur_titre: Estimez votre prime en 2 minutes
 simulateur_texte: Choisissez votre niveau de confort à l'hôpital et découvrez une estimation de prime avec les prestations possibles.

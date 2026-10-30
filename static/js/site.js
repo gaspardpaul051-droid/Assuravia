@@ -638,7 +638,8 @@
       var q = new URLSearchParams({ annee_naissance: profil.annee || "", canton: profil.canton, sexe: profil.sexe || "" });
       choix.forEach(function (c) {
         var m = G.modules[c.cle];
-        if (c.fam === "hop") { q.set("fam_hop", "oui"); q.set("division", m.court); }
+        if (c.cle === "amb_etranger") { q.set("fam_voy", "oui"); }
+        else if (c.fam === "hop") { q.set("fam_hop", "oui"); q.set("division", m.court); }
         else if (c.fam === "amb") { q.set("fam_amb", "oui"); q.append("besoins_amb", m.court); q.set("niveau_amb", profil.niveau); }
         else if (c.fam === "dent") { q.set("fam_dent", "oui"); q.set("dentaire", m.court); }
         else if (c.fam === "ij") { q.set("fam_ij", "oui"); q.set("indemnite", m.court); }

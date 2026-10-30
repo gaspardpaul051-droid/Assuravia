@@ -59,6 +59,7 @@ Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify 
 
 ## Complémentaires maladie
 - Pages publiques NEUTRES : aucune référence à un assureur, ni dans les noms, ni dans la structure, ni dans les chiffres. Couverture organisée par besoin (hospitalisation par type de chambre, soins ambulatoires à la carte avec niveau Standard ou Étendu, dentaire par plafond annuel, indemnité par jour, protection juridique santé).
+- Pages produit santé (complémentaire, hospitalisation, ambulatoire) : `entree: sante` dans le .md affiche le départ « Pour qui ? » (4 cartes vers la simulation avec `?pour_qui=…&passer=pour_qui`, comme la RC pro) ; `chiffres: valeur ; texte ; icône | …` affiche le bandeau de chiffres sous le titre (utilisable par tout produit). Simulation complète : 6 familles, dont « Voyage et étranger » (`fam_voy`, module `amb_etranger`, retiré des besoins ambulatoires de cette simulation pour ne pas le compter deux fois).
 - Grille : `content/complementaires.json` (primes indicatives par âge, sexe, canton). Utilisée par le simulateur de la page Privé (`partials/simulateur-sante.html`) et les trois simulations (hospitalisation, ambulatoire, complète, avec `"lca": True`). Écrans dans `etapes.html` (`profil_sante`, `lca_cartes`, `niveau_amb`, `resultat_lca`). Pas de prix sur les cartes de choix.
 - Les pages orientées assureur (Helsana, Assura…) seront des pages publicitaires `templates/pages/lp/`, non liées au site. Grille inspirée d'Helsana conservée dans `archives/complementaires-helsana/`.
 

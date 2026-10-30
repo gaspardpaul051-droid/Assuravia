@@ -11,6 +11,8 @@ desc: Ostéopathie, lunettes, médicaments hors liste, prévention : les soins d
 points: Médecines douces reconnues | Lunettes, lentilles et prévention | Urgences à l'étranger
 badge: Estimation en 2 min
 bouton: Estimer ma prime
+entree: sante
+chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; besoins à cocher, sans payer le reste ; coeur | 2 ; niveaux : Standard ou Étendu ; bouclier | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-ambulatoire/
 simulateur_titre: Estimez votre prime en 2 minutes
 simulateur_texte: Choisissez la formule qui vous ressemble et découvrez une estimation de prime avec les prestations possibles.

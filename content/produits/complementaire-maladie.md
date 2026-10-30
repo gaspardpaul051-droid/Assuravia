@@ -11,6 +11,8 @@ desc: Dentaire, hospitalisation, médecines complémentaires : complétez votre 
 points: Hospitalisation en chambre semi-privée ou privée | Soins dentaires et lunettes | Médecines complémentaires
 badge: Estimation en 2 min
 bouton: Composer ma couverture
+entree: sante
+chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; couvertures à combiner selon vos besoins ; coeur | 4 ; niveaux de chambre à l'hôpital ; croix | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-complementaires/
 simulateur_titre: Composez votre couverture
 simulateur_texte: Hospitalisation, ambulatoire, médecines douces, dentaire : choisissez ce qui compte pour vous et découvrez une estimation de prime.
