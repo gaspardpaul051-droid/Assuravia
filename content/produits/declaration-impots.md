@@ -2,9 +2,9 @@
 slug: declaration-impots
 groupe: particuliers
 nom: Déclaration d'impôts
-categorie: Prévoyance, placement et impôts
+categorie: Retraite et impôts
 icone: calcul
-ordre: 3
+ordre: 4
 formulaire: impots
 titre_seo: Déclaration d'impôts en Suisse romande : aide
 description: Déclaration d'impôts en Suisse romande : un spécialiste la remplit ou la vérifie, repère les déductions oubliées et prépare avec vous l'année suivante.

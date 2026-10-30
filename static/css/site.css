@@ -121,6 +121,8 @@ strong { font-weight: 700; }
 .sous-menu__icone { width: 34px; height: 34px; border-radius: var(--r-s); display: grid; place-items: center; background: var(--bleu-pale); color: var(--bleu); flex: none; }
 .sous-menu__icone .icone { width: 18px; height: 18px; }
 .sous-menu--pro .sous-menu__icone { background: var(--marine); color: var(--or-clair); }
+.sous-menu__bouton { border: 0; background: none; font: inherit; padding-right: 12px !important; border-radius: var(--r-s) !important; }
+.sous-menu__bouton .sous-menu__chevron { margin-left: 2px; }
 .sous-menu__tout { display: flex; align-items: center; gap: 6px; margin-top: var(--e-2); padding: var(--e-3) var(--e-2) 0; border-top: 1px solid var(--bordure); font-weight: 700; text-decoration: none; color: var(--bleu); }
 .sous-menu--pro .sous-menu__tout { color: var(--marine); }
 .menu-bouton { display: none; }
@@ -150,7 +152,8 @@ strong { font-weight: 700; }
   .sous-menu { flex-wrap: wrap; margin: 4px 0; }
   .sous-menu__lien, .nav__lien { min-height: 52px; font-size: var(--t-m); justify-content: flex-start; }
   .sous-menu__lien { flex: 1; }
-  .sous-menu__bascule { width: 52px; min-height: 52px; }
+  .sous-menu__bouton { width: 100%; }
+  .sous-menu__bouton .sous-menu__chevron { margin-left: auto; }
   .sous-menu__panneau { position: static; transform: none; width: 100%; box-shadow: none; border: 0; border-top: 1px solid var(--bordure); border-radius: 0 0 6px 6px; padding: var(--e-2) var(--e-3) var(--e-3); margin: 0; background: var(--fond); }
   .sous-menu__panneau::before { display: none; }
   .sous-menu--pro .sous-menu__panneau { border-left-color: var(--or); }
@@ -1475,7 +1478,7 @@ body.modale-ouverte { overflow: hidden; }
 .sous-menu--pro .sous-menu__domaine-titre { color: var(--or-texte); }
 .sous-menu__domaine li a { min-height: 40px; }
 @media (max-width: 1080px) { .sous-menu__panneau { width: 100%; } .sous-menu__domaines { grid-template-columns: 1fr; } }
-@media (min-width: 1081px) { .sous-menu--pro .sous-menu__panneau { left: auto; right: 0; transform: none; } }
+@media (min-width: 1081px) { .sous-menu--pro .sous-menu__panneau { left: auto; right: 0; transform: none; width: min(860px, 94vw); } .sous-menu--pro .sous-menu__domaines { grid-template-columns: repeat(3, 1fr); } }
 .modale__progression { display: grid; gap: 6px; }
 .modale__progression p { margin: 0; font-size: var(--t-xs); font-weight: 700; color: var(--texte-doux); }
 .modale__progression div { height: 6px; border-radius: var(--r-plein); background: var(--bleu-pale); overflow: hidden; }

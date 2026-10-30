@@ -2,9 +2,9 @@
 slug: garantie-de-loyer
 groupe: particuliers
 nom: Garantie de loyer
-categorie: Logement et biens
+categorie: Logement
 icone: cle
-ordre: 2
+ordre: 4
 desc: Gardez vos 3 mois de loyer sur votre compte grâce à une garantie de loyer sans dépôt.
 points: Aucun argent bloqué | Prime dès 4 % par an | Demande en ligne en 3 minutes
 badge: Calcul immédiat

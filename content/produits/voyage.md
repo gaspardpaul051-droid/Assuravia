@@ -2,9 +2,9 @@
 slug: voyage
 groupe: particuliers
 nom: Assurance voyage
-categorie: Protection
+categorie: Véhicule et loisirs
 icone: avion
-ordre: 7
+ordre: 2
 titre_seo: Assurance voyage : annulation et frais médicaux
 description: Annulation, rapatriement, frais médicaux à l'étranger : ce que la LAMal ne paie pas en voyage, ce que couvre une assurance voyage, comment éviter les doublons.
 desc: Annulation, rapatriement et frais médicaux à l'étranger pour voyager l'esprit tranquille.

@@ -2,9 +2,9 @@
 slug: placements
 groupe: particuliers
 nom: Placements et gestion de fortune
-categorie: Prévoyance, placement et impôts
+categorie: Retraite et impôts
 icone: courbe
-ordre: 2
+ordre: 3
 titre_seo: Placements et gestion de fortune en Suisse
 description: Placer votre épargne en Suisse selon votre horizon et votre profil de risque : fonds, ETF, mandat de gestion, prévoyance, et les frais à vérifier.
 desc: Faites travailler votre épargne selon votre horizon et votre profil de risque.

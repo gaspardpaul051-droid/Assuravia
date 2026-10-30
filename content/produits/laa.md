@@ -2,7 +2,7 @@
 slug: laa
 groupe: entreprises
 nom: LAA accidents
-categorie: Personnel
+categorie: Collaborateurs
 icone: croix
 ordre: 3
 titre_seo: Assurance accidents LAA pour entreprises

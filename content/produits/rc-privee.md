@@ -2,9 +2,9 @@
 slug: rc-privee
 groupe: particuliers
 nom: RC privée
-categorie: Logement et biens
+categorie: Logement
 icone: bouclier
-ordre: 5
+ordre: 3
 titre_seo: RC privée en Suisse romande : calcul et conseils
 description: Responsabilité civile privée : les dommages que vous causez aux autres, en Suisse et à l'étranger. Calculez votre prime en 2 minutes, seule ou avec le ménage.
 desc: Une maladresse chez le voisin, un vélo qui raye une voiture : les dommages causés aux autres sont couverts.

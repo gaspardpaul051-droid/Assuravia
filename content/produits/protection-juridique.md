@@ -2,9 +2,9 @@
 slug: protection-juridique
 groupe: particuliers
 nom: Protection juridique
-categorie: Protection
+categorie: Véhicule et loisirs
 icone: balance
-ordre: 6
+ordre: 3
 titre_seo: Protection juridique privée et circulation
 description: Protection juridique privée et circulation : avocat, frais de justice en cas de litige avec un employeur, une régie ou après un accident. Couverture et limites.
 desc: Avocat, expertises et frais de justice pris en charge en cas de litige au travail, au logement ou sur la route.

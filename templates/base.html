@@ -48,10 +48,8 @@
     <nav class="nav" id="navigation" aria-label="Navigation principale">
       {% for cle, g in groupes.items() %}
       <div class="sous-menu sous-menu--{{ g.theme }}{% if url.startswith(g.url) %} sous-menu--actif{% endif %}" data-sous-menu>
-        <a class="sous-menu__lien" href="{{ g.url }}"{% if url.startswith(g.url) %} aria-current="{{ 'page' if url == g.url else 'true' }}"{% endif %}>{{ i.icone("utilisateur" if g.theme == "prive" else "mallette", "icone icone--petite") }}{{ g.nom }}</a>
-        <button class="sous-menu__bascule" type="button" aria-expanded="false" aria-controls="menu-{{ cle }}" aria-label="Voir les produits {{ g.nom }}" data-sous-menu-bascule>{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</button>
+        <button class="sous-menu__lien sous-menu__bouton" type="button" aria-expanded="false" aria-controls="menu-{{ cle }}" data-sous-menu-bascule>{{ i.icone("utilisateur" if g.theme == "prive" else "mallette", "icone icone--petite") }}{{ g.nom }}{{ i.icone("chevron", "icone icone--petite sous-menu__chevron") }}</button>
         <div class="sous-menu__panneau" id="menu-{{ cle }}">
-          <p class="sous-menu__titre">Assurances pour {{ g.titre|lower }}</p>
           <div class="sous-menu__domaines">
             {% for cat in g.categories %}{% set liste = produits[cle]|selectattr("categorie", "equalto", cat)|list %}{% if liste %}
             <div class="sous-menu__domaine">
@@ -64,7 +62,7 @@
             </div>
             {% endif %}{% endfor %}
           </div>
-          <a class="sous-menu__tout" href="{{ g.url }}">Tout l'espace {{ g.nom }} {{ i.icone("fleche", "icone icone--petite") }}</a>
+          <a class="sous-menu__tout" href="{{ g.url }}"{% if url == g.url %} aria-current="page"{% endif %}>Voir toutes les solutions {{ "pour les particuliers" if g.theme == "prive" else "pour les entreprises" }} {{ i.icone("fleche", "icone icone--petite") }}</a>
         </div>
       </div>
       {% endfor %}

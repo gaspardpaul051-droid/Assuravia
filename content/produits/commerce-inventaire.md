@@ -2,7 +2,7 @@
 slug: commerce-inventaire
 groupe: entreprises
 nom: Commerce et inventaire
-categorie: Biens et exploitation
+categorie: Biens et véhicules
 icone: colis
 ordre: 5
 titre_seo: Assurance inventaire et commerce pour PME

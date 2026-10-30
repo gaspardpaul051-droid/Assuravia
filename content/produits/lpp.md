@@ -2,7 +2,7 @@
 slug: lpp
 groupe: entreprises
 nom: LPP (2e pilier)
-categorie: Personnel
+categorie: Collaborateurs
 icone: groupe
 ordre: 2
 titre_seo: Caisse de pension LPP pour PME : obligations

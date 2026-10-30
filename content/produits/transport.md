@@ -2,7 +2,7 @@
 slug: transport
 groupe: entreprises
 nom: Assurance transport
-categorie: Biens et exploitation
+categorie: Biens et véhicules
 icone: camion
 ordre: 6
 titre_seo: Assurance transport de marchandises PME

@@ -2,7 +2,7 @@
 slug: vehicules-entreprise
 groupe: entreprises
 nom: Véhicules d'entreprise
-categorie: Biens et exploitation
+categorie: Biens et véhicules
 icone: voiture
 ordre: 8
 titre_seo: Assurance véhicules d'entreprise et flotte

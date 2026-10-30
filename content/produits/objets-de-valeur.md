@@ -2,9 +2,9 @@
 slug: objets-de-valeur
 groupe: particuliers
 nom: Objets de valeur
-categorie: Logement et biens
+categorie: Véhicule et loisirs
 icone: diamant
-ordre: 8
+ordre: 4
 titre_seo: Assurance objets de valeur : bijoux et montres
 description: Assurance objets de valeur en Suisse : bijoux, montres, œuvres d'art et instruments couverts contre la perte, le vol et la casse, à la valeur convenue.
 desc: Bijoux, montres, œuvres d'art et instruments assurés contre la perte, le vol et la casse.

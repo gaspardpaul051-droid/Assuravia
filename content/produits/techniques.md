@@ -2,7 +2,7 @@
 slug: techniques
 groupe: entreprises
 nom: Assurances techniques
-categorie: Biens et exploitation
+categorie: Biens et véhicules
 icone: engrenage
 ordre: 7
 titre_seo: Assurance bris de machines pour PME

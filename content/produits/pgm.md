@@ -2,7 +2,7 @@
 slug: pgm
 groupe: entreprises
 nom: Perte de gain maladie
-categorie: Personnel
+categorie: Collaborateurs
 icone: thermometre
 ordre: 4
 titre_seo: Perte de gain maladie pour entreprises

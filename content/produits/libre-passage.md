@@ -2,9 +2,9 @@
 slug: libre-passage
 groupe: particuliers
 nom: Libre passage
-categorie: Prévoyance, placement et impôts
+categorie: Retraite et impôts
 icone: fleches
-ordre: 9
+ordre: 2
 titre_seo: Compte de libre passage : votre 2e pilier
 description: Chômage, pause, indépendance, départ de Suisse : où placer votre 2e pilier quand vous quittez votre caisse de pension, et les erreurs à éviter.
 desc: Placez votre 2e pilier entre deux emplois, sans le laisser dormir ni perdre de rendement.

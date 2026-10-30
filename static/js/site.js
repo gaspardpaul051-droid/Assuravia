@@ -1294,7 +1294,7 @@
     loyer.addEventListener("input", calculer);
     calculer();
   });
-  // 6. Menu principal : Privé et Professionnel mènent à leur page, la flèche ouvre la liste des produits
+  // 6. Menu principal : Privé et Professionnel ouvrent la liste des produits (le lien vers leur page est en bas de la liste)
   var sousMenus = document.querySelectorAll("[data-sous-menu]");
   var fermerSousMenu = function (m) {
     m.classList.remove("ouvert");

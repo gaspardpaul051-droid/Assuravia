@@ -2,9 +2,9 @@
 slug: assurance-batiment
 groupe: particuliers
 nom: Assurance bâtiment
-categorie: Logement et biens
+categorie: Logement
 icone: maison
-ordre: 6
+ordre: 2
 titre_seo: Assurance bâtiment en Suisse romande
 description: Villa, chalet ou maison de vacances : assurance bâtiment, dégâts d'eau, bris de glace, installations techniques. Estimez votre prime en 2 minutes.
 desc: Votre maison protégée contre les dégâts d'eau, le bris de glace et les dommages qui coûtent cher à réparer.
