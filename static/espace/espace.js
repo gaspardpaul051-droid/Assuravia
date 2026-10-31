@@ -286,14 +286,15 @@
       if (anciens.length) colonnes.push({ s: { cle: "", nom: "À reclasser", couleur: "gris", ancien: true }, leads: anciens });
       zone.querySelector("[data-liste]").innerHTML = colonnes.map(function (col) {
         var leads = col.leads.slice().sort(priorite);
-        return '<section class="colonne colonne--' + col.s.couleur + '" data-colonne="' + col.s.cle + '"' + (col.s.ancien ? ' data-ancienne' : "") + '>' +
+        return '<section class="colonne colonne--' + col.s.couleur + (leads.length ? "" : " colonne--vide") + '" data-colonne="' + col.s.cle + '"' + (col.s.ancien ? ' data-ancienne' : "") + '>' +
           '<header class="colonne__tete"><span class="badge badge--' + col.s.couleur + '">' + col.s.nom + '</span><span class="colonne__nb">' + leads.length + "</span></header>" +
           (col.s.ancien ? '<p class="colonne__aide">Anciens statuts : glissez chaque lead dans la bonne colonne.</p>' : "") +
           '<div class="colonne__cartes">' + (leads.length ? leads.map(carteLead).join("") : '<p class="colonne__vide">Aucun lead</p>') + "</div></section>";
-      }).join("");
+      }).join("") + (liste.length ? "" : '<div class="vide"><p><strong>Aucun lead ici.</strong></p><p>Les nouvelles demandes du site apparaissent automatiquement.</p></div>');
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
-        b.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", b.getAttribute("data-lead")); b.classList.add("carte-lead--glisse"); });
-        b.addEventListener("dragend", function () { b.classList.remove("carte-lead--glisse"); });
+        // Pendant le glisser, les colonnes vides réapparaissent pour pouvoir y déposer le lead
+        b.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", b.getAttribute("data-lead")); b.classList.add("carte-lead--glisse"); zone.querySelector("[data-liste]").classList.add("tableau-leads--glisse"); });
+        b.addEventListener("dragend", function () { b.classList.remove("carte-lead--glisse"); zone.querySelector("[data-liste]").classList.remove("tableau-leads--glisse"); });
       });
       zone.querySelectorAll("[data-colonne]").forEach(function (col) {
         if (col.hasAttribute("data-ancienne")) return;

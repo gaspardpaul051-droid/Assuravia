@@ -576,3 +576,5 @@ td:last-child { white-space: nowrap; }
 .carte-lead__ancien { font-size: .74rem; color: var(--doux); font-style: italic; }
 @media (max-width: 860px) { .tableau-leads { grid-auto-columns: 82vw; } }
 .contenu.contenu--large { max-width: none; }
+.colonne--vide { display: none; }
+.tableau-leads--glisse .colonne--vide { display: block; border-style: dashed; }
