@@ -560,51 +560,46 @@
   // ---------- Conseillers et répartition (admin) ----------
   function vueConseillers() {
     var zone = app.querySelector("[data-contenu]");
+    zone.classList.add("contenu--large");
     var mois = Date.now() - 30 * 86400000;
-    var somme = etat.conseillers.filter(function (c) { return c.actif; }).reduce(function (s, c) { return s + (Number(c.poids) || 0); }, 0) || 1;
     zone.innerHTML =
-      '<div class="tete"><div><h1>Conseillers et répartition</h1><p class="sous">Chaque nouveau lead va au conseiller actif le plus en retard sur sa part. Mettez 0 pour ne plus en recevoir.</p></div></div>' +
+      '<div class="tete"><div><h1>Conseillers et répartition</h1><p class="sous">Un lead qui relève d\'une règle par page ou formulaire (plus bas) va aux conseillers de cette règle. Les autres vont aux conseillers à la pièce dont le solde couvre un lead (CHF 50), en commençant par le plus gros solde. Personne de disponible : le lead reste à attribuer.</p></div></div>' +
       '' + (C.mail ? "" : '<p class="alerte">Notifications par e-mail : l\'envoi n\'est pas encore configuré. Ajoutez la variable RESEND_API_KEY dans Netlify (voir espace/LISEZMOI.md), puis republiez. Les choix faits ici seront appliqués dès que ce sera fait.</p>') +
-      '<h2 class="titre-section">Répartition générale</h2><p class="sous sous--section">Pour tous les leads qui ne relèvent d\'aucune règle par page ou formulaire (plus bas).</p>' +
-      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Pourcentage</th><th>Part des leads</th><th>Actif</th><th>Notif. e-mail</th><th>Leads 30 j</th><th>Signés</th><th></th></tr></thead><tbody>' +
+      '<h2 class="titre-section">Conseillers</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut, plus pour un super lead). Un lead réattribué ou supprimé est remboursé. « Ajouter » augmente le crédit.</p>' +
+      (etat.soldesErreur ? '<p class="alerte">Pour activer les formules et les soldes, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
+      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Formule</th><th>Solde</th><th>Ajouter</th><th>Actif</th><th>Notif.</th><th>Leads 30 j</th><th>Signés</th><th></th></tr></thead><tbody>' +
       etat.conseillers.map(function (c) {
         var siens = etat.leads.filter(function (l) { return l.conseiller_id === c.id; });
         var recents = siens.filter(function (l) { return new Date(l.cree_le) >= mois; }).length;
+        var so = (etat.soldes || {})[c.id] || {}, piece = c.type === "piece", solde = so.solde !== undefined ? Number(so.solde) : Number(c.credit || 0);
         return '<tr data-c="' + c.id + '"><td><strong>' + esc(c.nom) + "</strong><small>" + esc(c.email || "") + "</small></td>" +
           '<td><select class="select" data-role><option value="conseiller"' + (c.role === "conseiller" ? " selected" : "") + '>Conseiller</option><option value="admin"' + (c.role === "admin" ? " selected" : "") + ">Admin</option></select></td>" +
-          '<td><input class="select poids" type="number" min="0" max="100" value="' + (Number(c.poids) || 0) + '" data-poids></td>' +
-          '<td><span class="part"><span style="width:' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + '%"></span></span>' + (c.actif ? Math.round((c.poids || 0) / somme * 100) : 0) + " %</td>" +
+          '<td><select class="select" data-type><option value="budget"' + (piece ? "" : " selected") + '>Au budget</option><option value="piece"' + (piece ? " selected" : "") + ">À la pièce</option></select></td>" +
+          "<td>" + (piece ? '<strong class="' + (solde <= 0 ? "solde-negatif" : "") + '">' + chf(solde) + "</strong><small>" + (so.leads_factures || 0) + " lead" + ((so.leads_factures || 0) > 1 ? "s" : "") + " · crédit " + chf(c.credit) + "</small>" : '<span class="zero">–</span>') + "</td>" +
+          '<td><input class="select champ-chf" type="number" step="10" placeholder="CHF" data-ajout aria-label="Ajouter du crédit (CHF)"' + (piece ? "" : " disabled") + "></td>" +
           '<td><label class="interrupteur"><input type="checkbox" data-actif' + (c.actif ? " checked" : "") + "><span></span></label></td>" +
           '<td><label class="interrupteur" title="Recevoir un e-mail à chaque lead attribué"><input type="checkbox" data-notif' + (c.notif_email ? " checked" : "") + (c.email ? "" : " disabled") + "><span></span></label></td>" +
           "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
-          '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? ' <button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
-      }).join("") + "</tbody></table></div>" +
-      '<h2 class="titre-section">Formule et solde</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut, plus pour un super lead, à régler dans la fiche du lead). Un lead réattribué ou supprimé est remboursé. « Ajouter » augmente le crédit chargé.</p>' +
-      (etat.soldesErreur ? '<p class="alerte">Pour activer les formules, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
-      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Formule</th><th>Crédit chargé</th><th>Leads facturés</th><th>Solde</th><th>Ajouter du crédit</th><th></th></tr></thead><tbody>' +
-      etat.conseillers.map(function (c) {
-        var so = (etat.soldes || {})[c.id] || {}, piece = c.type === "piece";
-        return '<tr data-f="' + c.id + '"><td><strong>' + esc(c.nom) + "</strong></td>" +
-          '<td><select class="select" data-type><option value="budget"' + (piece ? "" : " selected") + '>Au budget</option><option value="piece"' + (piece ? " selected" : "") + ">À la pièce</option></select></td>" +
-          "<td>" + chf(c.credit) + "</td>" +
-          "<td>" + (piece ? (so.leads_factures || 0) + " · " + chf(so.depense) : "–") + "</td>" +
-          '<td><strong class="' + (piece && Number(so.solde) <= 0 ? "solde-negatif" : "") + '">' + (piece ? chf(so.solde !== undefined ? so.solde : c.credit) : "–") + "</strong></td>" +
-          '<td><input class="select poids" type="number" step="1" placeholder="0" data-ajout> CHF</td>' +
-          '<td><button class="btn btn--petit" data-enregistrer-formule>Enregistrer</button></td></tr>';
+          '<td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enregistrer>Enregistrer</button><button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? '<button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<div data-regles></div>' +
       '<form class="carte inviter" data-inviter><h2>Ajouter un conseiller</h2><p class="sous">Vous créez son accès avec un mot de passe provisoire à lui transmettre. À sa première connexion, il doit choisir son propre mot de passe.</p>' +
-      '<div class="grille4"><label>Nom<input class="select" name="nom" required placeholder="Jean Dupont"></label><label>E-mail<input class="select" type="email" name="email" required placeholder="jean@exemple.ch"></label><label>Mot de passe provisoire<input class="select" name="provisoire" required minlength="10" value="' + motProvisoire() + '"></label><label>Part générale<input class="select" type="number" name="poids" min="0" max="100" value="20"></label></div>' +
+      '<div class="grille4 grille3"><label>Nom<input class="select" name="nom" required placeholder="Jean Dupont"></label><label>E-mail<input class="select" type="email" name="email" required placeholder="jean@exemple.ch"></label><label>Mot de passe provisoire<input class="select" name="provisoire" required minlength="10" value="' + motProvisoire() + '"></label></div>' +
       '<div class="inviter__actions"><button class="btn btn--plein" type="submit">Créer l\'accès</button><button class="lien" type="button" data-par-email>ou l\'inviter par e-mail (lien pour choisir son mot de passe)</button></div></form>';
     zone.querySelectorAll("tr[data-c]").forEach(function (tr) {
       var id = tr.getAttribute("data-c");
       tr.querySelector("[data-enregistrer]").onclick = function () {
-        sb.from("conseillers").update({ poids: Math.max(0, parseInt(tr.querySelector("[data-poids]").value, 10) || 0), actif: tr.querySelector("[data-actif]").checked, role: tr.querySelector("[data-role]").value, notif_email: tr.querySelector("[data-notif]").checked }).eq("id", id).then(function (r) {
-          if (r.error) { toast(/notif_email/.test(r.error.message) ? "Lancez d'abord le script espace/maj-2-notifications.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
-          chargerConseillers().then(function () { vueConseillers(); toast("Répartition enregistrée."); });
+        var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
+        var champs = { actif: tr.querySelector("[data-actif]").checked, role: tr.querySelector("[data-role]").value, notif_email: tr.querySelector("[data-notif]").checked };
+        var type = tr.querySelector("[data-type]").value, ajout = Number(tr.querySelector("[data-ajout]").value) || 0;
+        if (!etat.soldesErreur) { champs.type = type; champs.credit = Math.round((Number(c.credit || 0) + ajout) * 100) / 100; }
+        sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
+          if (r.error) { toast(/notif_email/.test(r.error.message) ? "Lancez d'abord le script espace/maj-2-notifications.sql dans Supabase (SQL Editor)." : /type|credit/.test(r.error.message) ? "Lancez d'abord le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
+          Promise.all([chargerConseillers(), chargerSoldes()]).then(function () { vueConseillers(); toast(ajout ? chf(ajout) + " ajoutés au crédit de " + c.nom + "." : "Conseiller enregistré."); });
         });
       };
       tr.querySelector("[data-notif]").onchange = function () { tr.querySelector("[data-enregistrer]").click(); };
+      tr.querySelector("[data-type]").onchange = function () { tr.querySelector("[data-ajout]").disabled = this.value !== "piece"; };
       var sup = tr.querySelector("[data-supprimer]");
       if (sup) sup.onclick = function () { supprimerConseiller(id); };
       tr.querySelector("[data-reinit]").onclick = function () {
@@ -615,32 +610,20 @@
         appelAdmin({ action: "provisoire", id: id, email: c.email, mot_de_passe: mdp }).then(function (ok) { if (ok) afficherAcces(c.nom, c.email, mdp); });
       };
     });
-    zone.querySelectorAll("tr[data-f]").forEach(function (tr) {
-      var id = tr.getAttribute("data-f");
-      tr.querySelector("[data-enregistrer-formule]").onclick = function () {
-        var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
-        var ajout = Number(tr.querySelector("[data-ajout]").value) || 0;
-        var champs = { type: tr.querySelector("[data-type]").value, credit: Math.round((Number(c.credit || 0) + ajout) * 100) / 100 };
-        sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
-          if (r.error) { toast(/type|credit/.test(r.error.message) ? "Lancez d'abord le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
-          Promise.all([chargerConseillers(), chargerSoldes()]).then(function () { vueConseillers(); toast(ajout ? chf(ajout) + " ajoutés au crédit de " + c.nom + "." : "Formule enregistrée."); });
-        });
-      };
-    });
     vueRegles(zone.querySelector("[data-regles]"));
     var f = zone.querySelector("[data-inviter]");
     f.onsubmit = function (e) {
       e.preventDefault();
       var b = f.querySelector("button[type=submit]"); b.disabled = true;
       var email = f.email.value.trim(), mdp = f.provisoire.value.trim(), nom = f.nom.value.trim();
-      appelAdmin({ action: "creer", nom: nom, email: email, poids: f.poids.value, mot_de_passe: mdp }).then(function (ok) {
+      appelAdmin({ action: "creer", nom: nom, email: email, poids: 1, mot_de_passe: mdp }).then(function (ok) {
         b.disabled = false;
         if (ok) { chargerConseillers().then(function () { vueConseillers(); afficherAcces(nom, email, mdp); }); }
       });
     };
     f.querySelector("[data-par-email]").onclick = function () {
       if (!f.nom.value.trim() || !f.email.checkValidity() || !f.email.value) { f.reportValidity(); return; }
-      appelAdmin({ action: "inviter", nom: f.nom.value.trim(), email: f.email.value.trim(), poids: f.poids.value }).then(function (ok) {
+      appelAdmin({ action: "inviter", nom: f.nom.value.trim(), email: f.email.value.trim(), poids: 1 }).then(function (ok) {
         if (ok) { toast("Invitation envoyée à " + f.email.value.trim() + "."); chargerConseillers().then(vueConseillers); }
       });
     };
@@ -674,7 +657,7 @@
     var optionsPages = ["/lp/"].concat(C.pages || []).filter(function (k) { return sources.indexOf(k) < 0; })
       .map(function (k) { return '<option value="' + esc(k) + '">' + esc(nomSource(k)) + "</option>"; }).join("");
     boite.innerHTML =
-      '<h2 class="titre-section">Répartition par page ou formulaire</h2><p class="sous sous--section">Pour une source choisie, ces parts remplacent la répartition générale. Une règle de page passe avant une règle de formulaire. Exemple : 70 et 30 = 70 % / 30 %.</p>' +
+      '<h2 class="titre-section">Répartition par page ou formulaire</h2><p class="sous sous--section">Pour une source choisie (utile pour les conseillers au budget), ces parts décident qui reçoit le lead. Un conseiller à la pièce sans solde suffisant est sauté. Une règle de page passe avant une règle de formulaire. Exemple : 70 et 30 = 70 % / 30 %.</p>' +
       (etat.reglesErreur ? '<div class="alerte">Pour activer cette fonction, exécutez une fois le fichier <strong>espace/maj-1-repartition-par-source.sql</strong> dans Supabase › SQL Editor.</div>' : "") +
       '<div class="regles">' + (sources.length ? sources.map(function (s) {
         var total = actifs.reduce(function (t, c) { return t + (Number(poids(s, c.id)) || 0); }, 0);
@@ -682,8 +665,8 @@
           '<div class="regle__parts">' + actifs.map(function (c) {
             var v = Number(poids(s, c.id)) || 0;
             return '<label class="regle__part"><span>' + esc(c.nom) + '</span><span class="regle__saisie"><input class="select" type="number" min="0" max="100" value="' + v + '" data-c="' + c.id + '"><em data-pct>' + (total ? Math.round(v / total * 100) : 0) + " %</em></span></label>";
-          }).join("") + '</div><div class="regle__pied"><span class="regle__info" data-info>' + (total ? "" : "Aucune part : la répartition générale s'applique.") + '</span><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button></div></div>';
-      }).join("") : '<p class="vide-mini">Aucune règle : tous les leads suivent la répartition générale.</p>') + "</div>" +
+          }).join("") + '</div><div class="regle__pied"><span class="regle__info" data-info>' + (total ? "" : "Aucune part : ces leads vont aux conseillers à la pièce.") + '</span><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button></div></div>';
+      }).join("") : '<p class="vide-mini">Aucune règle : tous les leads vont aux conseillers à la pièce qui ont du solde.</p>') + "</div>" +
       '<div class="ajout-regle"><select class="select" data-nouvelle><option value="">Ajouter une règle pour…</option><optgroup label="Un formulaire">' + optionsForms + '</optgroup><optgroup label="Une page (et ses sous-pages)">' + optionsPages + '</optgroup></select><button class="btn" data-ajouter>Ajouter</button></div>';
     boite.querySelectorAll(".regle").forEach(function (bloc) {
       var s = bloc.getAttribute("data-source");
@@ -691,7 +674,7 @@
       var recalcul = function () {
         var tot = 0; champs.forEach(function (i) { tot += Math.max(0, parseInt(i.value, 10) || 0); });
         champs.forEach(function (i) { i.parentNode.querySelector("[data-pct]").textContent = (tot ? Math.round((Math.max(0, parseInt(i.value, 10) || 0)) / tot * 100) : 0) + " %"; });
-        bloc.querySelector("[data-info]").textContent = tot ? "" : "Aucune part : la répartition générale s'applique.";
+        bloc.querySelector("[data-info]").textContent = tot ? "" : "Aucune part : ces leads vont aux conseillers à la pièce.";
       };
       champs.forEach(function (i) { i.addEventListener("input", recalcul); });
       bloc.querySelector("[data-enreg]").onclick = function () {
@@ -703,7 +686,7 @@
         });
       };
       bloc.querySelector("[data-suppr]").onclick = function () {
-        if (!confirm("Supprimer la règle « " + nomSource(s) + " » ? Ces leads suivront la répartition générale.")) return;
+        if (!confirm("Supprimer la règle « " + nomSource(s) + " » ? Ces leads iront aux conseillers à la pièce qui ont du solde.")) return;
         etat.brouillons = etat.brouillons.filter(function (x) { return x !== s; });
         sb.from("regles").delete().eq("source", s).then(function (r) {
           if (r.error) { toast("Erreur : " + r.error.message, true); return; }

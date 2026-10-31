@@ -614,3 +614,11 @@ tr[data-f] td:first-child { white-space: normal; }
 .valeur-lead__choix { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
 .valeur-lead__choix .select { width: 90px; min-height: 32px; padding: .25rem .5rem; }
 .mini--actif { background: var(--marine); color: #fff; border-color: var(--marine); }
+.grille4.grille3 { grid-template-columns: 1fr 1.2fr 1fr; }
+.tableau--conseillers td { vertical-align: middle; }
+.tableau--conseillers .select { min-width: 0; }
+.tableau--conseillers .champ-chf { width: 90px; }
+.tableau--conseillers td small { display: block; white-space: nowrap; }
+.actions-cellule { white-space: nowrap; }
+.actions-cellule .lien { margin-left: .6rem; }
+.tableau--conseillers td:first-child { min-width: 170px; }

@@ -49,27 +49,40 @@ export async function enregistrer(payload) {
       }
     }
 
-    // Répartition : d'abord une règle propre à la page ou au formulaire, sinon les pourcentages généraux
-    // (notif_email et email servent à la notification ; repli si la colonne n'existe pas encore)
+    // Répartition : d'abord une règle propre à la page ou au formulaire (utile pour les conseillers au budget) ;
+    // sinon le lead va à un conseiller « à la pièce » dont le solde couvre un lead (CHF 50), celui qui a le plus gros solde.
+    // Un conseiller à la pièce sans solde suffisant ne reçoit rien, même par une règle. Personne de disponible : lead à attribuer.
     let actifs;
-    try { actifs = (await api("conseillers?select=id,nom,poids,email,notif_email&actif=eq.true")) || []; }
-    catch (e) { actifs = (await api("conseillers?select=id,nom,poids&actif=eq.true")) || []; }
+    try { actifs = (await api("conseillers?select=id,nom,poids,email,notif_email,type,credit&actif=eq.true")) || []; }
+    catch (e) {
+      try { actifs = (await api("conseillers?select=id,nom,poids,email,notif_email&actif=eq.true")) || []; }
+      catch (e2) { actifs = (await api("conseillers?select=id,nom,poids&actif=eq.true")) || []; }
+    }
+    const VALEUR_BASE = 50;
+    const pieces = actifs.filter((c) => c.type === "piece");
+    const solde = {};
+    if (pieces.length) {
+      let couts = [];
+      try { couts = (await api("leads?select=conseiller_id,cout&cout=not.is.null&conseiller_id=in.(" + pieces.map((c) => c.id).join(",") + ")")) || []; } catch (e) { couts = []; }
+      pieces.forEach((c) => { solde[c.id] = Number(c.credit || 0) - couts.filter((l) => l.conseiller_id === c.id).reduce((t, l) => t + Number(l.cout || 0), 0); });
+    }
+    const disponible = (c) => c && (c.type !== "piece" || solde[c.id] >= VALEUR_BASE);
     let regles = [];
     try { regles = (await api("regles?select=source,conseiller_id,poids&poids=gt.0")) || []; } catch (e) { regles = []; }
     regles = regles.filter((r) => actifs.some((c) => c.id === r.conseiller_id));
     const source = sourceDuLead(regles, lead);
-    const mois = new Date(Date.now() - 30 * 86400 * 1000).toISOString();
-    let candidats, filtreSource = "";
+    let choisi = null;
     if (source) {
-      candidats = regles.filter((r) => r.source === source).map((r) => ({ ...actifs.find((c) => c.id === r.conseiller_id), poids: r.poids }));
-      filtreSource = source.startsWith("/") ? "&page=like." + encodeURIComponent(source + "*") : "&formulaire=eq." + encodeURIComponent(source);
-    } else {
-      candidats = actifs.filter((c) => Number(c.poids) > 0);
+      const mois = new Date(Date.now() - 30 * 86400 * 1000).toISOString();
+      const candidats = regles.filter((r) => r.source === source).map((r) => ({ ...actifs.find((c) => c.id === r.conseiller_id), poids: r.poids })).filter(disponible);
+      const filtreSource = source.startsWith("/") ? "&page=like." + encodeURIComponent(source + "*") : "&formulaire=eq." + encodeURIComponent(source);
+      const attribues = (await api("leads?select=conseiller_id,formulaire,page&cree_le=gte." + mois + "&conseiller_id=not.is.null" + filtreSource)) || [];
+      choisi = choisirConseiller(candidats, attribues);
     }
-    let attribues = (await api("leads?select=conseiller_id,formulaire,page&cree_le=gte." + mois + "&conseiller_id=not.is.null" + filtreSource)) || [];
-    // Pourcentages généraux : on ne compte que les leads qui ne relèvent d'aucune règle
-    if (!source) attribues = attribues.filter((l) => !sourceDuLead(regles, l));
-    const choisi = choisirConseiller(candidats, attribues || []);
+    if (!choisi) {
+      const possibles = pieces.filter(disponible).sort((x, y) => solde[y.id] - solde[x.id]);
+      choisi = possibles[0] || null;
+    }
     lead.conseiller_id = choisi ? choisi.id : null;
 
     const cree = await api("leads", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(lead) });
@@ -77,7 +90,7 @@ export async function enregistrer(payload) {
     if (id) {
       await api("commentaires", {
         method: "POST",
-        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom + (source ? " (règle « " + source + " »)" : "") : " (aucun conseiller actif : à attribuer)") + ".", automatique: true }),
+        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom + (source && choisi.poids !== undefined && regles.some((r) => r.source === source && r.conseiller_id === choisi.id) ? " (règle « " + source + " »)" : choisi.type === "piece" ? " (à la pièce, solde avant ce lead : CHF " + Math.round(solde[choisi.id]) + ")" : "") : " (aucun conseiller disponible : à attribuer)") + ".", automatique: true }),
       });
     }
     if (choisi) {
