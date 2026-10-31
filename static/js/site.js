@@ -197,7 +197,18 @@
       if (!telValide(v, ind)) erreur = "tel";
       if (bloc) bloc.querySelector("[data-tel-complet]").value = telComplet(bloc);
     }
+    // Prénom et nom : au moins deux lettres, sans chiffres (évite les espaces ou « . » pour passer le champ)
+    if ((el.name === "prenom" || el.name === "nom") && el.type !== "hidden" && (el.required || v) && (!/[A-Za-zÀ-ÖØ-öø-ÿ].*[A-Za-zÀ-ÖØ-öø-ÿ]/.test(v) || /[0-9@]/.test(v))) erreur = "nom";
     el.setCustomValidity(erreur);
+  }
+  function nomsOk(form) {
+    var ok = true;
+    form.querySelectorAll('input[name="prenom"], input[name="nom"]').forEach(function (el) {
+      if (el.type === "hidden" || el.disabled) return;
+      controleFormat(el);
+      if (!el.checkValidity()) ok = false;
+    });
+    return ok;
   }
 
   function verifier(conteneur) {
@@ -225,7 +236,9 @@
         (el.closest("[data-tel]") || (el.type === "radio" ? el.closest(".choix-cartes, .formules") : null) || el).insertAdjacentElement("afterend", msg);
       }
       if (msg) {
-        msg.textContent = el.validity.valueMissing && el.hasAttribute("data-adresse-recherche") ? "Choisissez votre adresse dans la liste, ou saisissez-la à la main."
+        msg.textContent = el.name === "prenom" ? "Indiquez votre prénom : il est nécessaire pour vous recontacter."
+          : el.name === "nom" ? "Indiquez votre nom de famille : il est nécessaire pour vous recontacter."
+          : el.validity.valueMissing && el.hasAttribute("data-adresse-recherche") ? "Choisissez votre adresse dans la liste, ou saisissez-la à la main."
           : el.validity.valueMissing && el.type === "radio" ? "Choisissez une réponse pour continuer."
           : el.validity.valueMissing ? "Ce champ est nécessaire pour préparer votre offre."
           : el.type === "email" ? "Adresse e-mail non valide. Exemple : jean.dupont@gmail.com"
@@ -340,7 +353,7 @@
     var capture = function () {
       if (form.hasAttribute("data-capture") || form.hasAttribute("data-conversion")) return;
       controleFormat(tel); controleFormat(mail);
-      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
+      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity() || !nomsOk(form)) return;
       form.setAttribute("data-capture", "");
       mesure("coordonnees_saisies", { form_name: form.getAttribute("name") });
       var consent = form.querySelector('[name="consentement"]');
@@ -351,12 +364,12 @@
     };
     var minuterie;
     var programmer = function () { clearTimeout(minuterie); minuterie = setTimeout(capture, 1500); };
-    [tel, mail].forEach(function (el) { el.addEventListener("change", capture); el.addEventListener("blur", capture); el.addEventListener("input", programmer); });
+    [tel, mail].concat([].slice.call(form.querySelectorAll('input[name="prenom"], input[name="nom"]'))).forEach(function (el) { el.addEventListener("change", capture); el.addEventListener("blur", capture); el.addEventListener("input", programmer); });
     // Le prospect quitte la page juste après avoir tapé : dernier essai
     window.addEventListener("pagehide", function () {
       if (form.hasAttribute("data-capture") || form.hasAttribute("data-conversion")) return;
       controleFormat(tel); controleFormat(mail);
-      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity()) return;
+      if (!tel.value.trim() || !mail.value.trim() || !tel.checkValidity() || !mail.checkValidity() || !nomsOk(form)) return;
       form.setAttribute("data-capture", "");
       statut.value = "Coordonnées saisies, page quittée avant l'envoi";
       try {
