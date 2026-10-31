@@ -5,19 +5,26 @@
   var app = document.getElementById("app");
   var C = window.ESPACE || {};
 
+  // Colonnes du tableau des leads, dans l'ordre de priorité (comme un tableau Notion)
   var STATUTS = [
-    { cle: "nouveau", nom: "Nouveau", couleur: "bleu" },
-    { cle: "en_cours", nom: "En cours", couleur: "orange" },
-    { cle: "a_rappeler", nom: "À rappeler", couleur: "or" },
-    { cle: "injoignable", nom: "Injoignable", couleur: "gris" },
-    { cle: "faux_numero", nom: "Faux numéro", couleur: "rouge" },
-    { cle: "rdv", nom: "RDV prévu", couleur: "violet" },
+    { cle: "nouveau", nom: "Nouveau lead", couleur: "bleu" },
+    { cle: "messagerie", nom: "Messagerie", couleur: "orange" },
+    { cle: "rdv", nom: "RDV fixé", couleur: "violet" },
     { cle: "offre", nom: "Offre envoyée", couleur: "cyan" },
     { cle: "signe", nom: "Signé", couleur: "vert" },
-    { cle: "pas_interesse", nom: "Pas intéressé", couleur: "rouge" },
-    { cle: "doublon", nom: "Doublon", couleur: "gris" }
+    { cle: "faux_numero", nom: "Faux numéro", couleur: "rouge" },
+    { cle: "rien_a_faire", nom: "Rien à faire", couleur: "gris" }
   ];
-  var statut = function (cle) { return STATUTS.filter(function (s) { return s.cle === cle; })[0] || { cle: cle, nom: cle, couleur: "gris" }; };
+  // Anciens statuts : plus proposés, mais les leads qui les ont encore restent visibles (colonne « À reclasser »)
+  var ANCIENS = [
+    { cle: "en_cours", nom: "En cours (ancien)", couleur: "gris" },
+    { cle: "a_rappeler", nom: "À rappeler (ancien)", couleur: "gris" },
+    { cle: "injoignable", nom: "Injoignable (ancien)", couleur: "gris" },
+    { cle: "pas_interesse", nom: "Pas intéressé (ancien)", couleur: "gris" },
+    { cle: "doublon", nom: "Doublon (ancien)", couleur: "gris" }
+  ];
+  var estActuel = function (cle) { return STATUTS.some(function (s) { return s.cle === cle; }); };
+  var statut = function (cle) { return STATUTS.concat(ANCIENS).filter(function (s) { return s.cle === cle; })[0] || { cle: cle, nom: cle || "Sans statut", couleur: "gris" }; };
 
   var esc = function (v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var date = function (iso, heure) {
@@ -213,7 +220,7 @@
   }
 
   // ---------- Liste des leads ----------
-  function aRappeler(l) { return l.rappel_le && new Date(l.rappel_le) <= new Date(new Date().setHours(23, 59, 59, 999)) && ["signe", "pas_interesse", "faux_numero", "doublon"].indexOf(l.statut) < 0; }
+  function aRappeler(l) { return l.rappel_le && new Date(l.rappel_le) <= new Date(new Date().setHours(23, 59, 59, 999)) && ["signe", "rien_a_faire", "pas_interesse", "faux_numero", "doublon"].indexOf(l.statut) < 0; }
   // Onglet « Mes leads » de l'admin : seulement les leads qui lui sont attribués
   function mesSeuls() { return etat.vue === "mesleads"; }
   function leadsBase() { return mesSeuls() ? etat.leads.filter(function (l) { return l.conseiller_id === etat.moi.id; }) : etat.leads; }
@@ -221,18 +228,47 @@
     var q = etat.recherche.toLowerCase();
     return leadsBase().filter(function (l) {
       if (etat.filtre === "rappel" && !aRappeler(l)) return false;
-      if (etat.filtre !== "tous" && etat.filtre !== "rappel" && l.statut !== etat.filtre) return false;
       if (!mesSeuls() && etat.conseillerFiltre && (l.conseiller_id || "") !== (etat.conseillerFiltre === "aucun" ? "" : etat.conseillerFiltre)) return false;
       if (!q) return true;
       return [l.prenom, l.nom, l.email, l.telephone, telLisible(l.telephone), l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
     });
   }
+  // Ordre dans chaque colonne : rappels dus d'abord, puis rappels à venir, puis les plus récents
+  function priorite(a, b) {
+    var ra = aRappeler(a) ? 0 : a.rappel_le ? 1 : 2, rb = aRappeler(b) ? 0 : b.rappel_le ? 1 : 2;
+    if (ra !== rb) return ra - rb;
+    if (ra < 2) return new Date(a.rappel_le) - new Date(b.rappel_le);
+    return new Date(b.cree_le) - new Date(a.cree_le);
+  }
+  function carteLead(l) {
+    return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
+      '<div class="carte-lead__haut">' + (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
+      '<strong class="carte-lead__nom">' + esc(nomLead(l)) + "</strong>" + (l.statut === "nouveau" ? '<span class="point-vif"></span>' : "") + "</div>" +
+      '<span class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</span>" +
+      '<span class="carte-lead__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(formatPrime(l.prime)) + "</small>" : "") + "</span>" +
+      '<span class="carte-lead__pied"><span>' + depuis(l.cree_le) + "</span>" + (estAdmin() && !mesSeuls() ? "<span>" + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") + "</span>" +
+      (l.rappel_le ? '<span class="carte-lead__rappel' + (aRappeler(l) ? " urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</span>" : "") +
+      (!estActuel(l.statut) ? '<span class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</span>" : "") +
+      "</div>";
+  }
+  function changerStatut(l, cle) {
+    var avant = statut(l.statut).nom;
+    return sb.from("leads").update({ statut: cle }).eq("id", l.id).select().single().then(function (r) {
+      if (r.error) { toast("Erreur : " + r.error.message, true); return; }
+      Object.assign(l, r.data);
+      var c = { lead_id: l.id, auteur_id: etat.moi.id, texte: "Statut : " + avant + " → " + statut(cle).nom, automatique: true };
+      etat.activite.unshift(Object.assign({ cree_le: new Date().toISOString() }, c));
+      sb.from("commentaires").insert(c).then(function () {});
+      if (cle === "signe") { confettis(); toast("Bravo, contrat signé !"); } else toast(nomLead(l) + " : " + statut(cle).nom);
+    });
+  }
   function vueLeads() {
     var zone = app.querySelector("[data-contenu]");
+    zone.classList.add("contenu--large");
     var base = leadsBase();
-    var compte = function (cle) { return base.filter(function (l) { return l.statut === cle; }).length; };
     var nbRappel = base.filter(aRappeler).length;
-    var puces = [["tous", "Tous", base.length, ""], ["rappel", "À rappeler aujourd'hui", nbRappel, "or"]].concat(STATUTS.map(function (s) { return [s.cle, s.nom, compte(s.cle), s.couleur]; }));
+    if (etat.filtre !== "rappel") etat.filtre = "tous";
+    var puces = [["tous", "Tous les leads", base.length, ""], ["rappel", "À rappeler aujourd'hui", nbRappel, "or"]];
     zone.innerHTML =
       '<div class="tete"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + (nbRappel ? " · <strong>" + nbRappel + " à rappeler aujourd'hui</strong>" : "") + '</p></div>' +
       '<div class="tete__actions"><input class="recherche" type="search" placeholder="Rechercher un nom, un e-mail, un téléphone…" value="' + esc(etat.recherche) + '" data-recherche>' +
@@ -241,27 +277,43 @@
       '<div class="puces">' + puces.filter(function (p) { return p[2] || p[0] === "tous" || p[0] === etat.filtre; }).map(function (p) { return '<button class="puce puce--' + (p[3] || "neutre") + (etat.filtre === p[0] ? " puce--active" : "") + '" data-filtre="' + p[0] + '">' + p[1] + " <span>" + p[2] + "</span></button>"; }).join("") + "</div>" +
       (estAdmin() ? '<div class="selection-outils"><label class="tout"><input type="checkbox" data-tout> Tout sélectionner (liste affichée)</label></div>' +
         '<div class="barre-attribuer" data-barre-attribuer hidden><strong data-nb></strong><select class="select" data-vers><option value="">Attribuer à…</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + (c.actif ? "" : " (inactif)") + "</option>"; }).join("") + '<option value="aucun">Personne (retirer)</option></select><button class="btn btn--plein" data-appliquer>Attribuer</button><button class="btn" data-relancer-lot>Relancer par e-mail</button><button class="btn btn--danger" data-supprimer-lot>Supprimer</button><button class="lien" data-vider>Annuler la sélection</button></div>' : "") +
-      '<div class="liste" data-liste></div>';
+      '<div class="tableau-leads" data-liste></div>';
     var dessiner = function () {
       var liste = leadsFiltres();
-      zone.querySelector("[data-liste]").innerHTML = liste.length ? liste.map(function (l) {
-        var s = statut(l.statut);
-        return '<div role="button" tabindex="0" class="ligne' + (estAdmin() ? " ligne--admin" : "") + (l.statut === "nouveau" ? " ligne--nouveau" : "") + (etat.selection[l.id] ? " ligne--choisie" : "") + '" data-lead="' + l.id + '">' +
-          (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
-          avatar(nomLead(l)) +
-          '<span class="ligne__qui"><strong class="ligne__nom">' + esc(nomLead(l)) + '</strong><span class="ligne__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</span></span>" +
-          '<span class="ligne__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(formatPrime(l.prime)) + "</small>" : "") + "</span>" +
-          dernierMot(l) +
-          (estAdmin() ? '<span class="ligne__conseiller">' + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") +
-          '<span class="ligne__date">' + (l.statut === "nouveau" ? '<span class="point-vif"></span>' : "") + depuis(l.cree_le) + (l.rappel_le ? '<small class="' + (aRappeler(l) ? "urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</small>" : "") + "</span>" +
-          '<span class="badge badge--' + s.couleur + '">' + s.nom + "</span></div>";
-      }).join("") : '<div class="vide"><p><strong>Aucun lead ici.</strong></p><p>Les nouvelles demandes du site apparaissent automatiquement.</p></div>';
+      // Une colonne par statut, dans l'ordre ; les anciens statuts vont dans « À reclasser »
+      var colonnes = STATUTS.map(function (s) { return { s: s, leads: liste.filter(function (l) { return l.statut === s.cle; }) }; });
+      var anciens = liste.filter(function (l) { return !estActuel(l.statut); });
+      if (anciens.length) colonnes.push({ s: { cle: "", nom: "À reclasser", couleur: "gris", ancien: true }, leads: anciens });
+      zone.querySelector("[data-liste]").innerHTML = colonnes.map(function (col) {
+        var leads = col.leads.slice().sort(priorite);
+        return '<section class="colonne colonne--' + col.s.couleur + '" data-colonne="' + col.s.cle + '"' + (col.s.ancien ? ' data-ancienne' : "") + '>' +
+          '<header class="colonne__tete"><span class="badge badge--' + col.s.couleur + '">' + col.s.nom + '</span><span class="colonne__nb">' + leads.length + "</span></header>" +
+          (col.s.ancien ? '<p class="colonne__aide">Anciens statuts : glissez chaque lead dans la bonne colonne.</p>' : "") +
+          '<div class="colonne__cartes">' + (leads.length ? leads.map(carteLead).join("") : '<p class="colonne__vide">Aucun lead</p>') + "</div></section>";
+      }).join("");
+      zone.querySelectorAll("[data-lead]").forEach(function (b) {
+        b.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", b.getAttribute("data-lead")); b.classList.add("carte-lead--glisse"); });
+        b.addEventListener("dragend", function () { b.classList.remove("carte-lead--glisse"); });
+      });
+      zone.querySelectorAll("[data-colonne]").forEach(function (col) {
+        if (col.hasAttribute("data-ancienne")) return;
+        col.addEventListener("dragover", function (e) { e.preventDefault(); col.classList.add("colonne--survol"); });
+        col.addEventListener("dragleave", function (e) { if (!col.contains(e.relatedTarget)) col.classList.remove("colonne--survol"); });
+        col.addEventListener("drop", function (e) {
+          e.preventDefault(); col.classList.remove("colonne--survol");
+          var id = Number(e.dataTransfer.getData("text/plain")), cle = col.getAttribute("data-colonne");
+          var l = etat.leads.filter(function (x) { return x.id === id; })[0];
+          if (!l || l.statut === cle) return;
+          changerStatut(l, cle).then(dessiner);
+        });
+      });
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
         b.onclick = function (e) { if (e.target.closest(".ligne__coche")) return; ouvrirFiche(Number(b.getAttribute("data-lead"))); };
         b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
+        b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
       });
       zone.querySelectorAll("[data-coche]").forEach(function (c) {
-        c.onchange = function () { var id = c.getAttribute("data-coche"); if (c.checked) etat.selection[id] = true; else delete etat.selection[id]; c.closest(".ligne").classList.toggle("ligne--choisie", c.checked); barre(); };
+        c.onchange = function () { var id = c.getAttribute("data-coche"); if (c.checked) etat.selection[id] = true; else delete etat.selection[id]; c.closest(".carte-lead").classList.toggle("carte-lead--choisie", c.checked); barre(); };
       });
       var tout = zone.querySelector("[data-tout]");
       if (tout) { tout.checked = liste.length > 0 && liste.every(function (l) { return etat.selection[l.id]; }); tout.onchange = function () { liste.forEach(function (l) { if (tout.checked) etat.selection[l.id] = true; else delete etat.selection[l.id]; }); dessiner(); }; }
@@ -370,7 +422,7 @@
       (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '">Appeler</a>' : "") +
       (wa ? '<a class="btn btn--wa btn--gros" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
       (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
-      '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + STATUTS.map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
+      '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + (estActuel(l.statut) ? STATUTS : [statut(l.statut)].concat(STATUTS)).map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
       '<label class="statut-champ"><span>Rappel prévu</span><input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label></div>' +
       '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
       (estAdmin() && l.statut === "nouveau" && l.conseiller_id ? '<button type="button" class="lien" data-relancer-lead>Relancer le conseiller par e-mail</button> ' : "") +
@@ -407,17 +459,6 @@
         if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads();
       });
     };
-    // Toute action sur un lead « Nouveau » le fait passer à un autre statut
-    var quitterNouveau = function (cle, raison) {
-      if (l.statut !== "nouveau" || !cle || cle === "nouveau") return Promise.resolve();
-      return maj({ statut: cle }, "Statut : Nouveau → " + statut(cle).nom + " (" + raison + ")").then(function () { ouvrirFiche(l.id, true); });
-    };
-    fiche.querySelectorAll('.fiche__actions a, .tuile a[href^="tel:"], .tuile a[href^="mailto:"]').forEach(function (a) {
-      a.addEventListener("click", function () {
-        var h = a.getAttribute("href") || "";
-        quitterNouveau("en_cours", /^tel:/.test(h) ? "appel" : /^mailto:/.test(h) ? "e-mail" : "WhatsApp");
-      });
-    });
     var choixStatut = fiche.querySelector("[data-statut-select]");
     choixStatut.onchange = function () {
       var cle = choixStatut.value; if (cle === l.statut) return;
@@ -430,7 +471,6 @@
     };
     var poserRappel = function (v) {
       var champs = { rappel_le: v }, note = v ? "Rappel prévu le " + date(v) : "Rappel supprimé";
-      if (v && l.statut === "nouveau") { champs.statut = "en_cours"; note += " · Statut : Nouveau → En cours"; }
       maj(champs, note).then(function () { ouvrirFiche(l.id, true); });
     };
     fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
@@ -464,8 +504,7 @@
         if (r.error) { toast("Commentaire non enregistré : " + r.error.message, true); return; }
         etat.activite.unshift({ lead_id: l.id, auteur_id: etat.moi.id, texte: texte, automatique: false, cree_le: new Date().toISOString() });
         zoneTexte.value = ""; ajuster(); chargerCommentaires();
-        if (l.statut === "nouveau") quitterNouveau("en_cours", "commentaire");
-        else if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads();
+        if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads();
       });
     };
     function chargerCommentaires() {
@@ -699,7 +738,7 @@
   }
 
   // ---------- Points, niveaux et badges ----------
-  var RANG = { nouveau: 0, en_cours: 1, injoignable: 1, faux_numero: 1, doublon: 1, a_rappeler: 1, pas_interesse: 1, rdv: 2, offre: 3, signe: 4 };
+  var RANG = { nouveau: 0, messagerie: 1, faux_numero: 1, rien_a_faire: 1, en_cours: 1, injoignable: 1, doublon: 1, a_rappeler: 1, pas_interesse: 1, rdv: 2, offre: 3, signe: 4 };
   var NIVEAUX = [[0, "Débutant"], [60, "En route"], [180, "Confirmé"], [400, "Expert"], [800, "Champion"], [1500, "Légende"]];
   function bilan(id, depuisDate) {
     var leads = etat.leads.filter(function (l) { return l.conseiller_id === id && (!depuisDate || new Date(l.cree_le) >= depuisDate); });
@@ -816,11 +855,11 @@
     zone.innerHTML =
       '<div class="tete"><div><h1>Statistiques</h1><p class="sous">Sur les ' + etat.leads.length + " derniers leads.</p></div></div>" +
       '<div class="kpis"><div><span>Leads (30 jours)</span><strong>' + recents.length + '</strong></div><div><span>Traités</span><strong>' + (etat.leads.length ? Math.round(traites / etat.leads.length * 100) : 0) + ' %</strong></div><div><span>Signés</span><strong>' + signes + '</strong></div><div><span>Taux de signature</span><strong>' + (etat.leads.length ? Math.round(signes / etat.leads.length * 100) : 0) + " %</strong></div></div>" + podium +
-      '<div class="tableau"><table><thead><tr><th>Conseiller</th>' + STATUTS.map(function (s) { return "<th>" + s.nom + "</th>"; }).join("") + "<th>Total</th></tr></thead><tbody>" +
+      '<div class="tableau"><table><thead><tr><th>Conseiller</th>' + STATUTS.map(function (s) { return "<th>" + s.nom + "</th>"; }).join("") + "<th>À reclasser</th><th>Total</th></tr></thead><tbody>" +
       etat.conseillers.concat([{ id: null, nom: "Non attribués" }]).map(function (c) {
         var siens = etat.leads.filter(function (l) { return (l.conseiller_id || null) === c.id; });
         if (!siens.length && c.id === null) return "";
-        return "<tr><td><strong>" + esc(c.nom) + "</strong></td>" + STATUTS.map(function (s) { var n = siens.filter(function (l) { return l.statut === s.cle; }).length; return "<td>" + (n || '<span class="zero">0</span>') + "</td>"; }).join("") + "<td><strong>" + siens.length + "</strong></td></tr>";
+        return "<tr><td><strong>" + esc(c.nom) + "</strong></td>" + STATUTS.map(function (s) { var n = siens.filter(function (l) { return l.statut === s.cle; }).length; return "<td>" + (n || '<span class="zero">0</span>') + "</td>"; }).join("") + "<td>" + (siens.filter(function (l) { return !estActuel(l.statut); }).length || '<span class="zero">0</span>') + "</td><td><strong>" + siens.length + "</strong></td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<div class="carte"><h2>Leads par produit</h2><div class="barres">' + Object.keys(parProduit).sort(function (a, b) { return parProduit[b] - parProduit[a]; }).map(function (k) {
         return '<div class="barre-ligne"><span>' + esc(k) + '</span><span class="barre-fond"><span style="width:' + Math.round(parProduit[k] / max * 100) + '%"></span></span><strong>' + parProduit[k] + "</strong></div>";
