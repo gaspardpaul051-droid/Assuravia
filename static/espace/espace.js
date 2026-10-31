@@ -280,14 +280,14 @@
     var conseiller = estAdmin() && !mesSeuls() ? conseillerDuLead(l) : "";
     return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
       '<div class="carte-lead__haut">' + (estAdmin() ? '<span class="carte-lead__coche" title="Sélectionner"><input type="checkbox" aria-label="Sélectionner ' + esc(nomLead(l)) + '" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></span>" : "") +
-      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (nbMessageries(l) ? '<span class="carte-lead__messagerie" title="Messageries laissées">×' + nbMessageries(l) + "</span>" : "") + "</div>" +
+      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (nbMessageries(l) && l.statut !== "messagerie" ? '<span class="carte-lead__messagerie" title="Messageries laissées">×' + nbMessageries(l) + "</span>" : "") + "</div>" +
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
       (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
       (estReserve(l) ? '<div class="carte-lead__reserve" title="' + esc(l.reserve_raison || "") + '">Mis de côté' + (l.reserve_raison ? " · " + esc(l.reserve_raison) : "") + "</div>" : "") +
       (valeurLead(l) > VALEUR_BASE ? '<div class="carte-lead__super">★ Super lead · ' + chf(valeurLead(l)) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
-      (l.statut === "messagerie" ? '<button type="button" class="carte-lead__plus" data-plus-messagerie="' + l.id + '">+1 messagerie</button>' : "") +
+      (l.statut === "messagerie" ? '<button type="button" class="carte-lead__plus" data-plus-messagerie="' + l.id + '">Messagerie ×' + nbMessageries(l) + " · +1</button>" : "") +
       '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
       "</div>";
   }
