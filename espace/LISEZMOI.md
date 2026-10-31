@@ -28,3 +28,6 @@ Envoi par Resend (gratuit jusqu'à 3000 e-mails par mois) :
 3. Netlify > Environment variables : `RESEND_API_KEY` = la clé. Facultatif : `MAIL_EXPEDITEUR` (par défaut `Assuravia <leads@assuravia.ch>`).
 4. Deploys > Trigger deploy.
 Le lien « Ouvrir la fiche » de l'e-mail ouvre directement le lead dans l'espace.
+
+## Conseillers à la pièce (solde)
+Lancez une fois `espace/maj-4-conseillers-piece.sql` dans Supabase (SQL Editor > New query > Run). Ensuite, dans « Conseillers et répartition », section « Formule et solde » : choisissez « À la pièce », le prix par lead et ajoutez du crédit. Chaque lead attribué est déduit du solde ; un lead réattribué ou supprimé est remboursé.

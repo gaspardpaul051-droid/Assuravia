@@ -172,6 +172,28 @@
   }
 
   // ---------- Données ----------
+  // Soldes des conseillers à la pièce (fonction SQL soldes(), espace/maj-4-conseillers-piece.sql)
+  function chargerSoldes() {
+    return sb.rpc("soldes").then(function (r) {
+      etat.soldes = {}; etat.soldesErreur = !!r.error;
+      (r.data || []).forEach(function (x) { etat.soldes[x.conseiller_id] = x; });
+    }, function () { etat.soldes = {}; etat.soldesErreur = true; });
+  }
+  var chf = function (n) { var v = Math.round(Number(n || 0) * 100) / 100; return "CHF " + (v % 1 ? v.toFixed(2) : String(v)).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+  function encartSolde(qui) {
+    var p = qui || etat.profil;
+    if (!p || p.type !== "piece") return "";
+    var s = (etat.soldes || {})[p.id], solde = s ? Number(s.solde) : Number(p.credit || 0), prix = Number(p.prix_lead) || 0;
+    var reste = prix > 0 ? Math.max(0, Math.floor(solde / prix)) : null;
+    var etatSolde = solde <= 0 ? "vide" : prix && solde < prix * 3 ? "bas" : "ok";
+    return '<div class="solde solde--' + etatSolde + '" title="Chaque lead reçu est déduit du solde"><span>' + (qui ? "Solde de " + esc(p.nom) : "Solde restant") + "</span><strong>" + chf(solde) + "</strong><small>" +
+      (reste === null ? "Prix par lead non défini" : reste + " lead" + (reste > 1 ? "s" : "") + " à " + chf(prix)) + "</small></div>";
+  }
+  function majEncart() {
+    var vieux = app.querySelector(".moi .solde"), html = encartSolde();
+    if (vieux) vieux.outerHTML = html || "";
+    else if (html && app.querySelector(".moi")) app.querySelector(".moi").insertAdjacentHTML("afterbegin", html);
+  }
   function chargerConseillers() {
     return sb.from("conseillers").select("*").order("nom").then(function (r) { etat.conseillers = r.data || []; });
   }
@@ -195,7 +217,7 @@
         if (!etat.profil) { app.innerHTML = '<div class="ecran-centre"><div class="carte-connexion"><h1>Compte sans fiche</h1><p>Votre compte n\'est pas encore activé comme conseiller. Contactez l\'administrateur.</p><button class="btn" data-sortir>Se déconnecter</button></div></div>'; app.querySelector("[data-sortir]").onclick = sortir; return; }
         var direct = location.hash.match(/lead=(\d+)/);
         if (direct) { etat.leadOuvert = Number(direct[1]); history.replaceState(null, "", location.pathname); }
-        Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), estAdmin() ? chargerRegles() : null]).then(rendre);
+        Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), chargerSoldes(), estAdmin() ? chargerRegles() : null]).then(rendre);
       });
     });
   }
@@ -209,7 +231,7 @@
     app.innerHTML =
       '<header class="barre"><div class="marque"><img src="/marque/embleme.svg" alt="" width="34" height="34"><div><strong>Assuravia</strong><span>Espace conseillers</span></div></div>' +
       '<nav class="onglets">' + onglets.map(function (o) { return '<button class="onglet' + (etat.vue === o[0] ? " onglet--actif" : "") + '" data-vue="' + o[0] + '">' + o[1] + "</button>"; }).join("") + "</nav>" +
-      '<div class="moi"><span class="avatar">' + esc((etat.profil.nom || "?").charAt(0).toUpperCase()) + '</span><span class="moi__nom">' + esc(etat.profil.nom) + (estAdmin() ? ' <small>Admin</small>' : "") + '</span><button class="btn btn--petit" data-mon-mdp title="Changer mon mot de passe">Mot de passe</button><button class="btn btn--petit" data-sortir>Déconnexion</button></div></header>' +
+      '<div class="moi">' + encartSolde() + '<span class="avatar">' + esc((etat.profil.nom || "?").charAt(0).toUpperCase()) + '</span><span class="moi__nom">' + esc(etat.profil.nom) + (estAdmin() ? ' <small>Admin</small>' : "") + '</span><button class="btn btn--petit" data-mon-mdp title="Changer mon mot de passe">Mot de passe</button><button class="btn btn--petit" data-sortir>Déconnexion</button></div></header>' +
       '<main class="contenu" data-contenu></main><aside class="fiche" data-fiche hidden></aside><div class="voile" data-voile hidden></div>';
     app.querySelectorAll("[data-vue]").forEach(function (b) { b.onclick = function () { etat.vue = b.getAttribute("data-vue"); rendre(); }; });
     app.querySelector("[data-sortir]").onclick = sortir;
@@ -278,7 +300,7 @@
     var base = leadsBase();
     etat.filtre = "tous";
     zone.innerHTML =
-      '<div class="tete"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + "" + '</p></div>' +
+      '<div class="tete"><div class="tete__titre"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + '</p></div>' + (estAdmin() && !mesSeuls() && etat.conseillerFiltre ? encartSolde(etat.conseillers.filter(function (c) { return c.id === etat.conseillerFiltre; })[0] || {}) : "") + '</div>' +
       '<div class="tete__actions"><input class="recherche" type="search" placeholder="Rechercher un nom, un e-mail, un téléphone…" value="' + esc(etat.recherche) + '" data-recherche>' +
       (estAdmin() && !mesSeuls() ? '<select class="select" data-conseiller-filtre><option value="">Tous les conseillers</option><option value="aucun"' + (etat.conseillerFiltre === "aucun" ? " selected" : "") + ">Non attribués</option>" + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (etat.conseillerFiltre === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select>" : "") +
       '<button class="btn" data-rafraichir>Actualiser</button></div></div>' +
@@ -288,14 +310,12 @@
     var dessiner = function () {
       var liste = leadsFiltres();
       // Une colonne par statut, dans l'ordre ; les anciens statuts vont dans « À reclasser »
-      var colonnes = STATUTS.map(function (s) { return { s: s, leads: liste.filter(function (l) { return l.statut === s.cle; }) }; });
-      var anciens = liste.filter(function (l) { return !estActuel(l.statut); });
-      if (anciens.length) colonnes.push({ s: { cle: "", nom: "À reclasser", couleur: "gris", ancien: true }, leads: anciens });
+      // Un lead qui aurait encore un ancien statut s'affiche dans « Nouveau lead »
+      var colonnes = STATUTS.map(function (s) { return { s: s, leads: liste.filter(function (l) { return l.statut === s.cle || (s.cle === "nouveau" && !estActuel(l.statut)); }) }; });
       zone.querySelector("[data-liste]").innerHTML = colonnes.map(function (col) {
         var leads = col.leads.slice().sort(priorite);
         return '<section class="colonne colonne--' + col.s.couleur + (leads.length ? "" : " colonne--vide") + '" data-colonne="' + col.s.cle + '"' + (col.s.ancien ? ' data-ancienne' : "") + '>' +
           '<header class="colonne__tete"><span class="badge badge--' + col.s.couleur + '">' + col.s.nom + '</span><span class="colonne__nb">' + leads.length + "</span></header>" +
-          (col.s.ancien ? '<p class="colonne__aide">Anciens statuts : glissez chaque lead dans la bonne colonne.</p>' : "") +
           '<div class="colonne__cartes">' + (leads.length ? leads.map(carteLead).join("") : '<p class="colonne__vide">Aucun lead</p>') + "</div></section>";
       }).join("") + (liste.length ? "" : '<div class="vide"><p><strong>Aucun lead ici.</strong></p><p>Les nouvelles demandes du site apparaissent automatiquement.</p></div>');
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
@@ -338,7 +358,7 @@
     };
     dessiner();
     zone.querySelector("[data-recherche]").addEventListener("input", function (e) { etat.recherche = e.target.value; dessiner(); });
-    var cf = zone.querySelector("[data-conseiller-filtre]"); if (cf) cf.onchange = function () { etat.conseillerFiltre = cf.value; dessiner(); };
+    var cf = zone.querySelector("[data-conseiller-filtre]"); if (cf) cf.onchange = function () { etat.conseillerFiltre = cf.value; vueLeads(); };
     var appl = zone.querySelector("[data-appliquer]");
     if (appl) {
       zone.querySelector("[data-vider]").onclick = function () { etat.selection = {}; dessiner(); };
@@ -354,7 +374,7 @@
           sb.from("commentaires").insert(ids.map(function (id) { return { lead_id: id, auteur_id: etat.moi.id, texte: "Attribué à " + nomConseiller(cible), automatique: true }; })).then(function () {});
           if (cible) notifier(ids, cible);
           etat.selection = {};
-          chargerLeads().then(function () { vueLeads(); toast(ids.length + " lead" + (ids.length > 1 ? "s" : "") + " attribué" + (ids.length > 1 ? "s" : "") + " à " + nomConseiller(cible) + "."); });
+          Promise.all([chargerLeads(), chargerSoldes()]).then(function () { vueLeads(); toast(ids.length + " lead" + (ids.length > 1 ? "s" : "") + " attribué" + (ids.length > 1 ? "s" : "") + " à " + nomConseiller(cible) + "."); });
         });
       };
     }
@@ -366,7 +386,7 @@
       if (!ids.length) return;
       supprimerLeads(ids, function () { etat.selection = {}; vueLeads(); });
     };
-    zone.querySelector("[data-rafraichir]").onclick = function () { Promise.all([chargerLeads(), chargerActivite()]).then(function () { vueLeads(); toast("Liste à jour."); }); };
+    zone.querySelector("[data-rafraichir]").onclick = function () { Promise.all([chargerLeads(), chargerActivite(), chargerSoldes()]).then(function () { vueLeads(); majEncart(); toast("Liste à jour."); }); };
   }
 
   // Relance immédiate (admin) : e-mail au conseiller de chaque lead encore « Nouveau »
@@ -547,6 +567,20 @@
           "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
           '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? ' <button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
+      '<h2 class="titre-section">Formule et solde</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde au prix par lead (un lead réattribué ou supprimé est remboursé). « Ajouter » augmente le crédit chargé.</p>' +
+      (etat.soldesErreur ? '<p class="alerte">Pour activer les formules, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
+      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Formule</th><th>Prix par lead</th><th>Crédit chargé</th><th>Leads facturés</th><th>Solde</th><th>Ajouter du crédit</th><th></th></tr></thead><tbody>' +
+      etat.conseillers.map(function (c) {
+        var so = (etat.soldes || {})[c.id] || {}, piece = c.type === "piece";
+        return '<tr data-f="' + c.id + '"><td><strong>' + esc(c.nom) + "</strong></td>" +
+          '<td><select class="select" data-type><option value="budget"' + (piece ? "" : " selected") + '>Au budget</option><option value="piece"' + (piece ? " selected" : "") + ">À la pièce</option></select></td>" +
+          '<td><input class="select poids" type="number" min="0" step="1" value="' + (Number(c.prix_lead) || 0) + '" data-prix> CHF</td>' +
+          "<td>" + chf(c.credit) + "</td>" +
+          "<td>" + (piece ? (so.leads_factures || 0) + " · " + chf(so.depense) : "–") + "</td>" +
+          '<td><strong class="' + (piece && Number(so.solde) <= 0 ? "solde-negatif" : "") + '">' + (piece ? chf(so.solde !== undefined ? so.solde : c.credit) : "–") + "</strong></td>" +
+          '<td><input class="select poids" type="number" step="1" placeholder="0" data-ajout> CHF</td>' +
+          '<td><button class="btn btn--petit" data-enregistrer-formule>Enregistrer</button></td></tr>';
+      }).join("") + "</tbody></table></div>" +
       '<div data-regles></div>' +
       '<form class="carte inviter" data-inviter><h2>Ajouter un conseiller</h2><p class="sous">Vous créez son accès avec un mot de passe provisoire à lui transmettre. À sa première connexion, il doit choisir son propre mot de passe.</p>' +
       '<div class="grille4"><label>Nom<input class="select" name="nom" required placeholder="Jean Dupont"></label><label>E-mail<input class="select" type="email" name="email" required placeholder="jean@exemple.ch"></label><label>Mot de passe provisoire<input class="select" name="provisoire" required minlength="10" value="' + motProvisoire() + '"></label><label>Part générale<input class="select" type="number" name="poids" min="0" max="100" value="20"></label></div>' +
@@ -568,6 +602,18 @@
         if (!mdp) return;
         if (mdp.length < 10) { toast("Au moins 10 caractères.", true); return; }
         appelAdmin({ action: "provisoire", id: id, email: c.email, mot_de_passe: mdp }).then(function (ok) { if (ok) afficherAcces(c.nom, c.email, mdp); });
+      };
+    });
+    zone.querySelectorAll("tr[data-f]").forEach(function (tr) {
+      var id = tr.getAttribute("data-f");
+      tr.querySelector("[data-enregistrer-formule]").onclick = function () {
+        var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
+        var ajout = Number(tr.querySelector("[data-ajout]").value) || 0;
+        var champs = { type: tr.querySelector("[data-type]").value, prix_lead: Math.max(0, Number(tr.querySelector("[data-prix]").value) || 0), credit: Math.round((Number(c.credit || 0) + ajout) * 100) / 100 };
+        sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
+          if (r.error) { toast(/type|prix_lead|credit/.test(r.error.message) ? "Lancez d'abord le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
+          Promise.all([chargerConseillers(), chargerSoldes()]).then(function () { vueConseillers(); toast(ajout ? chf(ajout) + " ajoutés au crédit de " + c.nom + "." : "Formule enregistrée."); });
+        });
       };
     });
     vueRegles(zone.querySelector("[data-regles]"));
@@ -938,6 +984,6 @@
   setInterval(function () {
     if (!etat.profil || etat.vue !== "leads" || etat.leadOuvert) return;
     var avant = etat.leads.length;
-    chargerLeads().then(function () { vueLeads(); if (etat.leads.length > avant) toast((etat.leads.length - avant) + " nouveau(x) lead(s)."); });
+    Promise.all([chargerLeads(), chargerSoldes()]).then(function () { vueLeads(); majEncart(); if (etat.leads.length > avant) toast((etat.leads.length - avant) + " nouveau(x) lead(s)."); });
   }, 120000);
 })();

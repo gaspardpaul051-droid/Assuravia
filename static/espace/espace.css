@@ -593,3 +593,18 @@ td:last-child { white-space: nowrap; }
 .carte-lead__plus:hover { background: #FDEBDD; }
 .messageries { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 .2rem; font-size: .88rem; color: var(--doux); }
 .messageries strong { color: #B4561A; }
+/* Solde des conseillers à la pièce */
+.solde { display: grid; grid-template-columns: auto auto; column-gap: .5rem; align-items: baseline; padding: .35rem .75rem; border-radius: 12px; background: #E8F6EE; border: 1px solid #BFE5CF; margin-right: .4rem; line-height: 1.2; }
+.solde span { font-size: .72rem; font-weight: 700; color: var(--vert); text-transform: uppercase; letter-spacing: .03em; }
+.solde strong { font-size: 1.02rem; color: var(--marine); font-variant-numeric: tabular-nums; }
+.solde small { grid-column: 1 / -1; font-size: .72rem; }
+.solde--bas { background: #FBF1D3; border-color: #EBD48C; }
+.solde--bas span { color: #8a6510; }
+.solde--vide { background: #FBE6E4; border-color: #F0B9B3; }
+.solde--vide span, .solde--vide strong { color: var(--rouge); }
+.solde-negatif { color: var(--rouge); }
+@media (max-width: 860px) { .solde { order: -1; } }
+.tete__titre { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+tr[data-f] input.select { width: 90px; min-width: 0; display: inline-block; margin-right: .3rem; }
+tr[data-f] td { white-space: nowrap; }
+tr[data-f] td:first-child { white-space: normal; }
