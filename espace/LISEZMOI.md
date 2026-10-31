@@ -30,4 +30,4 @@ Envoi par Resend (gratuit jusqu'à 3000 e-mails par mois) :
 Le lien « Ouvrir la fiche » de l'e-mail ouvre directement le lead dans l'espace.
 
 ## Conseillers à la pièce (solde)
-Lancez une fois `espace/maj-4-conseillers-piece.sql` dans Supabase (SQL Editor > New query > Run). Ensuite, dans « Conseillers et répartition », section « Formule et solde » : choisissez « À la pièce », le prix par lead et ajoutez du crédit. Chaque lead attribué est déduit du solde ; un lead réattribué ou supprimé est remboursé.
+Lancez une fois `espace/maj-4-conseillers-piece.sql` dans Supabase (SQL Editor > New query > Run). Ensuite, dans « Conseillers et répartition », section « Formule et solde » : choisissez « À la pièce » et ajoutez du crédit. Chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut ; l'admin la change dans la fiche du lead pour un super lead) ; un lead réattribué ou supprimé est remboursé.

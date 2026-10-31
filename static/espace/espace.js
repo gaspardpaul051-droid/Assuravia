@@ -180,14 +180,16 @@
     }, function () { etat.soldes = {}; etat.soldesErreur = true; });
   }
   var chf = function (n) { var v = Math.round(Number(n || 0) * 100) / 100; return "CHF " + (v % 1 ? v.toFixed(2) : String(v)).replace(/\B(?=(\d{3})+(?!\d))/g, "'"); };
+  var VALEUR_BASE = 50; // valeur d'un lead par défaut (CHF) ; l'admin la change lead par lead (super leads)
+  var valeurLead = function (l) { var v = Number(l.valeur); return isNaN(v) || l.valeur == null ? VALEUR_BASE : v; };
   function encartSolde(qui) {
     var p = qui || etat.profil;
     if (!p || p.type !== "piece") return "";
-    var s = (etat.soldes || {})[p.id], solde = s ? Number(s.solde) : Number(p.credit || 0), prix = Number(p.prix_lead) || 0;
-    var reste = prix > 0 ? Math.max(0, Math.floor(solde / prix)) : null;
-    var etatSolde = solde <= 0 ? "vide" : prix && solde < prix * 3 ? "bas" : "ok";
+    var s = (etat.soldes || {})[p.id], solde = s ? Number(s.solde) : Number(p.credit || 0), prix = VALEUR_BASE;
+    var reste = Math.max(0, Math.floor(solde / prix));
+    var etatSolde = solde <= 0 ? "vide" : solde < prix * 3 ? "bas" : "ok";
     return '<div class="solde solde--' + etatSolde + '" title="Chaque lead reçu est déduit du solde"><span>' + (qui ? "Solde de " + esc(p.nom) : "Solde restant") + "</span><strong>" + chf(solde) + "</strong><small>" +
-      (reste === null ? "Prix par lead non défini" : reste + " lead" + (reste > 1 ? "s" : "") + " à " + chf(prix)) + "</small></div>";
+      "soit " + reste + " lead" + (reste > 1 ? "s" : "") + " à " + chf(prix) + "</small></div>";
   }
   function majEncart() {
     var vieux = app.querySelector(".moi .solde"), html = encartSolde();
@@ -278,6 +280,7 @@
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
       (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
+      (valeurLead(l) > VALEUR_BASE ? '<div class="carte-lead__super">★ Super lead · ' + chf(valeurLead(l)) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
       (l.statut === "messagerie" ? '<button type="button" class="carte-lead__plus" data-plus-messagerie="' + l.id + '">+1 messagerie</button>' : "") +
       '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
@@ -457,6 +460,7 @@
       '<p class="messageries">Messageries laissées : <strong data-nb-messageries>' + nbMessageries(l) + '</strong> <button type="button" class="btn btn--petit" data-plus-messagerie-fiche>+1 messagerie</button></p>' +
       (estAdmin() && l.statut === "nouveau" && l.conseiller_id ? '<button type="button" class="lien" data-relancer-lead>Relancer le conseiller par e-mail</button> ' : "") +
       (estAdmin() ? '<button type="button" class="lien lien--danger" data-supprimer-lead>Supprimer ce lead</button>' : "") +
+      (estAdmin() ? '<div class="valeur-lead"><span>Valeur du lead</span><div class="valeur-lead__choix">' + [50, 100, 150, 200].map(function (v) { return '<button type="button" class="mini' + (valeurLead(l) === v ? " mini--actif" : "") + '" data-valeur="' + v + '">' + chf(v) + "</button>"; }).join("") + '<input class="select" type="number" min="0" step="10" value="' + valeurLead(l) + '" data-valeur-libre aria-label="Autre valeur (CHF)"></div></div>' : "") +
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
       "</section>" +
       '<section class="fiche__bloc"><h3>Informations du client</h3><div class="tuiles">' +
@@ -499,6 +503,14 @@
       });
     };
     var rl = fiche.querySelector("[data-relancer-lead]"); if (rl) rl.onclick = function () { relancerLeads([l.id]); };
+    // Valeur du lead (admin) : CHF 50 de base, plus pour un super lead ; déduite du solde d'un conseiller à la pièce
+    var poserValeur = function (v) {
+      v = Math.max(0, Math.round(Number(v) || 0));
+      if (v === valeurLead(l)) return;
+      maj({ valeur: v }, "Valeur du lead : " + chf(valeurLead(l)) + " → " + chf(v)).then(function () { return chargerSoldes(); }).then(function () { ouvrirFiche(l.id, true); if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads(); });
+    };
+    fiche.querySelectorAll("[data-valeur]").forEach(function (b) { b.onclick = function () { poserValeur(b.getAttribute("data-valeur")); }; });
+    var vl = fiche.querySelector("[data-valeur-libre]"); if (vl) vl.onchange = function () { poserValeur(vl.value); };
     var pm = fiche.querySelector("[data-plus-messagerie-fiche]");
     if (pm) pm.onclick = function () {
       // Encore une messagerie : compteur +1 ; si le lead n'est pas déjà en « Messagerie », il y passe (ce qui compte aussi pour 1)
@@ -567,14 +579,13 @@
           "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
           '<td><button class="btn btn--petit" data-enregistrer>Enregistrer</button> <button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? ' <button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
-      '<h2 class="titre-section">Formule et solde</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde au prix par lead (un lead réattribué ou supprimé est remboursé). « Ajouter » augmente le crédit chargé.</p>' +
+      '<h2 class="titre-section">Formule et solde</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut, plus pour un super lead, à régler dans la fiche du lead). Un lead réattribué ou supprimé est remboursé. « Ajouter » augmente le crédit chargé.</p>' +
       (etat.soldesErreur ? '<p class="alerte">Pour activer les formules, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
-      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Formule</th><th>Prix par lead</th><th>Crédit chargé</th><th>Leads facturés</th><th>Solde</th><th>Ajouter du crédit</th><th></th></tr></thead><tbody>' +
+      '<div class="tableau"><table><thead><tr><th>Conseiller</th><th>Formule</th><th>Crédit chargé</th><th>Leads facturés</th><th>Solde</th><th>Ajouter du crédit</th><th></th></tr></thead><tbody>' +
       etat.conseillers.map(function (c) {
         var so = (etat.soldes || {})[c.id] || {}, piece = c.type === "piece";
         return '<tr data-f="' + c.id + '"><td><strong>' + esc(c.nom) + "</strong></td>" +
           '<td><select class="select" data-type><option value="budget"' + (piece ? "" : " selected") + '>Au budget</option><option value="piece"' + (piece ? " selected" : "") + ">À la pièce</option></select></td>" +
-          '<td><input class="select poids" type="number" min="0" step="1" value="' + (Number(c.prix_lead) || 0) + '" data-prix> CHF</td>' +
           "<td>" + chf(c.credit) + "</td>" +
           "<td>" + (piece ? (so.leads_factures || 0) + " · " + chf(so.depense) : "–") + "</td>" +
           '<td><strong class="' + (piece && Number(so.solde) <= 0 ? "solde-negatif" : "") + '">' + (piece ? chf(so.solde !== undefined ? so.solde : c.credit) : "–") + "</strong></td>" +
@@ -609,9 +620,9 @@
       tr.querySelector("[data-enregistrer-formule]").onclick = function () {
         var c = etat.conseillers.filter(function (x) { return x.id === id; })[0];
         var ajout = Number(tr.querySelector("[data-ajout]").value) || 0;
-        var champs = { type: tr.querySelector("[data-type]").value, prix_lead: Math.max(0, Number(tr.querySelector("[data-prix]").value) || 0), credit: Math.round((Number(c.credit || 0) + ajout) * 100) / 100 };
+        var champs = { type: tr.querySelector("[data-type]").value, credit: Math.round((Number(c.credit || 0) + ajout) * 100) / 100 };
         sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
-          if (r.error) { toast(/type|prix_lead|credit/.test(r.error.message) ? "Lancez d'abord le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
+          if (r.error) { toast(/type|credit/.test(r.error.message) ? "Lancez d'abord le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
           Promise.all([chargerConseillers(), chargerSoldes()]).then(function () { vueConseillers(); toast(ajout ? chf(ajout) + " ajoutés au crédit de " + c.nom + "." : "Formule enregistrée."); });
         });
       };

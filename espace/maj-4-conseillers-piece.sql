@@ -1,6 +1,7 @@
--- Conseillers « au budget » ou « à la pièce » (à lancer une fois dans Supabase > SQL Editor > New query > Run).
--- À la pièce : chaque lead attribué coûte le prix par lead du conseiller ; son solde = crédit chargé − coût de ses leads.
--- Le coût est noté sur le lead au moment de l'attribution (trigger), donc une réattribution ou une suppression le rembourse.
+-- Conseillers « au budget » ou « à la pièce » et valeur des leads (à lancer dans Supabase > SQL Editor > New query > Run ;
+-- peut être relancé sans risque). Chaque lead a une valeur (CHF 50 par défaut, modifiable par l'admin : super leads 100, 150, 200…).
+-- À la pièce : chaque lead attribué coûte sa valeur ; solde = crédit chargé − coût de ses leads.
+-- Le coût est noté sur le lead à l'attribution (trigger) : une réattribution ou une suppression le rembourse.
 
 alter table public.conseillers add column if not exists type text not null default 'budget';
 alter table public.conseillers drop constraint if exists conseillers_type_check;
@@ -8,15 +9,21 @@ alter table public.conseillers add constraint conseillers_type_check check (type
 alter table public.conseillers add column if not exists prix_lead numeric(10,2) not null default 0;
 alter table public.conseillers add column if not exists credit numeric(10,2) not null default 0;
 alter table public.leads add column if not exists cout numeric(10,2);
+alter table public.leads add column if not exists valeur numeric(10,2) not null default 50;
 
 -- Coût du lead fixé à l'attribution (automatique ou manuelle) ; un conseiller ne peut pas le modifier
 create or replace function public.lead_cout() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  if tg_op = 'INSERT' or new.conseiller_id is distinct from old.conseiller_id then
-    new.cout := (select case when c.type = 'piece' then c.prix_lead end from public.conseillers c where c.id = new.conseiller_id);
-  elsif auth.uid() is not null and not public.est_admin() then
-    new.cout := old.cout;
+  if new.valeur is null then new.valeur := 50; end if;
+  -- Un conseiller ne peut changer ni la valeur ni le coût d'un lead
+  if tg_op = 'UPDATE' and auth.uid() is not null and not public.est_admin() then
+    new.valeur := old.valeur; new.cout := old.cout;
+    return new;
+  end if;
+  -- Coût recalculé à l'attribution, au changement de conseiller ou de valeur
+  if tg_op = 'INSERT' or new.conseiller_id is distinct from old.conseiller_id or new.valeur is distinct from old.valeur then
+    new.cout := (select case when c.type = 'piece' then new.valeur end from public.conseillers c where c.id = new.conseiller_id);
   end if;
   return new;
 end $$;

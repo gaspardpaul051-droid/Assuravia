@@ -608,3 +608,9 @@ td:last-child { white-space: nowrap; }
 tr[data-f] input.select { width: 90px; min-width: 0; display: inline-block; margin-right: .3rem; }
 tr[data-f] td { white-space: nowrap; }
 tr[data-f] td:first-child { white-space: normal; }
+/* Valeur des leads */
+.carte-lead__super { justify-self: start; font-size: .74rem; font-weight: 800; color: #8a6510; background: linear-gradient(90deg, #FBF1D3, #FFF8E6); border: 1px solid #EBD48C; border-radius: 6px; padding: .15rem .45rem; }
+.valeur-lead { display: grid; gap: .35rem; margin: .7rem 0 .3rem; font-size: .85rem; font-weight: 600; color: var(--doux); }
+.valeur-lead__choix { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.valeur-lead__choix .select { width: 90px; min-height: 32px; padding: .25rem .5rem; }
+.mini--actif { background: var(--marine); color: #fff; border-color: var(--marine); }
