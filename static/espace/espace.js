@@ -246,9 +246,10 @@
     var conseiller = estAdmin() && !mesSeuls() ? nomConseiller(l.conseiller_id) : "";
     return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
       '<div class="carte-lead__haut">' + (estAdmin() ? '<span class="carte-lead__coche" title="Sélectionner"><input type="checkbox" aria-label="Sélectionner ' + esc(nomLead(l)) + '" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></span>" : "") +
-      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (prime ? '<span class="carte-lead__prime">' + esc(prime) + "</span>" : "") + "</div>" +
+      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong></div>" +
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
+      (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
       (l.rappel_le ? '<div class="carte-lead__rappel' + (aRappeler(l) ? " carte-lead__rappel--du" : "") + '">Rappel ' + date(l.rappel_le) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
       '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
