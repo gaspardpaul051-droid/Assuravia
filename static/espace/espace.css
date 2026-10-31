@@ -594,14 +594,17 @@ td:last-child { white-space: nowrap; }
 .messageries { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 .2rem; font-size: .88rem; color: var(--doux); }
 .messageries strong { color: #B4561A; }
 /* Solde des conseillers à la pièce */
-.solde { display: grid; grid-template-columns: auto auto; column-gap: .5rem; align-items: baseline; padding: .35rem .75rem; border-radius: 12px; background: #E8F6EE; border: 1px solid #BFE5CF; margin-right: .4rem; line-height: 1.2; }
-.solde span { font-size: .72rem; font-weight: 700; color: var(--vert); text-transform: uppercase; letter-spacing: .03em; }
-.solde strong { font-size: 1.02rem; color: var(--marine); font-variant-numeric: tabular-nums; }
-.solde small { grid-column: 1 / -1; font-size: .72rem; }
-.solde--bas { background: #FBF1D3; border-color: #EBD48C; }
-.solde--bas span { color: #8a6510; }
-.solde--vide { background: #FBE6E4; border-color: #F0B9B3; }
-.solde--vide span, .solde--vide strong { color: var(--rouge); }
+.solde { display: inline-flex; align-items: center; gap: .6rem; padding: .35rem .9rem .35rem .4rem; border-radius: 999px; background: linear-gradient(135deg, #E9F7EF, #F6FCF8); border: 1px solid #C6E8D4; box-shadow: 0 1px 2px rgba(11,37,69,.05), 0 6px 18px -10px rgba(31,138,76,.45); margin-right: .5rem; white-space: nowrap; }
+.solde__icone { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--vert); color: #fff; flex: none; }
+.solde__texte { display: grid; line-height: 1.1; }
+.solde__label { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--vert); }
+.solde__montant { font-size: 1.12rem; font-weight: 800; color: var(--marine); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.solde--bas { background: linear-gradient(135deg, #FCF3D9, #FFFBEF); border-color: #EBD48C; box-shadow: 0 6px 18px -10px rgba(194,140,20,.5); }
+.solde--bas .solde__icone { background: #C9961F; }
+.solde--bas .solde__label { color: #8a6510; }
+.solde--vide { background: linear-gradient(135deg, #FBE6E4, #FFF5F4); border-color: #F0B9B3; box-shadow: 0 6px 18px -10px rgba(194,65,58,.5); }
+.solde--vide .solde__icone { background: var(--rouge); }
+.solde--vide .solde__label, .solde--vide .solde__montant { color: var(--rouge); }
 .solde-negatif { color: var(--rouge); }
 @media (max-width: 860px) { .solde { order: -1; } }
 .tete__titre { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }

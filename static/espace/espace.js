@@ -185,11 +185,10 @@
   function encartSolde(qui) {
     var p = qui || etat.profil;
     if (!p || p.type !== "piece") return "";
-    var s = (etat.soldes || {})[p.id], solde = s ? Number(s.solde) : Number(p.credit || 0), prix = VALEUR_BASE;
-    var reste = Math.max(0, Math.floor(solde / prix));
-    var etatSolde = solde <= 0 ? "vide" : solde < prix * 3 ? "bas" : "ok";
-    return '<div class="solde solde--' + etatSolde + '" title="Chaque lead reçu est déduit du solde"><span>' + (qui ? "Solde de " + esc(p.nom) : "Solde restant") + "</span><strong>" + chf(solde) + "</strong><small>" +
-      "soit " + reste + " lead" + (reste > 1 ? "s" : "") + " à " + chf(prix) + "</small></div>";
+    var s = (etat.soldes || {})[p.id], solde = s ? Number(s.solde) : Number(p.credit || 0);
+    var etatSolde = solde <= 0 ? "vide" : solde < VALEUR_BASE * 3 ? "bas" : "ok";
+    var icone = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v4h-4a2 2 0 0 0 0 4h4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><circle cx="17" cy="15" r=".6"/></svg>';
+    return '<div class="solde solde--' + etatSolde + '" title="Chaque lead reçu est déduit du solde"><span class="solde__icone">' + icone + '</span><span class="solde__texte"><span class="solde__label">' + (qui ? "Solde de " + esc(p.nom) : "Mon solde") + '</span><strong class="solde__montant">' + chf(solde) + "</strong></span></div>";
   }
   function majEncart() {
     var vieux = app.querySelector(".moi .solde"), html = encartSolde();
