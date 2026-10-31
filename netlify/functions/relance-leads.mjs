@@ -1,28 +1,28 @@
-// Relance automatique : chaque heure, les jours ouvrables de 8 h à 19 h (heure de Zurich), un e-mail à chaque conseiller
-// dont des leads sont encore « Nouveau » depuis plus de 24 heures ouvrables (samedi et dimanche ne comptent pas).
-// Au plus une relance par lead toutes les 24 heures ouvrables, 3 au maximum ; chaque relance est notée dans le suivi du lead.
+// Relance automatique : un e-mail au conseiller pour chaque lead encore « Nouveau lead » 24 heures après son arrivée.
+// Envoi du mardi 10 h au vendredi 16 h (heure de Zurich), en journée (8 h à 19 h) : le lundi reste libre pour traiter
+// les leads du week-end. Une seule relance par lead, notée dans son suivi. Fonction lancée chaque heure.
 import { relancerConseiller } from "../lib/mail.mjs";
 
 const MARQUE = "Relance e-mail envoyée au conseiller";
-const HEURES = 24, MAX_RELANCES = 3, AGE_MAX_JOURS = 30;
+const HEURES = 24, AGE_MAX_JOURS = 30;
 
 const zurich = (d) => {
   const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Zurich", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(d).map((x) => [x.type, x.value]));
   return { jour: p.weekday, heure: Number(p.hour) };
 };
-const weekend = (d) => ["Sat", "Sun"].includes(zurich(d).jour);
-// Heures écoulées en excluant samedi et dimanche (heure de Zurich), au quart d'heure près
-function heuresOuvrables(depuis, maintenant) {
-  let t = new Date(depuis).getTime(), total = 0;
-  const fin = maintenant.getTime(), pas = 15 * 60 * 1000;
-  while (t < fin) { if (!weekend(new Date(t))) total += 0.25; t += pas; }
-  return total;
+// Mardi dès 10 h, mercredi et jeudi, vendredi jusqu'à 16 h ; jamais la nuit
+function fenetreEnvoi(d) {
+  const { jour, heure } = zurich(d);
+  if (heure < 8 || heure >= 19) return false;
+  if (jour === "Tue") return heure >= 10;
+  if (jour === "Wed" || jour === "Thu") return true;
+  if (jour === "Fri") return heure < 16;
+  return false;
 }
 
 export default async () => {
   const maintenant = new Date();
-  const { heure } = zurich(maintenant);
-  if (weekend(maintenant) || heure < 8 || heure > 19) return new Response("hors horaires");
+  if (!fenetreEnvoi(maintenant)) return new Response("hors horaires");
   const URL = (process.env.SUPABASE_URL || "").trim().replace(/\/(rest|auth)\/v1\/?$|\/$/, "");
   const CLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!URL || !CLE || !process.env.RESEND_API_KEY) return new Response("non configuré");
@@ -33,28 +33,25 @@ export default async () => {
     return t ? JSON.parse(t) : null;
   };
   const limite = new Date(Date.now() - AGE_MAX_JOURS * 86400000).toISOString();
-  const leads = (await api("leads?select=id,prenom,nom,telephone,email,produit,formulaire,cree_le,conseiller_id&statut=eq.nouveau&conseiller_id=not.is.null&cree_le=gte." + limite + "&order=cree_le.asc")) || [];
+  const avant = new Date(Date.now() - HEURES * 3600000).toISOString();
+  const leads = (await api("leads?select=id,prenom,nom,telephone,email,produit,formulaire,cree_le,conseiller_id&statut=eq.nouveau&conseiller_id=not.is.null&cree_le=gte." + limite + "&cree_le=lte." + avant + "&order=cree_le.asc")) || [];
   if (!leads.length) return new Response("rien à relancer");
-  const relances = (await api("commentaires?select=lead_id,cree_le&automatique=eq.true&texte=like." + encodeURIComponent(MARQUE + "*") + "&lead_id=in.(" + leads.map((l) => l.id).join(",") + ")")) || [];
-  const dues = leads.filter((l) => {
-    if (heuresOuvrables(l.cree_le, maintenant) < HEURES) return false;
-    const siennes = relances.filter((r) => r.lead_id === l.id).map((r) => r.cree_le).sort();
-    if (siennes.length >= MAX_RELANCES) return false;
-    return !siennes.length || heuresOuvrables(siennes[siennes.length - 1], maintenant) >= HEURES;
-  });
+  const deja = new Set(((await api("commentaires?select=lead_id&automatique=eq.true&texte=like." + encodeURIComponent(MARQUE + "*") + "&lead_id=in.(" + leads.map((l) => l.id).join(",") + ")")) || []).map((r) => r.lead_id));
+  const dues = leads.filter((l) => !deja.has(l.id));
   if (!dues.length) return new Response("rien à relancer");
   const conseillers = (await api("conseillers?select=id,nom,email&id=in.(" + [...new Set(dues.map((l) => l.conseiller_id))].join(",") + ")")) || [];
   let envoyes = 0;
-  for (const c of conseillers) {
-    const siens = dues.filter((l) => l.conseiller_id === c.id);
+  for (const l of dues) {
+    const c = conseillers.find((x) => x.id === l.conseiller_id);
+    if (!c) continue;
     try {
-      if (await relancerConseiller({ conseiller: c, leads: siens })) {
+      if (await relancerConseiller({ conseiller: c, leads: [l] })) {
         envoyes++;
-        await api("commentaires", { method: "POST", body: JSON.stringify(siens.map((l) => ({ lead_id: l.id, texte: MARQUE + " (" + c.nom + ") : lead non traité depuis plus de 24 h ouvrables.", automatique: true }))) });
+        await api("commentaires", { method: "POST", body: JSON.stringify({ lead_id: l.id, texte: MARQUE + " (" + c.nom + ") : lead toujours « Nouveau lead » plus de 24 h après son arrivée.", automatique: true }) });
       }
-    } catch (e) { console.error("Relance " + c.nom + " : " + e.message); }
+    } catch (e) { console.error("Relance lead " + l.id + " : " + e.message); }
   }
-  console.log("Relances envoyées : " + envoyes + " conseiller(s), " + dues.length + " lead(s).");
+  console.log("Relances envoyées : " + envoyes + " e-mail(s).");
   return new Response("ok " + envoyes);
 };
 

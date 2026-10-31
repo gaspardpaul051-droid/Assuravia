@@ -80,13 +80,13 @@ export async function relancerConseiller({ conseiller, leads }) {
 <div style="max-width:560px;margin:0 auto;padding:24px 16px">
   <p style="margin:0 0 12px;font-weight:800;font-size:18px">Assuravia <span style="font-weight:400;color:#5B6B80;font-size:14px">· Espace conseillers</span></p>
   <div style="background:#fff;border-radius:14px;padding:24px;border-top:5px solid #C2413A">
-    <p style="margin:0;color:#C2413A;font-size:14px;font-weight:700">Relance : non traité depuis plus de 24 h ouvrables</p>
+    <p style="margin:0;color:#C2413A;font-size:14px;font-weight:700">Relance : toujours « Nouveau lead » plus de 24 h après son arrivée</p>
     <h1 style="margin:6px 0 8px;font-size:22px">${esc(titre)}</h1>
-    <p style="margin:0 0 14px;color:#5B6B80;font-size:15px">Ces demandes sont toujours au statut « Nouveau ». Un rappel rapide augmente nettement les chances de signer.</p>
+    <p style="margin:0 0 14px;color:#5B6B80;font-size:15px">${n > 1 ? "Ces demandes sont toujours" : "Cette demande est toujours"} au statut « Nouveau lead ». Un appel rapide augmente nettement les chances de signer.</p>
     <table style="width:100%;border-collapse:collapse;font-size:15px">${leads.map(ligne).join("")}</table>
     <p style="margin:22px 0 0"><a href="${esc(espace)}" style="display:inline-block;background:#0B2545;color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px">Ouvrir l'espace conseillers</a></p>
   </div>
-  <p style="margin:14px 4px 0;font-size:12px;color:#7A8899">Relance automatique les jours ouvrables. Dès que vous appelez, commentez ou programmez un rappel, le lead passe « En cours » et la relance s'arrête.</p>
+  <p style="margin:14px 4px 0;font-size:12px;color:#7A8899">Relance automatique, du mardi 10 h au vendredi 16 h. Après votre appel, changez le statut du lead (Messagerie, RDV fixé…) dans l'espace conseillers : la relance s'arrête.</p>
 </div></body></html>`;
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -94,7 +94,7 @@ export async function relancerConseiller({ conseiller, leads }) {
     body: JSON.stringify({
       from: process.env.MAIL_EXPEDITEUR || "Assuravia <leads@assuravia.ch>",
       to: [conseiller.email],
-      subject: "Relance : " + titre.toLowerCase().replace(/^./, (c) => c.toUpperCase()),
+      subject: n === 1 ? "À appeler : " + ([leads[0].prenom, leads[0].nom].filter(Boolean).join(" ") || "nouveau lead") + " (" + nomLisible(leads[0].produit || leads[0].formulaire) + ")" : "Relance : " + titre.toLowerCase().replace(/^./, (c) => c.toUpperCase()),
       html,
       text: titre + "\n\n" + leads.map((l) => "- " + ([l.prenom, l.nom].filter(Boolean).join(" ") || "Sans nom") + " (" + (l.produit || l.formulaire || "") + ") " + telLisible(l.telephone) + " : " + espace + "#lead=" + l.id).join("\n"),
     }),
