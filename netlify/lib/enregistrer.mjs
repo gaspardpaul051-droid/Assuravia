@@ -85,7 +85,7 @@ export async function enregistrer(payload) {
     }
     // Mise de côté : un lead qui remplit les critères d'une règle active n'est attribué à personne (rangé sous « Admin »)
     let reserve = null;
-    try { reserve = regleReserve((await api("regles_reserve?select=nom,prime_min,ca_min,actif&actif=eq.true")) || [], lead); } catch (e) { reserve = null; }
+    try { reserve = regleReserve((await api("regles_reserve?select=*&actif=eq.true")) || [], lead); } catch (e) { reserve = null; }
     if (reserve) { choisi = null; lead.reserve = true; lead.reserve_raison = reserve.nom || "Règle de mise de côté"; }
     lead.conseiller_id = choisi ? choisi.id : null;
 

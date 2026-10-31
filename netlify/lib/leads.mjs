@@ -86,6 +86,7 @@ export function regleReserve(regles, lead) {
   const ca = montant((lead.donnees || {}).chiffre_affaires);
   return (regles || []).find((r) => {
     if (r.actif === false) return false;
+    if (r.produit && r.produit !== lead.produit) return false;
     const crit = [];
     if (r.prime_min !== null && r.prime_min !== undefined && r.prime_min !== "") crit.push(prime !== null && prime >= Number(r.prime_min));
     if (r.ca_min !== null && r.ca_min !== undefined && r.ca_min !== "") crit.push(ca !== null && ca >= Number(r.ca_min));

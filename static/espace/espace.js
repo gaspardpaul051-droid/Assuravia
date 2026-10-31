@@ -654,21 +654,23 @@
   // ---------- Leads mis de côté (admin) : critères qui rangent un lead sous « Admin », sans conseiller ----------
   function vueReserve(boite) {
     var regles = etat.reserve || [];
+    var PRODUITS = C.produits || {};
+    var choixProduit = function (v) { return '<select class="select" data-produit><option value="">Tous les leads</option>' + Object.keys(PRODUITS).sort(function (a, b) { return PRODUITS[a].localeCompare(PRODUITS[b]); }).map(function (k) { return '<option value="' + esc(k) + '"' + (v === k ? " selected" : "") + ">" + esc(PRODUITS[k]) + "</option>"; }).join("") + "</select>"; };
     var champ = function (v, attr, ph) { return '<input class="select champ-montant" type="number" min="0" step="100" placeholder="' + ph + '" value="' + (v === null || v === undefined ? "" : Number(v)) + '" ' + attr + ">"; };
     boite.innerHTML =
-      '<h2 class="titre-section">Leads mis de côté (Admin)</h2><p class="sous sous--section">Un lead qui atteint tous les critères d\'une règle active n\'est attribué à personne : il est rangé sous « Admin » (filtre « Admin · leads mis de côté » de Tous les leads) et vous l\'attribuez vous-même. Laissez un critère vide pour l\'ignorer. Les règles par page et les conseillers à la pièce ne s\'appliquent pas à ces leads.</p>' +
+      '<h2 class="titre-section">Leads mis de côté (Admin)</h2><p class="sous sous--section">Un lead du type choisi qui atteint tous les critères d\'une règle active n\'est attribué à personne : il est rangé sous « Admin » (filtre « Admin · leads mis de côté » de Tous les leads) et vous l\'attribuez vous-même. Laissez un critère vide pour l\'ignorer. Les règles par page et les conseillers à la pièce ne s\'appliquent pas à ces leads.</p>' +
       (etat.reserveErreur ? '<p class="alerte">Pour activer cette fonction, lancez une fois le script espace/maj-5-mise-de-cote.sql dans Supabase (SQL Editor).</p>' : "") +
-      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Nom de la règle</th><th>Prime estimée au moins (CHF)</th><th>Chiffre d\'affaires au moins (CHF)</th><th>Active</th><th></th></tr></thead><tbody>' +
+      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Nom de la règle</th><th>Type de lead</th><th>Prime estimée au moins (CHF)</th><th>Chiffre d\'affaires au moins (CHF)</th><th>Active</th><th></th></tr></thead><tbody>' +
       regles.map(function (r) {
-        return '<tr data-r="' + r.id + '"><td><input class="select" data-nom value="' + esc(r.nom) + '" placeholder="Ex. Gros clients"></td><td>' + champ(r.prime_min, "data-prime", "–") + "</td><td>" + champ(r.ca_min, "data-ca", "–") + '</td><td><label class="interrupteur"><input type="checkbox" data-actif' + (r.actif ? " checked" : "") + '><span></span></label></td><td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button><button class="lien lien--rouge" data-suppr>Supprimer</button></td></tr>';
+        return '<tr data-r="' + r.id + '"><td><input class="select" data-nom value="' + esc(r.nom) + '" placeholder="Ex. Gros clients"></td><td>' + choixProduit(r.produit || "") + "</td><td>" + champ(r.prime_min, "data-prime", "–") + "</td><td>" + champ(r.ca_min, "data-ca", "–") + '</td><td><label class="interrupteur"><input type="checkbox" data-actif' + (r.actif ? " checked" : "") + '><span></span></label></td><td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button><button class="lien lien--rouge" data-suppr>Supprimer</button></td></tr>';
       }).join("") +
-      '<tr data-nouvelle-regle><td><input class="select" data-nom placeholder="Nouvelle règle, ex. Gros clients"></td><td>' + champ(null, "data-prime", "Ex. 2000") + "</td><td>" + champ(null, "data-ca", "Ex. 1000000") + '</td><td></td><td class="actions-cellule"><button class="btn btn--petit" data-creer>Ajouter la règle</button></td></tr>' +
+      '<tr data-nouvelle-regle><td><input class="select" data-nom placeholder="Nouvelle règle, ex. Grosses RC pro"></td><td>' + choixProduit("") + "</td><td>" + champ(null, "data-prime", "Ex. 2000") + "</td><td>" + champ(null, "data-ca", "Ex. 1000000") + '</td><td></td><td class="actions-cellule"><button class="btn btn--petit" data-creer>Ajouter la règle</button></td></tr>' +
       "</tbody></table></div>";
     var lire = function (tr) {
       var n = function (sel) { var v = tr.querySelector(sel).value; return v === "" ? null : Math.max(0, Number(v)); };
-      return { nom: tr.querySelector("[data-nom]").value.trim(), prime_min: n("[data-prime]"), ca_min: n("[data-ca]") };
+      return { nom: tr.querySelector("[data-nom]").value.trim(), produit: tr.querySelector("[data-produit]").value || null, prime_min: n("[data-prime]"), ca_min: n("[data-ca]") };
     };
-    var fini = function (msg) { return function (r) { if (r.error) { toast("Erreur : " + r.error.message, true); return; } chargerReserve().then(function () { vueReserve(boite); toast(msg); }); }; };
+    var fini = function (msg) { return function (r) { if (r.error) { toast(/produit/.test(r.error.message) ? "Relancez le script espace/maj-5-mise-de-cote.sql dans Supabase (SQL Editor) : il ajoute le type de lead." : "Erreur : " + r.error.message, true); return; } chargerReserve().then(function () { vueReserve(boite); toast(msg); }); }; };
     boite.querySelectorAll("tr[data-r]").forEach(function (tr) {
       var id = Number(tr.getAttribute("data-r"));
       tr.querySelector("[data-enreg]").onclick = function () {
