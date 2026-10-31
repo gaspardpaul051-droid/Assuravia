@@ -220,26 +220,21 @@
   }
 
   // ---------- Liste des leads ----------
-  function aRappeler(l) { return l.rappel_le && new Date(l.rappel_le) <= new Date(new Date().setHours(23, 59, 59, 999)) && ["signe", "rien_a_faire", "pas_interesse", "faux_numero", "doublon"].indexOf(l.statut) < 0; }
+  // Plus de rappel prévu : le suivi passe par le statut « RDV fixé »
+  function aRappeler() { return false; }
   // Onglet « Mes leads » de l'admin : seulement les leads qui lui sont attribués
   function mesSeuls() { return etat.vue === "mesleads"; }
   function leadsBase() { return mesSeuls() ? etat.leads.filter(function (l) { return l.conseiller_id === etat.moi.id; }) : etat.leads; }
   function leadsFiltres() {
     var q = etat.recherche.toLowerCase();
     return leadsBase().filter(function (l) {
-      if (etat.filtre === "rappel" && !aRappeler(l)) return false;
       if (!mesSeuls() && etat.conseillerFiltre && (l.conseiller_id || "") !== (etat.conseillerFiltre === "aucun" ? "" : etat.conseillerFiltre)) return false;
       if (!q) return true;
       return [l.prenom, l.nom, l.email, l.telephone, telLisible(l.telephone), l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
     });
   }
-  // Ordre dans chaque colonne : rappels dus d'abord, puis rappels à venir, puis les plus récents
-  function priorite(a, b) {
-    var ra = aRappeler(a) ? 0 : a.rappel_le ? 1 : 2, rb = aRappeler(b) ? 0 : b.rappel_le ? 1 : 2;
-    if (ra !== rb) return ra - rb;
-    if (ra < 2) return new Date(a.rappel_le) - new Date(b.rappel_le);
-    return new Date(b.cree_le) - new Date(a.cree_le);
-  }
+  // Ordre dans chaque colonne : les plus récents en haut
+  function priorite(a, b) { return new Date(b.cree_le) - new Date(a.cree_le); }
   function carteLead(l) {
     var n = Number(String(l.prime || "").replace(/['\s]/g, "").replace(",", "."));
     var prime = !l.prime || n === 0 ? "" : isNaN(n) ? String(l.prime) : "CHF " + (n % 1 ? n.toFixed(2) : String(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
@@ -250,7 +245,6 @@
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
       (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
-      (l.rappel_le ? '<div class="carte-lead__rappel' + (aRappeler(l) ? " carte-lead__rappel--du" : "") + '">Rappel ' + date(l.rappel_le) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
       '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
       "</div>";
@@ -270,15 +264,12 @@
     var zone = app.querySelector("[data-contenu]");
     zone.classList.add("contenu--large");
     var base = leadsBase();
-    var nbRappel = base.filter(aRappeler).length;
-    if (etat.filtre !== "rappel") etat.filtre = "tous";
-    var puces = [["tous", "Tous les leads", base.length, ""], ["rappel", "À rappeler aujourd'hui", nbRappel, "or"]];
+    etat.filtre = "tous";
     zone.innerHTML =
-      '<div class="tete"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + (nbRappel ? " · <strong>" + nbRappel + " à rappeler aujourd'hui</strong>" : "") + '</p></div>' +
+      '<div class="tete"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + "" + '</p></div>' +
       '<div class="tete__actions"><input class="recherche" type="search" placeholder="Rechercher un nom, un e-mail, un téléphone…" value="' + esc(etat.recherche) + '" data-recherche>' +
       (estAdmin() && !mesSeuls() ? '<select class="select" data-conseiller-filtre><option value="">Tous les conseillers</option><option value="aucun"' + (etat.conseillerFiltre === "aucun" ? " selected" : "") + ">Non attribués</option>" + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (etat.conseillerFiltre === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select>" : "") +
       '<button class="btn" data-rafraichir>Actualiser</button></div></div>' +
-      '<div class="puces">' + puces.filter(function (p) { return p[2] || p[0] === "tous" || p[0] === etat.filtre; }).map(function (p) { return '<button class="puce puce--' + (p[3] || "neutre") + (etat.filtre === p[0] ? " puce--active" : "") + '" data-filtre="' + p[0] + '">' + p[1] + " <span>" + p[2] + "</span></button>"; }).join("") + "</div>" +
       (estAdmin() ? '<div class="selection-outils"><label class="tout"><input type="checkbox" data-tout> Tout sélectionner (liste affichée)</label></div>' +
         '<div class="barre-attribuer" data-barre-attribuer hidden><strong data-nb></strong><select class="select" data-vers><option value="">Attribuer à…</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + (c.actif ? "" : " (inactif)") + "</option>"; }).join("") + '<option value="aucun">Personne (retirer)</option></select><button class="btn btn--plein" data-appliquer>Attribuer</button><button class="btn" data-relancer-lot>Relancer par e-mail</button><button class="btn btn--danger" data-supprimer-lot>Supprimer</button><button class="lien" data-vider>Annuler la sélection</button></div>' : "") +
       '<div class="tableau-leads" data-liste></div>';
@@ -332,7 +323,6 @@
     };
     dessiner();
     zone.querySelector("[data-recherche]").addEventListener("input", function (e) { etat.recherche = e.target.value; dessiner(); });
-    zone.querySelectorAll("[data-filtre]").forEach(function (b) { b.onclick = function () { etat.filtre = b.getAttribute("data-filtre"); vueLeads(); }; });
     var cf = zone.querySelector("[data-conseiller-filtre]"); if (cf) cf.onchange = function () { etat.conseillerFiltre = cf.value; dessiner(); };
     var appl = zone.querySelector("[data-appliquer]");
     if (appl) {
@@ -422,14 +412,13 @@
       prime: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>'
     };
     fiche.innerHTML =
-      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + (estAdmin() ? " · Conseiller : <b>" + esc(nomConseiller(l.conseiller_id)) + "</b>" : "") + '</p><div class="fiche__puces"><span class="badge badge--' + s0.couleur + '" data-badge-tete>' + s0.nom + "</span>" + (l.prime ? '<span class="fiche__puce">' + esc(formatPrime(l.prime)) + "</span>" : "") + (l.canton ? '<span class="fiche__puce">' + esc(l.canton) + "</span>" : "") + (l.rappel_le ? '<span class="fiche__puce fiche__puce--or">Rappel ' + date(l.rappel_le) + "</span>" : "") + '</div></div></div><button class="fermer" data-fermer aria-label="Fermer"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
+      '<div class="fiche__tete"><div class="fiche__identite">' + avatar(nomLead(l), "grand") + '<div><p class="fiche__produit">' + esc(produitNom(l)) + '</p><h2>' + esc(nomLead(l)) + '</h2><p class="fiche__meta">Reçu ' + depuis(l.cree_le) + " · " + date(l.cree_le) + (estAdmin() ? " · Conseiller : <b>" + esc(nomConseiller(l.conseiller_id)) + "</b>" : "") + '</p><div class="fiche__puces"><span class="badge badge--' + s0.couleur + '" data-badge-tete>' + s0.nom + "</span>" + (l.prime ? '<span class="fiche__puce">' + esc(formatPrime(l.prime)) + "</span>" : "") + (l.canton ? '<span class="fiche__puce">' + esc(l.canton) + "</span>" : "") + '</div></div></div><button class="fermer" data-fermer aria-label="Fermer"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
       '<div class="fiche__actions">' +
       (tel ? '<a class="btn btn--plein btn--gros" href="tel:' + esc(tel) + '">Appeler</a>' : "") +
       (wa ? '<a class="btn btn--wa btn--gros" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">WhatsApp</a>' : "") +
       (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
       '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + (estActuel(l.statut) ? STATUTS : [statut(l.statut)].concat(STATUTS)).map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
-      '<label class="statut-champ"><span>Rappel prévu</span><input class="select" type="datetime-local" value="' + pourInput(l.rappel_le) + '" data-rappel></label></div>' +
-      '<div class="rappels-rapides"><span>Rappeler :</span><button type="button" class="mini" data-dans="1h">dans 1 h</button><button type="button" class="mini" data-dans="demain">demain 9 h</button><button type="button" class="mini" data-dans="lundi">lundi 9 h</button>' + (l.rappel_le ? '<button type="button" class="mini mini--suppr" data-dans="aucun">aucun</button>' : "") + "</div>" +
+      "</div>" +
       (estAdmin() && l.statut === "nouveau" && l.conseiller_id ? '<button type="button" class="lien" data-relancer-lead>Relancer le conseiller par e-mail</button> ' : "") +
       (estAdmin() ? '<button type="button" class="lien lien--danger" data-supprimer-lead>Supprimer ce lead</button>' : "") +
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
@@ -446,7 +435,6 @@
       '<div class="fiche__col fiche__col--com"><section class="fiche__bloc fiche__bloc--com"><h3>Suivi et commentaires <span class="compteur" data-compteur></span></h3>' +
       '<ol class="fil-suivi" data-commentaires><li class="chargement">Chargement…</li></ol>' +
       '<form class="commentaire-form" data-commenter>' +
-      '<div class="suggestions">' + ["Pas de réponse", "Message vocal laissé", "Rappeler plus tard", "RDV fixé", "Offre envoyée", "Documents demandés"].map(function (x) { return '<button type="button" class="mini" data-suggestion>' + x + "</button>"; }).join("") + "</div>" +
       '<textarea name="texte" rows="3" placeholder="Où en êtes-vous avec ce client ? Ex. Rappelé, RDV jeudi 14 h chez lui." required></textarea>' +
       '<div class="commentaire-form__pied"><small>Entrée : publier · Maj + Entrée : nouvelle ligne</small><button class="btn btn--plein" type="submit">Publier</button></div></form>' +
       '</section></div></div>';
@@ -474,20 +462,6 @@
         ouvrirFiche(l.id, true);
       });
     };
-    var poserRappel = function (v) {
-      var champs = { rappel_le: v }, note = v ? "Rappel prévu le " + date(v) : "Rappel supprimé";
-      maj(champs, note).then(function () { ouvrirFiche(l.id, true); });
-    };
-    fiche.querySelector("[data-rappel]").onchange = function (e) { poserRappel(e.target.value ? new Date(e.target.value).toISOString() : null); };
-    fiche.querySelectorAll("[data-dans]").forEach(function (b) {
-      b.onclick = function () {
-        var k = b.getAttribute("data-dans"), d = new Date();
-        if (k === "aucun") return poserRappel(null);
-        if (k === "1h") d = new Date(Date.now() + 3600000);
-        else { if (k === "demain") d.setDate(d.getDate() + 1); else d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); d.setHours(9, 0, 0, 0); }
-        poserRappel(d.toISOString());
-      };
-    });
     var rl = fiche.querySelector("[data-relancer-lead]"); if (rl) rl.onclick = function () { relancerLeads([l.id]); };
     var sl = fiche.querySelector("[data-supprimer-lead]");
     if (sl) sl.onclick = function () { supprimerLeads([l.id], function () { delete etat.selection[l.id]; fermerFiche(); rendre(); }); };

@@ -583,3 +583,7 @@ td:last-child { white-space: nowrap; }
 .carte-lead__conseiller { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; font-weight: 600; }
 @media (max-width: 860px) { .tableau-leads { grid-auto-columns: 82vw; } }
 .contenu.contenu--large { max-width: none; }
+/* Commentaires : nom du conseiller discret, le texte d'abord */
+.fil-suivi__tete strong { font-size: .74rem; font-weight: 700; color: var(--doux); }
+.fil-suivi__tete span { font-size: .72rem; }
+.fiche__bloc--com .fil-suivi__tete { margin-bottom: .1rem; line-height: 1.3; }
