@@ -233,6 +233,17 @@
       return [l.prenom, l.nom, l.email, l.telephone, telLisible(l.telephone), l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
     });
   }
+  // Nombre de messageries laissées : passages au statut « Messagerie » et « +1 messagerie » (commentaires automatiques)
+  function nbMessageries(l) {
+    return etat.activite.filter(function (c) { return c.lead_id === l.id && c.automatique && (/→ Messagerie$/.test(c.texte) || /^Messagerie n°/.test(c.texte)); }).length;
+  }
+  function ajouterMessagerie(l) {
+    var n = nbMessageries(l) + 1;
+    var c = { lead_id: l.id, auteur_id: etat.moi.id, texte: "Messagerie n°" + n, automatique: true };
+    etat.activite.unshift(Object.assign({ cree_le: new Date().toISOString() }, c));
+    toast(nomLead(l) + " : messagerie ×" + n);
+    return sb.from("commentaires").insert(c).then(function (r) { if (r.error) toast("Non enregistré : " + r.error.message, true); });
+  }
   // Ordre dans chaque colonne : les plus récents en haut
   function priorite(a, b) { return new Date(b.cree_le) - new Date(a.cree_le); }
   function carteLead(l) {
@@ -241,11 +252,12 @@
     var conseiller = estAdmin() && !mesSeuls() ? nomConseiller(l.conseiller_id) : "";
     return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
       '<div class="carte-lead__haut">' + (estAdmin() ? '<span class="carte-lead__coche" title="Sélectionner"><input type="checkbox" aria-label="Sélectionner ' + esc(nomLead(l)) + '" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></span>" : "") +
-      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong></div>" +
+      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (nbMessageries(l) ? '<span class="carte-lead__messagerie" title="Messageries laissées">×' + nbMessageries(l) + "</span>" : "") + "</div>" +
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
       (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
+      (l.statut === "messagerie" ? '<button type="button" class="carte-lead__plus" data-plus-messagerie="' + l.id + '">+1 messagerie</button>' : "") +
       '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
       "</div>";
   }
@@ -304,7 +316,10 @@
         });
       });
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
-        b.onclick = function (e) { if (e.target.closest(".ligne__coche, .carte-lead__coche")) return; ouvrirFiche(Number(b.getAttribute("data-lead"))); };
+        b.onclick = function (e) {
+          var plus = e.target.closest("[data-plus-messagerie]");
+          if (plus) { var lp = etat.leads.filter(function (x) { return x.id === Number(plus.getAttribute("data-plus-messagerie")); })[0]; if (lp) ajouterMessagerie(lp).then(dessiner); return; }
+          if (e.target.closest(".ligne__coche, .carte-lead__coche")) return; ouvrirFiche(Number(b.getAttribute("data-lead"))); };
         b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
         b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
       });
@@ -419,6 +434,7 @@
       (l.email ? '<a class="btn btn--gros" href="mailto:' + esc(l.email) + '">E-mail</a>' : "") + "</div>" +
       '<div class="fiche__corps"><div class="fiche__col"><section class="fiche__bloc fiche__bloc--statut"><div class="statut-ligne"><label class="statut-champ"><span>Statut du lead</span><span class="statut-select statut-select--' + s0.couleur + '"><select data-statut-select>' + (estActuel(l.statut) ? STATUTS : [statut(l.statut)].concat(STATUTS)).map(function (s) { return '<option value="' + s.cle + '"' + (l.statut === s.cle ? " selected" : "") + ">" + s.nom + "</option>"; }).join("") + '</select></span></label>' +
       "</div>" +
+      '<p class="messageries">Messageries laissées : <strong data-nb-messageries>' + nbMessageries(l) + '</strong> <button type="button" class="btn btn--petit" data-plus-messagerie-fiche>+1 messagerie</button></p>' +
       (estAdmin() && l.statut === "nouveau" && l.conseiller_id ? '<button type="button" class="lien" data-relancer-lead>Relancer le conseiller par e-mail</button> ' : "") +
       (estAdmin() ? '<button type="button" class="lien lien--danger" data-supprimer-lead>Supprimer ce lead</button>' : "") +
       (estAdmin() ? '<label class="statut-champ statut-champ--plein"><span>Conseiller</span><select class="select" data-attribuer><option value="">Non attribué</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (l.conseiller_id === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select></label>" : "") +
@@ -463,6 +479,12 @@
       });
     };
     var rl = fiche.querySelector("[data-relancer-lead]"); if (rl) rl.onclick = function () { relancerLeads([l.id]); };
+    var pm = fiche.querySelector("[data-plus-messagerie-fiche]");
+    if (pm) pm.onclick = function () {
+      // Encore une messagerie : compteur +1 ; si le lead n'est pas déjà en « Messagerie », il y passe (ce qui compte aussi pour 1)
+      var suite = l.statut === "messagerie" ? ajouterMessagerie(l) : maj({ statut: "messagerie" }, "Statut : " + statut(l.statut).nom + " → Messagerie");
+      Promise.resolve(suite).then(function () { ouvrirFiche(l.id, true); if (etat.vue === "leads" || etat.vue === "mesleads") vueLeads(); });
+    };
     var sl = fiche.querySelector("[data-supprimer-lead]");
     if (sl) sl.onclick = function () { supprimerLeads([l.id], function () { delete etat.selection[l.id]; fermerFiche(); rendre(); }); };
     var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); if (at.value) notifier([l.id], at.value); };

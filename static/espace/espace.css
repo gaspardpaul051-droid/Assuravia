@@ -587,3 +587,9 @@ td:last-child { white-space: nowrap; }
 .fil-suivi__tete strong { font-size: .74rem; font-weight: 700; color: var(--doux); }
 .fil-suivi__tete span { font-size: .72rem; }
 .fiche__bloc--com .fil-suivi__tete { margin-bottom: .1rem; line-height: 1.3; }
+/* Compteur de messageries */
+.carte-lead__messagerie { flex: none; font-size: .74rem; font-weight: 800; color: #B4561A; background: #FDEBDD; border-radius: 999px; padding: .1rem .45rem; }
+.carte-lead__plus { justify-self: start; border: 1px dashed #E5A574; background: #FFF8F2; color: #B4561A; font-weight: 700; font-size: .74rem; border-radius: 6px; padding: .2rem .5rem; cursor: pointer; }
+.carte-lead__plus:hover { background: #FDEBDD; }
+.messageries { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 .2rem; font-size: .88rem; color: var(--doux); }
+.messageries strong { color: #B4561A; }
