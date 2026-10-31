@@ -625,3 +625,9 @@ tr[data-f] td:first-child { white-space: normal; }
 .actions-cellule { white-space: nowrap; }
 .actions-cellule .lien { margin-left: .6rem; }
 .tableau--conseillers td:first-child { min-width: 170px; }
+.regle__ajout { display: flex; gap: .4rem; align-items: center; margin-top: .6rem; padding-top: .6rem; border-top: 1px dashed var(--ligne); }
+.regle__ajout select { flex: 1; min-width: 0; }
+.regle__ajout input { width: 72px; }
+.regle__saisie .lien { margin-left: .4rem; font-size: .8rem; }
+.carte-lead__reserve { justify-self: start; max-width: 100%; font-size: .74rem; font-weight: 800; color: #4B3A8F; background: #EEE8FB; border-radius: 6px; padding: .15rem .45rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.champ-montant { width: 150px; }

@@ -106,6 +106,9 @@
 
   var etat = { moi: null, profil: null, conseillers: [], leads: [], activite: [], regles: [], brouillons: [], selection: {}, vue: "leads", filtre: "tous", recherche: "", conseillerFiltre: "", leadOuvert: null, commentaires: [], message: "" };
   var estAdmin = function () { return etat.profil && etat.profil.role === "admin"; };
+  // Lead mis de côté par une règle (colonne leads.reserve) : rangé sous « Admin », sans conseiller
+  var estReserve = function (l) { return !!(l && l.reserve && !l.conseiller_id); };
+  var conseillerDuLead = function (l) { return estReserve(l) ? "Admin · mis de côté" : nomConseiller(l.conseiller_id); };
   var nomConseiller = function (id) { var c = etat.conseillers.filter(function (x) { return x.id === id; })[0]; return c ? c.nom : "Non attribué"; };
 
   function toast(texte, erreur) {
@@ -218,7 +221,7 @@
         if (!etat.profil) { app.innerHTML = '<div class="ecran-centre"><div class="carte-connexion"><h1>Compte sans fiche</h1><p>Votre compte n\'est pas encore activé comme conseiller. Contactez l\'administrateur.</p><button class="btn" data-sortir>Se déconnecter</button></div></div>'; app.querySelector("[data-sortir]").onclick = sortir; return; }
         var direct = location.hash.match(/lead=(\d+)/);
         if (direct) { etat.leadOuvert = Number(direct[1]); history.replaceState(null, "", location.pathname); }
-        Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), chargerSoldes(), estAdmin() ? chargerRegles() : null]).then(rendre);
+        Promise.all([chargerConseillers(), chargerLeads(), chargerActivite(), chargerSoldes(), estAdmin() ? chargerRegles() : null, estAdmin() ? chargerReserve() : null]).then(rendre);
       });
     });
   }
@@ -251,7 +254,9 @@
   function leadsFiltres() {
     var q = etat.recherche.toLowerCase();
     return leadsBase().filter(function (l) {
-      if (!mesSeuls() && etat.conseillerFiltre && (l.conseiller_id || "") !== (etat.conseillerFiltre === "aucun" ? "" : etat.conseillerFiltre)) return false;
+      if (!mesSeuls() && etat.conseillerFiltre === "reserve") { if (!estReserve(l)) return false; }
+      else if (!mesSeuls() && etat.conseillerFiltre === "aucun") { if (l.conseiller_id || estReserve(l)) return false; }
+      else if (!mesSeuls() && etat.conseillerFiltre && l.conseiller_id !== etat.conseillerFiltre) return false;
       if (!q) return true;
       return [l.prenom, l.nom, l.email, l.telephone, telLisible(l.telephone), l.produit, l.formulaire, l.canton].join(" ").toLowerCase().indexOf(q) >= 0;
     });
@@ -272,13 +277,14 @@
   function carteLead(l) {
     var n = Number(String(l.prime || "").replace(/['\s]/g, "").replace(",", "."));
     var prime = !l.prime || n === 0 ? "" : isNaN(n) ? String(l.prime) : "CHF " + (n % 1 ? n.toFixed(2) : String(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-    var conseiller = estAdmin() && !mesSeuls() ? nomConseiller(l.conseiller_id) : "";
+    var conseiller = estAdmin() && !mesSeuls() ? conseillerDuLead(l) : "";
     return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
       '<div class="carte-lead__haut">' + (estAdmin() ? '<span class="carte-lead__coche" title="Sélectionner"><input type="checkbox" aria-label="Sélectionner ' + esc(nomLead(l)) + '" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></span>" : "") +
       '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (nbMessageries(l) ? '<span class="carte-lead__messagerie" title="Messageries laissées">×' + nbMessageries(l) + "</span>" : "") + "</div>" +
       '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
       '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
       (prime ? '<div class="carte-lead__prime">Prime estimée : ' + esc(prime) + "</div>" : "") +
+      (estReserve(l) ? '<div class="carte-lead__reserve" title="' + esc(l.reserve_raison || "") + '">Mis de côté' + (l.reserve_raison ? " · " + esc(l.reserve_raison) : "") + "</div>" : "") +
       (valeurLead(l) > VALEUR_BASE ? '<div class="carte-lead__super">★ Super lead · ' + chf(valeurLead(l)) + "</div>" : "") +
       (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
       (l.statut === "messagerie" ? '<button type="button" class="carte-lead__plus" data-plus-messagerie="' + l.id + '">+1 messagerie</button>' : "") +
@@ -304,7 +310,7 @@
     zone.innerHTML =
       '<div class="tete"><div class="tete__titre"><div><h1>' + (estAdmin() && !mesSeuls() ? "Tous les leads" : "Mes leads") + '</h1><p class="sous">' + base.length + " lead" + (base.length > 1 ? "s" : "") + '</p></div>' + (estAdmin() && !mesSeuls() && etat.conseillerFiltre ? encartSolde(etat.conseillers.filter(function (c) { return c.id === etat.conseillerFiltre; })[0] || {}) : "") + '</div>' +
       '<div class="tete__actions"><input class="recherche" type="search" placeholder="Rechercher un nom, un e-mail, un téléphone…" value="' + esc(etat.recherche) + '" data-recherche>' +
-      (estAdmin() && !mesSeuls() ? '<select class="select" data-conseiller-filtre><option value="">Tous les conseillers</option><option value="aucun"' + (etat.conseillerFiltre === "aucun" ? " selected" : "") + ">Non attribués</option>" + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (etat.conseillerFiltre === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select>" : "") +
+      (estAdmin() && !mesSeuls() ? '<select class="select" data-conseiller-filtre><option value="">Tous les conseillers</option><option value="reserve"' + (etat.conseillerFiltre === "reserve" ? " selected" : "") + ">Admin · leads mis de côté</option><option value=\"aucun\"" + (etat.conseillerFiltre === "aucun" ? " selected" : "") + ">Non attribués</option>" + etat.conseillers.map(function (c) { return '<option value="' + c.id + '"' + (etat.conseillerFiltre === c.id ? " selected" : "") + ">" + esc(c.nom) + "</option>"; }).join("") + "</select>" : "") +
       '<button class="btn" data-rafraichir>Actualiser</button></div></div>' +
       (estAdmin() ? '<div class="selection-outils"><label class="tout"><input type="checkbox" data-tout> Tout sélectionner (liste affichée)</label></div>' +
         '<div class="barre-attribuer" data-barre-attribuer hidden><strong data-nb></strong><select class="select" data-vers><option value="">Attribuer à…</option>' + etat.conseillers.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + (c.actif ? "" : " (inactif)") + "</option>"; }).join("") + '<option value="aucun">Personne (retirer)</option></select><button class="btn btn--plein" data-appliquer>Attribuer</button><button class="btn" data-relancer-lot>Relancer par e-mail</button><button class="btn btn--danger" data-supprimer-lot>Supprimer</button><button class="lien" data-vider>Annuler la sélection</button></div>' : "") +
@@ -370,7 +376,7 @@
         var ids = Object.keys(etat.selection).map(Number);
         var cible = vers === "aucun" ? null : vers;
         appl.disabled = true;
-        sb.from("leads").update({ conseiller_id: cible }).in("id", ids).then(function (r) {
+        sb.from("leads").update(Object.assign({ conseiller_id: cible }, cible && etat.leads.some(function (x) { return "reserve" in x; }) ? { reserve: false } : {})).in("id", ids).then(function (r) {
           appl.disabled = false;
           if (r.error) { toast("Erreur : " + r.error.message, true); return; }
           sb.from("commentaires").insert(ids.map(function (id) { return { lead_id: id, auteur_id: etat.moi.id, texte: "Attribué à " + nomConseiller(cible), automatique: true }; })).then(function () {});
@@ -518,7 +524,7 @@
     };
     var sl = fiche.querySelector("[data-supprimer-lead]");
     if (sl) sl.onclick = function () { supprimerLeads([l.id], function () { delete etat.selection[l.id]; fermerFiche(); rendre(); }); };
-    var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj({ conseiller_id: at.value || null }, "Attribué à " + nomConseiller(at.value || null)); if (at.value) notifier([l.id], at.value); };
+    var at = fiche.querySelector("[data-attribuer]"); if (at) at.onchange = function () { maj(Object.assign({ conseiller_id: at.value || null }, at.value && "reserve" in l ? { reserve: false } : {}), "Attribué à " + nomConseiller(at.value || null)); if (at.value) notifier([l.id], at.value); };
     var form = fiche.querySelector("[data-commenter]");
     var zoneTexte = form.texte;
     var ajuster = function () { zoneTexte.style.height = "auto"; zoneTexte.style.height = Math.min(zoneTexte.scrollHeight + 2, 260) + "px"; };
@@ -579,6 +585,7 @@
           '<td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enregistrer>Enregistrer</button><button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? '<button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<div data-regles></div>' +
+      '<div data-reserve></div>' +
       '<form class="carte inviter" data-inviter><h2>Ajouter un conseiller</h2><p class="sous">Vous créez son accès avec un mot de passe provisoire à lui transmettre. À sa première connexion, il doit choisir son propre mot de passe.</p>' +
       '<div class="grille4 grille3"><label>Nom<input class="select" name="nom" required placeholder="Jean Dupont"></label><label>E-mail<input class="select" type="email" name="email" required placeholder="jean@exemple.ch"></label><label>Mot de passe provisoire<input class="select" name="provisoire" required minlength="10" value="' + motProvisoire() + '"></label></div>' +
       '<div class="inviter__actions"><button class="btn btn--plein" type="submit">Créer l\'accès</button><button class="lien" type="button" data-par-email>ou l\'inviter par e-mail (lien pour choisir son mot de passe)</button></div></form>';
@@ -607,6 +614,7 @@
       };
     });
     vueRegles(zone.querySelector("[data-regles]"));
+    vueReserve(zone.querySelector("[data-reserve]"));
     var f = zone.querySelector("[data-inviter]");
     f.onsubmit = function (e) {
       e.preventDefault();
@@ -626,6 +634,9 @@
   }
 
   // ---------- Répartition par page ou formulaire (admin) ----------
+  function chargerReserve() {
+    return sb.from("regles_reserve").select("*").order("id").then(function (r) { etat.reserveErreur = !!r.error; etat.reserve = r.data || []; });
+  }
   function chargerRegles() {
     return sb.from("regles").select("*").then(function (r) { etat.reglesErreur = !!r.error; etat.regles = r.data || []; });
   }
@@ -640,6 +651,45 @@
     if (pages.length > 3) return "Formulaire « " + s + " », présent sur " + pages.length + " pages";
     return "Formulaire « " + s + " »" + (pages.length ? " · " + pages.join(", ") : "");
   }
+  // ---------- Leads mis de côté (admin) : critères qui rangent un lead sous « Admin », sans conseiller ----------
+  function vueReserve(boite) {
+    var regles = etat.reserve || [];
+    var champ = function (v, attr, ph) { return '<input class="select champ-montant" type="number" min="0" step="100" placeholder="' + ph + '" value="' + (v === null || v === undefined ? "" : Number(v)) + '" ' + attr + ">"; };
+    boite.innerHTML =
+      '<h2 class="titre-section">Leads mis de côté (Admin)</h2><p class="sous sous--section">Un lead qui atteint tous les critères d\'une règle active n\'est attribué à personne : il est rangé sous « Admin » (filtre « Admin · leads mis de côté » de Tous les leads) et vous l\'attribuez vous-même. Laissez un critère vide pour l\'ignorer. Les règles par page et les conseillers à la pièce ne s\'appliquent pas à ces leads.</p>' +
+      (etat.reserveErreur ? '<p class="alerte">Pour activer cette fonction, lancez une fois le script espace/maj-5-mise-de-cote.sql dans Supabase (SQL Editor).</p>' : "") +
+      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Nom de la règle</th><th>Prime estimée au moins (CHF)</th><th>Chiffre d\'affaires au moins (CHF)</th><th>Active</th><th></th></tr></thead><tbody>' +
+      regles.map(function (r) {
+        return '<tr data-r="' + r.id + '"><td><input class="select" data-nom value="' + esc(r.nom) + '" placeholder="Ex. Gros clients"></td><td>' + champ(r.prime_min, "data-prime", "–") + "</td><td>" + champ(r.ca_min, "data-ca", "–") + '</td><td><label class="interrupteur"><input type="checkbox" data-actif' + (r.actif ? " checked" : "") + '><span></span></label></td><td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button><button class="lien lien--rouge" data-suppr>Supprimer</button></td></tr>';
+      }).join("") +
+      '<tr data-nouvelle-regle><td><input class="select" data-nom placeholder="Nouvelle règle, ex. Gros clients"></td><td>' + champ(null, "data-prime", "Ex. 2000") + "</td><td>" + champ(null, "data-ca", "Ex. 1000000") + '</td><td></td><td class="actions-cellule"><button class="btn btn--petit" data-creer>Ajouter la règle</button></td></tr>' +
+      "</tbody></table></div>";
+    var lire = function (tr) {
+      var n = function (sel) { var v = tr.querySelector(sel).value; return v === "" ? null : Math.max(0, Number(v)); };
+      return { nom: tr.querySelector("[data-nom]").value.trim(), prime_min: n("[data-prime]"), ca_min: n("[data-ca]") };
+    };
+    var fini = function (msg) { return function (r) { if (r.error) { toast("Erreur : " + r.error.message, true); return; } chargerReserve().then(function () { vueReserve(boite); toast(msg); }); }; };
+    boite.querySelectorAll("tr[data-r]").forEach(function (tr) {
+      var id = Number(tr.getAttribute("data-r"));
+      tr.querySelector("[data-enreg]").onclick = function () {
+        var v = lire(tr); v.actif = tr.querySelector("[data-actif]").checked;
+        if (v.prime_min === null && v.ca_min === null) { toast("Indiquez au moins un critère.", true); return; }
+        sb.from("regles_reserve").update(v).eq("id", id).then(fini("Règle enregistrée."));
+      };
+      tr.querySelector("[data-actif]").onchange = function () { tr.querySelector("[data-enreg]").click(); };
+      tr.querySelector("[data-suppr]").onclick = function () { if (confirm("Supprimer cette règle de mise de côté ?")) sb.from("regles_reserve").delete().eq("id", id).then(fini("Règle supprimée.")); };
+    });
+    var tn = boite.querySelector("tr[data-nouvelle-regle]");
+    tn.querySelector("[data-creer]").onclick = function () {
+      var v = lire(tn);
+      if (v.prime_min === null && v.ca_min === null) { toast("Indiquez au moins un critère : prime estimée ou chiffre d'affaires.", true); return; }
+      if (!v.nom) v.nom = "Mise de côté";
+      sb.from("regles_reserve").insert(v).then(fini("Règle ajoutée : les prochains leads concernés seront mis de côté."));
+    };
+  }
+  function ligneRegle(c, v) {
+    return '<div class="regle__part"><span>' + esc(c.nom) + '</span><span class="regle__saisie"><input class="select" type="number" min="0" max="100" value="' + v + '" data-c="' + c.id + '" aria-label="Pourcentage pour ' + esc(c.nom) + '"><em>%</em><button type="button" class="lien lien--rouge" data-retirer="' + c.id + '" title="Retirer">Retirer</button></span></div>';
+  }
   function vueRegles(boite) {
     etat.brouillons = etat.brouillons || [];
     var actifs = etat.conseillers.filter(function (c) { return c.actif; });
@@ -653,28 +703,49 @@
     var optionsPages = ["/lp/"].concat(C.pages || []).filter(function (k) { return sources.indexOf(k) < 0; })
       .map(function (k) { return '<option value="' + esc(k) + '">' + esc(nomSource(k)) + "</option>"; }).join("");
     boite.innerHTML =
-      '<h2 class="titre-section">Répartition par page ou formulaire</h2><p class="sous sous--section">Pour une source choisie (utile pour les conseillers au budget), ces parts décident qui reçoit le lead. Un conseiller à la pièce sans solde suffisant est sauté. Une règle de page passe avant une règle de formulaire. Exemple : 70 et 30 = 70 % / 30 %.</p>' +
+      '<h2 class="titre-section">Répartition par page ou formulaire</h2><p class="sous sous--section">Pour une source choisie (utile pour les conseillers au budget), ces parts décident qui reçoit le lead. Un conseiller à la pièce sans solde suffisant est sauté. Une règle de page passe avant une règle de formulaire. Ajoutez les conseillers voulus avec leur pourcentage, par exemple 70 % et 30 %.</p>' +
       (etat.reglesErreur ? '<div class="alerte">Pour activer cette fonction, exécutez une fois le fichier <strong>espace/maj-1-repartition-par-source.sql</strong> dans Supabase › SQL Editor.</div>' : "") +
       '<div class="regles">' + (sources.length ? sources.map(function (s) {
-        var total = actifs.reduce(function (t, c) { return t + (Number(poids(s, c.id)) || 0); }, 0);
-        return '<div class="regle" data-source="' + esc(s) + '"><div class="regle__tete"><div><strong>' + esc(nomSource(s)) + "</strong><small>" + esc(detailSource(s)) + '</small></div><button class="lien" data-suppr>Supprimer</button></div>' +
-          '<div class="regle__parts">' + actifs.map(function (c) {
-            var v = Number(poids(s, c.id)) || 0;
-            return '<label class="regle__part"><span>' + esc(c.nom) + '</span><span class="regle__saisie"><input class="select" type="number" min="0" max="100" value="' + v + '" data-c="' + c.id + '"><em data-pct>' + (total ? Math.round(v / total * 100) : 0) + " %</em></span></label>";
-          }).join("") + '</div><div class="regle__pied"><span class="regle__info" data-info>' + (total ? "" : "Aucune part : ces leads vont aux conseillers à la pièce.") + '</span><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button></div></div>';
+        // Seuls les conseillers qui ont une part apparaissent ; on en ajoute avec « Ajouter un conseiller »
+        var avec = actifs.filter(function (c) { return (Number(poids(s, c.id)) || 0) > 0; });
+        return '<div class="regle" data-source="' + esc(s) + '"><div class="regle__tete"><div><strong>' + esc(nomSource(s)) + "</strong><small>" + esc(detailSource(s)) + '</small></div><button class="lien" data-suppr>Supprimer la règle</button></div>' +
+          '<div class="regle__parts" data-parts>' + avec.map(function (c) { return ligneRegle(c, Number(poids(s, c.id)) || 0); }).join("") + "</div>" +
+          '<div class="regle__ajout"><select class="select" data-ajout-c><option value="">Ajouter un conseiller…</option>' + actifs.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nom) + "</option>"; }).join("") + '</select><input class="select" type="number" min="1" max="100" placeholder="%" data-ajout-pct aria-label="Pourcentage"><button class="btn btn--petit" data-ajout-ok>Ajouter</button></div>' +
+          '<div class="regle__pied"><span class="regle__info" data-info></span><button class="btn btn--petit btn--plein" data-enreg>Enregistrer</button></div></div>';
       }).join("") : '<p class="vide-mini">Aucune règle : tous les leads vont aux conseillers à la pièce qui ont du solde.</p>') + "</div>" +
       '<div class="ajout-regle"><select class="select" data-nouvelle><option value="">Ajouter une règle pour…</option><optgroup label="Un formulaire">' + optionsForms + '</optgroup><optgroup label="Une page (et ses sous-pages)">' + optionsPages + '</optgroup></select><button class="btn" data-ajouter>Ajouter</button></div>';
     boite.querySelectorAll(".regle").forEach(function (bloc) {
       var s = bloc.getAttribute("data-source");
-      var champs = bloc.querySelectorAll("input[data-c]");
+      var retires = {};
+      var zoneParts = bloc.querySelector("[data-parts]");
       var recalcul = function () {
-        var tot = 0; champs.forEach(function (i) { tot += Math.max(0, parseInt(i.value, 10) || 0); });
-        champs.forEach(function (i) { i.parentNode.querySelector("[data-pct]").textContent = (tot ? Math.round((Math.max(0, parseInt(i.value, 10) || 0)) / tot * 100) : 0) + " %"; });
-        bloc.querySelector("[data-info]").textContent = tot ? "" : "Aucune part : ces leads vont aux conseillers à la pièce.";
+        var tot = 0, n = 0;
+        zoneParts.querySelectorAll("input[data-c]").forEach(function (i) { tot += Math.max(0, parseInt(i.value, 10) || 0); n++; });
+        bloc.querySelector("[data-info]").textContent = !n ? "Aucun conseiller : ces leads vont aux conseillers à la pièce." : "Total : " + tot + " %" + (tot !== 100 ? " (les parts seront réparties en proportion)" : "");
+        // Un conseiller déjà présent n'est plus proposé dans « Ajouter »
+        var presents = {}; zoneParts.querySelectorAll("input[data-c]").forEach(function (i) { presents[i.getAttribute("data-c")] = true; });
+        bloc.querySelectorAll("[data-ajout-c] option[value]").forEach(function (o) { if (o.value) o.hidden = !!presents[o.value]; });
       };
-      champs.forEach(function (i) { i.addEventListener("input", recalcul); });
+      var brancher = function () {
+        zoneParts.querySelectorAll("input[data-c]").forEach(function (i) { i.oninput = recalcul; });
+        zoneParts.querySelectorAll("[data-retirer]").forEach(function (b) { b.onclick = function () { var id = b.getAttribute("data-retirer"); retires[id] = true; b.closest(".regle__part").remove(); recalcul(); }; });
+      };
+      brancher(); recalcul();
+      bloc.querySelector("[data-ajout-ok]").onclick = function () {
+        var sel = bloc.querySelector("[data-ajout-c]"), pct = bloc.querySelector("[data-ajout-pct]");
+        var c = etat.conseillers.filter(function (x) { return x.id === sel.value; })[0];
+        var v = Math.max(0, parseInt(pct.value, 10) || 0);
+        if (!c) { toast("Choisissez un conseiller.", true); return; }
+        if (!v) { toast("Indiquez un pourcentage.", true); return; }
+        delete retires[c.id];
+        zoneParts.insertAdjacentHTML("beforeend", ligneRegle(c, v));
+        sel.value = ""; pct.value = ""; brancher(); recalcul();
+      };
       bloc.querySelector("[data-enreg]").onclick = function () {
-        var lignes = []; champs.forEach(function (i) { lignes.push({ source: s, conseiller_id: i.getAttribute("data-c"), poids: Math.max(0, parseInt(i.value, 10) || 0) }); });
+        var lignes = [];
+        zoneParts.querySelectorAll("input[data-c]").forEach(function (i) { lignes.push({ source: s, conseiller_id: i.getAttribute("data-c"), poids: Math.max(0, parseInt(i.value, 10) || 0) }); });
+        Object.keys(retires).forEach(function (id) { lignes.push({ source: s, conseiller_id: id, poids: 0 }); });
+        if (!lignes.length) { toast("Ajoutez au moins un conseiller.", true); return; }
         sb.from("regles").upsert(lignes, { onConflict: "source,conseiller_id" }).then(function (r) {
           if (r.error) { toast("Erreur : " + r.error.message, true); return; }
           etat.brouillons = etat.brouillons.filter(function (x) { return x !== s; });

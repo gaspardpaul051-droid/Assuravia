@@ -66,3 +66,29 @@ export function sourceDuLead(regles, lead) {
   if (pages.length) return pages[0];
   return sources.includes(lead.formulaire) ? lead.formulaire : null;
 }
+
+
+// Montant lisible dans un texte : « CHF 100'000 à 500'000 » -> 100000, « Plus de CHF 1 million » -> 1000000,
+// « Jusqu'à CHF 100'000 » -> 0 (borne basse de la tranche), « 1'250.50 » -> 1250.5. Null si aucun nombre.
+export function montant(texte) {
+  if (texte === null || texte === undefined || texte === "") return null;
+  if (typeof texte === "number") return texte;
+  const t = String(texte).toLowerCase().replace(/[’'\s]/g, "");
+  if (/^jusqu/.test(t)) return 0;
+  const m = t.match(/(\d+(?:[.,]\d+)?)(million|mio)?/);
+  if (!m) return null;
+  return Number(m[1].replace(",", ".")) * (m[2] ? 1e6 : 1);
+}
+
+// Règle de mise de côté qui s'applique au lead (tous les critères remplis de la règle doivent être atteints), ou null
+export function regleReserve(regles, lead) {
+  const prime = montant(lead.prime);
+  const ca = montant((lead.donnees || {}).chiffre_affaires);
+  return (regles || []).find((r) => {
+    if (r.actif === false) return false;
+    const crit = [];
+    if (r.prime_min !== null && r.prime_min !== undefined && r.prime_min !== "") crit.push(prime !== null && prime >= Number(r.prime_min));
+    if (r.ca_min !== null && r.ca_min !== undefined && r.ca_min !== "") crit.push(ca !== null && ca >= Number(r.ca_min));
+    return crit.length > 0 && crit.every(Boolean);
+  }) || null;
+}

@@ -2,7 +2,7 @@
 // Utilisé par submission-created (copie Netlify Forms) et par la fonction lead (envoi direct depuis le site).
 // Variables d'environnement Netlify : SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 
-import { choisirConseiller, extraireLead, memeContact, sourceDuLead } from "./leads.mjs";
+import { choisirConseiller, extraireLead, memeContact, regleReserve, sourceDuLead } from "./leads.mjs";
 import { notifierLead } from "./mail.mjs";
 
 export async function enregistrer(payload) {
@@ -83,6 +83,10 @@ export async function enregistrer(payload) {
       const possibles = pieces.filter(disponible).sort((x, y) => solde[y.id] - solde[x.id]);
       choisi = possibles[0] || null;
     }
+    // Mise de côté : un lead qui remplit les critères d'une règle active n'est attribué à personne (rangé sous « Admin »)
+    let reserve = null;
+    try { reserve = regleReserve((await api("regles_reserve?select=nom,prime_min,ca_min,actif&actif=eq.true")) || [], lead); } catch (e) { reserve = null; }
+    if (reserve) { choisi = null; lead.reserve = true; lead.reserve_raison = reserve.nom || "Règle de mise de côté"; }
     lead.conseiller_id = choisi ? choisi.id : null;
 
     const cree = await api("leads", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(lead) });
@@ -90,7 +94,7 @@ export async function enregistrer(payload) {
     if (id) {
       await api("commentaires", {
         method: "POST",
-        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (choisi ? " et attribué à " + choisi.nom + (source && choisi.poids !== undefined && regles.some((r) => r.source === source && r.conseiller_id === choisi.id) ? " (règle « " + source + " »)" : choisi.type === "piece" ? " (à la pièce, solde avant ce lead : CHF " + Math.round(solde[choisi.id]) + ")" : "") : " (aucun conseiller disponible : à attribuer)") + ".", automatique: true }),
+        body: JSON.stringify({ lead_id: id, texte: "Lead reçu" + (reserve ? " et mis de côté sous Admin (règle « " + (reserve.nom || "mise de côté") + " »)" : choisi ? " et attribué à " + choisi.nom + (source && choisi.poids !== undefined && regles.some((r) => r.source === source && r.conseiller_id === choisi.id) ? " (règle « " + source + " »)" : choisi.type === "piece" ? " (à la pièce, solde avant ce lead : CHF " + Math.round(solde[choisi.id]) + ")" : "") : " (aucun conseiller disponible : à attribuer)") + ".", automatique: true }),
       });
     }
     if (choisi) {
