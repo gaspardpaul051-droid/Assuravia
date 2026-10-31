@@ -241,14 +241,17 @@
     return new Date(b.cree_le) - new Date(a.cree_le);
   }
   function carteLead(l) {
+    var n = Number(String(l.prime || "").replace(/['\s]/g, "").replace(",", "."));
+    var prime = !l.prime || n === 0 ? "" : isNaN(n) ? String(l.prime) : "CHF " + (n % 1 ? n.toFixed(2) : String(n)).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    var conseiller = estAdmin() && !mesSeuls() ? nomConseiller(l.conseiller_id) : "";
     return '<div role="button" tabindex="0" draggable="true" class="carte-lead' + (l.statut === "nouveau" ? " carte-lead--nouveau" : "") + (aRappeler(l) ? " carte-lead--rappel" : "") + (etat.selection[l.id] ? " carte-lead--choisie" : "") + '" data-lead="' + l.id + '">' +
-      '<div class="carte-lead__haut">' + (estAdmin() ? '<label class="ligne__coche" title="Sélectionner"><input type="checkbox" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></label>" : "") +
-      '<strong class="carte-lead__nom">' + esc(nomLead(l)) + "</strong>" + (l.statut === "nouveau" ? '<span class="point-vif"></span>' : "") + "</div>" +
-      '<span class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</span>" +
-      '<span class="carte-lead__produit"><span class="etiquette">' + esc(produitNom(l)) + "</span>" + (l.prime ? "<small>" + esc(formatPrime(l.prime)) + "</small>" : "") + "</span>" +
-      '<span class="carte-lead__pied"><span>' + depuis(l.cree_le) + "</span>" + (estAdmin() && !mesSeuls() ? "<span>" + esc(nomConseiller(l.conseiller_id)) + "</span>" : "") + "</span>" +
-      (l.rappel_le ? '<span class="carte-lead__rappel' + (aRappeler(l) ? " urgent" : "") + '">Rappel ' + date(l.rappel_le) + "</span>" : "") +
-      (!estActuel(l.statut) ? '<span class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</span>" : "") +
+      '<div class="carte-lead__haut">' + (estAdmin() ? '<span class="carte-lead__coche" title="Sélectionner"><input type="checkbox" aria-label="Sélectionner ' + esc(nomLead(l)) + '" data-coche="' + l.id + '"' + (etat.selection[l.id] ? " checked" : "") + "></span>" : "") +
+      '<strong class="carte-lead__nom" title="' + esc(nomLead(l)) + '">' + esc(nomLead(l)) + "</strong>" + (prime ? '<span class="carte-lead__prime">' + esc(prime) + "</span>" : "") + "</div>" +
+      '<div class="carte-lead__tel">' + esc(l.telephone ? telLisible(l.telephone) : (l.email || "Sans coordonnées")) + "</div>" +
+      '<div class="carte-lead__produit" title="' + esc(produitNom(l)) + '">' + esc(produitNom(l)) + "</div>" +
+      (l.rappel_le ? '<div class="carte-lead__rappel' + (aRappeler(l) ? " carte-lead__rappel--du" : "") + '">Rappel ' + date(l.rappel_le) + "</div>" : "") +
+      (!estActuel(l.statut) ? '<div class="carte-lead__ancien">' + esc(statut(l.statut).nom) + "</div>" : "") +
+      '<div class="carte-lead__pied"><span class="carte-lead__depuis">' + depuis(l.cree_le) + "</span>" + (conseiller ? '<span class="carte-lead__conseiller" title="' + esc(conseiller) + '">' + esc(conseiller) + "</span>" : "") + "</div>" +
       "</div>";
   }
   function changerStatut(l, cle) {
@@ -309,7 +312,7 @@
         });
       });
       zone.querySelectorAll("[data-lead]").forEach(function (b) {
-        b.onclick = function (e) { if (e.target.closest(".ligne__coche")) return; ouvrirFiche(Number(b.getAttribute("data-lead"))); };
+        b.onclick = function (e) { if (e.target.closest(".ligne__coche, .carte-lead__coche")) return; ouvrirFiche(Number(b.getAttribute("data-lead"))); };
         b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
         b.onkeydown = function (e) { if (e.key === "Enter") ouvrirFiche(Number(b.getAttribute("data-lead"))); };
       });
