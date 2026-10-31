@@ -567,10 +567,8 @@
       '' + (C.mail ? "" : '<p class="alerte">Notifications par e-mail : l\'envoi n\'est pas encore configuré. Ajoutez la variable RESEND_API_KEY dans Netlify (voir espace/LISEZMOI.md), puis republiez. Les choix faits ici seront appliqués dès que ce sera fait.</p>') +
       '<h2 class="titre-section">Conseillers</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut, plus pour un super lead). Un lead réattribué ou supprimé est remboursé. « Ajouter » augmente le crédit.</p>' +
       (etat.soldesErreur ? '<p class="alerte">Pour activer les formules et les soldes, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
-      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Formule</th><th>Solde</th><th>Ajouter</th><th>Actif</th><th>Notif.</th><th>Leads 30 j</th><th>Signés</th><th></th></tr></thead><tbody>' +
+      '<div class="tableau tableau--conseillers"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Formule</th><th>Solde</th><th>Ajouter</th><th>Actif</th><th>Notif.</th><th></th></tr></thead><tbody>' +
       etat.conseillers.map(function (c) {
-        var siens = etat.leads.filter(function (l) { return l.conseiller_id === c.id; });
-        var recents = siens.filter(function (l) { return new Date(l.cree_le) >= mois; }).length;
         var so = (etat.soldes || {})[c.id] || {}, piece = c.type === "piece", solde = so.solde !== undefined ? Number(so.solde) : Number(c.credit || 0);
         return '<tr data-c="' + c.id + '"><td><strong>' + esc(c.nom) + "</strong><small>" + esc(c.email || "") + "</small></td>" +
           '<td><select class="select" data-role><option value="conseiller"' + (c.role === "conseiller" ? " selected" : "") + '>Conseiller</option><option value="admin"' + (c.role === "admin" ? " selected" : "") + ">Admin</option></select></td>" +
@@ -579,7 +577,6 @@
           '<td><input class="select champ-chf" type="number" step="10" placeholder="CHF" data-ajout aria-label="Ajouter du crédit (CHF)"' + (piece ? "" : " disabled") + "></td>" +
           '<td><label class="interrupteur"><input type="checkbox" data-actif' + (c.actif ? " checked" : "") + "><span></span></label></td>" +
           '<td><label class="interrupteur" title="Recevoir un e-mail à chaque lead attribué"><input type="checkbox" data-notif' + (c.notif_email ? " checked" : "") + (c.email ? "" : " disabled") + "><span></span></label></td>" +
-          "<td>" + recents + "</td><td>" + siens.filter(function (l) { return l.statut === "signe"; }).length + "</td>" +
           '<td class="actions-cellule"><button class="btn btn--petit btn--plein" data-enregistrer>Enregistrer</button><button class="lien" data-reinit>Mot de passe</button>' + (c.id !== etat.moi.id ? '<button class="lien lien--rouge" data-supprimer>Supprimer</button>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
       '<div data-regles></div>' +
