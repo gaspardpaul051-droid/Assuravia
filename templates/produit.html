@@ -46,10 +46,10 @@
       <p class="form-sous-titre">Dans quelles situations voulez-vous être défendu ? Cochez, votre prime s'affiche en 2 minutes.</p>
       <form class="pj-depart" action="{{ produit.simulateur }}" method="get">
         <div class="situations">
-          {% for icone, titre, prix in [("mallette", "Travail", 0), ("maison", "Logement", 0), ("voiture", "Circulation", 70), ("colis", "Achats et contrats", 0), ("coeur", "Santé et assurances", 0), ("cyber", "Internet", 0)] %}
+          {% for icone, titre in [("mallette", "Travail"), ("maison", "Logement"), ("voiture", "Circulation"), ("colis", "Achats et contrats"), ("coeur", "Santé et assurances"), ("cyber", "Internet")] %}
           <label class="situation"><input type="checkbox" name="situations_pj" value="{{ titre }}">
             <span class="situation__icone">{{ i.icone(icone) }}</span>
-            <span class="situation__titre">{{ titre }}{% if prix %} <small class="situation__prix">+ CHF {{ prix }} / an</small>{% endif %}</span>
+            <span class="situation__titre">{{ titre }}</span>
             <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
           </label>
           {% endfor %}
