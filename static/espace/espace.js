@@ -562,6 +562,68 @@
     if (!silencieux) fiche.scrollTop = 0;
   }
 
+  // ---------- Suivi du mois : une case par conseiller (objectif, reçu, rythme, leads possibles, plafond par jour) ----------
+  function suiviConseiller(c) {
+    var now = new Date(), debutMois = new Date(now.getFullYear(), now.getMonth(), 1), finMois = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    var debutJour = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var siens = etat.leads.filter(function (l) { return l.conseiller_id === c.id; });
+    var duMois = siens.filter(function (l) { return new Date(l.cree_le) >= debutMois; });
+    var recu = duMois.reduce(function (t, l) { return t + valeurLead(l); }, 0);
+    var aujourdhui = siens.filter(function (l) { return new Date(l.cree_le) >= debutJour; }).length;
+    var piece = c.type === "piece", so = (etat.soldes || {})[c.id] || {};
+    var solde = so.solde !== undefined ? Number(so.solde) : Number(c.credit || 0);
+    var fixe = c.objectif_mois != null && c.objectif_mois !== "" ? Number(c.objectif_mois) : null;
+    // Sans objectif fixé, un conseiller à la pièce vise ce qu'il peut encore payer ce mois : reçu + solde
+    var objectif = fixe !== null ? fixe : piece ? recu + Math.max(0, solde) : null;
+    var frac = (now - debutMois) / (finMois - debutMois);
+    var restants = piece ? Math.max(0, Math.floor(solde / VALEUR_BASE)) : objectif !== null ? Math.max(0, Math.floor((objectif - recu) / VALEUR_BASE)) : null;
+    var rythme = "aucun", texte = "Pas d'objectif";
+    if (objectif) {
+      var attendu = objectif * frac;
+      if (recu >= objectif) { rythme = "atteint"; texte = "Objectif atteint"; }
+      else if (attendu < VALEUR_BASE) { rythme = "heure"; texte = "À l'heure"; }
+      else if (recu > attendu * 1.2) { rythme = "avance"; texte = "En avance"; }
+      else if (recu < attendu * 0.8) { rythme = "retard"; texte = "En retard"; }
+      else { rythme = "heure"; texte = "À l'heure"; }
+    }
+    return { piece: piece, solde: solde, fixe: fixe, objectif: objectif, recu: recu, nb: duMois.length, aujourdhui: aujourdhui, frac: frac, restants: restants, rythme: rythme, texte: texte };
+  }
+  function blocSuivi() {
+    var mois = new Date().toLocaleDateString("fr-CH", { month: "long", year: "numeric" });
+    return '<h2 class="titre-section">Suivi du mois <small>' + esc(mois) + "</small></h2>" +
+      '<p class="sous sous--section">La barre montre les leads reçus ce mois face à l\'objectif ; le trait vertical, où le conseiller devrait en être aujourd\'hui. Le plafond par jour limite les leads attribués automatiquement (vide : pas de plafond).</p>' +
+      (etat.suiviErreur || (etat.conseillers.length && !("objectif_mois" in etat.conseillers[0])) ? '<p class="alerte">Pour enregistrer l\'objectif du mois et le plafond par jour, lancez une fois le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor).</p>' : "") +
+      '<div class="suivis">' + etat.conseillers.map(function (c) {
+        var x = suiviConseiller(c), pct = x.objectif ? Math.min(100, x.recu / x.objectif * 100) : 0;
+        return '<article class="suivi suivi--' + x.rythme + (c.actif ? "" : " suivi--inactif") + '" data-suivi="' + c.id + '">' +
+          '<header class="suivi__tete"><strong>' + esc(c.nom) + '</strong><span class="suivi__formule">' + (x.piece ? "À la pièce" : "Au budget") + (c.actif ? "" : " · inactif") + "</span></header>" +
+          '<p class="suivi__budget"><span>' + (x.piece ? "Solde" : "Budget") + "</span><strong>" + (x.piece ? chf(x.solde) : x.fixe !== null ? chf(x.fixe) + " / mois" : "Non défini") + "</strong></p>" +
+          '<div class="suivi__rythme"><div class="suivi__barre" role="img" aria-label="' + esc(x.texte) + '"><span class="suivi__rempli" style="width:' + pct.toFixed(1) + '%"></span>' + (x.objectif ? '<span class="suivi__repere" style="left:' + (x.frac * 100).toFixed(1) + '%"></span>' : "") + '</div><span class="suivi__etat">' + esc(x.texte) + "</span></div>" +
+          '<dl class="suivi__chiffres">' +
+            "<div><dt>Reçu ce mois</dt><dd>" + x.nb + " lead" + (x.nb > 1 ? "s" : "") + " · " + chf(x.recu) + "</dd></div>" +
+            "<div><dt>Leads encore possibles</dt><dd>" + (x.restants === null ? "Sans limite" : x.restants) + "</dd></div>" +
+            '<div><dt><label for="obj-' + c.id + '">Objectif du mois</label></dt><dd><input class="select champ-chf" id="obj-' + c.id + '" type="number" step="50" min="0" data-objectif value="' + (x.fixe !== null ? x.fixe : "") + '" placeholder="' + (x.piece ? "Auto · " + Math.round(x.objectif || 0) : "CHF") + '"></dd></div>' +
+            '<div><dt><label for="plaf-' + c.id + '">Plafond par jour</label></dt><dd><input class="select champ-chf" id="plaf-' + c.id + '" type="number" step="1" min="0" data-plafond value="' + (c.plafond_jour || "") + '" placeholder="Aucun"><small>Aujourd\'hui : ' + x.aujourdhui + (c.plafond_jour ? " / " + c.plafond_jour : "") + "</small></dd></div>" +
+          "</dl>" +
+          '<button class="btn btn--petit btn--plein suivi__enregistrer" data-suivi-enregistrer>Enregistrer</button>' +
+          "</article>";
+      }).join("") + "</div>";
+  }
+  function brancherSuivi(zone) {
+    zone.querySelectorAll("[data-suivi]").forEach(function (art) {
+      var id = art.getAttribute("data-suivi");
+      art.querySelector("[data-suivi-enregistrer]").onclick = function () {
+        var o = art.querySelector("[data-objectif]").value, p = art.querySelector("[data-plafond]").value;
+        var champs = { objectif_mois: o === "" ? null : Number(o), plafond_jour: p === "" || Number(p) <= 0 ? null : Math.round(Number(p)) };
+        sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
+          if (r.error) { etat.suiviErreur = /objectif_mois|plafond_jour/.test(r.error.message); toast(etat.suiviErreur ? "Lancez d'abord le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
+          etat.suiviErreur = false;
+          chargerConseillers().then(function () { vueConseillers(); toast("Suivi du mois enregistré."); });
+        });
+      };
+    });
+  }
+
   // ---------- Conseillers et répartition (admin) ----------
   function vueConseillers() {
     var zone = app.querySelector("[data-contenu]");
@@ -570,6 +632,7 @@
     zone.innerHTML =
       '<div class="tete"><div><h1>Conseillers et répartition</h1><p class="sous">Un lead qui relève d\'une règle par page ou formulaire (plus bas) va aux conseillers de cette règle. Les autres vont aux conseillers à la pièce dont le solde couvre un lead (CHF 50), en commençant par le plus gros solde. Personne de disponible : le lead reste à attribuer.</p></div></div>' +
       '' + (C.mail ? "" : '<p class="alerte">Notifications par e-mail : l\'envoi n\'est pas encore configuré. Ajoutez la variable RESEND_API_KEY dans Netlify (voir espace/LISEZMOI.md), puis republiez. Les choix faits ici seront appliqués dès que ce sera fait.</p>') +
+      blocSuivi() +
       '<h2 class="titre-section">Conseillers</h2><p class="sous sous--section">Au budget : les leads ne sont pas décomptés. À la pièce : chaque lead attribué est déduit du solde à sa valeur (CHF 50 par défaut, plus pour un super lead). Un lead réattribué ou supprimé est remboursé. « Ajouter » augmente le crédit.</p>' +
       (etat.soldesErreur ? '<p class="alerte">Pour activer les formules et les soldes, lancez une fois le script espace/maj-4-conseillers-piece.sql dans Supabase (SQL Editor).</p>' : "") +
       '<div class="tableau tableau--conseillers"><table><thead><tr><th>Conseiller</th><th>Rôle</th><th>Formule</th><th>Solde</th><th>Ajouter</th><th>Actif</th><th>Notif.</th><th></th></tr></thead><tbody>' +
@@ -613,6 +676,7 @@
         appelAdmin({ action: "provisoire", id: id, email: c.email, mot_de_passe: mdp }).then(function (ok) { if (ok) afficherAcces(c.nom, c.email, mdp); });
       };
     });
+    brancherSuivi(zone);
     vueRegles(zone.querySelector("[data-regles]"));
     vueReserve(zone.querySelector("[data-reserve]"));
     var f = zone.querySelector("[data-inviter]");

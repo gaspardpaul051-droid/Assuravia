@@ -631,3 +631,38 @@ tr[data-f] td:first-child { white-space: normal; }
 .regle__saisie .lien { margin-left: .4rem; font-size: .8rem; }
 .carte-lead__reserve { justify-self: start; max-width: 100%; font-size: .74rem; font-weight: 800; color: #4B3A8F; background: #EEE8FB; border-radius: 6px; padding: .15rem .45rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .champ-montant { width: 150px; }
+
+/* Suivi du mois : une case par conseiller */
+.suivis { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; margin-bottom: 1rem; }
+.suivi { background: var(--blanc); border: 1px solid var(--ligne); border-radius: var(--r); box-shadow: var(--ombre); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .75rem; border-top: 4px solid var(--gris); }
+.suivi--avance { border-top-color: var(--bleu); }
+.suivi--heure { border-top-color: var(--vert); }
+.suivi--retard { border-top-color: #D9822B; }
+.suivi--atteint { border-top-color: var(--violet); }
+.suivi--inactif { opacity: .6; }
+.suivi__tete { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.suivi__tete strong { color: var(--marine); font-size: 1.05rem; }
+.suivi__formule { font-size: .75rem; font-weight: 700; color: var(--doux); background: var(--fond); border-radius: 999px; padding: .15rem .55rem; white-space: nowrap; }
+.suivi__budget { margin: 0; display: flex; justify-content: space-between; align-items: baseline; }
+.suivi__budget span { color: var(--doux); font-size: .85rem; }
+.suivi__budget strong { font-size: 1.25rem; color: var(--marine); }
+.suivi__rythme { display: flex; flex-direction: column; gap: .3rem; }
+.suivi__barre { position: relative; height: 10px; border-radius: 999px; background: var(--fond); border: 1px solid var(--ligne); overflow: visible; }
+.suivi__rempli { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: var(--gris); }
+.suivi--avance .suivi__rempli { background: var(--bleu); }
+.suivi--heure .suivi__rempli { background: var(--vert); }
+.suivi--retard .suivi__rempli { background: #D9822B; }
+.suivi--atteint .suivi__rempli { background: var(--violet); }
+.suivi__repere { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--marine); border-radius: 2px; transform: translateX(-1px); }
+.suivi__etat { font-size: .8rem; font-weight: 700; color: var(--doux); }
+.suivi--avance .suivi__etat { color: var(--bleu); }
+.suivi--heure .suivi__etat { color: var(--vert); }
+.suivi--retard .suivi__etat { color: #A85F17; }
+.suivi--atteint .suivi__etat { color: var(--violet); }
+.suivi__chiffres { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem .8rem; }
+.suivi__chiffres div { min-width: 0; }
+.suivi__chiffres dt { font-size: .75rem; color: var(--doux); font-weight: 600; margin-bottom: .15rem; }
+.suivi__chiffres dd { margin: 0; font-weight: 700; color: var(--texte); }
+.suivi__chiffres .champ-chf { width: 100%; min-width: 0; }
+.suivi__chiffres small { margin-top: .2rem; }
+.suivi__enregistrer { align-self: flex-end; }

@@ -66,7 +66,17 @@ export async function enregistrer(payload) {
       try { couts = (await api("leads?select=conseiller_id,cout&cout=not.is.null&conseiller_id=in.(" + pieces.map((c) => c.id).join(",") + ")")) || []; } catch (e) { couts = []; }
       pieces.forEach((c) => { solde[c.id] = Number(c.credit || 0) - couts.filter((l) => l.conseiller_id === c.id).reduce((t, l) => t + Number(l.cout || 0), 0); });
     }
-    const disponible = (c) => c && (c.type !== "piece" || solde[c.id] >= VALEUR_BASE);
+    // Plafond par jour (conseillers.plafond_jour, espace/maj-6-suivi-du-mois.sql) : au-delà, le conseiller ne reçoit plus rien jusqu'au lendemain (heure de Zurich)
+    const plafond = {}, duJour = {};
+    try {
+      ((await api("conseillers?select=id,plafond_jour&actif=eq.true&plafond_jour=gt.0")) || []).forEach((c) => { plafond[c.id] = Number(c.plafond_jour); });
+      const ids = Object.keys(plafond);
+      if (ids.length) {
+        ((await api("leads?select=conseiller_id&cree_le=gte." + debutJourZurich().toISOString() + "&conseiller_id=in.(" + ids.join(",") + ")")) || []).forEach((l) => { duJour[l.conseiller_id] = (duJour[l.conseiller_id] || 0) + 1; });
+      }
+    } catch (e) { /* colonne absente : pas de plafond */ }
+    const sousPlafond = (c) => !plafond[c.id] || (duJour[c.id] || 0) < plafond[c.id];
+    const disponible = (c) => c && (c.type !== "piece" || solde[c.id] >= VALEUR_BASE) && sousPlafond(c);
     let regles = [];
     try { regles = (await api("regles?select=source,conseiller_id,poids&poids=gt.0")) || []; } catch (e) { regles = []; }
     regles = regles.filter((r) => actifs.some((c) => c.id === r.conseiller_id));
@@ -107,4 +117,12 @@ export async function enregistrer(payload) {
     // On répond 200 pour ne pas bloquer la réception du formulaire par Netlify.
     return "erreur";
   }
+}
+
+// Début du jour en cours à Zurich (pour le plafond de leads par jour)
+function debutJourZurich(maintenant = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Zurich", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }).formatToParts(maintenant).map((p) => [p.type, p.value]));
+  const local = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second);
+  const decalage = local - Math.floor(maintenant.getTime() / 1000) * 1000;
+  return new Date(Date.UTC(+parts.year, +parts.month - 1, +parts.day) - decalage);
 }

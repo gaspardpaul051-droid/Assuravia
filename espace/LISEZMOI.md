@@ -34,3 +34,7 @@ Lancez une fois `espace/maj-4-conseillers-piece.sql` dans Supabase (SQL Editor >
 
 ## Leads mis de côté
 Lancez une fois `espace/maj-5-mise-de-cote.sql` dans Supabase (SQL Editor > New query > Run). Les règles se créent dans « Conseillers et répartition », section « Leads mis de côté (Admin) ».
+
+## Suivi du mois (objectif et plafond par jour)
+
+Lancez une fois `espace/maj-6-suivi-du-mois.sql` dans Supabase (SQL Editor). L'onglet « Conseillers et répartition » affiche alors une case par conseiller : budget ou solde, rythme du mois, leads reçus, leads encore possibles, objectif du mois et plafond par jour. Le plafond par jour est respecté par l'attribution automatique : une fois atteint, le conseiller ne reçoit plus de lead jusqu'au lendemain.
