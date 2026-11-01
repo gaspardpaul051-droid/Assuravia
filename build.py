@@ -330,6 +330,7 @@ def main() -> None:
         "complementaire-sante-eco": "Complémentaire santé (Assuravia)", "pgm": "Perte de gain maladie",
         "rc-pro": "RC professionnelle", "complementaire-maladie": "Complémentaire maladie",
         "complementaire-ambulatoire": "Soins ambulatoires", "assurance-hospitalisation": "Hospitalisation",
+        "assurance-batiment-entreprise": "Bâtiment entreprise",
     })
 
     articles = sorted(

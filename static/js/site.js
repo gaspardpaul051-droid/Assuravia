@@ -804,6 +804,12 @@
       });
       return liste;
     };
+    // Coefficient du type de bien sur les formules au taux (bâtiment pro : entrepôt, atelier…) : data-facteur-taux
+    var facteurTaux = function () {
+      var f = 1;
+      formF.querySelectorAll("[data-facteur-taux]:checked").forEach(function (el) { f *= Number(el.getAttribute("data-facteur-taux")) || 1; });
+      return f;
+    };
     var calculer = function () {
       if (T) {
         var mods = modulesLca();
@@ -828,7 +834,7 @@
         principale = Number(prixBase.getAttribute("data-prix-base"));
         formF.querySelectorAll("[data-facteur]:checked").forEach(function (el) { principale *= Number(el.getAttribute("data-facteur")); });
         principale = arrondi(principale);
-      } else if (taux) principale = arrondi(somme / 1000 * taux);
+      } else if (taux) principale = arrondi(somme / 1000 * taux * facteurTaux());
       var options = [];
       formF.querySelectorAll("[data-option-nom]:checked").forEach(function (el) {
         options.push({ nom: el.getAttribute("data-option-nom"), prix: Number(el.getAttribute("data-prix")) || 0 });
@@ -843,7 +849,7 @@
       set("somme_calculee", chf(c.sommeCalc));
       set("somme_objets", chf(c.sommeCalc));
       funnel.querySelectorAll("[data-prix-formule]").forEach(function (el) {
-        el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")))) + " / an";
+        el.textContent = chf(arrondi(c.somme / 1000 * Number(el.getAttribute("data-prix-formule")) * facteurTaux())) + " / an";
       });
       // Avant les coordonnées, la prime reste masquée : chiffres remplacés (et floutés en CSS), jamais la vraie valeur
       var masque = function (x) { return chf2(x).replace(/\d/g, "8"); };

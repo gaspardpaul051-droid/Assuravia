@@ -1,0 +1,42 @@
+{% set sim = {"id": "btp", "theme": "pro", "groupe": "entreprises", "form": "simulation-batiment-pro", "produit": "assurance-batiment-entreprise", "produit_nom": "Assurance bâtiment entreprise", "page": "/entreprises/assurance-batiment/", "icone": "batiment",
+  "titre": "Assurance bâtiment pro : calculez votre prime", "h1": "Calculez l'assurance de votre bâtiment professionnel",
+  "description": "Immeuble locatif, bureaux, commerce, entrepôt ou atelier : estimez la prime de l'assurance bâtiment selon la valeur de construction et la formule.",
+  "attrs": {"prime-nom": "Bâtiment"},
+  "note": "Dans les cantons de Vaud, Fribourg, Neuchâtel, du Jura et de Berne, l'incendie et les éléments naturels des bâtiments, commerciaux compris, sont assurés obligatoirement auprès de l'établissement cantonal. La formule Complémentaire bâtiment ajoute ce que l'assurance cantonale ne couvre pas. Le spécialiste adapte l'offre à votre canton et à l'usage du bâtiment."} %}
+{% extends "simulation.html" %}
+{% import "partials/etapes.html" as e with context %}
+{% block etapes %}
+{{ e.cartes("type_bien", "Quel type de bâtiment ?", [
+  {"valeur": "Immeuble locatif", "icone": "batiment", "detail": "Logements loués, avec ou sans arcade au rez.", "attrs": 'data-facteur-taux="1"'},
+  {"valeur": "Immeuble mixte", "icone": "cle", "detail": "Logements, bureaux et commerces dans le même bâtiment.", "attrs": 'data-facteur-taux="1.15"'},
+  {"valeur": "Bureaux ou cabinet", "icone": "mallette", "detail": "Immeuble ou étage de bureaux, cabinet médical, fiduciaire.", "attrs": 'data-facteur-taux="1.05"'},
+  {"valeur": "Commerce ou restaurant", "icone": "colis", "detail": "Magasin, arcade, café, restaurant, hôtel.", "attrs": 'data-facteur-taux="1.25"'},
+  {"valeur": "Entrepôt ou dépôt", "icone": "camion", "detail": "Stockage, logistique, halle, hangar.", "attrs": 'data-facteur-taux="1.3"'},
+  {"valeur": "Atelier ou industrie", "icone": "engrenage", "detail": "Atelier artisanal, production, bâtiment industriel.", "attrs": 'data-facteur-taux="1.5"'}], colonnes=3, premier=True) }}
+{{ e.cartes("statut_bien", "Vous êtes…", [
+  {"valeur": "Propriétaire et j'occupe le bâtiment", "titre": "Propriétaire, j'occupe le bâtiment"},
+  {"valeur": "Propriétaire et je loue", "titre": "Propriétaire, je loue à des tiers"},
+  {"valeur": "Propriétaire en partie occupé", "titre": "Propriétaire, j'en occupe une partie"},
+  {"valeur": "Gérance ou administrateur", "titre": "Gérance ou administrateur PPE"}], aide="L'usage du bâtiment change les couvertures utiles, par exemple la perte de loyers quand il est loué.") }}
+{{ e.ouvrir("valeur", "Quelle est la valeur de construction du bâtiment ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}
+  <div class="champ">
+    <label for="valeur-btp">Valeur de construction (CHF)</label>
+    <input id="valeur-btp" name="valeur_construction" type="number" inputmode="numeric" min="100000" step="10000" required placeholder="Ex. 3500000" data-somme>
+  </div>
+  {{ e.continuer() }}
+</fieldset>
+{{ e.formules([
+  {"nom": "Essentiel", "taux": 0.9, "points": ["Incendie et événements naturels", "Dégâts d'eau", "Bris de glace jusqu'à CHF 20'000", "Faute grave couverte"]},
+  {"nom": "Confort", "taux": 1.2, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Dégâts d'eau", "Vol et vandalisme", "Couverture élargie", "Bris de glace jusqu'à CHF 50'000", "Perte de loyers 12 mois", "Faute grave couverte"]},
+  {"nom": "Premium", "taux": 1.7, "points": ["Tout Confort", "Installations techniques : ascenseur, chauffage, ventilation", "Perte de loyers 24 mois", "Frais de déblaiement et de décontamination", "Bris de glace illimité"]},
+  {"nom": "Complémentaire bâtiment", "taux": 0.65, "badge": "Cantons à assurance cantonale", "points": ["All risk", "Dégâts d'eau", "Bris de glace", "Perte de loyers", "Faute grave couverte"]},
+  {"nom": "Sur mesure", "taux": 0, "points": ["Plusieurs bâtiments ou un parc immobilier", "Bâtiment industriel ou à risque particulier", "Un spécialiste construit l'offre avec vous"]}]) }}
+{{ e.options("Complétez la protection de votre bâtiment", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
+  ("option_rc_immeuble", "bouclier", "RC propriétaire d'immeuble", "Un passant blessé par une chute de neige du toit, un dégât causé chez le voisin : les prétentions de tiers sont couvertes.", 380),
+  ("option_pj_immeuble", "balance", "Protection juridique immeuble", "Litige avec un locataire, un voisin ou une entreprise de construction : frais d'avocat et de procédure.", 450),
+  ("interet_inventaire", "colis", "Assurer aussi l'inventaire", "Machines, mobilier et marchandises contre l'incendie, l'eau et le vol, avec l'interruption d'exploitation.", 0),
+  ("interet_cyber", "cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues.", 0)]) }}
+{{ e.npa("Où se trouve le bâtiment ?", "Le code postal suffit pour estimer la prime. Il détermine aussi l'assureur compétent selon le canton.") }}
+{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
+{{ e.resultat("valeur") }}
+{% endblock %}
