@@ -17,6 +17,7 @@ retenir: La protection juridique paie le conseil juridique, l'avocat, les expert
 pour_qui: Vous êtes locataire et voulez pouvoir contester une hausse de loyer ou une retenue sur la garantie. | Vous êtes salarié et voulez être soutenu en cas de licenciement ou de salaire impayé. | Vous conduisez souvent et voulez être défendu après un accident ou un retrait de permis. | Vous achetez régulièrement en ligne ou faites faire des travaux chez vous.
 quiz: La protection juridique couvre un litige qui existait déjà avant la signature du contrat. | faux | Les litiges dont la cause est antérieure à la souscription sont exclus. Il faut s'assurer avant d'en avoir besoin. ;; En cas de procédure judiciaire, vous pouvez en général choisir votre avocat. | vrai | Le libre choix de l'avocat s'applique notamment lors d'une procédure judiciaire ou d'un conflit d'intérêts, avec l'accord préalable de l'assureur sur les frais. ;; La RC privée paie votre avocat si vous êtes en conflit avec votre régie. | faux | La RC privée indemnise les dommages que vous causez à autrui. Pour défendre vos propres droits, il faut une protection juridique.
 simulateur: /particuliers/simulation-protection-juridique/
+entree: pj
 ---
 
 ## Ce qu'elle couvre

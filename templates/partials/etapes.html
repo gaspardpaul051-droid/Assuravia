@@ -161,10 +161,11 @@
 {% macro situations(cle, question, aide, items) -%}
 {{ ouvrir(cle, question, aide) }}
   <div class="situations">
-    {% for icone, titre, texte in items %}
-    <label class="situation"><input type="checkbox" name="{{ cle }}" value="{{ titre }}">
+    {# Élément facultatif : (icône, titre, texte, prix, nom de l'option) = la situation ajoute une option payante #}
+    {% for it in items %}{% set icone, titre, texte = it[0], it[1], it[2] %}{% set prix = it[3] if it|length > 3 else 0 %}
+    <label class="situation"><input type="checkbox" name="{{ cle }}" value="{{ titre }}"{% if prix %} data-prix="{{ prix }}" data-option-nom="{{ it[4] if it|length > 4 else titre }}"{% endif %}>
       <span class="situation__icone">{{ i.icone(icone) }}</span>
-      <span class="situation__titre">{{ titre }}</span>
+      <span class="situation__titre">{{ titre }}{% if prix %} <small class="situation__prix">+ CHF {{ prix }} / an</small>{% endif %}</span>
       <span class="situation__texte">{{ texte }}</span>
       <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
     </label>

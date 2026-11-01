@@ -2082,3 +2082,15 @@ html.cookies-ouvert { overflow: hidden; }
 @media (max-width: 720px) { .lp-chiffres__liste { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 980px) { .lp-menage .lp-prix, .lp-menage .lp-menage__note { order: 1; } .lp-menage .lp-prix { justify-self: start; align-self: flex-start; margin-top: 0; } }
 .lp-menage__carte--actif { border-color: var(--bleu); background: var(--bleu-pale); box-shadow: 0 8px 20px -14px rgba(21,101,168,.8); }
+
+/* Option payante annoncée sur une carte « situation » (ex. circulation en protection juridique) */
+.situation__prix { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 999px; background: var(--or-pale, #FBF3DF); color: var(--marine); font-size: var(--t-xs); font-weight: 700; white-space: nowrap; }
+/* Page protection juridique : modules à cocher dans le panneau, transmis à la simulation */
+.pj-depart .situations { margin: var(--e-3) 0 var(--e-4); }
+.pj-depart .situation { grid-template-columns: 34px minmax(0, 1fr) 22px; grid-template-areas: "ic ti co"; padding: 10px 12px; }
+.pj-depart .situation__icone { width: 34px; height: 34px; border-radius: 10px; }
+.pj-depart .situation__icone .icone { width: 18px; height: 18px; }
+.pj-depart .situation__prix { display: block; width: max-content; margin: 3px 0 0; }
+.pj-depart .bouton { width: 100%; justify-content: center; }
+@media (max-width: 720px) { .pj-depart .situations { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .pj-depart .situations { grid-template-columns: 1fr; gap: 8px; } .pj-depart .situation { padding: 8px 12px; } .pj-depart .situation__prix { display: inline-block; margin: 0 0 0 6px; } }

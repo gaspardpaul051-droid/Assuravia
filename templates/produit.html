@@ -41,6 +41,22 @@
         <a class="rcp-depart__carte" href="{{ produit.simulateur }}?pour_qui={{ val|urlencode }}&amp;passer=pour_qui"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong></span></a>
         {% endfor %}
       </div>
+      {% elif produit.entree == "pj" %}
+      {# Modules à cocher : ils sont transmis à la simulation, qui saute alors sa première question #}
+      <p class="form-sous-titre">Dans quelles situations voulez-vous être défendu ? Cochez, votre prime s'affiche en 2 minutes.</p>
+      <form class="pj-depart" action="{{ produit.simulateur }}" method="get">
+        <div class="situations">
+          {% for icone, titre, prix in [("mallette", "Travail", 0), ("maison", "Logement", 0), ("voiture", "Circulation", 70), ("colis", "Achats et contrats", 0), ("coeur", "Santé et assurances", 0), ("cyber", "Internet", 0)] %}
+          <label class="situation"><input type="checkbox" name="situations_pj" value="{{ titre }}">
+            <span class="situation__icone">{{ i.icone(icone) }}</span>
+            <span class="situation__titre">{{ titre }}{% if prix %} <small class="situation__prix">+ CHF {{ prix }} / an</small>{% endif %}</span>
+            <span class="formule__coche formule__coche--checkbox" aria-hidden="true"></span>
+          </label>
+          {% endfor %}
+        </div>
+        <input type="hidden" name="passer" value="situations_pj">
+        <button type="submit" class="bouton bouton--action">{{ produit.simulateur_bouton or "Calculer ma prime" }}</button>
+      </form>
       {% else %}
       <p class="form-sous-titre">{{ produit.simulateur_texte or "Quelques questions simples, et votre prime s'affiche tout de suite." }}</p>
       <ul class="entree-simulation__points">
@@ -49,9 +65,9 @@
         <li>{{ i.icone("valide", "icone icone--petite") }} Un spécialiste à votre écoute si besoin</li>
       </ul>
       {% endif %}
-      <a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>
+      {% if produit.entree != "pj" %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>{% endif %}
       {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
-      {% if produit.entree == "sante" %}
+      {% if produit.entree in ("sante", "pj") %}
       <ul class="lp-depart__rassure">
         <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
         <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
