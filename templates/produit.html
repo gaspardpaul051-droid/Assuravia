@@ -43,8 +43,9 @@
       </div>
       {% elif produit.entree == "pj" %}
       {# Modules à cocher : ils sont transmis à la simulation, qui saute alors sa première question #}
-      <p class="form-sous-titre">Dans quelles situations voulez-vous être défendu ? Cochez, votre prime s'affiche en 2 minutes.</p>
+      <p class="form-sous-titre">Votre estimation immédiate, gratuite et sans engagement.</p>
       <form class="pj-depart" action="{{ produit.simulateur }}" method="get">
+        <p class="pj-depart__question">Dans quelles situations voulez-vous être défendu ?</p>
         <div class="situations">
           {% for icone, titre in [("mallette", "Travail"), ("maison", "Logement"), ("voiture", "Circulation"), ("colis", "Achats et contrats"), ("coeur", "Santé et assurances"), ("cyber", "Internet")] %}
           <label class="situation"><input type="checkbox" name="situations_pj" value="{{ titre }}">

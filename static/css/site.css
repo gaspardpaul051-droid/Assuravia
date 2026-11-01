@@ -2086,7 +2086,8 @@ html.cookies-ouvert { overflow: hidden; }
 /* Option payante annoncée sur une carte « situation » (ex. circulation en protection juridique) */
 .situation__prix { display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 999px; background: var(--or-pale, #FBF3DF); color: var(--marine); font-size: var(--t-xs); font-weight: 700; white-space: nowrap; }
 /* Page protection juridique : modules à cocher dans le panneau, transmis à la simulation */
-.pj-depart .situations { margin: var(--e-3) 0 var(--e-4); }
+.pj-depart__question { margin: var(--e-4) 0 0; font-weight: 800; font-size: var(--t-m, 1.125rem); line-height: 1.3; color: var(--marine); }
+.pj-depart .situations { margin: var(--e-2) 0 var(--e-4); }
 .pj-depart .situation { grid-template-columns: 34px minmax(0, 1fr) 22px; grid-template-areas: "ic ti co"; padding: 10px 12px; }
 .pj-depart .situation__icone { width: 34px; height: 34px; border-radius: 10px; }
 .pj-depart .situation__icone .icone { width: 18px; height: 18px; }
