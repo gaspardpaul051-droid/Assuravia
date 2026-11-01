@@ -591,8 +591,8 @@
   function blocSuivi() {
     var mois = new Date().toLocaleDateString("fr-CH", { month: "long", year: "numeric" });
     return '<h2 class="titre-section">Suivi du mois <small>' + esc(mois) + "</small></h2>" +
-      '<p class="sous sous--section">La barre montre les leads reçus ce mois face à l\'objectif ; le trait vertical, où le conseiller devrait en être aujourd\'hui. Le plafond par jour limite les leads attribués automatiquement (vide : pas de plafond).</p>' +
-      (etat.suiviErreur || (etat.conseillers.length && !("objectif_mois" in etat.conseillers[0])) ? '<p class="alerte">Pour enregistrer l\'objectif du mois et le plafond par jour, lancez une fois le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor).</p>' : "") +
+      '<p class="sous sous--section">La barre montre les leads reçus ce mois face à l\'objectif ; le trait vertical, où le conseiller devrait en être aujourd\'hui. Le plafond par jour limite les leads attribués automatiquement (vide : pas de plafond). Types de leads : le conseiller ne reçoit que ces produits (aucun type : il reçoit tout).</p>' +
+      (etat.suiviErreur || (etat.conseillers.length && !("types_leads" in etat.conseillers[0])) ? '<p class="alerte">Pour enregistrer l\'objectif du mois, le plafond par jour et les types de leads, lancez une fois le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor).</p>' : "") +
       '<div class="suivis">' + etat.conseillers.map(function (c) {
         var x = suiviConseiller(c), pct = x.objectif ? Math.min(100, x.recu / x.objectif * 100) : 0;
         return '<article class="suivi suivi--' + x.rythme + (c.actif ? "" : " suivi--inactif") + '" data-suivi="' + c.id + '">' +
@@ -605,18 +605,33 @@
             '<div><dt><label for="obj-' + c.id + '">Objectif du mois</label></dt><dd><input class="select champ-chf" id="obj-' + c.id + '" type="number" step="50" min="0" data-objectif value="' + (x.fixe !== null ? x.fixe : "") + '" placeholder="' + (x.piece ? "Auto · " + Math.round(x.objectif || 0) : "CHF") + '"></dd></div>' +
             '<div><dt><label for="plaf-' + c.id + '">Plafond par jour</label></dt><dd><input class="select champ-chf" id="plaf-' + c.id + '" type="number" step="1" min="0" data-plafond value="' + (c.plafond_jour || "") + '" placeholder="Aucun"><small>Aujourd\'hui : ' + x.aujourdhui + (c.plafond_jour ? " / " + c.plafond_jour : "") + "</small></dd></div>" +
           "</dl>" +
+          '<div class="suivi__types"><p class="suivi__types-titre">Types de leads</p><div class="suivi__puces" data-types></div>' +
+          '<select class="select" data-type-ajout aria-label="Ajouter un type de lead pour ' + esc(c.nom) + '"></select></div>' +
           '<button class="btn btn--petit btn--plein suivi__enregistrer" data-suivi-enregistrer>Enregistrer</button>' +
           "</article>";
       }).join("") + "</div>";
   }
   function brancherSuivi(zone) {
+    var PRODUITS = C.produits || {};
+    var nomType = function (k) { return PRODUITS[k] || k; };
     zone.querySelectorAll("[data-suivi]").forEach(function (art) {
       var id = art.getAttribute("data-suivi");
+      var c = etat.conseillers.filter(function (x) { return x.id === id; })[0] || {};
+      // Types de leads : liste modifiable en puces ; vide = le conseiller reçoit tous les types
+      var types = Array.isArray(c.types_leads) ? c.types_leads.slice() : [];
+      var puces = art.querySelector("[data-types]"), choix = art.querySelector("[data-type-ajout]");
+      var dessiner = function () {
+        puces.innerHTML = types.length ? types.map(function (k) { return '<span class="puce">' + esc(nomType(k)) + '<button type="button" class="puce__x" data-retirer="' + esc(k) + '" aria-label="Retirer ' + esc(nomType(k)) + '">×</button></span>'; }).join("") : '<span class="suivi__tous">Tous les types</span>';
+        choix.innerHTML = '<option value="">+ Ajouter un type de lead</option>' + Object.keys(PRODUITS).filter(function (k) { return types.indexOf(k) < 0; }).sort(function (a, b) { return nomType(a).localeCompare(nomType(b)); }).map(function (k) { return '<option value="' + esc(k) + '">' + esc(nomType(k)) + "</option>"; }).join("");
+        puces.querySelectorAll("[data-retirer]").forEach(function (b) { b.onclick = function () { types = types.filter(function (k) { return k !== b.getAttribute("data-retirer"); }); dessiner(); }; });
+      };
+      choix.onchange = function () { if (choix.value) { types.push(choix.value); dessiner(); } };
+      dessiner();
       art.querySelector("[data-suivi-enregistrer]").onclick = function () {
         var o = art.querySelector("[data-objectif]").value, p = art.querySelector("[data-plafond]").value;
-        var champs = { objectif_mois: o === "" ? null : Number(o), plafond_jour: p === "" || Number(p) <= 0 ? null : Math.round(Number(p)) };
+        var champs = { objectif_mois: o === "" ? null : Number(o), plafond_jour: p === "" || Number(p) <= 0 ? null : Math.round(Number(p)), types_leads: types.length ? types : null };
         sb.from("conseillers").update(champs).eq("id", id).then(function (r) {
-          if (r.error) { etat.suiviErreur = /objectif_mois|plafond_jour/.test(r.error.message); toast(etat.suiviErreur ? "Lancez d'abord le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
+          if (r.error) { etat.suiviErreur = /objectif_mois|plafond_jour|types_leads/.test(r.error.message); toast(etat.suiviErreur ? "Lancez d'abord le script espace/maj-6-suivi-du-mois.sql dans Supabase (SQL Editor)." : "Erreur : " + r.error.message, true); return; }
           etat.suiviErreur = false;
           chargerConseillers().then(function () { vueConseillers(); toast("Suivi du mois enregistré."); });
         });

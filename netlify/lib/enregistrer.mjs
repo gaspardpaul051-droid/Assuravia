@@ -67,16 +67,21 @@ export async function enregistrer(payload) {
       pieces.forEach((c) => { solde[c.id] = Number(c.credit || 0) - couts.filter((l) => l.conseiller_id === c.id).reduce((t, l) => t + Number(l.cout || 0), 0); });
     }
     // Plafond par jour (conseillers.plafond_jour, espace/maj-6-suivi-du-mois.sql) : au-delà, le conseiller ne reçoit plus rien jusqu'au lendemain (heure de Zurich)
-    const plafond = {}, duJour = {};
+    // Types de leads acceptés (conseillers.types_leads) : vide = tous ; sinon le conseiller ne reçoit que ces produits
+    const plafond = {}, duJour = {}, typesOk = {};
     try {
-      ((await api("conseillers?select=id,plafond_jour&actif=eq.true&plafond_jour=gt.0")) || []).forEach((c) => { plafond[c.id] = Number(c.plafond_jour); });
+      ((await api("conseillers?select=id,plafond_jour,types_leads&actif=eq.true")) || []).forEach((c) => {
+        if (Number(c.plafond_jour) > 0) plafond[c.id] = Number(c.plafond_jour);
+        if (Array.isArray(c.types_leads) && c.types_leads.length) typesOk[c.id] = c.types_leads;
+      });
       const ids = Object.keys(plafond);
       if (ids.length) {
         ((await api("leads?select=conseiller_id&cree_le=gte." + debutJourZurich().toISOString() + "&conseiller_id=in.(" + ids.join(",") + ")")) || []).forEach((l) => { duJour[l.conseiller_id] = (duJour[l.conseiller_id] || 0) + 1; });
       }
     } catch (e) { /* colonne absente : pas de plafond */ }
     const sousPlafond = (c) => !plafond[c.id] || (duJour[c.id] || 0) < plafond[c.id];
-    const disponible = (c) => c && (c.type !== "piece" || solde[c.id] >= VALEUR_BASE) && sousPlafond(c);
+    const bonType = (c) => !typesOk[c.id] || typesOk[c.id].includes(lead.produit);
+    const disponible = (c) => c && (c.type !== "piece" || solde[c.id] >= VALEUR_BASE) && sousPlafond(c) && bonType(c);
     let regles = [];
     try { regles = (await api("regles?select=source,conseiller_id,poids&poids=gt.0")) || []; } catch (e) { regles = []; }
     regles = regles.filter((r) => actifs.some((c) => c.id === r.conseiller_id));

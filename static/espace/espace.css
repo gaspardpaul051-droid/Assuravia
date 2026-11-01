@@ -666,3 +666,11 @@ tr[data-f] td:first-child { white-space: normal; }
 .suivi__chiffres .champ-chf { width: 100%; min-width: 0; }
 .suivi__chiffres small { margin-top: .2rem; }
 .suivi__enregistrer { align-self: flex-end; }
+.suivi__types { display: flex; flex-direction: column; gap: .4rem; border-top: 1px solid var(--ligne); padding-top: .7rem; }
+.suivi__types-titre { margin: 0; font-size: .75rem; color: var(--doux); font-weight: 600; }
+.suivi__puces { display: flex; flex-wrap: wrap; gap: .35rem; }
+.suivi__tous { font-size: .85rem; font-weight: 600; color: var(--doux); }
+.puce { display: inline-flex; align-items: center; gap: .25rem; background: var(--bleu-clair); color: var(--marine); border-radius: 999px; padding: .2rem .3rem .2rem .65rem; font-size: .8rem; font-weight: 700; }
+.puce__x { border: 0; background: transparent; cursor: pointer; width: 22px; height: 22px; border-radius: 50%; font-size: 1rem; line-height: 1; color: var(--doux); }
+.puce__x:hover { background: #fff; color: var(--rouge); }
+.suivi__types .select { width: 100%; }
