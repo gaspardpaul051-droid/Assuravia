@@ -21,7 +21,7 @@
   {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
   {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3) }}
 
-{{ e.npa("Où se trouve l'entreprise ?", "Le code postal suffit pour l'estimation.") }}
+{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.") }}
 
 {{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
   <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>

@@ -103,6 +103,16 @@
 
 
         <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Quelle est votre adresse ?</legend>
+          <p class="fe__aide">Votre conseiller en a besoin pour préparer votre bilan. Elle sert uniquement à votre demande.</p>
+          {{ f.adresse("domicile") }}
+          <div class="modale__actions">
+            <button type="button" class="bouton bouton--secondaire" data-etape-precedente>Retour</button>
+            <button type="button" class="bouton bouton--prive modale__suivant" data-etape-suivante>Continuer</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="modale__etape" data-etape hidden>
           <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
           <p class="fe__aide">Dernière étape : votre conseiller prépare votre bilan avec vos réponses et vous rappelle dans la journée (jours ouvrables).</p>
           <div class="grille-champs">

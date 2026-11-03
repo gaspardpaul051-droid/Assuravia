@@ -42,6 +42,8 @@
       <input id="echeance-dpro" name="echeance" type="month">
     </div>
   </div>
+  <p class="form-sous-titre form-sous-titre--champs">Adresse de l'entreprise</p>
+  {{ f.adresse("entreprise") }}
   {{ f.contact("dpro", societe=True) }}
 {{ f.fermer(p.bouton, "dpro") }}
 </form>

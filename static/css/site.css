@@ -2095,3 +2095,10 @@ html.cookies-ouvert { overflow: hidden; }
 .pj-depart .bouton { width: 100%; justify-content: center; }
 @media (max-width: 720px) { .pj-depart .situations { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .pj-depart .situations { grid-template-columns: 1fr; gap: 8px; } .pj-depart .situation { padding: 8px 12px; } .pj-depart .situation__prix { display: inline-block; margin: 0 0 0 6px; } }
+
+/* Adresse (rue, n°, NPA, localité) : rue et localité larges, numéro et NPA étroits, sur ordinateur comme sur mobile */
+.adresse .grille-champs, .grille-champs--adresse { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-3) var(--e-3); }
+.adresse .grille-champs > .champ:nth-child(1), .adresse .grille-champs > .champ:nth-child(4),
+.grille-champs--adresse > .champ:nth-child(1), .grille-champs--adresse > .champ:nth-child(4) { grid-column: span 2; }
+.adresse { margin-bottom: var(--e-4); }
+.form-sous-titre--champs { margin: var(--e-4) 0 var(--e-2); font-weight: 700; color: var(--marine); }

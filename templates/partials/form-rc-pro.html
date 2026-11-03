@@ -86,6 +86,8 @@
         </select>
       </div>
     </div>
+    <p class="form-sous-titre form-sous-titre--champs">Adresse de l'entreprise</p>
+    {{ f.adresse("entreprise") }}
     {{ f.contact("rc", societe=True) }}
 {{ f.fermer("Recevoir mes offres de RC professionnelle", "rc") }}
     <button class="bouton bouton--discret" type="button" data-precedent>Revenir à l'étape 1</button>

@@ -54,12 +54,14 @@
 </fieldset>
 {%- endmacro %}
 
-{# Code postal seul : l'adresse complète est demandée ensuite par le conseiller #}
-{% macro npa(question="Dans quelle localité se trouve le logement ?", aide="Le code postal suffit pour estimer la prime.") -%}
+{# Adresse complète (rue, n°, NPA, localité) : le NPA sert aussi à l'estimation et au canton #}
+{% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.") -%}
 {{ ouvrir("npa", question, aide) }}
-  <div class="grille-champs">
+  <div class="grille-champs grille-champs--adresse">
+    <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="logement_rue" required autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
+    <div class="champ champ--numero"><label for="numero-{{ sim.id }}">N°</label><input id="numero-{{ sim.id }}" name="logement_numero" required autocomplete="off" placeholder="12"></div>
     <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" required inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
-    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" autocomplete="address-level2" placeholder="Lausanne"></div>
+    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
   </div>
   {{ continuer() }}
 </fieldset>

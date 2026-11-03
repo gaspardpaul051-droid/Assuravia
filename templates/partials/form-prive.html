@@ -26,6 +26,8 @@
       <textarea id="message-dp" name="message" rows="3" placeholder="Ex. assureur actuel, échéance, besoin particulier"></textarea>
     </div>
   </div>
+  <p class="form-sous-titre form-sous-titre--champs">Votre adresse</p>
+  {{ f.adresse("domicile") }}
   {{ f.contact("dp") }}
 {{ f.fermer(p.bouton, "dp") }}
 </form>

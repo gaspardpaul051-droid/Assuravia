@@ -11,7 +11,7 @@
   ("option_voyage", "avion", "Assurance voyage", "Frais de guérison à l'étranger, rapatriement, annulation de voyage : pour toute la famille, toute l'année.", 210),
   ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
   ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
-{{ e.npa("Où habitez-vous ?") }}
+{{ e.npa("Quelle est votre adresse ?") }}
 {{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat("options", prestations=[("bulle", "Conseil juridique par téléphone", "Un juriste répond à vos questions dès que le problème apparaît, souvent avant qu'il devienne un litige."), ("balance", "Défense de vos droits", "L'assureur négocie pour vous et, si besoin, mandate un avocat."), ("livre", "Frais pris en charge", "Honoraires d'avocat, frais de justice, d'expertise et de procédure, jusqu'au plafond du contrat."), ("groupe", "Toute la famille", "Les personnes vivant dans votre ménage sont couvertes avec vous."), ("repere", "Où que vous soyez", "En Suisse et, pour de nombreux domaines, aussi en Europe. L'étendue dépend du contrat.")], titre_prestations="Ce que fait votre protection juridique") }}
 {% endblock %}
