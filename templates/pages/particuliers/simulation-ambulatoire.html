@@ -24,7 +24,7 @@
   {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"], aucun="Non merci") }}
   {{ e.continuer() }}
 </fieldset>
-{{ e.npa("Quelle est votre adresse ?") }}
-{{ e.coordonnees(nom_prenom=True, naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False, envoi=False) }}
+{{ e.npa("Quelle est votre adresse ?", final=True) }}
 {{ e.resultat_lca("besoins") }}
 {% endblock %}

@@ -918,8 +918,9 @@
       // Encouragement : combien de questions restent avant la prime
       var enc = funnel.querySelector("[data-funnel-encourage]");
       if (enc) {
-        var iCoord = etapesF.findIndex(function (e) { return e.getAttribute("data-fe") === "coordonnees"; });
-        var reste = iCoord - n;
+        // Étape qui affiche la prime : celle qui porte le bouton d'envoi (coordonnées, ou adresse si elle vient après)
+        var iCoord = etapesF.findIndex(function (e) { return e.querySelector("[data-fe-envoi]"); });
+        var reste = iCoord - n + 1; // l'écran qui affiche la prime compte comme la dernière question
         enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? "Dernière question avant votre prime" : reste === 2 ? "Plus que 2 questions, votre prime est presque prête" : vue === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
         enc.hidden = !enc.textContent;
       }

@@ -58,8 +58,8 @@
   ("tirelire", "Prévoyance (LPP)", "2e pilier de vos collaborateurs et de vous-même."),
   ("voiture", "Véhicules d'entreprise", "Voitures, utilitaires et flottes : RC, casco et assistance.")]) }}
 
-{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.") }}
-{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False, envoi=False) }}
+{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.", final=True) }}
 {{ e.resultat("chiffre_affaires", prestations=[
   ("bouclier", "Les dommages que vous causez", "Dommages corporels et matériels causés à des clients ou à des tiers dans le cadre de votre activité, et les pertes qui en découlent."),
   ("balance", "Votre défense", "L'assureur examine chaque réclamation et refuse de payer celles qui ne sont pas fondées, y compris devant un tribunal."),

@@ -29,7 +29,7 @@
   ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
   ("interet_menage", "maison", "Revoir mon assurance ménage", "Un spécialiste revoit votre assurance ménage et vous montre ce qui peut être amélioré.", 0),
   ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
-{{ e.npa("Quelle est l'adresse du bien ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.") }}
-{{ e.coordonnees(nom_prenom=True, naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False, envoi=False) }}
+{{ e.npa("Quelle est l'adresse du bien ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.", final=True) }}
 {{ e.resultat("valeur") }}
 {% endblock %}

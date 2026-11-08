@@ -208,7 +208,7 @@
       '<ol class="lamal-apercu__liste" aria-hidden="true">' + offres.slice(0, 3).map(function (x, k) {
         return "<li><span>" + (k + 1) + '</span><span class="lamal-apercu__flou">Caisse maladie ' + "●●●●●".slice(0, 3 + k) + '</span><strong class="lamal-apercu__flou">' + masque(x.total) + "</strong></li>";
       }).join("") + "</ol>" +
-      '<p class="apercu-prime__mois">' + '<svg class="icone icone--petite" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="2"/></svg> Affichées dès que vous indiquez vos coordonnées</p>';
+      '<p class="apercu-prime__mois">' + '<svg class="icone icone--petite" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="2"/></svg> Affichées dès que vous indiquez vos coordonnées et votre adresse</p>';
   };
 
   /* ---------- Résultat ---------- */
@@ -287,7 +287,7 @@
     if (cle === "adresse") {
       $("[data-lamal-rappel-lieu]").textContent = "Domicile : " + [form.querySelector('[name="domicile_npa"]').value, form.querySelector('[name="domicile_localite"]').value].join(" ") + (etat.canton ? " (" + etat.canton + ")" : "") + ".";
     }
-    if (cle === "coordonnees" || cle === "resultat" || cle === "actuelle") {
+    if (cle === "coordonnees" || cle === "resultat" || cle === "actuelle" || cle === "adresse") {
       pret.then(function () {
         if (!etat.donnees && cantonChoisi()) return charger(cantonChoisi()).then(function (d) { etat.donnees = d; etat.canton = cantonChoisi(); remplirActuelle(); });
       }).then(function () {

@@ -36,7 +36,7 @@
   ("option_pj_immeuble", "balance", "Protection juridique immeuble", "Litige avec un locataire, un voisin ou une entreprise de construction : frais d'avocat et de procédure.", 450),
   ("interet_inventaire", "colis", "Assurer aussi l'inventaire", "Machines, mobilier et marchandises contre l'incendie, l'eau et le vol, avec l'interruption d'exploitation.", 0),
   ("interet_cyber", "cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues.", 0)]) }}
-{{ e.npa("Quelle est l'adresse du bâtiment ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.") }}
-{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False, envoi=False) }}
+{{ e.npa("Quelle est l'adresse du bâtiment ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.", final=True) }}
 {{ e.resultat("valeur") }}
 {% endblock %}

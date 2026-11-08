@@ -12,7 +12,7 @@
   ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
   ("interet_menage", "maison", "Revoir mon assurance ménage", "Un spécialiste revoit votre assurance ménage et vous montre ce qui peut être amélioré.", 0),
   ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
-{{ e.npa("Quelle est votre adresse ?") }}
-{{ e.coordonnees(nom_prenom=True, naissance=False) }}
+{{ e.coordonnees(nom_prenom=True, naissance=False, envoi=False) }}
+{{ e.npa("Quelle est votre adresse ?", final=True) }}
 {{ e.resultat("options", prestations=[("calcul", "Annulation", "Vous devez annuler pour maladie, accident ou décès d'un proche : les frais non remboursables sont pris en charge."), ("croix", "Frais médicaux à l'étranger", "Les frais de traitement au-delà de ce que paie l'assurance de base, en particulier hors d'Europe."), ("avion", "Rapatriement", "Retour en Suisse organisé et payé si votre état de santé l'exige."), ("telephone", "Assistance 24 h sur 24", "Une centrale joignable jour et nuit pour vous orienter vers un médecin ou un hôpital."), ("fleches", "Interruption de voyage", "Retour anticipé pour un événement grave : les jours perdus peuvent être remboursés."), ("groupe", "Tous les voyages de l'année", "Une couverture annuelle pour tout le ménage, sans rien faire avant chaque départ.")], titre_prestations="Ce que couvre votre assurance voyage") }}
 {% endblock %}

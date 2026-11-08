@@ -55,7 +55,8 @@
 {%- endmacro %}
 
 {# Adresse complète (rue, n°, NPA, localité) : le NPA sert aussi à l'estimation et au canton #}
-{% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.") -%}
+{# final=True : dernière étape, après les coordonnées (le lead est déjà enregistré) ; le bouton affiche la prime et envoie la demande #}
+{% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", final=False) -%}
 {{ ouvrir("npa", question, aide) }}
   <div class="grille-champs grille-champs--adresse">
     <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="logement_rue" required autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
@@ -63,7 +64,12 @@
     <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" required inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
     <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
   </div>
+  {% if final %}
+  <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Dernière étape : votre prime s'affiche juste après.</p>
+  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
+  {% else %}
   {{ continuer() }}
+  {% endif %}
 </fieldset>
 {%- endmacro %}
 
@@ -123,12 +129,12 @@
 {% macro impots() -%}{{ oui_non("economiser_impots", "Souhaitez-vous aussi payer moins d'impôts ?", "Un spécialiste peut vous montrer ce que le 3e pilier ou votre déclaration peuvent vous faire gagner.", oui="Oui, ça m'intéresse") }}{%- endmacro %}
 
 {# Coordonnées : la prime s'affiche en clair ; laisser ses coordonnées pour être rappelé reste un choix. #}
-{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=False) -%}
+{% macro coordonnees(nom_prenom=False, entreprise=False, naissance=True, flou=False, envoi=True) -%}
 {{ ouvrir("coordonnees", "Votre prime est calculée") }}
   <div class="apercu-prime">
     <p class="apercu-prime__label">Votre prime estimée</p>
     <p class="apercu-prime__montant apercu-prime__montant--masque" data-affiche="total_floute" aria-hidden="true">CHF 888.88</p>
-    <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Affichée dès que vous indiquez vos coordonnées</p>
+    <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Affichée dès que vous indiquez vos coordonnées{% if not envoi %} et votre adresse{% endif %}</p>
   </div>
   <div class="rappel-choix">
     <p class="fe__sous-question">Où vous envoyer votre estimation ?</p>
@@ -149,7 +155,8 @@
     <label for="consentement-{{ sim.id }}">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>
   </div>
   <div class="rappel-boutons">
-    <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
+    {% if envoi %}<button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
+    {% else %}<button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant>Continuer</button>{% endif %}
   </div>
   <ul class="reassurance">
     <li>{{ i.icone("valide", "icone icone--petite") }} Un conseiller dédié vous recontacte, pas de démarchage</li>
