@@ -1605,6 +1605,7 @@
     var go = bloc.querySelector("[data-prestations-go]"), cases = bloc.querySelectorAll("input[type=checkbox]");
     var aPasser = (bloc.getAttribute("data-passer") || "").split(",").filter(Boolean);
     var libelle = bloc.getAttribute("data-bouton") || "Voir ma prime";
+    var multi = (bloc.getAttribute("data-multi") || "").split(",").filter(Boolean);
     var maj = function () {
       var p = new URLSearchParams(), n = 0;
       cases.forEach(function (c) {
@@ -1612,7 +1613,7 @@
         n++;
         c.value.split("&").forEach(function (kv) {
           var i = kv.indexOf("="), k = kv.slice(0, i).trim(), v = kv.slice(i + 1).trim();
-          if (k && !p.has(k)) p.set(k, v);
+          if (k && multi.indexOf(k) >= 0) p.append(k, v); else if (k && !p.has(k)) p.set(k, v);
         });
       });
       var passer = aPasser.filter(function (k) { return p.has(k); });

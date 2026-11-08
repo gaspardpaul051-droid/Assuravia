@@ -14,9 +14,12 @@ bouton: Estimer ma prime
 entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; besoins à cocher, sans payer le reste ; coeur | 2 ; niveaux : Standard ou Étendu ; bouclier | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-ambulatoire/
-simulateur_titre: Estimez votre prime en 2 minutes
+simulateur_titre: Qu'est-ce qui compte pour vous ?
+prestations: besoins_amb=Médecines complémentaires ; Médecines douces ; coeur | besoins_amb=Lunettes et lentilles ; Lunettes et lentilles ; valide | besoins_amb=Médicaments hors liste ; Médicaments hors liste ; croix | besoins_amb=Prévention et bien-être ; Prévention ; bouclier | besoins_amb=Étranger et sauvetage ; Voyage ; avion | besoins_amb=Orthodontie des enfants ; Orthodontie enfants ; groupe
+prestations_passer: besoins_amb
+prestations_multi: besoins_amb
 simulateur_texte: Choisissez la formule qui vous ressemble et découvrez une estimation de prime avec les prestations possibles.
-simulateur_bouton: Estimer ma prime
+simulateur_bouton: Voir ma prime
 h1: Complémentaire ambulatoire et médecines douces : les soins du quotidien
 chapeau: Une séance d'ostéopathie, une nouvelle paire de lunettes, un vaccin avant un voyage : ces frais reviennent souvent et l'assurance de base n'en rembourse qu'une partie, ou rien. Une complémentaire ambulatoire prend le relais.
 retenir: La LAMal ne rembourse que certaines médecines complémentaires, pratiquées par des médecins. | Une complémentaire ambulatoire couvre les thérapeutes reconnus, comme les ostéopathes ou naturopathes. | Elle participe aussi aux lunettes, à la prévention et aux médicaments hors liste. | Les formules vont de l'essentiel à une couverture confort avec orthodontie pour les enfants.
