@@ -1,0 +1,42 @@
+{% import "partials/icones.html" as i %}
+{% extends "base.html" %}
+{% block title %}Qui sommes-nous | Assuravia{% endblock %}
+{% block description %}Qui est Assuravia, comment fonctionne le service, comment il est rémunéré et nos engagements : estimation en ligne puis conseiller agréé, gratuit pour vous.{% endblock %}
+{% block head %}
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "AboutPage", "name": "Qui sommes-nous", "url": site_url ~ "/a-propos/", "inLanguage": "fr-CH", "mainEntity": {"@type": "Organization", "name": "Assuravia", "legalName": "Assuravia Sàrl", "url": site_url ~ "/", "logo": site_url ~ "/marque/embleme.svg", "email": "info@assuravia.ch", "telephone": "+41782653473", "address": {"@type": "PostalAddress", "addressLocality": "Carouge", "postalCode": "1227", "addressRegion": "GE", "addressCountry": "CH"}, "areaServed": {"@type": "Country", "name": "Suisse"}}}|tojson }}</script>
+{% endblock %}
+{% block content %}
+<section class="produit produit--simple">
+  <div class="cadre texte-long">
+    <h1>Qui sommes-nous ?</h1>
+    <p class="chapeau">Assuravia aide les particuliers et les entreprises de Suisse à y voir clair dans leurs assurances et leur prévoyance. Vous estimez votre situation en ligne, puis un conseiller qualifié vous rappelle pour aller plus loin. Le service est gratuit pour vous et sans engagement.</p>
+
+    <h2>Notre mission</h2>
+    <p>Les assurances et la prévoyance sont pleines de franchises, de plafonds et de délais. On les repousse souvent, et on garde des contrats qui ne correspondent plus à sa vie. Assuravia a été créé pour rendre ces choix simples : des simulateurs clairs, des explications sans jargon, puis un vrai conseiller pour vérifier votre situation.</p>
+
+    <h2>Comment ça marche</h2>
+    <ol>
+      <li><strong>Vous faites une estimation sur le site.</strong> Prime d'assurance, économie d'impôts avec le 3e pilier, comparaison des caisses maladie : quelques questions suffisent.</li>
+      <li><strong>Un conseiller vous rappelle.</strong> Votre demande est transmise à un conseiller, un courtier ou une compagnie d'assurance agréés, selon votre besoin. Il vous contacte, en général dans la journée ouvrable.</li>
+      <li><strong>Vous décidez.</strong> Le conseiller vérifie votre situation et vous présente des solutions. Vous restez libre de les accepter ou non. Vous ne payez rien pour le conseil.</li>
+    </ol>
+
+    <h2>Comment Assuravia est rémunéré</h2>
+    <p>Le service est gratuit pour vous. Assuravia est rémunéré par les conseillers et partenaires professionnels qui reçoivent les demandes. Assuravia n'est pas un intermédiaire d'assurance : la plateforme ne conclut aucun contrat. Les offres et les contrats sont établis par les professionnels agréés et par les compagnies.</p>
+
+    <h2>Nos engagements</h2>
+    <ul>
+      <li><strong>Des informations vérifiées.</strong> Les chiffres de nos pages et de notre blog (plafonds, délais, primes LAMal publiées par l'OFSP, taux de la BNS) viennent de sources officielles ou des assureurs. Ils sont mis à jour chaque année.</li>
+      <li><strong>Vos données protégées.</strong> Vos coordonnées servent uniquement à traiter votre demande. Elles ne sont jamais vendues à des listes de démarchage. Détails dans notre page <a href="/confidentialite/">Protection des données</a>.</li>
+      <li><strong>Pas de pression.</strong> Un conseiller vous appelle pour la demande que vous avez faite, et vous pouvez dire non à tout moment.</li>
+    </ul>
+
+    <h2>Qui est derrière Assuravia</h2>
+    <p>Assuravia est édité par Assuravia Sàrl, une société basée à Carouge, dans le canton de Genève. Nous travaillons en français pour toute la Suisse, avec un réseau de conseillers en Suisse romande.</p>
+
+    <h2>Nous contacter</h2>
+    <p>E-mail : <a href="mailto:info@assuravia.ch">info@assuravia.ch</a><br>Téléphone et WhatsApp : <a href="https://wa.me/{{ whatsapp }}" rel="noopener" target="_blank">078 265 34 73</a><br>Du lundi au vendredi, de 8 h à 19 h.</p>
+    <p><a class="bouton bouton--action" href="/contact/">Poser une question</a></p>
+  </div>
+</section>
+{% endblock %}
