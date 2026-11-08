@@ -44,6 +44,14 @@
         </div>
         <a class="bouton bouton--action lp-depart__go" href="{{ produit.simulateur }}" data-prestations-go>{{ produit.simulateur_bouton or "Voir ma prime" }}</a>
       </div>
+      {% elif produit.entree == "lamal" %}
+      {# Comparateur LAMal : la première question (qui assurer ?) se répond ici #}
+      <p class="form-sous-titre"><strong>Qui faut-il assurer ?</strong> Touchez votre choix : la comparaison démarre directement.</p>
+      <div class="rcp-depart__choix">
+        {% for val, titre, icone in [("Moi", "Moi seul·e", "utilisateur"), ("Couple", "Moi et mon conjoint", "groupe"), ("Famille", "Ma famille", "maison"), ("Enfant", "Mon enfant", "coeur")] %}
+        <a class="rcp-depart__carte" href="{{ produit.simulateur }}?assures={{ val|urlencode }}&amp;passer=assures"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong></span></a>
+        {% endfor %}
+      </div>
       {% elif produit.entree == "sante" %}
       {# Comme la RC pro : la première question (pour qui ?) se répond ici, la simulation commence à la suivante #}
       <p class="form-sous-titre">Pour qui est cette couverture ? Touchez votre choix : l'estimation démarre directement. Gratuit et sans engagement.</p>
@@ -79,7 +87,7 @@
       {% endif %}
       {% if produit.entree != "pj" and not produit.prestations %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>{% endif %}
       {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
-      {% if produit.entree in ("sante", "pj") %}
+      {% if produit.entree in ("sante", "pj", "lamal") or produit.prestations %}
       <ul class="lp-depart__rassure">
         <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
         <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>

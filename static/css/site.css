@@ -2108,3 +2108,27 @@ html.cookies-ouvert { overflow: hidden; }
   .lp-depart--produit .lp-depart__carte { min-height: 52px; padding: 8px 10px; gap: 8px; font-size: .85rem; line-height: 1.25; }
   .lp-depart--produit .lp-depart__icone { width: 30px; height: 30px; }
 }
+/* Comparateur LAMal en étapes */
+.lamal-cantons { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: var(--e-4); }
+@media (max-width: 640px) { .lamal-cantons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.lamal-cantons .choix-carte--compact { min-height: 52px; }
+.lamal-personne { padding: var(--e-3) var(--e-4); margin-bottom: var(--e-3); border-radius: var(--r-m); border: 1.5px solid var(--bordure); background: var(--fond); }
+.lamal-personne .champ { margin-bottom: var(--e-2); }
+.lamal-personne__employeur { display: flex; gap: 8px; align-items: flex-start; font-size: var(--t-s); color: var(--marine); cursor: pointer; }
+.lamal-personne__employeur[hidden] { display: none; }
+.lamal-personne__employeur input { margin-top: 3px; flex: none; }
+.lamal-personne__employeur small { color: var(--texte-doux); }
+.lamal-personne__retirer { margin-top: var(--e-2); font-size: var(--t-xs); }
+.lamal-ajouter { margin-bottom: var(--e-4); }
+.lamal-apercu { padding: var(--e-4); margin-bottom: var(--e-4); border-radius: var(--r-m); background: var(--bleu-pale); }
+.lamal-apercu__titre { margin: 0 0 var(--e-3); color: var(--marine); }
+.lamal-apercu__eco { color: var(--succes); white-space: nowrap; }
+.lamal-apercu__liste { list-style: none; margin: 0 0 var(--e-2); padding: 0; display: grid; gap: 6px; }
+.lamal-apercu__liste li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-s, 8px); background: var(--fond); }
+.lamal-apercu__liste li > span:first-child { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--bleu); color: #fff; font-size: var(--t-xs); font-weight: 700; }
+.lamal-apercu__liste li strong { margin-left: auto; }
+.lamal-apercu__flou { filter: blur(5px); user-select: none; }
+.lamal-complementaires { margin: var(--e-5) 0 var(--e-3); }
+.funnel .lamal-cantons .choix-carte, .funnel [data-lamal-regions] .choix-carte { min-height: 48px; padding: 10px 8px; }
+.funnel .lamal-cantons .choix-carte span, .funnel [data-lamal-regions] .choix-carte span { font-size: var(--t-s); }
+.funnel [data-lamal-regions] { grid-template-columns: repeat(3, minmax(0, 1fr)); }

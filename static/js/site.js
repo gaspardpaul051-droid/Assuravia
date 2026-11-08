@@ -924,6 +924,8 @@
         enc.hidden = !enc.textContent;
       }
       afficher();
+      // Les scripts propres à une page (comparateur LAMal) suivent les étapes
+      funnel.dispatchEvent(new CustomEvent("funnel:etape", { detail: { cle: etapesF[n].getAttribute("data-fe"), arriere: !!enArriere } }));
       etapesF[n].classList.remove("fe--entree", "fe--retour");
       void etapesF[n].offsetWidth;
       etapesF[n].classList.add(enArriere ? "fe--retour" : "fe--entree");
