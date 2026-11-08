@@ -35,7 +35,7 @@
       </div>
       {% elif produit.prestations %}
       {# Prestations à cocher (modèle de la page publicitaire complémentaire santé) : passées à la simulation, qui saute les questions déjà répondues #}
-      <p class="form-sous-titre"><strong>{{ produit.prestations_question or "Qu'est-ce qui compte pour vous ?" }}</strong> Touchez vos choix.</p>
+      <p class="form-sous-titre">Choisissez, puis voyez votre prime en 2 minutes.</p>
       <div class="lp-depart lp-depart--produit" data-prestations data-sim="{{ produit.simulateur }}" data-passer="{{ produit.prestations_passer or '' }}" data-bouton="{{ produit.simulateur_bouton or 'Voir ma prime' }}">
         <div class="lp-depart__choix">
           {% for p in produit.prestations.split("|") %}{% set params, titre, icone = p.split(";")|map("trim")|list %}

@@ -14,9 +14,8 @@ bouton: Composer ma couverture
 entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; couvertures à combiner selon vos besoins ; coeur | 4 ; niveaux de chambre à l'hôpital ; croix | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-complementaires/
-simulateur_titre: Composez votre couverture en 2 minutes
-prestations_question: Que voulez-vous mieux couvrir ?
-prestations: fam_hop=oui ; Hôpital et médecin au choix ; croix | fam_amb=oui ; Ostéo, lunettes, médecines douces ; coeur | fam_dent=oui ; Dents et appareil dentaire ; valide | fam_ij=oui ; Un montant par jour d'hôpital ; tirelire | fam_voy=oui ; Bien soigné en voyage ; avion | fam_pj=oui ; Défendu face à un assureur ; balance
+simulateur_titre: Qu'est-ce qui compte pour vous ?
+prestations: fam_hop=oui ; L'hôpital ; croix | fam_amb=oui ; Médecines douces ; coeur | fam_dent=oui ; Les dents ; valide | fam_voy=oui ; Les voyages ; avion | fam_ij=oui ; Un capital si hospitalisé ; tirelire | fam_pj=oui ; Protection juridique ; balance
 prestations_passer: fam_hop,fam_amb,fam_dent,fam_ij,fam_voy,fam_pj
 simulateur_texte: Hospitalisation, ambulatoire, médecines douces, dentaire : choisissez ce qui compte pour vous et découvrez une estimation de prime.
 simulateur_bouton: Voir ma prime

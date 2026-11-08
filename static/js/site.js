@@ -1619,7 +1619,7 @@
       if (passer.length) p.set("passer", passer.join(","));
       var q = p.toString();
       go.href = bloc.getAttribute("data-sim") + (q ? "?" + q : "");
-      go.textContent = n ? libelle + " (" + n + (n > 1 ? " choix)" : " choix)") : libelle;
+      go.textContent = n ? libelle + " (" + n + ")" : libelle;
     };
     var besoin = (params.get("besoin") || "").split(",");
     cases.forEach(function (c) {
