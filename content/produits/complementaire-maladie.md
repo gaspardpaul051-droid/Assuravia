@@ -15,7 +15,7 @@ entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; couvertures à combiner selon vos besoins ; coeur | 4 ; niveaux de chambre à l'hôpital ; croix | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-complementaires/
 simulateur_titre: Qu'est-ce qui compte pour vous ?
-prestations: fam_hop=oui ; L'hôpital ; croix | fam_amb=oui ; Médecines douces ; coeur | fam_dent=oui ; Les dents ; valide | fam_voy=oui ; Les voyages ; avion | fam_ij=oui ; Un capital si hospitalisé ; tirelire | fam_pj=oui ; Protection juridique ; balance
+prestations: fam_hop=oui ; Hospitalisation ; croix | fam_amb=oui ; Médecines douces ; coeur | fam_dent=oui ; Dentaire ; valide | fam_voy=oui ; Voyage ; avion | fam_ij=oui ; Indemnité journalière ; tirelire | fam_pj=oui ; Protection juridique ; balance
 prestations_passer: fam_hop,fam_amb,fam_dent,fam_ij,fam_voy,fam_pj
 simulateur_texte: Hospitalisation, ambulatoire, médecines douces, dentaire : choisissez ce qui compte pour vous et découvrez une estimation de prime.
 simulateur_bouton: Voir ma prime
