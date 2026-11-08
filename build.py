@@ -276,6 +276,7 @@ def lire_article(path: Path) -> dict:
         "slug": path.stem,
         "date_obj": date,
         "date_fr": date_fr(date),
+        "maj_fr": date_fr(dt.date.fromisoformat(meta["maj"])) if meta.get("maj") else "",
         "html": html,
         "html_debut": html[:coupe],
         "html_fin": html[coupe:],

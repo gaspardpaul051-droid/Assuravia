@@ -26,7 +26,7 @@
       <p class="badge">{{ article.categorie }}</p>
       <h1>{{ article.titre }}</h1>
       <p class="chapeau">{{ article.description }}</p>
-      <p class="article__meta">{{ i.icone("horloge", "icone icone--petite") }} {{ article.lecture }} min de lecture <span aria-hidden="true">·</span> Publié le <time datetime="{{ article.date }}">{{ article.date_fr }}</time>{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
+      <p class="article__meta">{{ i.icone("horloge", "icone icone--petite") }} {{ article.lecture }} min de lecture <span aria-hidden="true">·</span> Publié le <time datetime="{{ article.date }}">{{ article.date_fr }}</time>{% if article.maj %}, mis à jour le <time datetime="{{ article.maj }}">{{ article.maj_fr }}</time>{% endif %}</p>
       </div>
       <div class="article__image">{{ cv.couverture(article.categorie, (article.titre|length * 7 + article.url|length * 3) % 100, article.illustration) }}</div>
     </div>
