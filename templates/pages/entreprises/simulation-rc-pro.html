@@ -21,8 +21,6 @@
   {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
   {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3) }}
 
-{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.") }}
-
 {{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
   <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>
   {{ e.continuer() }}
@@ -60,6 +58,7 @@
   ("tirelire", "Prévoyance (LPP)", "2e pilier de vos collaborateurs et de vous-même."),
   ("voiture", "Véhicules d'entreprise", "Voitures, utilitaires et flottes : RC, casco et assistance.")]) }}
 
+{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.") }}
 {{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False) }}
 {{ e.resultat("chiffre_affaires", prestations=[
   ("bouclier", "Les dommages que vous causez", "Dommages corporels et matériels causés à des clients ou à des tiers dans le cadre de votre activité, et les pertes qui en découlent."),
