@@ -1,6 +1,6 @@
 ---
 titre: Couverture accidents LAMal : quand la suspendre ou la réactiver
-titre_seo: Couverture accidents LAMal : la suspendre ?
+titre_seo: Suspendre la couverture accidents LAMal
 description: Salarié 8 heures par semaine ou plus ? Votre employeur vous assure déjà contre les accidents. Quand suspendre ce risque dans la LAMal et quand le réactiver.
 date: 2026-10-20
 illustration: pansement

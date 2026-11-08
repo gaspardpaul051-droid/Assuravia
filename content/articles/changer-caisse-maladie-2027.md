@@ -1,6 +1,6 @@
 ---
 titre: Changer de caisse maladie pour 2027 : délais, étapes et pièges
-titre_seo: Changer de caisse maladie 2027 : délais
+titre_seo: Changer de caisse maladie : délai 30 novembre
 description: Primes 2027 en hausse de 5 % en moyenne : jusqu'à quand résilier, comment changer de franchise ou de modèle, et les erreurs à éviter avec les complémentaires.
 date: 2026-10-18
 illustration: calendrier

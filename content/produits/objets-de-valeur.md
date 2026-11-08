@@ -5,13 +5,13 @@ nom: Objets de valeur
 categorie: Véhicule et loisirs
 icone: diamant
 ordre: 4
-titre_seo: Assurance objets de valeur : bijoux et montres
+titre_seo: Assurance bijoux et montres : objets de valeur
 description: Assurance objets de valeur en Suisse : bijoux, montres, œuvres d'art et instruments couverts contre la perte, le vol et la casse, à la valeur convenue.
 desc: Bijoux, montres, œuvres d'art et instruments assurés contre la perte, le vol et la casse.
 points: Couverture tous risques | Valeur convenue à l'avance | Protection en Suisse et à l'étranger
 badge: Offre gratuite
 bouton: Assurer mes objets
-h1: Assurance objets de valeur : bijoux, montres, art et instruments
+h1: Assurance bijoux, montres et objets de valeur en Suisse
 chapeau: L'assurance ménage limite souvent l'indemnisation des objets précieux et couvre rarement leur perte. Une assurance dédiée les protège à une valeur fixée à l'avance, à la maison comme en voyage.
 retenir: L'assurance ménage prévoit souvent un plafond pour les bijoux et couvre rarement la simple perte. | Une assurance objets de valeur couvre en général la perte, le vol et la casse, en Suisse et à l'étranger. | La valeur convenue à l'avance évite les discussions sur le montant après un sinistre. | Factures, certificats, photos et estimations à jour facilitent le règlement d'un sinistre.
 pour_qui: Vous portez tous les jours une montre ou une bague de valeur. | Vous avez hérité de bijoux ou d'une œuvre d'art dont vous ignorez la valeur exacte. | Vous jouez d'un instrument de musique de qualité et le transportez souvent. | Vous partez en voyage avec du matériel photo ou des bijoux.
@@ -66,6 +66,18 @@ Même une couverture tous risques a des limites. Exclusions fréquentes, à vér
 - **l'oubli manifeste ou la négligence grave**, par exemple un bijou laissé sans surveillance dans un lieu public ;
 - **l'usage professionnel** de l'objet, qui demande une couverture spécifique.
 
+## Assurance bijoux : combien ça coûte ?
+
+La prime dépend surtout de la valeur assurée, du type d'objets et de l'endroit où ils sont gardés. Ordre de grandeur calculé avec notre simulateur, pour une couverture tous risques à la valeur convenue :
+
+| Valeur des bijoux et montres | Prime indicative par an |
+|---|---|
+| CHF 10'000 | ≈ CHF 90 |
+| CHF 25'000 | ≈ CHF 225 |
+| CHF 50'000 | ≈ CHF 450 |
+
+La prime réelle varie selon l'assureur, la franchise choisie et les mesures de sécurité (coffre, alarme). Pour des collections importantes, l'assureur peut demander un coffre-fort ou un dépôt en banque pour les pièces portées rarement.
+
 ## Préparer son dossier
 
 - Gardez **factures, certificats et expertises** dans un endroit sûr, avec une copie numérique.
@@ -76,6 +88,9 @@ Même une couverture tous risques a des limites. Exclusions fréquentes, à vér
 En cas de vol, déposez plainte à la police sans tarder et informez l'assureur. À l'étranger, demandez une attestation de plainte sur place. Avant un long séjour, vérifiez aussi votre [assurance voyage](/particuliers/voyage/), qui ne remplace pas une couverture d'objets de valeur.
 
 ## Questions fréquentes
+
+### Mes bijoux sont-ils couverts par l'assurance ménage ?
+En partie seulement. L'assurance ménage limite souvent les bijoux à un plafond, couvre surtout le vol à domicile et rarement la perte ou la casse hors de chez vous. Une assurance bijoux couvre chaque pièce à sa valeur convenue, partout dans le monde selon le contrat.
 
 ### À partir de quelle valeur une assurance dédiée est-elle utile ?
 Dès que vos objets de valeur dépassent le plafond prévu par votre assurance ménage, ou si vous les portez souvent hors de chez vous. Le conseiller fait le point avec votre contrat actuel.

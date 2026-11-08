@@ -5,13 +5,13 @@ nom: Commerce et inventaire
 categorie: Biens et véhicules
 icone: colis
 ordre: 5
-titre_seo: Assurance inventaire et commerce pour PME
+titre_seo: Assurance inventaire commercial et locaux pro
 description: Assurance inventaire pour commerces, artisans et PME : marchandises, mobilier, machines, vol, dégâts d'eau et interruption d'exploitation après un sinistre.
 desc: Marchandises, mobilier et machines, plus votre chiffre d'affaires si l'activité s'arrête.
 points: Incendie, eau, vol et éléments naturels | Interruption d'exploitation | Valeur à neuf
 badge: Offre gratuite
 bouton: Assurer mon entreprise
-h1: Assurance commerce et inventaire : protégez vos biens et votre chiffre d'affaires
+h1: Assurance inventaire commercial : vos locaux, marchandises et machines protégés
 chapeau: Un incendie ou un dégât d'eau ne détruit pas seulement votre matériel. Il peut arrêter votre activité pendant des semaines, alors que les loyers et les salaires continuent. L'assurance inventaire et interruption d'exploitation protège les deux.
 retenir: L'assurance inventaire couvre mobilier, machines et marchandises contre l'incendie, l'eau, le vol et les éléments naturels | L'interruption d'exploitation paie la marge perdue et les charges qui continuent après un sinistre | Une somme d'assurance trop basse réduit l'indemnité en proportion | Dans le canton de Vaud, l'incendie et les éléments naturels se couvrent auprès de l'ECA
 pour_qui: Vous ouvrez un commerce, un atelier ou un bureau | Vous stockez des marchandises ou des objets de clients | Un arrêt de quelques semaines mettrait votre entreprise en difficulté | Votre bailleur ou votre banque exige une preuve d'assurance
@@ -74,6 +74,9 @@ Une somme trop basse entraîne une **sous-assurance** : l'indemnité est réduit
 - **Ne pas conserver de liste** des biens et des factures, ce qui complique la preuve du dommage.
 
 ## Questions fréquentes
+
+### Mes locaux professionnels sont-ils couverts ?
+Cela dépend de votre statut. Locataire, vous assurez votre inventaire, vos marchandises et les aménagements que vous avez payés (agencement, cuisine, vitrines). Propriétaire, le bâtiment lui-même se couvre avec une [assurance bâtiment d'entreprise](/entreprises/assurance-batiment/), et l'inventaire à part.
 
 ### Mon bail commercial m'oblige-t-il à m'assurer ?
 Souvent oui : le bailleur exige en général une RC et une assurance de vos biens. Le bâtiment lui-même est assuré par le propriétaire.

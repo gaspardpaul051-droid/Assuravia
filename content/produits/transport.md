@@ -5,13 +5,13 @@ nom: Assurance transport
 categorie: Biens et véhicules
 icone: camion
 ordre: 6
-titre_seo: Assurance transport de marchandises PME
+titre_seo: Assurance transport professionnel en Suisse
 description: Assurance transport de marchandises en Suisse et à l'étranger : limites du transporteur, Incoterms, police annuelle ou au voyage, que faire en cas de dommage.
 desc: Vos marchandises couvertes en Suisse et à l'étranger, par route, rail, air ou mer.
 points: Couverture de porte à porte | Police annuelle ou au voyage | Import, export et transports propres
 badge: Offre gratuite
 bouton: Assurer mes transports
-h1: Assurance transport : vos marchandises protégées de l'expédition à la livraison
+h1: Assurance transport de marchandises pour entreprises suisses
 chapeau: Quand une marchandise est perdue ou abîmée en route, le transporteur ne rembourse souvent qu'une petite partie de sa valeur. L'assurance transport couvre la valeur réelle de vos envois, de porte à porte.
 retenir: Le transporteur ne répond des dommages que dans des limites souvent calculées au kilo | L'assurance transport couvre la valeur de la marchandise, même quand le transporteur n'est pas responsable | L'Incoterm de votre contrat de vente dit qui doit assurer | Une police annuelle couvre automatiquement tous vos envois
 pour_qui: Vous expédiez ou importez des marchandises régulièrement | Vous envoyez des produits légers mais de grande valeur | Vous transportez vos marchandises ou votre outillage avec vos propres véhicules | Vos clients à l'étranger vous demandent une livraison assurée
@@ -24,6 +24,8 @@ demande_points: Route, rail, air, mer et coursiers | Suisse, Europe et monde ent
 ## Pourquoi la responsabilité du transporteur ne suffit pas
 
 Les transporteurs ne répondent des dommages que dans des **limites fixées par la loi, leurs conditions générales ou les conventions internationales**. Pour un transport routier international, la convention CMR limite par exemple l'indemnité à **8,33 droits de tirage spéciaux par kilo** de poids brut. Pour des produits légers mais chers, comme de l'électronique, des montres ou des instruments médicaux, c'est une fraction de leur valeur.
+
+> **Exemple :** une PME genevoise expédie en Allemagne un colis de 20 kg de montres valant CHF 50'000. Volé pendant le transport, il est indemnisé par le transporteur au plus 8,33 × 20 = 166 droits de tirage spéciaux, soit quelques centaines de francs. Avec une assurance transport, c'est la valeur assurée de CHF 50'000 qui est versée.
 
 Le transporteur n'est pas non plus responsable de tout : force majeure, emballage insuffisant ou vice propre de la marchandise peuvent l'exonérer. En Suisse aussi, beaucoup de transporteurs et de services de colis indemnisent selon le poids et non selon la valeur.
 

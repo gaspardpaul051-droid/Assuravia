@@ -1,6 +1,6 @@
 ---
 titre: Perte de gain maladie : ce que l'employeur doit payer en Suisse
-titre_seo: Perte de gain maladie employeur : obligations
+titre_seo: Échelle bernoise et perte de gain maladie
 description: Salarié malade : combien de temps payer son salaire, échelle bernoise, assurance indemnités journalières, délai d'attente et points à vérifier avant 2027.
 date: 2026-10-18
 illustration: thermometre
