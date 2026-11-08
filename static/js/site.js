@@ -926,6 +926,12 @@
       afficher();
       // Les scripts propres à une page (comparateur LAMal) suivent les étapes
       funnel.dispatchEvent(new CustomEvent("funnel:etape", { detail: { cle: etapesF[n].getAttribute("data-fe"), arriere: !!enArriere } }));
+      // Mesure de chaque écran affiché (en avançant) : où les visiteurs abandonnent. Google Analytics + étiquette Clarity
+      if (!enArriere && demarre) {
+        var cleE = etapesF[n].getAttribute("data-fe");
+        mesure("etape_simulation", { form_name: formF.getAttribute("name"), etape: cleE, etape_num: vue + 1, etape_id: (vue + 1) + "_" + cleE });
+        try { if (typeof window.clarity === "function") window.clarity("set", "etape_max", (vue + 1) + "_" + cleE); } catch (e) {}
+      }
       etapesF[n].classList.remove("fe--entree", "fe--retour");
       void etapesF[n].offsetWidth;
       etapesF[n].classList.add(enArriere ? "fe--retour" : "fe--entree");
@@ -934,7 +940,7 @@
       var champ = etapesF[n].querySelector("input:not([type=hidden]):not([type=radio]):not([readonly])");
       if (champ && !enArriere) champ.focus({ preventScroll: true });
     };
-    var sauter = {}, deja = [];
+    var sauter = {}, deja = [], demarre = false;
     var avancer = function () {
       if (!verifier(etapesF[courante])) return;
       historique.push(courante);
@@ -1092,7 +1098,8 @@
     var depart = 0;
     Object.keys(sauter).forEach(function (k) { if (+k >= 0) deja.push(+k); });
     while (sauter[depart] && depart < etapesF.length - 1) { delete sauter[depart]; historique.push(depart); depart++; }
-    if (depart) montrer(depart);
+    demarre = true;
+    montrer(depart);
   }
 
   // 4d. Garantie de loyer : comparaison des offres (tarifs publiés par les assureurs) et récapitulatif
