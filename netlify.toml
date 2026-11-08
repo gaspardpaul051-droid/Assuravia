@@ -33,6 +33,20 @@
   status = 301
   force = true
 
+# Ancienne page du blog
+[[redirects]]
+  from = "/blog.html"
+  to = "/blog/"
+  status = 301
+  force = true
+
+# Ancien simulateur (URL encore connue de Google)
+[[redirects]]
+  from = "/simulateur.html"
+  to = "/particuliers/garantie-de-loyer/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/guide/*"
   to = "/blog/:splat"

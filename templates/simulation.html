@@ -2,6 +2,8 @@
 {% import "partials/icones.html" as i %}
 {% import "partials/rappel-rapide.html" as rr with context %}
 {% import "partials/form.html" as f %}
+{# Simulations hors de Google (elles doublent les pages produit), sauf celles marquées "indexer" (comparateur LAMal) #}
+{% set noindex = not sim.indexer %}
 {% extends "base.html" %}
 {% block theme %}{{ sim.theme }}{% endblock %}
 {% block title %}{{ sim.titre }} | Assuravia{% endblock %}

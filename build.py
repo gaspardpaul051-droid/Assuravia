@@ -400,7 +400,8 @@ def main() -> None:
             raise ValueError(f"produits_lies inconnus dans {a['slug']} : {inconnus}")
         autres = [b for b in articles if b["slug"] != a["slug"]]
         autres.sort(key=lambda b: b["categorie"] != a["categorie"])
-        ecrire(a["url"], tpl_article.render(url=a["url"], article=a, autres=autres[:3]))
+        og = f"/og/{a['slug']}.png" if (ROOT / "static" / "og" / f"{a['slug']}.png").exists() else None
+        ecrire(a["url"], tpl_article.render(url=a["url"], article=a, autres=autres[:3], og_image=og))
         sitemap.append((a["url"], a.get("maj", a["date"])))
 
     lignes = [f"<url><loc>{SITE_URL}{u}</loc><lastmod>{d}</lastmod></url>" for u, d in sitemap]
