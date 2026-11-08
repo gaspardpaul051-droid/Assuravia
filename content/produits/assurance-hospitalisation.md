@@ -15,7 +15,7 @@ entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 4 ; niveaux de chambre au choix ; croix | Libre choix ; du médecin, selon la formule ; utilisateur | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-hospitalisation/
 simulateur_titre: Quelle couverture d'hospitalisation ?
-prestations: division=Privée ; Privée ; maison | division=Demi-privée ; Semi-privée ; croix | division=Au choix le jour venu ; Flex ; horloge | division=Commune, toute la Suisse ; Commune toute la Suisse ; repere | opt_ij=oui ; Indemnité journalière ; tirelire | ; Je ne sais pas encore ; bulle
+prestations: division=Privée ; Chambre privée ; maison ; Seul en chambre, médecin au choix | division=Demi-privée ; Chambre semi-privée ; croix ; 2 lits, médecin au choix | division=Au choix le jour venu ; Choix à l'hôpital ; horloge ; Prime plus basse, choix le jour J | division=Commune, toute la Suisse ; Tous les hôpitaux suisses ; repere ; Chambre commune, hors canton aussi | opt_ij=oui ; Argent par jour d'hôpital ; tirelire ; Un montant versé pour chaque nuit | ; Je ne sais pas encore ; bulle ; Un conseiller vous guide
 prestations_passer: division,opt_ij
 simulateur_texte: Choisissez votre niveau de confort à l'hôpital et découvrez une estimation de prime avec les prestations possibles.
 simulateur_bouton: Voir ma prime

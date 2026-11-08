@@ -2133,3 +2133,5 @@ html.cookies-ouvert { overflow: hidden; }
 .funnel .lamal-cantons .choix-carte span, .funnel [data-lamal-regions] .choix-carte span { font-size: var(--t-s); }
 .funnel [data-lamal-regions] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .lp-depart--produit .lp-depart__carte { min-height: 56px; font-size: var(--t-s); font-weight: 600; }
+.lp-depart__detail { display: block; margin-top: 2px; font-size: var(--t-xs); font-weight: 400; color: var(--texte-doux); line-height: 1.3; }
+@media (max-width: 640px) { .lp-depart__choix--detail { grid-template-columns: 1fr; gap: 8px; } .lp-depart__choix--detail .lp-depart__carte { min-height: 0; } }
