@@ -3,6 +3,7 @@ titre: Premier employé en Suisse : les assurances obligatoires
 titre_seo: Premier employé : assurances obligatoires
 description: Vous engagez votre premier employé ? AVS, LAA, LPP, allocations familiales, perte de gain : ce que l'employeur doit assurer et les montants 2027 utiles.
 date: 2026-10-23
+illustration: equipe
 categorie: Entreprises
 cta_titre: Mettez en place les assurances de votre premier employé
 cta_texte: Un conseiller vérifie avec vous la LAA, la LPP et la perte de gain maladie, et vous accompagne jusqu'à la signature.

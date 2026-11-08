@@ -3,6 +3,7 @@ titre: Rachat LPP dirigeant de PME : les règles avant le 31 décembre
 titre_seo: Rachat LPP dirigeant de PME : avant fin d'année
 description: Dirigeant d'une Sàrl ou d'une SA : comment racheter des années dans votre caisse de pension, le blocage de 3 ans, les limites et le calendrier de fin d'année.
 date: 2026-10-30
+illustration: colonnes
 categorie: Entreprises
 cta_titre: Votre plan LPP vous permet-il de racheter ?
 cta_texte: Un spécialiste analyse votre plan de prévoyance et votre potentiel de rachat, pour vous et vos cadres.

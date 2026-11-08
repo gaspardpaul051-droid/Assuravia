@@ -1,4 +1,5 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/couverture.html" as cv %}
 {% extends "base.html" %}
 {% block title %}{{ article.titre_seo or article.titre }} | Assuravia{% endblock %}
 {% block description %}{{ article.description }}{% endblock %}
@@ -19,12 +20,15 @@
 </div>
 <article class="article">
   <header class="article__entete">
-    <div class="cadre">
+    <div class="cadre article__entete-grille">
+      <div>
       <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/blog/">Blog</a></nav>
       <p class="badge">{{ article.categorie }}</p>
       <h1>{{ article.titre }}</h1>
       <p class="chapeau">{{ article.description }}</p>
       <p class="article__meta">{{ i.icone("horloge", "icone icone--petite") }} {{ article.lecture }} min de lecture <span aria-hidden="true">·</span> Publié le <time datetime="{{ article.date }}">{{ article.date_fr }}</time>{% if article.maj %}, mis à jour le {{ article.maj }}{% endif %}</p>
+      </div>
+      <div class="article__image">{{ cv.couverture(article.categorie, (article.titre|length * 7 + article.url|length * 3) % 100, article.illustration) }}</div>
     </div>
   </header>
   <div class="cadre article__grille">

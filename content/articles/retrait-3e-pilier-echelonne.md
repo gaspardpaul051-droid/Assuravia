@@ -3,6 +3,7 @@ titre: Retrait du 3e pilier : échelonner pour payer moins d'impôts
 titre_seo: Retrait 3a échelonné : comment réduire l'impôt
 description: Plusieurs comptes 3a retirés sur plusieurs années : quand retirer, quelles règles respecter et combien d'impôt fédéral vous évitez, calcul chiffré à l'appui.
 date: 2026-11-03
+illustration: escalier
 categorie: Prévoyance
 cta_titre: Préparez vos retraits 3a avec un conseiller
 cta_texte: Un conseiller établit avec vous un calendrier de retraits qui tient compte de votre 2e pilier et de votre couple.

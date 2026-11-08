@@ -3,6 +3,7 @@ titre: Couverture accidents LAMal : quand la suspendre ou la réactiver
 titre_seo: Couverture accidents LAMal : la suspendre ?
 description: Salarié 8 heures par semaine ou plus ? Votre employeur vous assure déjà contre les accidents. Quand suspendre ce risque dans la LAMal et quand le réactiver.
 date: 2026-10-20
+illustration: pansement
 categorie: Santé
 cta_titre: Vérifiez votre police LAMal 2027
 cta_texte: Le comparateur affiche les primes 2027 publiées par l'OFSP, avec ou sans couverture accidents.

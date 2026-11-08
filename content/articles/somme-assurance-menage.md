@@ -3,6 +3,7 @@ titre: Assurance ménage : calculer sa somme d'assurance pas à pas
 titre_seo: Assurance ménage : calculer la somme assurée
 description: Somme d'assurance ménage trop basse ? Méthode pièce par pièce, calcul de la sous-assurance et check-list pour vérifier votre police avant l'hiver.
 date: 2026-10-27
+illustration: canape
 categorie: Logement
 cta_titre: Vérifiez votre assurance ménage en 2 minutes
 cta_texte: Indiquez votre logement et vos besoins : vous obtenez une prime indicative et un conseiller peut reprendre votre somme d'assurance avec vous.

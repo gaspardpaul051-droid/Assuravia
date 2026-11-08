@@ -1,8 +1,10 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/couverture.html" as cv %}
 <ul class="cartes-articles">
   {% for a in liste %}
   <li>
     <a class="carte-article" href="{{ a.url }}">
+      <span class="carte-article__image">{{ cv.couverture(a.categorie, (a.titre|length * 7 + a.url|length * 3) % 100, a.illustration) }}</span>
       <span class="badge">{{ a.categorie }}</span>
       <span class="carte-article__titre">{{ a.titre }}</span>
       <span class="carte-article__desc">{{ a.description }}</span>

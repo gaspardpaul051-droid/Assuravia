@@ -3,6 +3,7 @@ titre: Changer de caisse maladie pour 2027 : délais, étapes et pièges
 titre_seo: Changer de caisse maladie 2027 : délais
 description: Primes 2027 en hausse de 5 % en moyenne : jusqu'à quand résilier, comment changer de franchise ou de modèle, et les erreurs à éviter avec les complémentaires.
 date: 2026-10-18
+illustration: calendrier
 categorie: Santé
 cta_titre: Comparez les primes 2027 de votre région
 cta_texte: Le comparateur affiche les primes de base 2027 publiées par l'OFSP pour votre âge, votre franchise et votre modèle.

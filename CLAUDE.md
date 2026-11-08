@@ -91,6 +91,7 @@ produits_lies: slugs de produits séparés par des virgules, par exemple 3e-pili
 quiz: Affirmation | vrai ou faux | Explication ;; Affirmation 2 | … (3 questions, facultatif)
 pour_qui: 4 situations « Vous … » séparées par | (widget à cocher, facultatif)
 widget: capital-3a (simulateur de capital, facultatif)
+illustration: image de l'article (cartes du blog et en-tête, `partials/couverture.html`) : tirelire, escalier, colonnes, bureau, equipe, thermometre, alerte, bouclier-pro, maison, canape, coeur, pansement, calendrier, voiture, impots ; choisir la plus proche du sujet, différente des articles récents (sans ce champ : image de la catégorie)
 ---
 Corps en Markdown, ## pour les intertitres. Un encadré se fait avec une citation commençant par un titre en gras :
 `> **Le saviez-vous ?** Texte…`. La couleur suit le titre : « Exemple… » (bleu), « Attention… » ou « Piège… » (orange), « Astuce », « Bon à savoir » ou « Conseil » (vert), sinon or. Deux encadrés ne doivent pas se suivre sans texte entre eux (Markdown les fusionne).

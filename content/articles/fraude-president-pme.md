@@ -3,6 +3,7 @@ titre: Fraude au président en PME : bloquer les faux virements
 titre_seo: Fraude au président en PME : les bons réflexes
 description: Faux e-mail du patron, IBAN modifié : comment repérer la fraude au président, la procédure de paiement à mettre en place et ce que couvre l'assurance.
 date: 2026-11-06
+illustration: alerte
 categorie: Entreprises
 cta_titre: Protégez votre entreprise contre les fraudes et les cyberattaques
 cta_texte: Un conseiller analyse vos risques et vous propose une cyberassurance adaptée, avec ou sans couverture des faux ordres de paiement.

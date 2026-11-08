@@ -1,0 +1,156 @@
+{# Illustration d'article (cartes du blog et en-tête), dessinée en SVG selon la catégorie.
+   `graine` (0 à 99) fait varier les formes de fond : chaque article a sa propre image. #}
+{% macro couverture(categorie, graine=0, scene=None, classe="couverture") -%}
+{% set sc = scene or {"Prévoyance": "tirelire", "Entreprises": "bureau", "Logement": "maison", "Santé": "coeur", "Véhicule": "voiture", "Impôts": "impots"}.get(categorie, "bouclier") %}
+{% set pal = {
+  "Prévoyance": ("#1565A8", "#3A9AE0", "#E2BE52", "#EAF4FD"),
+  "Entreprises": ("#0B2545", "#1E4A80", "#E2BE52", "#FBF5E2"),
+  "Logement": ("#2B7BC0", "#6CB8EC", "#0B2545", "#EAF4FD"),
+  "Santé": ("#1B7F8C", "#4FB7C4", "#FFFFFF", "#E6F6F7"),
+  "Véhicule": ("#13315C", "#2B7BC0", "#E2BE52", "#EAF4FD"),
+  "Impôts": ("#B08A1C", "#E2BE52", "#0B2545", "#FBF5E2"),
+}.get(categorie, ("#1565A8", "#3A9AE0", "#E2BE52", "#EAF4FD")) %}
+{% set a, b, acc, pale = pal %}
+{% set g = graine|int % 100 %}
+{% set id = "cv" ~ g ~ (categorie|length) %}
+<svg class="{{ classe }}" viewBox="0 0 640 360" role="img" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="{{ id }}f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{{ b }}"/><stop offset="1" stop-color="{{ a }}"/></linearGradient>
+    <pattern id="{{ id }}p" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#fff" opacity=".18"/></pattern>
+  </defs>
+  <rect width="640" height="360" fill="url(#{{ id }}f)"/>
+  <circle cx="{{ 40 + g * 2 }}" cy="{{ 300 - g }}" r="{{ 120 + g % 40 }}" fill="#fff" opacity=".08"/>
+  <circle cx="{{ 600 - g }}" cy="{{ 30 + g % 50 }}" r="{{ 90 + g % 30 }}" fill="#fff" opacity=".1"/>
+  <rect x="{{ 20 + g % 60 }}" y="24" width="200" height="130" fill="url(#{{ id }}p)"/>
+  <path d="M0 {{ 300 + g % 20 }} C160 {{ 260 + g % 30 }} 320 {{ 330 - g % 25 }} 640 {{ 280 + g % 35 }} V360 H0Z" fill="#fff" opacity=".12"/>
+  <g transform="translate(320 186)">
+    <ellipse cx="0" cy="118" rx="150" ry="14" fill="#000" opacity=".12"/>
+  {% if sc == "tirelire" %}
+    {# Tirelire et courbe qui monte #}
+    <path d="M-150 60 L-90 20 L-40 34 L20 -20 L80 -6 L150 -70" fill="none" stroke="{{ acc }}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="150" cy="-70" r="11" fill="{{ acc }}"/>
+    <ellipse cx="-10" cy="58" rx="96" ry="64" fill="#fff"/>
+    <circle cx="74" cy="44" r="22" fill="#fff"/><circle cx="82" cy="42" r="5" fill="{{ a }}"/>
+    <rect x="-70" y="104" width="22" height="18" rx="5" fill="#fff"/><rect x="34" y="104" width="22" height="18" rx="5" fill="#fff"/>
+    <rect x="-34" y="-4" width="48" height="9" rx="4.5" fill="{{ a }}" opacity=".5"/>
+    <circle cx="-10" cy="-40" r="22" fill="{{ acc }}"/><text x="-10" y="-32" text-anchor="middle" font-family="Arial" font-weight="700" font-size="24" fill="#0B2545">3</text>
+    <circle cx="-62" cy="58" r="8" fill="{{ pale }}"/>
+  {% elif sc == "bureau" %}
+    {# Immeuble de bureaux et mallette #}
+    <rect x="-130" y="-70" width="120" height="190" rx="10" fill="#fff"/>
+    {% for r in range(4) %}{% for c in range(3) %}<rect x="{{ -114 + c * 34 }}" y="{{ -52 + r * 36 }}" width="22" height="22" rx="4" fill="{{ b }}" opacity="{{ 0.35 + ((r + c + g) % 3) * 0.25 }}"/>{% endfor %}{% endfor %}
+    <rect x="-10" y="-20" width="110" height="140" rx="10" fill="{{ pale }}"/>
+    {% for r in range(3) %}<rect x="6" y="{{ 0 + r * 36 }}" width="78" height="16" rx="4" fill="{{ a }}" opacity=".25"/>{% endfor %}
+    <rect x="50" y="36" width="104" height="76" rx="12" fill="{{ acc }}"/>
+    <path d="M82 36 V24 a8 8 0 0 1 8 -8 h24 a8 8 0 0 1 8 8 V36" fill="none" stroke="{{ acc }}" stroke-width="8"/>
+    <rect x="50" y="64" width="104" height="8" fill="#0B2545" opacity=".25"/><rect x="94" y="58" width="16" height="20" rx="3" fill="#0B2545"/>
+  {% elif sc == "maison" %}
+    {# Maison, clé et nuage #}
+    <path d="M-120 10 L0 -84 L120 10" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-96 6 L0 -68 L96 6 V120 H-96Z" fill="#fff"/>
+    <rect x="-22" y="52" width="44" height="68" rx="6" fill="{{ a }}"/><circle cx="12" cy="88" r="4" fill="#fff"/>
+    <rect x="-76" y="24" width="40" height="34" rx="5" fill="{{ b }}" opacity=".7"/><rect x="36" y="24" width="40" height="34" rx="5" fill="{{ b }}" opacity=".7"/>
+    <rect x="52" y="-66" width="22" height="40" rx="3" fill="#fff"/>
+    <g transform="translate(118 40) rotate(-35)"><circle r="20" fill="none" stroke="{{ acc }}" stroke-width="9"/><rect x="18" y="-5" width="54" height="10" rx="5" fill="{{ acc }}"/><rect x="54" y="2" width="8" height="14" fill="{{ acc }}"/></g>
+    <g fill="#fff" opacity=".85" transform="translate(-170 -110)"><circle cx="0" cy="10" r="18"/><circle cx="22" cy="0" r="24"/><circle cx="48" cy="12" r="16"/><rect x="0" y="10" width="48" height="18" rx="9"/></g>
+  {% elif sc == "coeur" %}
+    {# Cœur, croix et pouls #}
+    <path d="M-170 30 H-80 L-60 -10 L-36 70 L-12 0 L4 30 H170" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+    <path d="M0 110 C-120 40 -120 -60 -50 -60 C-20 -60 0 -36 0 -20 C0 -36 20 -60 50 -60 C120 -60 120 40 0 110Z" fill="#fff"/>
+    <rect x="-14" y="-14" width="28" height="76" rx="6" fill="{{ a }}"/><rect x="-38" y="10" width="76" height="28" rx="6" fill="{{ a }}"/>
+    <circle cx="118" cy="-58" r="26" fill="{{ pale }}"/><path d="M106 -58 h24 M118 -70 v24" stroke="{{ a }}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="-122" cy="70" r="14" fill="{{ pale }}" opacity=".9"/>
+  {% elif sc == "voiture" %}
+    {# Voiture et route #}
+    <path d="M-200 112 H200" stroke="#fff" stroke-width="6" stroke-dasharray="26 18" opacity=".6"/>
+    <path d="M-140 70 V40 Q-140 20 -120 18 L-80 14 L-44 -30 Q-36 -40 -22 -40 H52 Q66 -40 76 -30 L112 14 L132 18 Q150 22 150 40 V70 Q150 80 140 80 H-130 Q-140 80 -140 70Z" fill="#fff"/>
+    <path d="M-62 12 L-34 -24 H6 V12Z M18 12 V-24 H58 L88 12Z" fill="{{ b }}" opacity=".6"/>
+    <circle cx="-80" cy="82" r="30" fill="#0B2545"/><circle cx="-80" cy="82" r="12" fill="#fff"/>
+    <circle cx="90" cy="82" r="30" fill="#0B2545"/><circle cx="90" cy="82" r="12" fill="#fff"/>
+    <rect x="128" y="34" width="20" height="12" rx="4" fill="{{ acc }}"/>
+    <g transform="translate(150 -80)"><path d="M0 -34 L28 -22 V2 C28 20 14 30 0 36 C-14 30 -28 20 -28 2 V-22Z" fill="{{ acc }}"/><path d="M-10 0 L-2 8 L12 -8" fill="none" stroke="#0B2545" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+  {% elif sc == "impots" %}
+    {# Déclaration et pourcentage #}
+    <rect x="-110" y="-90" width="150" height="200" rx="12" fill="#fff" transform="rotate(-6)"/>
+    <rect x="-80" y="-76" width="150" height="200" rx="12" fill="#fff"/>
+    {% for r in range(5) %}<rect x="-58" y="{{ -50 + r * 28 }}" width="{{ 106 - (r % 2) * 30 }}" height="10" rx="5" fill="{{ a }}" opacity=".3"/>{% endfor %}
+    <rect x="-58" y="96" width="60" height="12" rx="6" fill="{{ acc }}" opacity=".7"/>
+    <circle cx="96" cy="40" r="52" fill="{{ acc }}"/>
+    <text x="96" y="58" text-anchor="middle" font-family="Arial" font-weight="700" font-size="54" fill="#fff">%</text>
+    <path d="M128 -60 l10 -10 l10 10 M138 -70 v40" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 138 -50)"/>
+  {% elif sc == "equipe" %}
+    {# Employeur et premier employé #}
+    <rect x="-150" y="70" width="300" height="16" rx="8" fill="#fff" opacity=".9"/>
+    <circle cx="-60" cy="-36" r="34" fill="#fff"/><path d="M-122 70 C-122 10 -94 -2 -60 -2 C-26 -2 2 10 2 70Z" fill="#fff"/>
+    <circle cx="62" cy="-18" r="28" fill="{{ pale }}"/><path d="M10 70 C10 22 34 12 62 12 C90 12 114 22 114 70Z" fill="{{ pale }}"/>
+    <path d="M-60 6 L-68 24 L-60 52 L-52 24Z" fill="{{ acc }}"/>
+    <g transform="translate(130 -70)"><circle r="26" fill="{{ acc }}"/><path d="M-12 0 L-3 9 L13 -9" fill="none" stroke="#0B2545" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <rect x="-150" y="96" width="70" height="12" rx="6" fill="#fff" opacity=".5"/>
+  {% elif sc == "thermometre" %}
+    {# Arrêt maladie : thermomètre et calendrier #}
+    <rect x="-150" y="-70" width="170" height="180" rx="14" fill="#fff"/>
+    <rect x="-150" y="-70" width="170" height="40" rx="14" fill="{{ acc }}"/><rect x="-150" y="-44" width="170" height="14" fill="{{ acc }}"/>
+    {% for r in range(3) %}{% for c in range(4) %}<rect x="{{ -134 + c * 38 }}" y="{{ -16 + r * 40 }}" width="28" height="28" rx="6" fill="{{ a if (r * 4 + c) in [5, 6, 7, 8] else pale }}" opacity="{{ 0.85 if (r * 4 + c) in [5, 6, 7, 8] else 1 }}"/>{% endfor %}{% endfor %}
+    <rect x="60" y="-90" width="34" height="160" rx="17" fill="#fff"/><circle cx="77" cy="86" r="34" fill="#fff"/>
+    <rect x="70" y="-40" width="14" height="110" rx="7" fill="#E5533D"/><circle cx="77" cy="86" r="22" fill="#E5533D"/>
+    {% for k in range(4) %}<rect x="98" y="{{ -70 + k * 24 }}" width="14" height="4" rx="2" fill="#fff" opacity=".7"/>{% endfor %}
+  {% elif sc == "calendrier" %}
+    {# Délai : calendrier et flèche de changement #}
+    <rect x="-140" y="-80" width="190" height="190" rx="16" fill="#fff"/>
+    <rect x="-140" y="-80" width="190" height="46" rx="16" fill="{{ acc if categorie != 'Santé' else '#0B2545' }}"/><rect x="-140" y="-50" width="190" height="16" fill="{{ acc if categorie != 'Santé' else '#0B2545' }}"/>
+    <rect x="-108" y="-96" width="12" height="30" rx="6" fill="#0B2545"/><rect x="6" y="-96" width="12" height="30" rx="6" fill="#0B2545"/>
+    <text x="-45" y="70" text-anchor="middle" font-family="Arial" font-weight="700" font-size="88" fill="{{ a }}">30</text>
+    <g transform="translate(110 10)"><circle r="54" fill="{{ pale }}"/>
+      <path d="M-26 -10 A30 30 0 0 1 26 -14" fill="none" stroke="{{ a }}" stroke-width="8" stroke-linecap="round"/><path d="M18 -28 L28 -12 L10 -6" fill="none" stroke="{{ a }}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 12 A30 30 0 0 1 -26 16" fill="none" stroke="{{ a }}" stroke-width="8" stroke-linecap="round"/><path d="M-18 30 L-28 14 L-10 8" fill="none" stroke="{{ a }}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g>
+  {% elif sc == "escalier" %}
+    {# Retraits échelonnés : piles de pièces qui montent #}
+    {% for k in range(4) %}{% set h = 3 + k * 2 %}
+      {% for j in range(h) %}<ellipse cx="{{ -120 + k * 80 }}" cy="{{ 104 - j * 14 }}" rx="30" ry="9" fill="{{ acc if j % 2 == 0 else '#fff' }}" stroke="{{ a }}" stroke-opacity=".25"/>{% endfor %}
+    {% endfor %}
+    <path d="M-150 30 L-70 0 L10 -36 L120 -100" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="10 10" stroke-linecap="round"/>
+    <path d="M100 -108 L124 -102 L116 -80" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  {% elif sc == "alerte" %}
+    {# Fraude : e-mail suspect et bouclier #}
+    <rect x="-160" y="-60" width="200" height="140" rx="14" fill="#fff"/>
+    <path d="M-160 -50 L-60 20 L40 -50" fill="none" stroke="{{ b }}" stroke-width="8" stroke-linejoin="round" opacity=".6"/>
+    <g transform="translate(-130 50)"><path d="M0 -26 L26 18 H-26Z" fill="#E5533D"/><rect x="-3" y="-10" width="6" height="16" rx="3" fill="#fff"/><circle cy="12" r="3.5" fill="#fff"/></g>
+    <g transform="translate(96 10)"><path d="M0 -90 L70 -62 V-6 C70 44 36 74 0 92 C-36 74 -70 44 -70 -6 V-62Z" fill="{{ acc }}"/>
+      <path d="M-24 0 L-6 18 L28 -18" fill="none" stroke="#0B2545" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g>
+  {% elif sc == "pansement" %}
+    {# Accident : pansement et bouclier #}
+    <g transform="rotate(-30)"><rect x="-150" y="-36" width="300" height="72" rx="36" fill="#fff"/><rect x="-40" y="-36" width="80" height="72" fill="{{ pale }}"/>
+      {% for x in [-26, -6, 14] %}{% for y in [-18, 0, 18] %}<circle cx="{{ x + 6 }}" cy="{{ y }}" r="3.5" fill="{{ a }}" opacity=".5"/>{% endfor %}{% endfor %}</g>
+    <g transform="translate(120 -64)"><path d="M0 -40 L34 -26 V2 C34 24 18 36 0 44 C-18 36 -34 24 -34 2 V-26Z" fill="{{ pale }}"/><path d="M-12 0 h24 M0 -12 v24" stroke="{{ a }}" stroke-width="7" stroke-linecap="round"/></g>
+  {% elif sc == "colonnes" %}
+    {# Caisse de pension : colonnes et rachat #}
+    <path d="M-150 -30 L0 -100 L150 -30Z" fill="#fff"/>
+    {% for k in range(4) %}<rect x="{{ -124 + k * 70 }}" y="-20" width="38" height="120" rx="6" fill="#fff" opacity="{{ 1 - k * 0.08 }}"/>{% endfor %}
+    <rect x="-160" y="100" width="320" height="18" rx="6" fill="#fff"/>
+    <circle cx="0" cy="-58" r="18" fill="{{ acc }}"/><text x="0" y="-51" text-anchor="middle" font-family="Arial" font-weight="700" font-size="20" fill="#0B2545">2</text>
+  {% elif sc == "canape" %}
+    {# Assurance ménage : canapé, lampe, cadre #}
+    <rect x="-150" y="10" width="230" height="70" rx="18" fill="#fff"/><rect x="-130" y="-30" width="190" height="60" rx="16" fill="#fff" opacity=".85"/>
+    <rect x="-170" y="0" width="40" height="90" rx="14" fill="#fff"/><rect x="60" y="0" width="40" height="90" rx="14" fill="#fff"/>
+    <rect x="-150" y="80" width="10" height="26" fill="#0B2545"/><rect x="70" y="80" width="10" height="26" fill="#0B2545"/>
+    <rect x="-100" y="-14" width="56" height="40" rx="10" fill="{{ acc }}"/>
+    <path d="M128 -60 L158 -60 L170 -20 L116 -20Z" fill="{{ acc }}"/><rect x="140" y="-20" width="6" height="126" fill="#fff"/><rect x="120" y="102" width="46" height="8" rx="4" fill="#fff"/>
+    <rect x="-70" y="-110" width="80" height="58" rx="6" fill="#fff" opacity=".9"/><path d="M-62 -60 L-36 -88 L-18 -70 L-6 -80 L2 -60Z" fill="{{ b }}"/>
+  {% elif sc == "bouclier-pro" %}
+    {# RC pro : bouclier, mallette et coche #}
+    <rect x="-160" y="-6" width="150" height="110" rx="14" fill="#fff"/>
+    <path d="M-120 -6 V-24 a10 10 0 0 1 10 -10 h50 a10 10 0 0 1 10 10 V-6" fill="none" stroke="#fff" stroke-width="10"/>
+    <rect x="-160" y="34" width="150" height="10" fill="{{ a }}" opacity=".3"/><rect x="-96" y="26" width="22" height="26" rx="4" fill="{{ acc }}"/>
+    <g transform="translate(80 0)"><path d="M0 -100 L80 -68 V-4 C80 54 40 88 0 108 C-40 88 -80 54 -80 -4 V-68Z" fill="{{ acc }}"/>
+      <path d="M-28 4 L-6 26 L32 -16" fill="none" stroke="#0B2545" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g>
+  {% else %}
+    <path d="M0 -80 L80 -50 V10 C80 60 40 90 0 110 C-40 90 -80 60 -80 10 V-50Z" fill="#fff"/>
+    <path d="M-28 10 L-6 32 L32 -10" fill="none" stroke="{{ a }}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  {% endif %}
+  </g>
+  <g transform="translate({{ 470 - g % 3 * 330 }} {{ 60 + g % 2 * 210 }})" opacity=".9">
+    <circle r="8" fill="{{ acc if categorie != 'Santé' else '#fff' }}"/>
+  </g>
+  <g transform="translate({{ 120 + g % 4 * 120 }} {{ 70 + (g // 4) % 3 * 8 }})" opacity=".7"><path d="M0 -10 V10 M-10 0 H10" stroke="#fff" stroke-width="4" stroke-linecap="round"/></g>
+</svg>
+{%- endmacro %}

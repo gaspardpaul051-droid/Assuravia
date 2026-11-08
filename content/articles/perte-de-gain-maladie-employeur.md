@@ -3,6 +3,7 @@ titre: Perte de gain maladie : ce que l'employeur doit payer en Suisse
 titre_seo: Perte de gain maladie employeur : obligations
 description: Salarié malade : combien de temps payer son salaire, échelle bernoise, assurance indemnités journalières, délai d'attente et points à vérifier avant 2027.
 date: 2026-10-18
+illustration: thermometre
 categorie: Entreprises
 cta_titre: Faites vérifier votre assurance perte de gain
 cta_texte: Un conseiller contrôle votre contrat actuel ou vous propose une solution adaptée à votre entreprise et à votre CCT.

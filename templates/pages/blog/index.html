@@ -1,4 +1,5 @@
 {% import "partials/icones.html" as i %}
+{% import "partials/couverture.html" as cv %}
 {% extends "base.html" %}
 {% block title %}Blog assurance et prévoyance en Suisse romande | Assuravia{% endblock %}
 {% block description %}Conseils pratiques sur le 3e pilier, la RC professionnelle, les complémentaires santé, la LPP et les placements en Suisse romande. Deux articles par semaine.{% endblock %}
@@ -14,12 +15,15 @@
   <div class="cadre">
     {% if articles %}
     {% set une = articles[0] %}
-    <a class="article-une" href="{{ une.url }}">
-      <span class="article-une__etiquette">À la une</span>
-      <span class="badge">{{ une.categorie }}</span>
-      <span class="article-une__titre">{{ une.titre }}</span>
-      <span class="article-une__desc">{{ une.description }}</span>
-      <span class="article-une__action">Lire l'article ({{ une.lecture }} min) {{ i.icone("fleche", "icone icone--petite") }}</span>
+    <a class="article-une article-une--image" href="{{ une.url }}">
+      <span class="article-une__texte">
+        <span class="article-une__etiquette">À la une</span>
+        <span class="badge">{{ une.categorie }}</span>
+        <span class="article-une__titre">{{ une.titre }}</span>
+        <span class="article-une__desc">{{ une.description }}</span>
+        <span class="article-une__action">Lire l'article ({{ une.lecture }} min) {{ i.icone("fleche", "icone icone--petite") }}</span>
+      </span>
+      <span class="article-une__image">{{ cv.couverture(une.categorie, (une.titre|length * 7 + une.url|length * 3) % 100, une.illustration) }}</span>
     </a>
     {% if articles|length > 1 %}
     <h2 class="blog__sous-titre">Tous les articles</h2>

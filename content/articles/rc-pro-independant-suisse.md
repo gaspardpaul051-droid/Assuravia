@@ -3,6 +3,7 @@ titre: RC pro en Suisse : le guide pour indépendants et PME (2026)
 titre_seo: RC pro indépendant en Suisse : le guide 2026
 description: Qui doit avoir une RC professionnelle, ce qu'elle couvre vraiment, comment choisir la somme d'assurance et les pièges à éviter en Suisse romande.
 date: 2026-09-21
+illustration: bouclier-pro
 categorie: Entreprises
 cta_titre: Recevez des offres de RC pro adaptées à votre activité
 cta_texte: Décrivez votre entreprise en 2 minutes, un conseiller simule les offres et vous rappelle.
