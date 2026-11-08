@@ -1596,6 +1596,37 @@
     });
   });
 
+  // 7 bis. Page produit : prestations à cocher (data-prestations), transmises à la simulation.
+  // Chaque carte porte des paramètres (« division=Privée&opt_ij=oui ») ; pour un même champ, la première carte cochée l'emporte.
+  // ?besoin=fam_hop,fam_dent coche les cartes correspondantes (lien d'annonce).
+  document.querySelectorAll("[data-prestations]").forEach(function (bloc) {
+    var go = bloc.querySelector("[data-prestations-go]"), cases = bloc.querySelectorAll("input[type=checkbox]");
+    var aPasser = (bloc.getAttribute("data-passer") || "").split(",").filter(Boolean);
+    var libelle = bloc.getAttribute("data-bouton") || "Voir ma prime";
+    var maj = function () {
+      var p = new URLSearchParams(), n = 0;
+      cases.forEach(function (c) {
+        if (!c.checked) return;
+        n++;
+        c.value.split("&").forEach(function (kv) {
+          var i = kv.indexOf("="), k = kv.slice(0, i).trim(), v = kv.slice(i + 1).trim();
+          if (k && !p.has(k)) p.set(k, v);
+        });
+      });
+      var passer = aPasser.filter(function (k) { return p.has(k); });
+      if (passer.length) p.set("passer", passer.join(","));
+      var q = p.toString();
+      go.href = bloc.getAttribute("data-sim") + (q ? "?" + q : "");
+      go.textContent = n ? libelle + " (" + n + (n > 1 ? " choix)" : " choix)") : libelle;
+    };
+    var besoin = (params.get("besoin") || "").split(",");
+    cases.forEach(function (c) {
+      if (besoin.some(function (b) { return b && c.value.split("&").some(function (kv) { return kv.split("=")[0] === b; }); })) c.checked = true;
+      c.addEventListener("change", maj);
+    });
+    maj();
+  });
+
   // 8. Page de remerciement : message adapté au formulaire envoyé
   if (params.get("f") === "contact" || params.get("f") === "contact-rapide") {
     var titre = document.querySelector(".merci h1");

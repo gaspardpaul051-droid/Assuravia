@@ -2102,3 +2102,9 @@ html.cookies-ouvert { overflow: hidden; }
 .grille-champs--adresse > .champ:nth-child(1), .grille-champs--adresse > .champ:nth-child(4) { grid-column: span 2; }
 .adresse { margin-bottom: var(--e-4); }
 .form-sous-titre--champs { margin: var(--e-4) 0 var(--e-2); font-weight: 700; color: var(--marine); }
+/* Page produit : prestations à cocher (data-prestations) */
+.lp-depart--produit .lp-depart__choix { margin: var(--e-3) 0; }
+@media (max-width: 640px) {
+  .lp-depart--produit .lp-depart__carte { min-height: 52px; padding: 8px 10px; gap: 8px; font-size: .85rem; line-height: 1.25; }
+  .lp-depart--produit .lp-depart__icone { width: 30px; height: 30px; }
+}

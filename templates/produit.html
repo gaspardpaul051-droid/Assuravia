@@ -33,6 +33,17 @@
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Appartement">{{ i.icone("batiment") }}<span>Appartement</span></a>
         <a class="choix-carte" href="{{ produit.simulateur }}?logement=Maison">{{ i.icone("maison") }}<span>Maison</span></a>
       </div>
+      {% elif produit.prestations %}
+      {# Prestations à cocher (modèle de la page publicitaire complémentaire santé) : passées à la simulation, qui saute les questions déjà répondues #}
+      <p class="form-sous-titre"><strong>{{ produit.prestations_question or "Qu'est-ce qui compte pour vous ?" }}</strong> Touchez vos choix.</p>
+      <div class="lp-depart lp-depart--produit" data-prestations data-sim="{{ produit.simulateur }}" data-passer="{{ produit.prestations_passer or '' }}" data-bouton="{{ produit.simulateur_bouton or 'Voir ma prime' }}">
+        <div class="lp-depart__choix">
+          {% for p in produit.prestations.split("|") %}{% set params, titre, icone = p.split(";")|map("trim")|list %}
+          <label class="lp-depart__carte"><input type="checkbox" value="{{ params }}"><span class="lp-depart__icone">{{ i.icone(icone) }}</span><span>{{ titre }}</span></label>
+          {% endfor %}
+        </div>
+        <a class="bouton bouton--action lp-depart__go" href="{{ produit.simulateur }}" data-prestations-go>{{ produit.simulateur_bouton or "Voir ma prime" }}</a>
+      </div>
       {% elif produit.entree == "sante" %}
       {# Comme la RC pro : la première question (pour qui ?) se répond ici, la simulation commence à la suivante #}
       <p class="form-sous-titre">Pour qui est cette couverture ? Touchez votre choix : l'estimation démarre directement. Gratuit et sans engagement.</p>
@@ -66,7 +77,7 @@
         <li>{{ i.icone("valide", "icone icone--petite") }} Un spécialiste à votre écoute si besoin</li>
       </ul>
       {% endif %}
-      {% if produit.entree != "pj" %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>{% endif %}
+      {% if produit.entree != "pj" and not produit.prestations %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>{% endif %}
       {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
       {% if produit.entree in ("sante", "pj") %}
       <ul class="lp-depart__rassure">

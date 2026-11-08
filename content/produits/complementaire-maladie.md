@@ -14,9 +14,12 @@ bouton: Composer ma couverture
 entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; couvertures à combiner selon vos besoins ; coeur | 4 ; niveaux de chambre à l'hôpital ; croix | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-complementaires/
-simulateur_titre: Composez votre couverture
+simulateur_titre: Composez votre couverture en 2 minutes
+prestations_question: Que voulez-vous mieux couvrir ?
+prestations: fam_hop=oui ; Hôpital et médecin au choix ; croix | fam_amb=oui ; Ostéo, lunettes, médecines douces ; coeur | fam_dent=oui ; Dents et appareil dentaire ; valide | fam_ij=oui ; Un montant par jour d'hôpital ; tirelire | fam_voy=oui ; Bien soigné en voyage ; avion | fam_pj=oui ; Défendu face à un assureur ; balance
+prestations_passer: fam_hop,fam_amb,fam_dent,fam_ij,fam_voy,fam_pj
 simulateur_texte: Hospitalisation, ambulatoire, médecines douces, dentaire : choisissez ce qui compte pour vous et découvrez une estimation de prime.
-simulateur_bouton: Composer ma couverture
+simulateur_bouton: Voir ma prime
 h1: Assurance complémentaire maladie : couvrez ce que la LAMal ne paie pas
 chapeau: L'assurance de base rembourse l'essentiel, mais pas tout. Les complémentaires (LCA) comblent les lacunes qui comptent pour vous, et seulement celles-là.
 retenir: Les complémentaires sont facultatives et chaque assureur fixe ses conditions. | L'assureur peut poser des questions de santé et refuser une demande. | Ne résiliez jamais une complémentaire avant d'être accepté ailleurs. | Base et complémentaires peuvent être chez deux assureurs différents.

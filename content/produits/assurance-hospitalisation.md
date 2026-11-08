@@ -14,9 +14,12 @@ bouton: Estimer ma prime hospitalisation
 entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 4 ; niveaux de chambre au choix ; croix | Libre choix ; du médecin, selon la formule ; utilisateur | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-hospitalisation/
-simulateur_titre: Estimez votre prime en 2 minutes
+simulateur_titre: Votre confort à l'hôpital, estimé en 2 minutes
+prestations_question: Qu'est-ce qui compte pour vous ?
+prestations: division=Privée ; Ma chambre individuelle ; maison | division=Demi-privée ; Choisir mon chirurgien ; utilisateur | division=Demi-privée ; Chambre calme à deux lits ; croix | division=Au choix le jour venu ; Choisir le jour venu ; horloge | division=Commune, toute la Suisse ; Hôpital hors de mon canton ; repere | opt_ij=oui ; Un montant par jour d'hôpital ; tirelire
+prestations_passer: division,opt_ij
 simulateur_texte: Choisissez votre niveau de confort à l'hôpital et découvrez une estimation de prime avec les prestations possibles.
-simulateur_bouton: Estimer ma prime
+simulateur_bouton: Voir ma prime
 h1: Assurance hospitalisation : votre confort et votre médecin à l'hôpital
 chapeau: L'assurance de base vous soigne en division commune, dans les hôpitaux de votre canton et à ses tarifs. Une complémentaire d'hospitalisation vous donne plus de choix : la chambre, l'hôpital, le médecin qui vous opère.
 retenir: L'assurance de base couvre la division commune, aux tarifs de votre canton. | Une complémentaire ajoute la chambre à deux lits ou individuelle et le libre choix du médecin. | Les formules flexibles permettent de choisir la division au moment de l'hospitalisation, avec une participation. | La prime augmente avec l'âge : mieux vaut s'assurer tôt, en bonne santé.
