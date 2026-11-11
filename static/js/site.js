@@ -249,6 +249,8 @@
                 : el.type === "date"
                   ? "Indiquez une date entre le " + el.min.split("-").reverse().join(".") + " et le " + el.max.split("-").reverse().join(".") + "."
                   : "Indiquez une valeur entre " + el.min + " et " + el.max + ".")
+          : el.validity.rangeUnderflow && el.min
+            ? "Indiquez au moins " + Number(el.min).toLocaleString("fr-CH") + "."
           : "Vérifiez cette valeur.";
       }
     });

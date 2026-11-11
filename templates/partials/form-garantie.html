@@ -20,12 +20,12 @@
       <div class="grille-champs">
         <div class="champ">
           <label for="gl-loyer">Loyer mensuel net (CHF)</label>
-          <input id="gl-loyer" name="loyer_net" type="number" inputmode="numeric" min="0" step="10" placeholder="Ex. 2100" data-gl="loyer">
+          <input id="gl-loyer" name="loyer_net" type="number" inputmode="numeric" min="0" step="1" placeholder="Ex. 2100" data-gl="loyer">
           <p class="champ__aide">Sans les charges.</p>
         </div>
         <div class="champ">
           <label for="gl-montant">Montant de la garantie (CHF)</label>
-          <input id="gl-montant" name="montant_garantie" type="number" inputmode="numeric" min="500" step="10" required placeholder="Ex. 6300" data-gl="montant">
+          <input id="gl-montant" name="montant_garantie" type="number" inputmode="numeric" min="500" step="1" required placeholder="Ex. 6300" data-gl="montant">
           <p class="champ__aide">Indiqué dans votre bail, au maximum 3 loyers.</p>
         </div>
       </div>
@@ -81,7 +81,7 @@
         </div>
         <div class="champ">
           <label for="gl-loyer-brut">Loyer mensuel, charges comprises (CHF)</label>
-          <input id="gl-loyer-brut" name="loyer_mensuel" type="number" inputmode="numeric" min="0" step="10" required placeholder="Ex. 2300">
+          <input id="gl-loyer-brut" name="loyer_mensuel" type="number" inputmode="numeric" min="0" step="1" required placeholder="Ex. 2300">
         </div>
       </div>
       <button type="button" class="bouton bouton--prive fe__suivant" data-fe-suivant>Continuer</button>

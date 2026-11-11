@@ -14,7 +14,7 @@
 {{ e.ouvrir("valeur", "Quelle est la valeur de construction du bien ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure souvent sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}
   <div class="champ">
     <label for="valeur-bt">Valeur de construction (CHF)</label>
-    <input id="valeur-bt" name="valeur_construction" type="number" inputmode="numeric" min="50000" step="10000" required placeholder="Ex. 850000" data-somme>
+    <input id="valeur-bt" name="valeur_construction" type="number" inputmode="numeric" min="1" step="1" required placeholder="Ex. 850000" data-somme>
   </div>
   {{ e.continuer() }}
 </fieldset>
