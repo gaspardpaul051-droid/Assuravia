@@ -46,7 +46,7 @@
     date_naissance: "Date de naissance", annee_naissance: "Année de naissance", sexe: "Sexe", canton: "Canton", franchise: "Franchise",
     adultes: "Adultes", enfants: "Enfants", pour_qui: "Pour qui", formule: "Formule", formule_choisie: "Formule choisie",
     logement: "Logement", pieces: "Pièces", logement_rue: "Rue", logement_numero: "N°", logement_npa: "NPA", logement_localite: "Localité",
-    domicile_rue: "Rue", domicile_numero: "N°", domicile_npa: "NPA", domicile_localite: "Localité", entreprise_rue: "Rue (entreprise)", entreprise_numero: "N° (entreprise)", entreprise_npa: "NPA (entreprise)", entreprise_localite: "Localité (entreprise)", batiment_rue: "Rue du bâtiment", batiment_numero: "N° du bâtiment", batiment_npa: "NPA du bâtiment", batiment_localite: "Localité du bâtiment",
+    metier: "Métier", domicile_rue: "Rue", domicile_numero: "N°", domicile_npa: "NPA", domicile_localite: "Localité", entreprise_rue: "Rue (entreprise)", entreprise_numero: "N° (entreprise)", entreprise_npa: "NPA (entreprise)", entreprise_localite: "Localité (entreprise)", batiment_rue: "Rue du bâtiment", batiment_numero: "N° du bâtiment", batiment_npa: "NPA du bâtiment", batiment_localite: "Localité du bâtiment",
     inventaire: "Valeur de l'inventaire", somme_assuree: "Somme assurée", somme_corrigee: "Somme corrigée", somme_ok: "Somme confirmée",
     option_rc: "Option RC", option_pj: "Option protection juridique", option_cyber: "Option cyber", capital: "Capital",
     dentaire: "Dentaire", voyage: "Voyage", alternatives: "Médecines alternatives", division: "Hospitalisation",

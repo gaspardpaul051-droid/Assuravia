@@ -914,7 +914,7 @@
       var finale = etapesF[etapesF.length - 1].hasAttribute("data-fe-final");
       var total = finale ? nb - 1 : nb;
       var pctF = Math.round((vue + 1) / nb * 100);
-      compteurF.innerHTML = (finale && n === etapesF.length - 1 ? "Résultat" : "Étape " + (vue + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
+      compteurF.innerHTML = (finale && n === etapesF.length - 1 ? (funnel.hasAttribute("data-sans-prime") ? "Terminé" : "Résultat") : "Étape " + (vue + 1) + " sur " + total) + ' <span class="avancee__pct">' + pctF + " %</span>";
       barreF.parentNode.setAttribute("aria-valuenow", pctF);
       retourF.hidden = vue === 0 || (finale && n === etapesF.length - 1);
       // Encouragement : combien de questions restent avant la prime
@@ -923,7 +923,8 @@
         // Étape qui affiche la prime : celle qui porte le bouton d'envoi (coordonnées, ou adresse si elle vient après)
         var iCoord = etapesF.findIndex(function (e) { return e.querySelector("[data-fe-envoi]"); });
         var reste = iCoord - n + 1; // l'écran qui affiche la prime compte comme la dernière question
-        enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? "Dernière question avant votre prime" : reste === 2 ? "Plus que 2 questions, votre prime est presque prête" : vue === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
+        var sansPrime = funnel.hasAttribute("data-sans-prime");
+        enc.textContent = iCoord < 0 || reste < 1 ? "" : reste === 1 ? (sansPrime ? "Dernière question, votre demande est presque prête" : "Dernière question avant votre prime") : reste === 2 ? (sansPrime ? "Plus que 2 questions" : "Plus que 2 questions, votre prime est presque prête") : vue === 1 ? "Bien commencé ! Moins de 2 minutes en tout" : "";
         enc.hidden = !enc.textContent;
       }
       afficher();
@@ -962,7 +963,7 @@
           if (!verifier(etapesF[courante])) return;
           funnel.removeAttribute("data-sans-contact");
           afficher();
-          funnel.querySelector("[data-funnel-etat]").value = "prime affichée";
+          funnel.querySelector("[data-funnel-etat]").value = funnel.hasAttribute("data-sans-prime") ? "demande envoyée" : "prime affichée";
           // Le lead est enregistré dès que la prime est affichée ; on continue même hors ligne.
           try { envoyerDemande(formF, encoder()); } catch (e) {}
           // Conversion comptée dès cet envoi (le prospect peut s'arrêter sur la page de résultat), une seule fois

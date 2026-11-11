@@ -2198,3 +2198,11 @@ html.cookies-ouvert { overflow: hidden; }
 .sous-menu--pro .sous-menu__tout { background: var(--marine); color: var(--or-clair); }
 .sous-menu--pro .sous-menu__tout:hover { background: var(--marine-2); color: var(--or-clair); }
 @media (min-width: 1081px) { .sous-menu--prive .sous-menu__panneau { width: min(720px, 94vw); } }
+
+/* Confirmation des demandes sans prime */
+.merci-carte { text-align: center; background: var(--bleu-pale, #EAF3FB); border-radius: 16px; padding: 24px 20px; margin: 8px 0 16px; }
+.funnel--pro .merci-carte { background: var(--or-pale, #FBF4DF); }
+.merci-carte__icone { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--vert, #1E8A4C); color: #fff; margin-bottom: 8px; }
+.merci-carte__icone .icone { width: 26px; height: 26px; }
+.merci-carte__titre { font-weight: 800; font-size: 1.15rem; color: var(--marine, #0B2545); margin: 0 0 6px; }
+.merci-carte__texte { margin: 0; color: var(--texte-doux, #4A5A6E); }

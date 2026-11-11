@@ -56,18 +56,21 @@
 
 {# Adresse complète (rue, n°, NPA, localité) : le NPA sert aussi à l'estimation et au canton #}
 {# final=True : dernière étape, après les coordonnées (le lead est déjà enregistré) ; le bouton affiche la prime et envoie la demande #}
-{% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", final=False) -%}
+{% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", final=False, prefixe="logement", bouton="Voir ma prime", note="Dernière étape : votre prime s'affiche juste après.", message=None) -%}
 {{ ouvrir("npa", question, aide) }}
   <div class="grille-champs grille-champs--adresse">
-    <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="logement_rue" autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
-    <div class="champ champ--numero"><label for="numero-{{ sim.id }}">N°</label><input id="numero-{{ sim.id }}" name="logement_numero" autocomplete="off" placeholder="12"></div>
-    <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
-    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" autocomplete="address-level2" placeholder="Lausanne"></div>
+    <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="{{ prefixe }}_rue" autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
+    <div class="champ champ--numero"><label for="numero-{{ sim.id }}">N°</label><input id="numero-{{ sim.id }}" name="{{ prefixe }}_numero" autocomplete="off" placeholder="12"></div>
+    <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="{{ prefixe }}_npa" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
+    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="{{ prefixe }}_localite" autocomplete="address-level2" placeholder="Lausanne"></div>
   </div>
   <p class="champ__aide">Facultatif : vous pouvez laisser ces champs vides.</p>
+  {% if message %}
+  <div class="champ"><label for="message-{{ sim.id }}">Précisions <span class="facultatif">(facultatif)</span></label><textarea id="message-{{ sim.id }}" name="message" placeholder="{{ message }}"></textarea></div>
+  {% endif %}
   {% if final %}
-  <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Dernière étape : votre prime s'affiche juste après.</p>
-  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
+  <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} {{ note }}</p>
+  <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">{{ bouton }}</button>
   {% else %}
   {{ continuer() }}
   {% endif %}
@@ -142,7 +145,7 @@
     <p class="fe__aide">Indiquez votre téléphone et votre e-mail pour afficher votre prime. Un conseiller pourra la vérifier avec vous et vous envoyer l'offre détaillée, sans engagement.</p>
   </div>
   <div class="grille-champs">
-    {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{% endif %}
+    {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise</label><input id="entreprise-{{ sim.id }}" name="entreprise" required autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{{ f.metier(sim.id) }}{% endif %}
     {% if nom_prenom %}
     <div class="champ"><label for="prenom-{{ sim.id }}">Prénom</label><input id="prenom-{{ sim.id }}" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
     <div class="champ"><label for="nom-{{ sim.id }}">Nom</label><input id="nom-{{ sim.id }}" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
@@ -329,5 +332,59 @@
     <button type="button" class="bouton bouton--action" data-fe-modifier="coordonnees">Être rappelé pour recevoir cette offre</button>
     <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
   </div>
+</fieldset>
+{%- endmacro %}
+
+
+{# ---------- Écrans des demandes sans prime (même présentation que les simulations) ---------- #}
+{# Question à choix : options = textes, ou dicts {v, icone, detail}. Choix unique = passe tout seul à la suite. #}
+{% macro choix(cle, question, options, type="radio", aide=None, premier=False, facultatif=False) -%}
+{{ ouvrir(cle, question, aide, premier=premier) }}
+  <div class="choix-cartes{% if options|length > 4 %} choix-cartes--3{% endif %}">
+    {% for o in options %}{% set v = o.v if o is mapping else o %}
+    <label class="choix-carte{% if not (o is mapping and (o.icone or o.detail)) %} choix-carte--compact{% endif %}"><input type="{{ type }}" name="{{ cle }}" value="{{ v }}"{% if type == "radio" %} required data-fe-auto{% elif not facultatif %} data-groupe-requis="{{ cle }}"{% endif %}>{% if o is mapping and o.icone %}<span class="choix-carte__icone">{{ i.icone(o.icone) }}</span>{% endif %}<span class="choix-carte__titre">{{ v }}</span>{% if o is mapping and o.detail %}<span class="choix-carte__detail">{{ o.detail }}</span>{% endif %}{% if type != "radio" %}<span class="choix-carte__coche choix-carte__coche--checkbox" aria-hidden="true"></span>{% endif %}</label>
+    {% endfor %}
+  </div>
+  {% if type != "radio" %}{{ continuer() }}{% endif %}
+</fieldset>
+{%- endmacro %}
+
+{# Coordonnées d'une demande sans prime : même champs et même style que l'écran des simulations #}
+{% macro joindre(entreprise=False, question="Où pouvons-nous vous joindre ?", aide="Un conseiller vous rappelle pour compléter votre dossier, puis vous présente les offres adaptées. Gratuit et sans engagement.", naissance=False) -%}
+{{ ouvrir("coordonnees", question, aide) }}
+  <div class="grille-champs">
+    {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise <span class="facultatif">(facultatif si en création)</span></label><input id="entreprise-{{ sim.id }}" name="entreprise" autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{{ f.metier(sim.id) }}{% endif %}
+    <div class="champ"><label for="prenom-{{ sim.id }}">Prénom</label><input id="prenom-{{ sim.id }}" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+    <div class="champ"><label for="nom-{{ sim.id }}">Nom</label><input id="nom-{{ sim.id }}" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+    {{ f.telephone(sim.id) }}
+    <div class="champ{% if not naissance %} champ--large{% endif %}"><label for="email-{{ sim.id }}">E-mail</label><input id="email-{{ sim.id }}" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+    {% if naissance %}{{ f.naissance(sim.id) }}{% endif %}
+  </div>
+  <div class="consentement">
+    <input id="consentement-{{ sim.id }}" name="consentement" type="checkbox" value="oui" required>
+    <label for="consentement-{{ sim.id }}">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>
+  </div>
+  <div class="rappel-boutons"><button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant>Continuer</button></div>
+  <ul class="reassurance">
+    <li>{{ i.icone("valide", "icone icone--petite") }} Un conseiller dédié vous recontacte, pas de démarchage</li>
+    <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+    <li>{{ i.icone("cadenas", "icone icone--petite") }} Vos données ne sont pas vendues (nLPD)</li>
+  </ul>
+</fieldset>
+{%- endmacro %}
+
+{# Dernier écran d'une demande sans prime #}
+{% macro merci(texte="Un conseiller vous rappelle rapidement, en général dans la journée ouvrable, pour préparer vos offres avec vous.") -%}
+{{ ouvrir("merci", 'Merci <span data-affiche="prenom"></span>, votre demande est envoyée', final=True) }}
+  <div class="merci-carte">
+    <span class="merci-carte__icone">{{ i.icone("valide", "icone") }}</span>
+    <p class="merci-carte__titre">Demande bien reçue</p>
+    <p class="merci-carte__texte">{{ texte }}</p>
+  </div>
+  <ul class="reassurance">
+    <li>{{ i.icone("telephone", "icone icone--petite") }} Gardez votre téléphone à portée de main</li>
+    <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+    <li>{{ i.icone("cadenas", "icone icone--petite") }} Vos données ne sont pas vendues (nLPD)</li>
+  </ul>
 </fieldset>
 {%- endmacro %}

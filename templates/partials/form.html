@@ -123,3 +123,9 @@
   <button class="bouton bouton--plein" type="submit">{{ bouton }}</button>
   <p class="formulaire__note">Gratuit et sans engagement.</p>
 {%- endmacro %}
+
+
+{# Métier ou secteur précis (formulaires pro) : champ libre facultatif avec suggestions (content/metiers.txt) #}
+{% macro metier(id) -%}
+<div class="champ champ--large"><label for="metier-{{ id }}">Votre métier <span class="facultatif">(facultatif)</span></label><input id="metier-{{ id }}" name="metier" list="metiers-{{ id }}" autocomplete="off" placeholder="Ex. architecte, ophtalmologue, menuisier"><datalist id="metiers-{{ id }}">{% for m in metiers %}<option value="{{ m }}">{% endfor %}</datalist></div>
+{%- endmacro %}
