@@ -6,17 +6,6 @@
 {% set exemple_message = "Ex. Notre convention collective impose une couverture." %}
 {% set questions = [
  {
-  "titre": "Quelle est votre situation ?",
-  "nom": "situation",
-  "options": [
-   "J'engage mes premiers employés",
-   "Je veux changer d'assureur",
-   "Je veux revoir ma couverture",
-   "Je crée mon entreprise",
-   "Autre situation"
-  ]
- },
- {
   "titre": "Quel est votre domaine d'activité ?",
   "nom": "secteur",
   "options": [
@@ -64,27 +53,5 @@
    "100 %",
    "Je ne sais pas, conseillez-moi"
   ]
- },
- {
-  "titre": "Quel délai d'attente avant les indemnités ?",
-  "nom": "delai_attente",
-  "options": [
-   "Moins de 30 jours",
-   "30 jours",
-   "60 jours",
-   "90 jours ou plus",
-   "Je ne sais pas, conseillez-moi"
-  ],
-  "aide": "Pendant ce délai, c'est l'entreprise qui paie le salaire. Un délai plus long réduit la prime."
- },
- {
-  "titre": "Êtes-vous soumis à une convention collective (CCT) ?",
-  "nom": "cct",
-  "options": [
-   "Oui",
-   "Non",
-   "Je ne sais pas"
-  ]
- }
-] %}
+ }] %}
 {% extends "demande-pro.html" %}
