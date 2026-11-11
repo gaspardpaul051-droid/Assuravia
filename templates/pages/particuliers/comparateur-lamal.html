@@ -105,9 +105,10 @@
 
 {{ e.ouvrir("adresse", "Votre adresse", "Le conseiller en a besoin pour vérifier votre région de primes. Elle sert uniquement à votre demande.") }}
   <div class="grille-champs grille-champs--adresse">
-    <div class="champ champ--rue"><label for="cmp-rue">Rue</label><input id="cmp-rue" name="domicile_rue" required autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
-    <div class="champ champ--numero"><label for="cmp-no">N°</label><input id="cmp-no" name="domicile_numero" required autocomplete="off" placeholder="12"></div>
+    <div class="champ champ--rue"><label for="cmp-rue">Rue</label><input id="cmp-rue" name="domicile_rue" autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
+    <div class="champ champ--numero"><label for="cmp-no">N°</label><input id="cmp-no" name="domicile_numero" autocomplete="off" placeholder="12"></div>
   </div>
+  <p class="champ__aide">Facultatif : vous pouvez laisser ces champs vides.</p>
   <p class="fe__aide" data-lamal-rappel-lieu></p>
   <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Dernière étape : vos offres s'affichent juste après.</p>
   <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir mes offres</button>

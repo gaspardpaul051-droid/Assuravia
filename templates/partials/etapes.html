@@ -59,11 +59,12 @@
 {% macro npa(question="Quelle est l'adresse du logement ?", aide="Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", final=False) -%}
 {{ ouvrir("npa", question, aide) }}
   <div class="grille-champs grille-champs--adresse">
-    <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="logement_rue" required autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
-    <div class="champ champ--numero"><label for="numero-{{ sim.id }}">N°</label><input id="numero-{{ sim.id }}" name="logement_numero" required autocomplete="off" placeholder="12"></div>
-    <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" required inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
-    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" required autocomplete="address-level2" placeholder="Lausanne"></div>
+    <div class="champ champ--rue"><label for="rue-{{ sim.id }}">Rue</label><input id="rue-{{ sim.id }}" name="logement_rue" autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
+    <div class="champ champ--numero"><label for="numero-{{ sim.id }}">N°</label><input id="numero-{{ sim.id }}" name="logement_numero" autocomplete="off" placeholder="12"></div>
+    <div class="champ"><label for="npa-{{ sim.id }}">NPA</label><input id="npa-{{ sim.id }}" name="logement_npa" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="postal-code" placeholder="1003"></div>
+    <div class="champ"><label for="localite-{{ sim.id }}">Localité</label><input id="localite-{{ sim.id }}" name="logement_localite" autocomplete="address-level2" placeholder="Lausanne"></div>
   </div>
+  <p class="champ__aide">Facultatif : vous pouvez laisser ces champs vides.</p>
   {% if final %}
   <p class="apercu-prime__mois">{{ i.icone("cadenas", "icone icone--petite") }} Dernière étape : votre prime s'affiche juste après.</p>
   <button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">Voir ma prime</button>
