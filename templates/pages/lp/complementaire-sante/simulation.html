@@ -11,7 +11,6 @@
 {% import "partials/icones.html" as i %}
 {% block title %}{{ sim.titre }} | Assuravia{% endblock %}
 {% block etapes %}
-{{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("familles", "Que souhaitez-vous ajouter à votre assurance de base ?", "Cochez tout ce qui vous intéresse. Vous choisirez ensuite la formule de chaque module.") }}
   <div class="choix-cartes choix-cartes--3">

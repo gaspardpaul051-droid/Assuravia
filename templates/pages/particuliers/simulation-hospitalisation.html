@@ -6,7 +6,6 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("division", "Quelle chambre souhaitez-vous à l'hôpital ?", "L'assurance de base couvre déjà la division commune dans votre canton. La complémentaire ajoute du choix.") }}
   {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"]) }}

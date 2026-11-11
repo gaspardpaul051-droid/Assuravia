@@ -6,7 +6,6 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.pour_qui_sante() }}
 {{ e.profil_sante() }}
 {{ e.ouvrir("besoins", "De quoi avez-vous besoin ?", "Cochez tout ce qui vous concerne : vous ne payez que ce qui vous est utile.") }}
   {{ e.lca_cartes("besoins_amb", ["amb_douces", "amb_lunettes", "amb_medicaments", "amb_prevention", "amb_etranger", "amb_ortho"], type="checkbox", requis=False, groupe="besoins_amb") }}
