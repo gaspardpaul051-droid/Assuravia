@@ -10,7 +10,7 @@ cta_texte: Un conseiller établit avec vous un calendrier de retraits qui tient 
 cta_url: /particuliers/3e-pilier/
 cta_bouton: Être conseillé gratuitement
 retenir: Un compte 3a se retire toujours en entier : pour étaler l'impôt, il faut plusieurs comptes | Le retrait ordinaire est possible dès 5 ans avant l'âge de référence AVS, et jusqu'à 5 ans après si vous travaillez encore | Les retraits 3a et 2e pilier d'une même année, ainsi que ceux de votre conjoint, sont additionnés pour l'impôt | Avec un 3a de CHF 150'000, retirer trois comptes de CHF 50'000 sur trois ans réduit l'impôt fédéral d'environ CHF 1'175
-produits_lies: 3e-pilier, placements, libre-passage
+produits_lies: 3e-pilier
 quiz: Vous pouvez retirer seulement une partie d'un compte 3a à 62 ans. | faux | Un compte 3a se retire en totalité. Seul le retrait pour un logement en propriété peut être partiel. ;; Le capital 3a retiré est additionné à votre salaire de l'année pour l'impôt. | faux | Il est imposé séparément des autres revenus, à un taux réduit. Pour l'impôt fédéral, le taux correspond au cinquième du barème ordinaire. ;; Si vous et votre conjoint retirez chacun un compte 3a la même année, les deux montants sont additionnés. | vrai | Dans la quasi-totalité des cantons, les retraits d'un couple marié la même année sont imposés ensemble, ce qui augmente le taux.
 pour_qui: Vous avez plus de CHF 50'000 sur un seul compte 3a | Vous avez entre 50 et 60 ans et pensez à votre retraite | Vous prévoyez de retirer une partie de votre 2e pilier en capital | Vous êtes marié et vous et votre conjoint avez chacun un 3a
 ---
@@ -106,7 +106,7 @@ Plus vous vous y prenez tôt, plus vous avez de marge. Voici les questions à vo
 
 Avec ces réponses, vous pouvez dessiner un calendrier simple : une année par compte, en évitant les années de retrait du 2e pilier et celles de votre conjoint.
 
-[[cta | Votre épargne 3a est-elle placée de façon adaptée aux années qui restent ? Un conseiller fait le point avec vous. | /particuliers/placements/ | Faire le point sur mes placements]]
+[[cta | Votre épargne 3a est-elle placée de façon adaptée aux années qui restent ? Un conseiller fait le point avec vous. | /particuliers/3e-pilier/ | Faire le point sur mon 3e pilier]]
 
 ## Et si votre 3a est une assurance ?
 

@@ -10,7 +10,7 @@ cta_texte: Cochez « Dentaire » et obtenez une estimation de prime pour vous ou
 cta_url: /particuliers/complementaire-maladie/?besoin=fam_dent
 cta_bouton: Estimer ma prime
 retenir: L'assurance de base ne paie les soins dentaires que dans des cas précis : maladie grave, conséquence d'une autre maladie grave, ou accident qu'aucune autre assurance ne couvre | Caries, détartrage et appareils dentaires des enfants restent à votre charge sans complémentaire | Une complémentaire dentaire rembourse en général une partie de la facture (par exemple 50 % ou 75 %), jusqu'à un plafond par année civile | Pour un enfant, le plus simple est de l'assurer tôt : plusieurs assureurs l'acceptent sans examen de santé jusqu'à 3 ans
-produits_lies: complementaire-maladie, complementaire-ambulatoire, declaration-impots
+produits_lies: complementaire-maladie, complementaire-ambulatoire
 quiz: L'assurance de base rembourse le traitement d'une carie, après la franchise. | faux | Les plombages habituels en cas de carie ne sont pas pris en charge par l'assurance obligatoire des soins. Seule une complémentaire dentaire peut y participer. ;; Un appareil dentaire pour enfant peut coûter 10'000 francs ou plus. | vrai | Selon les assureurs, un traitement simple coûte au moins 3'000 francs, et un traitement orthodontique complet atteint souvent 10'000 francs ou plus, sur deux à trois ans. ;; Le plafond d'une complémentaire dentaire non utilisé en 2026 est reporté sur 2027. | faux | Le plafond est en général fixé par année civile. Ce qui n'est pas utilisé avant le 31 décembre est perdu.
 pour_qui: Vous avez des enfants qui n'ont pas encore d'assurance dentaire | Vous attendez un bébé | Vous payez vous-même votre détartrage et vos contrôles chaque année | Vous avez un traitement dentaire important prévu (couronne, implant)
 ---
@@ -118,7 +118,7 @@ Novembre et décembre sont un bon moment pour faire le point sur vos frais denta
 
 > **Astuce** Gardez toutes vos factures de dentiste et les décomptes de remboursement de votre assureur dans un même dossier. Au moment de remplir votre déclaration, vous saurez exactement ce qui est resté à votre charge.
 
-Notre service de [déclaration d'impôts](/particuliers/declaration-impots/) peut vérifier avec vous quels frais de santé déclarer.
+Pensez à garder vos factures de dentiste : une partie des frais de santé peut se déduire dans votre déclaration d'impôts.
 
 [[cta | Un conseiller vous aide à choisir la formule dentaire adaptée à votre famille. | /particuliers/complementaire-maladie/?besoin=fam_dent | Être conseillé gratuitement]]
 

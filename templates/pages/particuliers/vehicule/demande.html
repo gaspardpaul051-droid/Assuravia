@@ -44,7 +44,6 @@
         {{ question("Quelle couverture souhaitez-vous ?", "couverture", ["Responsabilité civile seule", "RC et casco partielle", "RC et casco complète", "Je ne sais pas, conseillez-moi"], aide="Casco partielle : vol, éléments naturels, bris de glace, animaux. Casco complète : en plus, les dégâts à votre véhicule lors d'un accident dont vous êtes responsable.") }}
         {{ question("Des options vous intéressent-elles ?", "options", ["Assistance et dépannage", "Protection du bonus", "Faute grave couverte", "Véhicule de remplacement", "Effets personnels transportés", "Accidents des occupants"], aide="Facultatif : cochez ce qui vous intéresse, ou continuez directement.", type="checkbox", facultatif=True) }}
         {{ question("Depuis combien de temps avez-vous le permis ?", "anciennete_permis", ["Moins de 3 ans", "3 à 10 ans", "Plus de 10 ans"]) }}
-        {{ question("Combien de sinistres avez-vous déclarés ces 5 dernières années ?", "sinistres", ["Aucun", "1", "2 ou plus", "Je préfère en parler au conseiller"]) }}
         {{ question("Quand souhaitez-vous que la couverture commence ?", "debut", ["Dès que possible", "Dans le mois", "Dans 1 à 3 mois", "À l'échéance de mon contrat actuel"]) }}
 
         <fieldset class="modale__etape" data-etape hidden>

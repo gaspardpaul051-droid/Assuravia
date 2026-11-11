@@ -44,7 +44,7 @@ Les fraudes par virement ne sont pas couvertes par tous les contrats : c'est un 
 
 ## Ce qui n'est en général pas couvert
 
-- **Les dommages matériels** aux ordinateurs et serveurs : une surtension ou une chute relève de l'[assurance électronique](/entreprises/techniques/).
+- **Les dommages matériels** aux ordinateurs et serveurs : une surtension ou une chute relève de l'assurance électronique.
 - **Les failles connues et non corrigées** depuis longtemps, selon les conditions du contrat.
 - **Les attaques dont l'origine précède la signature** du contrat.
 - **Les améliorations** du système informatique au-delà de la remise en état.

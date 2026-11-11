@@ -10,7 +10,7 @@ cta_texte: Un spécialiste analyse votre plan de prévoyance et votre potentiel 
 cta_url: /entreprises/lpp/
 cta_bouton: Faire analyser mon plan LPP
 retenir: Un rachat volontaire dans la caisse de pension se déduit du revenu imposable de l'année du versement | Le montant racheté ne peut pas être retiré en capital pendant 3 ans, sinon la déduction peut être annulée | Le potentiel de rachat figure sur votre certificat de prévoyance ; vos avoirs de libre passage le réduisent | Le versement doit arriver à la caisse avant la fin de l'année : vérifiez la date limite de votre caisse
-produits_lies: lpp, 3e-pilier, libre-passage
+produits_lies: lpp, 3e-pilier
 quiz: Vous pouvez racheter en décembre 2026 et retirer ce montant en capital en 2028. | faux | La loi interdit de retirer en capital les prestations issues d'un rachat pendant 3 ans. Le fisc peut alors refuser la déduction, même après coup. ;; Un avoir de libre passage oublié sur un compte bancaire réduit votre potentiel de rachat. | vrai | Les avoirs de libre passage doivent être déclarés à la caisse et sont déduits du montant rachetable, même s'ils ne sont pas transférés. ;; Un dirigeant peut se faire créer, seul, un plan de prévoyance sur mesure très généreux. | faux | Le plan doit respecter les principes de collectivité, d'égalité de traitement et d'adéquation. Un plan cadre est possible, mais il doit reposer sur des critères objectifs.
 pour_qui: Vous dirigez une Sàrl ou une SA et vous vous versez un salaire | Votre revenu a augmenté ces dernières années | Vous avez vécu une période sans caisse de pension ou un divorce | Vous préparez votre retraite dans 10 à 15 ans
 ---

@@ -11,7 +11,7 @@ cta_texte: Le simulateur calcule votre économie d'impôts selon votre canton et
 cta_url: /particuliers/3e-pilier/
 cta_bouton: Calculer mon économie
 retenir: Plafond 3a 2026 : CHF 7'258 pour un salarié affilié à une caisse de pension, 20 % du revenu net et au maximum CHF 36'288 pour un indépendant sans caisse de pension | Le versement doit être crédité sur le compte 3a au plus tard le 31 décembre 2026 | Depuis 2026, vous pouvez aussi racheter la lacune de 2025, en plus du versement de l'année | Pour CHF 7'258 versés, l'économie d'impôts tourne autour de CHF 2'000 à 3'000 selon le canton et le revenu
-produits_lies: 3e-pilier, placements, declaration-impots
+produits_lies: 3e-pilier
 quiz: Le 3e pilier A peut être versé jusqu'au 15 janvier pour l'année précédente. | faux | Le versement doit être crédité au plus tard le 31 décembre de l'année concernée. ;; En 2026, on peut racheter les années manquées depuis 2015. | faux | Seules les lacunes nées à partir de 2025 peuvent être rachetées. Le premier rachat possible porte donc sur 2025, et se fait en 2026. ;; Avoir plusieurs comptes 3a peut réduire l'impôt au moment du retrait. | vrai | Chaque compte se retire en une fois : en étalant les retraits sur plusieurs années, l'impôt sur le capital baisse souvent.
 pour_qui: Vous êtes salarié et n'avez pas encore versé sur votre 3a cette année | Vous n'avez pas versé le maximum en 2025 | Vous êtes indépendant sans caisse de pension | Vous n'avez qu'un seul compte 3a
 widget: capital-3a
@@ -103,9 +103,9 @@ Le bon choix dépend de votre âge, de votre famille et de votre capacité d'ép
 
 1. **Attendre le dernier jour.** Un versement crédité le 2 janvier compte pour l'année suivante.
 2. **Tout mettre sur un seul compte.** Un compte 3a se retire en une fois. Avec plusieurs comptes, vous pouvez étaler les retraits et payer moins d'impôt sur le capital. Notre article sur le [retrait échelonné du 3e pilier](/blog/retrait-3e-pilier-echelonne/) détaille le calcul.
-3. **Laisser dormir l'argent sur un compte peu rémunéré.** Sur 20 ou 30 ans, la manière dont l'épargne est placée compte autant que la déduction fiscale. Les [solutions de placement](/particuliers/placements/) se choisissent selon votre horizon et votre tolérance au risque.
+3. **Laisser dormir l'argent sur un compte peu rémunéré.** Sur 20 ou 30 ans, la manière dont l'épargne est placée compte autant que la déduction fiscale. Les solutions de placement se choisissent selon votre horizon et votre tolérance au risque.
 
-Le versement se déduit dans la [déclaration d'impôts](/particuliers/declaration-impots/) de l'année du versement. Gardez bien l'attestation que votre banque ou votre assureur vous envoie en début d'année.
+Le versement se déduit dans la déclaration d'impôts de l'année du versement. Gardez bien l'attestation que votre banque ou votre assureur vous envoie en début d'année.
 
 ## Questions fréquentes
 

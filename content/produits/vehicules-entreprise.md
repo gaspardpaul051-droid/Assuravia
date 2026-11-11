@@ -57,7 +57,7 @@ Pour un artisan, le contenu de l'utilitaire vaut parfois plus que le véhicule. 
 
 - **Vérifiez si la casco inclut les objets transportés**, et jusqu'à quel montant.
 - **Lisez les conditions en cas de vol** : beaucoup de contrats exigent que le véhicule soit fermé à clé, parfois qu'il soit garé dans un endroit précis la nuit.
-- **Pour les marchandises de clients**, une [assurance transport](/entreprises/transport/) couvre mieux les dommages pendant le trajet.
+- **Pour les marchandises de clients**, une assurance transport couvre mieux les dommages pendant le trajet.
 
 ## Les erreurs fréquentes
 

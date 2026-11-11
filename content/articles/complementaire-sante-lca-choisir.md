@@ -10,7 +10,7 @@ cta_texte: Un conseiller repère les doublons et les lacunes de vos contrats act
 cta_url: /particuliers/complementaire-maladie/
 cta_bouton: Simuler mes complémentaires
 retenir: La LAMal est la même partout, les complémentaires (LCA) sont libres et très différentes d'un assureur à l'autre | L'assureur peut refuser une complémentaire ou poser des réserves selon votre santé | Ne résiliez jamais avant d'avoir été accepté ailleurs | Vous pouvez garder la LAMal chez un assureur et les complémentaires chez un autre
-produits_lies: complementaire-maladie, voyage, declaration-impots
+produits_lies: complementaire-maladie, voyage
 quiz: Les complémentaires doivent être chez le même assureur que la LAMal. | faux | Vous pouvez séparer l'assurance de base et les complémentaires chez des assureurs différents. ;; Un assureur peut refuser une demande de complémentaire pour raison de santé. | vrai | Contrairement à la LAMal, les complémentaires sont des contrats privés : l'assureur peut refuser ou émettre des réserves. ;; À l'étranger, la LAMal rembourse toujours la totalité des soins d'urgence. | faux | Elle rembourse au maximum le double de ce qui aurait été payé en Suisse, et pas le rapatriement.
 pour_qui: Vous ne savez pas exactement ce que couvre votre complémentaire | Vous avez plusieurs contrats chez différents assureurs | Vous attendez un enfant ou prévoyez un traitement dentaire | Vous souhaitez une chambre semi-privée ou privée à l'hôpital
 ---
@@ -69,7 +69,7 @@ La règle d'or : **ne résiliez jamais avant d'avoir reçu l'acceptation écrite
 - **Entre 20 et 40 ans**, les primes sont plus basses et l'acceptation plus facile : c'est le bon moment pour une hospitalisation semi-privée si elle vous intéresse.
 - **Après 50 ans**, changer devient plus difficile. Il vaut mieux optimiser vos contrats actuels que tout résilier.
 
-Pensez aussi à vos impôts : les primes d'assurance maladie font partie des déductions de votre [déclaration d'impôts](/particuliers/declaration-impots/), dans la limite d'un forfait fixé par chaque canton.
+Pensez aussi à vos impôts : les primes d'assurance maladie font partie des déductions de votre déclaration d'impôts, dans la limite d'un forfait fixé par chaque canton.
 
 ## Questions fréquentes
 
