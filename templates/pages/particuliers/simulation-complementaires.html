@@ -46,7 +46,7 @@
   </div>
   {{ e.continuer() }}
 </fieldset>
-{{ e.coordonnees(nom_prenom=True, naissance=False, envoi=False) }}
-{{ e.npa("Quelle est votre adresse ?", final=True) }}
+{{ e.npa("Quelle est votre adresse ?") }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat_lca("familles") }}
 {% endblock %}

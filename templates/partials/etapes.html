@@ -209,9 +209,9 @@
   </div>
   {% if prestations %}{{ prestations_detail(titre_prestations, prestations) }}{% endif %}
   <div class="resultat-actions" data-si-contact>
-    <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Envoyer ma demande de souscription</button>
-    <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être recontacté par un conseiller</button>
-    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+    <button type="button" class="lien-modifier" data-fe-modifier="{{ modifier }}">Modifier mes réponses</button>
+    <p class="resultat-actions__note">Un conseiller vérifie cette estimation avec vous et vous envoie l'offre détaillée. Gratuit et sans engagement.</p>
+    <button type="submit" class="bouton bouton--action resultat-actions__final" data-fe-action="souscription">Envoyer ma demande</button>
   </div>
   <div class="resultat-actions" data-si-sans-contact>
     <button type="button" class="bouton bouton--action" data-fe-modifier="coordonnees">Être rappelé pour recevoir cette offre</button>
@@ -324,9 +324,9 @@
   </div>
   <p class="resultat__avertissement">Estimation indicative pour une personne, établie à partir d'une grille moyenne du marché. Les prestations sont des exemples : elles varient selon l'assureur et la formule. Une complémentaire est conclue après un questionnaire de santé ; l'assureur peut émettre des réserves ou refuser. Seule l'offre de l'assureur fait foi.</p>
   <div class="resultat-actions" data-si-contact>
-    <button type="submit" class="bouton bouton--action" data-fe-action="souscription">Recevoir une offre détaillée</button>
-    <button type="submit" class="bouton bouton--{{ sim.theme }}" data-fe-action="rappel">Être conseillé par téléphone</button>
-    <button type="button" class="bouton bouton--secondaire" data-fe-modifier="{{ modifier }}">Modifier ma simulation</button>
+    <button type="button" class="lien-modifier" data-fe-modifier="{{ modifier }}">Modifier mes réponses</button>
+    <p class="resultat-actions__note">Un conseiller vérifie cette estimation avec vous et vous envoie l'offre détaillée. Gratuit et sans engagement.</p>
+    <button type="submit" class="bouton bouton--action resultat-actions__final" data-fe-action="souscription">Envoyer ma demande</button>
   </div>
   <div class="resultat-actions" data-si-sans-contact>
     <button type="button" class="bouton bouton--action" data-fe-modifier="coordonnees">Être rappelé pour recevoir cette offre</button>
@@ -350,7 +350,7 @@
 {%- endmacro %}
 
 {# Coordonnées d'une demande sans prime : même champs et même style que l'écran des simulations #}
-{% macro joindre(entreprise=False, question="Où pouvons-nous vous joindre ?", aide="Un conseiller vous rappelle pour compléter votre dossier, puis vous présente les offres adaptées. Gratuit et sans engagement.", naissance=False) -%}
+{% macro joindre(entreprise=False, question="Où pouvons-nous vous joindre ?", aide="Un conseiller vous rappelle pour compléter votre dossier, puis vous présente les offres adaptées. Gratuit et sans engagement.", naissance=False, final=False, bouton="Envoyer ma demande") -%}
 {{ ouvrir("coordonnees", question, aide) }}
   <div class="grille-champs">
     {% if entreprise %}<div class="champ champ--large"><label for="entreprise-{{ sim.id }}">Nom de l'entreprise <span class="facultatif">(facultatif si en création)</span></label><input id="entreprise-{{ sim.id }}" name="entreprise" autocomplete="organization" placeholder="Ex. Dupont Sàrl"></div>{{ f.metier(sim.id) }}{% endif %}
@@ -364,7 +364,7 @@
     <input id="consentement-{{ sim.id }}" name="consentement" type="checkbox" value="oui" required>
     <label for="consentement-{{ sim.id }}">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>
   </div>
-  <div class="rappel-boutons"><button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant>Continuer</button></div>
+  <div class="rappel-boutons">{% if final %}<button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant data-fe-envoi="prix">{{ bouton }}</button>{% else %}<button type="button" class="bouton bouton--action fe__suivant" data-fe-suivant>Continuer</button>{% endif %}</div>
   <ul class="reassurance">
     <li>{{ i.icone("valide", "icone icone--petite") }} Un conseiller dédié vous recontacte, pas de démarchage</li>
     <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>

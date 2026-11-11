@@ -2210,3 +2210,9 @@ html.cookies-ouvert { overflow: hidden; }
 /* Page publicitaire RC pro : texte puis simulation pleine largeur (même présentation que la simulation) */
 .lp-funnel { margin-top: 24px; }
 .produit--lp .cadre--etroit .points { margin-bottom: 0; }
+
+/* Écran de la prime : un seul bouton jaune en bas, qui envoie la demande */
+.resultat-actions[data-si-contact] { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+.resultat-actions__final { width: 100%; font-size: 1.05rem; min-height: 54px; }
+.resultat-actions__note { margin: 6px 0 0; color: var(--texte-doux); font-size: .92rem; text-align: center; }
+.lien-modifier { align-self: flex-start; background: none; border: 0; padding: 4px 0; color: var(--bleu); text-decoration: underline; font: inherit; font-size: .92rem; cursor: pointer; }

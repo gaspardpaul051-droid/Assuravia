@@ -12,7 +12,7 @@
 {{ e.choix("objectif", "Que souhaitez-vous avant tout ?", ["Le faire fructifier", "Le garder en sécurité", "Préparer un retrait (retraite, logement)", "Le transférer à un nouvel employeur", "Je ne sais pas encore"]) }}
 {{ e.choix("horizon", "Dans combien de temps prévoyez-vous de l'utiliser ?", ["Moins de 5 ans", "5 à 10 ans", "10 à 20 ans", "Plus de 20 ans", "Je ne sais pas"], aide="Par exemple à la retraite, pour un logement ou un départ de Suisse.") }}
 {{ e.choix("profil_investisseur", "Quel profil d'investisseur vous ressemble le plus ?", ["Prudent : je préserve mon capital", "Équilibré : j'accepte quelques variations", "Dynamique : je vise la croissance", "Je ne sais pas encore"]) }}
-{{ e.joindre(naissance=True, aide="Un spécialiste vous rappelle pour choisir la bonne solution avec vous. Gratuit et sans engagement.") }}
-{{ e.npa("Quelle est votre adresse ?", "Facultatif. Elle sert uniquement à votre demande.", final=True, prefixe="domicile", bouton="Envoyer ma demande", note="Dernière étape : un spécialiste vous rappelle ensuite.", message="Ex. Je pars m'installer en France l'an prochain.") }}
+{{ e.npa("Quelle est votre adresse ?", "Facultatif. Elle sert uniquement à votre demande.", prefixe="domicile", message="Ex. Je pars m'installer en France l'an prochain.") }}
+{{ e.joindre(final=True, bouton="Envoyer ma demande", naissance=True, aide="Un spécialiste vous rappelle pour choisir la bonne solution avec vous. Gratuit et sans engagement.") }}
 {{ e.merci("Un spécialiste vous rappelle rapidement, en général dans la journée ouvrable, pour choisir avec vous où placer votre libre passage.") }}
 {% endblock %}

@@ -10,7 +10,7 @@
 {% for q in questions %}
 {{ e.choix(q.nom, q.titre, q.options, type=q.type or "radio", aide=q.aide, premier=loop.first, facultatif=q.facultatif) }}
 {% endfor %}
-{{ e.joindre(entreprise=True) }}
-{{ e.npa("Quelle est l'adresse de l'entreprise ?", "Facultatif. Elle aide le conseiller à préparer une offre exacte et sert uniquement à votre demande.", final=True, prefixe="entreprise", bouton="Envoyer ma demande", note="Dernière étape : un conseiller vous rappelle ensuite.", message=exemple_message or "Ex. Nous ouvrons un deuxième site en janvier.") }}
+{{ e.npa("Quelle est l'adresse de l'entreprise ?", "Facultatif. Elle aide le conseiller à préparer une offre exacte et sert uniquement à votre demande.", prefixe="entreprise", message=exemple_message or "Ex. Nous ouvrons un deuxième site en janvier.") }}
+{{ e.joindre(final=True, bouton="Envoyer ma demande", entreprise=True) }}
 {{ e.merci() }}
 {% endblock %}

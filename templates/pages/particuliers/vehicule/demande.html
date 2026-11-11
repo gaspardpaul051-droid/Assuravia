@@ -26,7 +26,7 @@
 {{ e.choix("options", "Des options vous intéressent-elles ?", ["Assistance et dépannage", "Protection du bonus", "Faute grave couverte", "Véhicule de remplacement", "Effets personnels transportés", "Accidents des occupants"], type="checkbox", facultatif=True, aide="Facultatif : cochez ce qui vous intéresse, ou continuez directement.") }}
 {{ e.choix("anciennete_permis", "Depuis combien de temps avez-vous le permis ?", ["Moins de 3 ans", "3 à 10 ans", "Plus de 10 ans"]) }}
 {{ e.choix("debut", "Quand souhaitez-vous que la couverture commence ?", ["Dès que possible", "Dans le mois", "Dans 1 à 3 mois", "À l'échéance de mon contrat actuel"]) }}
-{{ e.joindre(naissance=True, aide="Un conseiller étudie votre demande et vous recontacte avec une offre adaptée. Gratuit et sans engagement.") }}
-{{ e.npa("Quelle est votre adresse ?", "Facultatif. Elle aide le conseiller à préparer une offre exacte et sert uniquement à votre demande.", final=True, prefixe="domicile", bouton="Envoyer ma demande", note="Dernière étape : un conseiller vous recontacte ensuite.", message="Ex. Je change de voiture le mois prochain.") }}
+{{ e.npa("Quelle est votre adresse ?", "Facultatif. Elle aide le conseiller à préparer une offre exacte et sert uniquement à votre demande.", prefixe="domicile", message="Ex. Je change de voiture le mois prochain.") }}
+{{ e.joindre(final=True, bouton="Envoyer ma demande", naissance=True, aide="Un conseiller étudie votre demande et vous recontacte avec une offre adaptée. Gratuit et sans engagement.") }}
 {{ e.merci("Un conseiller étudie votre demande et vous recontacte rapidement, en général dans la journée ouvrable, avec une offre adaptée.") }}
 {% endblock %}

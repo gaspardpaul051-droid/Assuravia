@@ -28,8 +28,8 @@
 </fieldset>
 {{ e.choix("couvertures", "Que souhaitez-vous couvrir ?", ["Dégâts d'eau", "Bris de glace", "Vol et vandalisme", "RC propriétaire d'immeuble", "Pertes de loyers", "Incendie et éléments naturels (Genève, Valais)", "Je ne sais pas, j'ai besoin de conseil"], type="checkbox", aide="Plusieurs réponses possibles.") }}
 {{ e.choix("valeur_batiment", "Quelle est la valeur d'assurance du bâtiment, environ ?", ["Moins de CHF 1 million", "CHF 1 à 3 millions", "CHF 3 à 10 millions", "Plus de CHF 10 millions", "Je ne sais pas"], aide="C'est le coût de reconstruction à neuf, sans le terrain. Elle figure sur votre police ou sur l'estimation de l'établissement cantonal.") }}
-{{ e.joindre(aide="Votre conseiller prépare l'offre avec vos réponses et vous rappelle dans la journée (jours ouvrables).") }}
-{{ e.npa("Quelle est l'adresse du bâtiment ?", "Facultatif. Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", final=True, prefixe="batiment", bouton="Recevoir mon offre", note="Dernière étape : un conseiller vous rappelle ensuite.") }}
+{{ e.npa("Quelle est l'adresse du bâtiment ?", "Facultatif. Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.", prefixe="batiment") }}
+{{ e.joindre(final=True, bouton="Recevoir mon offre", aide="Votre conseiller prépare l'offre avec vos réponses et vous rappelle dans la journée (jours ouvrables).") }}
 {{ e.merci("Votre conseiller prépare l'offre avec vos réponses et vous rappelle dans la journée (jours ouvrables).") }}
 {% endblock %}
 {% block scripts %}

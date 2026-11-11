@@ -49,7 +49,7 @@
   ("option_pj", "balance", "Protection juridique", "Litige avec votre bailleur, votre employeur ou un vendeur : frais d'avocat et de procédure pris en charge.", 285),
   ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
   ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)]) }}
-{{ e.coordonnees(nom_prenom=True, naissance=False, envoi=False) }}
-{{ e.npa(final=True) }}
+{{ e.npa() }}
+{{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat("inventaire") }}
 {% endblock %}
