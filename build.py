@@ -55,7 +55,7 @@ CANTONS = [
 GROUPES = {
     "particuliers": {
         "nom": "Privé", "titre": "Particuliers", "url": "/particuliers/", "theme": "prive",
-        "categories": ["Santé", "Logement", "Retraite et impôts", "Véhicule et loisirs"],
+        "categories": ["Santé", "Véhicule et loisirs", "Logement", "Prévoyance"],
     },
     "entreprises": {
         "nom": "Professionnel", "titre": "Entreprises", "url": "/entreprises/", "theme": "pro",
