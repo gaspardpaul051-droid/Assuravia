@@ -5,52 +5,5 @@
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
 {% block etapes %}
-{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
-  {"valeur": "Santé et thérapies", "icone": "croix", "detail": "Cabinet, physiothérapie, soins, thérapeutes.", "attrs": 'data-facteur="2"'},
-  {"valeur": "Construction et artisanat", "icone": "batiment", "detail": "Gros œuvre, second œuvre, installations, menuiserie.", "attrs": 'data-facteur="2"'},
-  {"valeur": "Conseil et fiduciaire", "icone": "balance", "detail": "Fiduciaire, gestion, architecture, ingénierie, conseil.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Informatique et digital", "icone": "cyber", "detail": "Développement, agence web, conseil informatique.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Commerce et vente", "icone": "colis", "detail": "Magasin, vente en ligne, import et distribution.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Services aux personnes", "icone": "groupe", "detail": "Coiffure, beauté, nettoyage, enseignement, événementiel.", "attrs": 'data-facteur="1.1"'}], colonnes=3, premier=True) }}
-
-{{ e.cartes("statut_juridique", "Quelle est la forme juridique de votre entreprise ?", [
-  {"valeur": "Raison individuelle", "icone": "utilisateur", "detail": "Vous exercez en votre nom, en indépendant."},
-  {"valeur": "Sàrl", "icone": "groupe", "detail": "Société à responsabilité limitée."},
-  {"valeur": "SA", "icone": "batiment", "detail": "Société anonyme."},
-  {"valeur": "Société de personnes", "icone": "mallette", "detail": "Société en nom collectif ou en commandite."},
-  {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
-  {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3) }}
-
-{{ e.cartes("chiffre_affaires", "Quel est votre chiffre d'affaires annuel ?", [
-  {"valeur": "Jusqu'à CHF 100'000", "attrs": 'data-prix-base="400"'},
-  {"valeur": "CHF 100'000 à 500'000", "attrs": 'data-prix-base="900"'},
-  {"valeur": "CHF 500'000 à 1 million", "attrs": 'data-prix-base="1800"'},
-  {"valeur": "Plus de CHF 1 million", "attrs": 'data-prix-base="2600"'}], aide="Une estimation suffit. Pour une entreprise en création, indiquez le chiffre d'affaires prévu.") }}
-
-{{ e.situations("risques", "Contre quels risques voulez-vous protéger votre entreprise ?", "Cochez ce qui pourrait vous arriver. Le conseiller vérifie que l'offre couvre bien ces situations.", [
-  ("groupe", "Un client se blesse", "Une personne glisse dans vos locaux ou se blesse lors d'une prestation."),
-  ("maison", "Un dégât chez un client", "Un dégât d'eau après une installation, un objet cassé pendant une intervention."),
-  ("balance", "Une erreur de conseil", "Un conseil ou un calcul erroné fait perdre de l'argent à un client."),
-  ("colis", "Un produit défectueux", "Un produit que vous vendez ou fabriquez cause un dommage."),
-  ("cle", "Des locaux loués abîmés", "Des dégâts aux locaux que vous louez, causés par votre activité."),
-  ("cyber", "Les données de vos clients", "Des données transmises par erreur ou une atteinte à la vie privée.")]) }}
-
-{{ e.situations("autres_besoins", "D'autres besoins pour votre entreprise ?", "Facultatif. Cochez ce dont vous aimeriez parler : le conseiller vous en dit plus lors de son appel.", [
-  ("balance", "Protection juridique", "Client qui ne paie pas, litige avec un fournisseur, un bailleur ou un employé."),
-  ("cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues."),
-  ("colis", "Inventaire et choses", "Machines, marchandises et mobilier contre l'incendie, l'eau et le vol."),
-  ("croix", "Accidents (LAA)", "Assurance accidents obligatoire pour vos employés, et complémentaire."),
-  ("thermometre", "Perte de gain maladie", "Indemnités journalières quand un collaborateur est malade."),
-  ("tirelire", "Prévoyance (LPP)", "2e pilier de vos collaborateurs et de vous-même."),
-  ("voiture", "Véhicules d'entreprise", "Voitures, utilitaires et flottes : RC, casco et assistance.")]) }}
-
-{{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False, envoi=False) }}
-{{ e.npa("Quelle est l'adresse de l'entreprise ?", "L'adresse du siège ou de votre activité. Elle sert uniquement à votre demande.", final=True) }}
-{{ e.resultat("chiffre_affaires", prestations=[
-  ("bouclier", "Les dommages que vous causez", "Dommages corporels et matériels causés à des clients ou à des tiers dans le cadre de votre activité, et les pertes qui en découlent."),
-  ("balance", "Votre défense", "L'assureur examine chaque réclamation et refuse de payer celles qui ne sont pas fondées, y compris devant un tribunal."),
-  ("calcul", "Les pertes financières", "Pour les métiers de conseil, les pertes subies par un client à cause d'une erreur peuvent être couvertes, selon le contrat."),
-  ("groupe", "Toute votre équipe", "Vos collaborateurs sont couverts pour les dommages qu'ils causent en travaillant pour vous."),
-  ("valide", "Une attestation pour vos contrats", "Vous recevez une attestation d'assurance à remettre à vos clients, régies ou maîtres d'ouvrage."),
-  ("bulle", "Un conseiller pour vous", "Il prépare les offres selon votre activité et vérifie les exclusions avant que vous signiez.")], titre_prestations="Ce que fait votre RC professionnelle") }}
+{% include "partials/etapes-rc-pro.html" %}
 {% endblock %}

@@ -2206,3 +2206,7 @@ html.cookies-ouvert { overflow: hidden; }
 .merci-carte__icone .icone { width: 26px; height: 26px; }
 .merci-carte__titre { font-weight: 800; font-size: 1.15rem; color: var(--marine, #0B2545); margin: 0 0 6px; }
 .merci-carte__texte { margin: 0; color: var(--texte-doux, #4A5A6E); }
+
+/* Page publicitaire RC pro : texte puis simulation pleine largeur (même présentation que la simulation) */
+.lp-funnel { margin-top: 24px; }
+.produit--lp .cadre--etroit .points { margin-bottom: 0; }
