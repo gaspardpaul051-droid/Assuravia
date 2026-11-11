@@ -2,6 +2,7 @@
 slug: protection-juridique-entreprise
 groupe: entreprises
 nom: Protection juridique d'entreprise
+nom_menu: Protection juridique
 categorie: Responsabilité
 icone: balance
 ordre: 2

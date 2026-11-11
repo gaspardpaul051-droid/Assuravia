@@ -1,0 +1,59 @@
+{% set noindex = true %}
+{% import "partials/icones.html" as i %}
+{% import "partials/form.html" as f %}
+{% from "partials/questions.html" import question %}
+{% extends "base.html" %}
+{% block theme %}prive{% endblock %}
+{% block title %}Placer mon libre passage | Assuravia{% endblock %}
+{% block description %}Compte ou police de libre passage, épargne ou fonds : un spécialiste vous aide à placer votre 2e pilier selon votre horizon. Demande en 2 minutes.{% endblock %}
+{% block content %}
+{% set p = par_slug["libre-passage"] %}
+<section class="cmp-page demande-page">
+  <div class="cadre cadre--etroit">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="/particuliers/">Privé</a> <span aria-hidden="true">/</span> <a href="{{ p.url }}">{{ p.nom }}</a></nav>
+    <p class="etiquette etiquette--prive">{{ i.icone(p.icone, "icone icone--petite") }} Demande</p>
+    <h1 class="cmp-page__titre">Placer mon libre passage</h1>
+    <p class="chapeau">Quelques questions sur votre situation, puis un spécialiste vous rappelle pour choisir entre compte et police, épargne ou fonds.</p>
+
+    <div class="panneau-form demande-etapes-form" data-etapes>
+      {{ f.ouvrir("libre-passage", "libre-passage") }}
+        <div class="modale__progression" aria-hidden="true"><p data-etape-compteur>Question 1</p><div><span data-etape-barre></span></div></div>
+
+        {{ question("Quelle est votre situation ?", "situation", ["Je quitte mon emploi", "Je suis entre deux emplois", "Je deviens indépendant", "Je quitte la Suisse", "J'ai déjà un libre passage à revoir", "Autre situation"], premier=True) }}
+        {{ question("Quel est le montant de votre avoir ?", "montant_avoir", ["Moins de CHF 50'000", "CHF 50'000 à 100'000", "CHF 100'000 à 250'000", "CHF 250'000 à 500'000", "Plus de CHF 500'000", "Je ne sais pas encore"], aide="Il figure sur votre décompte de sortie ou votre certificat de prévoyance.") }}
+        {{ question("Où se trouve votre avoir aujourd'hui ?", "avoir_actuel", ["Encore dans ma caisse de pension", "Sur un compte de libre passage", "Sur une police de libre passage", "À l'institution supplétive", "Je ne sais pas"]) }}
+        {{ question("Que souhaitez-vous avant tout ?", "objectif", ["Le faire fructifier", "Le garder en sécurité", "Préparer un retrait (retraite, logement)", "Le transférer à un nouvel employeur", "Je ne sais pas encore"]) }}
+        {{ question("Dans combien de temps prévoyez-vous de l'utiliser ?", "horizon", ["Moins de 5 ans", "5 à 10 ans", "10 à 20 ans", "Plus de 20 ans", "Je ne sais pas"], aide="Par exemple à la retraite, pour un logement ou un départ de Suisse.") }}
+        {{ question("Quel profil d'investisseur vous ressemble le plus ?", "profil_investisseur", ["Prudent : je préserve mon capital", "Équilibré : j'accepte quelques variations", "Dynamique : je vise la croissance", "Je ne sais pas encore"]) }}
+
+        <fieldset class="modale__etape" data-etape hidden>
+          <legend class="modale__question">Où pouvons-nous vous joindre ?</legend>
+          <div class="grille-champs">
+            <div class="champ"><label for="prenom-lp">Prénom</label><input id="prenom-lp" name="prenom" required autocomplete="given-name" placeholder="Jean"></div>
+            <div class="champ"><label for="nom-lp">Nom</label><input id="nom-lp" name="nom" required autocomplete="family-name" placeholder="Dupont"></div>
+            {{ f.telephone("lp") }}
+            <div class="champ"><label for="email-lp">E-mail</label><input id="email-lp" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
+            {{ f.naissance("lp") }}
+            <div class="champ">
+              <label for="moment-lp">Quand vous rappeler ?</label>
+              <select id="moment-lp" name="moment_rappel" required><option value="">Choisir</option>{% for m in ["Dès que possible", "Le matin (8 h à 12 h)", "À midi (12 h à 14 h)", "L'après-midi (14 h à 17 h)", "En fin de journée (17 h à 19 h)"] %}<option>{{ m }}</option>{% endfor %}</select>
+            </div>
+          </div>
+          {{ f.adresse("domicile") }}
+          <div class="champ">
+            <label for="message-lp">Votre question <span class="facultatif">(facultatif)</span></label>
+            <textarea id="message-lp" name="message" placeholder="Ex. Je pars m'installer en France l'an prochain."></textarea>
+          </div>
+          {{ f.fermer("Être rappelé par un spécialiste", "lp") }}
+          <button type="button" class="bouton bouton--secondaire modale__retour" data-etape-precedente>Retour</button>
+        </fieldset>
+      </form>
+    </div>
+    <ul class="funnel__garanties">
+      <li>{{ i.icone("valide", "icone icone--petite") }} Gratuit et sans engagement</li>
+      <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
+      <li>{{ i.icone("cadenas", "icone icone--petite") }} Données protégées (nLPD)</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

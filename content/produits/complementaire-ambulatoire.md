@@ -2,8 +2,9 @@
 slug: complementaire-ambulatoire
 groupe: particuliers
 nom: Ambulatoire et médecines douces
+nom_menu: Médecines douces
 categorie: Santé
-icone: coeur
+icone: goutte
 ordre: 5
 titre_seo: Complémentaire médecines douces : votre prime
 description: Ostéopathie, acupuncture, lunettes, médicaments hors liste, prévention : ce que couvre une complémentaire ambulatoire, et une estimation de prime en 2 minutes.

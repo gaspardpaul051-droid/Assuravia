@@ -3,7 +3,7 @@ slug: assurance-hospitalisation
 groupe: particuliers
 nom: Assurance hospitalisation
 categorie: Santé
-icone: croix
+icone: thermometre
 ordre: 4
 titre_seo: Assurance hospitalisation : estimer sa prime
 description: Chambre commune, demi-privée ou privée : ce que couvre une assurance hospitalisation et une estimation de prime en 2 minutes, sans engagement.

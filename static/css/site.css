@@ -2176,7 +2176,10 @@ html.cookies-ouvert { overflow: hidden; }
 /* Menu déroulant : colonnes en cartes douces, titres avec repère, survol avec flèche, lien final en bouton */
 @media (min-width: 1081px) {
   .sous-menu__panneau { padding: 20px; border-radius: 18px; box-shadow: 0 24px 60px -24px rgba(11,37,69,.35), 0 2px 6px rgba(11,37,69,.06); }
-  .sous-menu__domaines { gap: 12px; align-items: start; }
+  .sous-menu__domaines { gap: 12px; align-items: stretch; }
+  /* Libellés sur une ligne : les lignes restent alignées d'une colonne à l'autre ; le panneau prend la largeur utile */
+  .sous-menu__panneau, .sous-menu--pro .sous-menu__panneau { width: max-content; max-width: 94vw; }
+  .sous-menu__domaine li a { white-space: nowrap; }
   .sous-menu__domaine { background: var(--surface, #F6F8FB); border-radius: 14px; padding: 12px 8px 8px; }
   .sous-menu--pro .sous-menu__domaine { background: #FBF8EF; }
 }

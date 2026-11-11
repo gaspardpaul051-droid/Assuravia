@@ -59,7 +59,7 @@
               <p class="sous-menu__domaine-titre">{{ cat }}</p>
               <ul>
                 {% for p in liste %}
-                <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom }}</a></li>
+                <li><a href="{{ p.url }}"{% if url == p.url %} aria-current="page"{% endif %}><span class="sous-menu__icone">{{ i.icone(p.icone) }}</span>{{ p.nom_menu or p.nom }}</a></li>
                 {% endfor %}
               </ul>
             </div>
