@@ -31,6 +31,7 @@
       {{ f.telephone(cle) }}
       <div class="champ"><label for="{{ cle }}-email">E-mail</label><input id="{{ cle }}-email" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com"></div>
     </div>
+    {{ f.adresse("domicile", id=cle ~ "-adr") }}
     <div class="consentement">
       <input id="{{ cle }}-consentement" name="consentement" type="checkbox" value="oui" required>
       <label for="{{ cle }}-consentement">J'accepte d'être recontacté au sujet de ma demande (<a href="/confidentialite/" target="_blank">données personnelles</a>).</label>

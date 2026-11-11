@@ -46,6 +46,7 @@
             <textarea id="message-c" name="message" rows="5" required placeholder="Ex. J'aimerais savoir si mon assurance ménage couvre le vol de mon vélo."></textarea>
           </div>
         </div>
+        {{ f.adresse("domicile", id="c-adr") }}
         <div class="consentement">
           <input id="consentement-c" name="consentement" type="checkbox" value="oui" required>
           <label for="consentement-c">J'accepte que mes données soient utilisées pour répondre à mon message, selon la <a href="/confidentialite/" target="_blank">politique de protection des données</a>.</label>

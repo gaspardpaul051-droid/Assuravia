@@ -125,6 +125,7 @@
         <label for="cv-email">E-mail</label>
         <input id="cv-email" name="email" type="email" required autocomplete="email" placeholder="jean.dupont@gmail.com">
       </div>
+      {{ f.adresse("domicile", id="cv-adr") }}
       <div class="champ">
         <label for="cv-message">Votre question</label>
         <textarea id="cv-message" name="message" rows="3" required placeholder="Ex. Ma complémentaire couvre-t-elle bien une hospitalisation en chambre privée ?"></textarea>

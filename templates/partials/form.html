@@ -64,14 +64,15 @@
 </div>
 {%- endmacro %}
 
-{% macro adresse(prefixe, requis=False, pays=None) -%}
+{% macro adresse(prefixe, requis=False, pays=None, id=None) -%}
+{%- set ida = id or prefixe %}
 {# Adresse saisie à la main : rue, numéro, NPA, localité. Facultative par défaut (moins de friction). #}
 <div class="adresse">
   <div class="grille-champs">
-    <div class="champ"><label for="{{ prefixe }}-rue">Rue</label><input id="{{ prefixe }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
-    <div class="champ"><label for="{{ prefixe }}-no">N°</label><input id="{{ prefixe }}-no" name="{{ prefixe }}_numero"{% if requis %} required{% endif %} placeholder="12"></div>
-    <div class="champ"><label for="{{ prefixe }}-npa">NPA</label><input id="{{ prefixe }}-npa" name="{{ prefixe }}_npa"{% if requis %} required{% endif %} inputmode="numeric" autocomplete="postal-code" placeholder="1003"></div>
-    <div class="champ"><label for="{{ prefixe }}-localite">Localité</label><input id="{{ prefixe }}-localite" name="{{ prefixe }}_localite"{% if requis %} required{% endif %} autocomplete="address-level2" placeholder="Lausanne"></div>
+    <div class="champ"><label for="{{ ida }}-rue">Rue</label><input id="{{ ida }}-rue" name="{{ prefixe }}_rue"{% if requis %} required{% endif %} autocomplete="address-line1" placeholder="Avenue de la Gare"></div>
+    <div class="champ"><label for="{{ ida }}-no">N°</label><input id="{{ ida }}-no" name="{{ prefixe }}_numero"{% if requis %} required{% endif %} placeholder="12"></div>
+    <div class="champ"><label for="{{ ida }}-npa">NPA</label><input id="{{ ida }}-npa" name="{{ prefixe }}_npa"{% if requis %} required{% endif %} inputmode="numeric" autocomplete="postal-code" placeholder="1003"></div>
+    <div class="champ"><label for="{{ ida }}-localite">Localité</label><input id="{{ ida }}-localite" name="{{ prefixe }}_localite"{% if requis %} required{% endif %} autocomplete="address-level2" placeholder="Lausanne"></div>
   </div>
   {% if not requis %}<p class="champ__aide">Adresse facultative.</p>{% endif %}
 </div>
