@@ -60,6 +60,14 @@
         <a class="rcp-depart__carte" href="{{ produit.simulateur }}?pour_qui={{ val|urlencode }}&amp;passer=pour_qui"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong></span></a>
         {% endfor %}
       </div>
+      {% elif produit.entree == "objets" %}
+      {# Comme la RC pro : la première question (que souhaitez-vous assurer ?) se répond ici, la simulation commence à la liste des objets #}
+      <p class="form-sous-titre">Que souhaitez-vous assurer ? Touchez votre choix : l'estimation démarre directement. Gratuit et sans engagement.</p>
+      <div class="rcp-depart__choix">
+        {% for val, titre, icone in [("Montres", "Montres", "horloge"), ("Bijoux", "Bijoux", "diamant"), ("Tableaux et objets d'art", "Art et collections", "livre"), ("Autre", "Autre objet", "colis")] %}
+        <a class="rcp-depart__carte" href="{{ produit.simulateur }}?categories={{ val|urlencode }}&amp;passer=categories"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ titre }}</strong></span></a>
+        {% endfor %}
+      </div>
       {% elif produit.entree == "pj" %}
       {# Modules à cocher : ils sont transmis à la simulation, qui saute alors sa première question #}
       <p class="form-sous-titre">Votre estimation immédiate, gratuite et sans engagement.</p>
@@ -87,7 +95,7 @@
       {% endif %}
       {% if produit.entree != "pj" and not produit.prestations %}<a class="bouton bouton--action" href="{{ produit.simulateur }}">{{ produit.simulateur_bouton or "Calculer ma prime" }}</a>{% endif %}
       {{ rr.bouton(produit.slug, produit.accroche_rappel or "<strong>Pas le temps ?</strong> Être rappelé dans la journée", produit.rappel_choix) }}
-      {% if produit.entree in ("sante", "pj", "lamal") or produit.prestations %}
+      {% if produit.entree in ("sante", "pj", "lamal", "objets") or produit.prestations %}
       <ul class="lp-depart__rassure">
         <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
         <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>

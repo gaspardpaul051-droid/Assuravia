@@ -30,12 +30,12 @@
   {"nom": "Confort", "taux": 1.2, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Dégâts d'eau", "Vol et vandalisme", "Couverture élargie", "Bris de glace jusqu'à CHF 50'000", "Perte de loyers 12 mois", "Faute grave couverte"]},
   {"nom": "Premium", "taux": 1.7, "points": ["Tout Confort", "Installations techniques : ascenseur, chauffage, ventilation", "Perte de loyers 24 mois", "Frais de déblaiement et de décontamination", "Bris de glace illimité"]},
   {"nom": "Complémentaire bâtiment", "taux": 0.65, "badge": "Cantons à assurance cantonale", "points": ["All risk", "Dégâts d'eau", "Bris de glace", "Perte de loyers", "Faute grave couverte"]},
-  {"nom": "Sur mesure", "taux": 0, "points": ["Plusieurs bâtiments ou un parc immobilier", "Bâtiment industriel ou à risque particulier", "Un spécialiste construit l'offre avec vous"]}]) }}
+  {"nom": "Sur mesure", "taux": 0, "points": ["Plusieurs bâtiments ou un parc immobilier", "Bâtiment industriel ou à risque particulier", "Un spécialiste construit l'offre avec vous"]}], prix=False) }}
 {{ e.options("Complétez la protection de votre bâtiment", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
   ("option_rc_immeuble", "bouclier", "RC propriétaire d'immeuble", "Un passant blessé par une chute de neige du toit, un dégât causé chez le voisin : les prétentions de tiers sont couvertes.", 380),
   ("option_pj_immeuble", "balance", "Protection juridique immeuble", "Litige avec un locataire, un voisin ou une entreprise de construction : frais d'avocat et de procédure.", 450),
   ("interet_inventaire", "colis", "Assurer aussi l'inventaire", "Machines, mobilier et marchandises contre l'incendie, l'eau et le vol, avec l'interruption d'exploitation.", 0),
-  ("interet_cyber", "cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues.", 0)]) }}
+  ("interet_cyber", "cyber", "Cyberassurance", "Piratage, rançongiciel, panne informatique, données perdues.", 0)], prix_visibles=False) }}
 {{ e.coordonnees(nom_prenom=True, entreprise=True, naissance=False, envoi=False) }}
 {{ e.npa("Quelle est l'adresse du bâtiment ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.", final=True) }}
 {{ e.resultat("valeur") }}
