@@ -21,11 +21,6 @@
   {"valeur": "Association ou fondation", "icone": "coeur", "detail": "But non lucratif, club, fondation."},
   {"valeur": "En cours de création", "icone": "cle", "detail": "Vous lancez votre activité."}], colonnes=3) }}
 
-{{ e.ouvrir("salaries", "Combien de salariés compte l'entreprise ?", "Sans compter le ou les dirigeants.") }}
-  <div class="compteurs">{{ e.compteur("salaries", "Salariés", 0, 0, 500, grand=True) }}</div>
-  {{ e.continuer() }}
-</fieldset>
-
 {{ e.cartes("chiffre_affaires", "Quel est votre chiffre d'affaires annuel ?", [
   {"valeur": "Jusqu'à CHF 100'000", "attrs": 'data-prix-base="400"'},
   {"valeur": "CHF 100'000 à 500'000", "attrs": 'data-prix-base="900"'},
