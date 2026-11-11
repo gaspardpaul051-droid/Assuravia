@@ -15,139 +15,137 @@ quiz: L'assurance de base rembourse le traitement d'une carie, après la franchi
 pour_qui: Vous avez des enfants qui n'ont pas encore d'assurance dentaire | Vous attendez un bébé | Vous payez vous-même votre détartrage et vos contrôles chaque année | Vous avez un traitement dentaire important prévu (couronne, implant)
 ---
 
-Un contrôle, un détartrage, une carie : en Suisse, la facture du dentiste arrive presque toujours chez vous, pas chez votre caisse maladie. Beaucoup de personnes le découvrent le jour où leur enfant a besoin d'un appareil. Voici ce que paie vraiment l'assurance de base, ce qu'apporte une complémentaire dentaire et les bons réflexes avant la fin de l'année.
+Si vous avez déjà envoyé une facture de dentiste à votre caisse maladie, vous connaissez probablement la réponse : « prestation non couverte ». C'est normal. En Suisse, l'assurance de base ne s'occupe presque pas des dents. Le contrôle annuel, le détartrage, la carie, tout ça, c'est pour vous.
 
-## Ce que l'assurance de base paie (et ce qu'elle ne paie pas)
+Beaucoup de parents le découvrent au pire moment, quand l'orthodontiste annonce un devis à cinq chiffres. Alors autant faire le point maintenant : ce que la LAMal prend vraiment en charge, ce qu'une complémentaire dentaire change concrètement, et deux ou trois choses à faire avant le 31 décembre.
 
-L'assurance de base (LAMal) a une règle simple : les soins dentaires ne sont **pas** couverts. Il existe quelques exceptions, fixées par la loi et l'ordonnance sur les prestations. La liste est fermée.
+## La LAMal paie-t-elle le dentiste ?
 
-L'assurance de base intervient seulement si les soins sont :
+Presque jamais. La loi prévoit quelques exceptions, et la liste est fermée. L'assurance de base intervient seulement quand les soins dentaires sont :
 
-- causés par une **maladie grave et non évitable du système de la mastication** ;
-- causés par une **autre maladie grave** ou par ses suites ;
-- **nécessaires pour traiter une maladie grave** ;
-- la conséquence d'un **accident**, mais seulement si aucune autre assurance ne les couvre.
+- causés par une maladie grave et non évitable du système de la mastication ;
+- causés par une autre maladie grave, ou par ses suites ;
+- nécessaires pour soigner une maladie grave ;
+- la conséquence d'un accident, à condition qu'aucune autre assurance ne paie.
 
-Dans ces cas, une demande de prise en charge est en général adressée à la caisse avant le traitement. Vous payez ensuite votre franchise et votre quote-part, comme pour une consultation chez le médecin.
+Même dans ces cas, ce n'est pas automatique. La caisse demande en général à valider le traitement avant qu'il commence. Ensuite, vous payez votre franchise et votre quote-part, comme pour n'importe quelle consultation.
 
-> **Le saviez-vous ?** L'Office fédéral de la santé publique cite deux exemples de soins non couverts par l'assurance de base : les plombages habituels en cas de carie et les frais d'orthodontie, c'est-à-dire les appareils dentaires des enfants.
+> **Le saviez-vous ?** Sur sa page consacrée aux soins dentaires, l'Office fédéral de la santé publique donne lui-même deux exemples de ce qui n'est pas remboursé : les plombages habituels en cas de carie, et l'orthodontie, c'est-à-dire les appareils des enfants.
 
-Le quotidien reste donc à votre charge : contrôle annuel, détartrage, hygiène dentaire, caries, couronnes, implants et dents de sagesse, sauf cas exceptionnels.
+En pratique, tout ce qui fait le quotidien chez le dentiste reste à votre charge. Contrôle, hygiène, carie, couronne, implant, dent de sagesse (sauf situation médicale particulière).
 
-### Et en cas d'accident ?
+### Une dent cassée au ski, qui paie ?
 
-Une dent cassée au ski ou lors d'une chute est un accident. Si vous travaillez au moins 8 heures par semaine chez le même employeur, c'est son assurance-accidents (LAA) qui paie. Sinon, l'assurance de base prend le relais, avec franchise et quote-part. Annoncez toujours l'accident rapidement, avant le début des soins si possible.
+C'est un accident, donc la logique change. Si vous travaillez au moins 8 heures par semaine chez le même employeur, son assurance-accidents (LAA) prend en charge, sans franchise. Sinon, c'est votre caisse maladie, avec franchise et quote-part.
 
-### Et pour les enfants ?
+Un conseil tout simple : annoncez l'accident tout de suite, avant de commencer les soins si possible. Un dossier ouvert six mois plus tard, c'est souvent des questions en plus.
 
-Certaines malformations de naissance de la mâchoire ou des dents figurent dans la liste officielle des infirmités congénitales. Dans ce cas, l'assurance-invalidité (AI) prend en charge les mesures médicales jusqu'à 20 ans. Ensuite, l'assurance de base prend le relais. Ces cas restent rares : la grande majorité des appareils dentaires ne sont payés ni par l'AI, ni par la LAMal.
+### Et l'appareil dentaire des enfants ?
 
-## Qui paie quoi : le tableau récapitulatif
+Il existe une exception, mais elle est étroite. Certaines malformations de naissance de la mâchoire ou des dents figurent dans la liste officielle des infirmités congénitales. L'assurance-invalidité (AI) paie alors les mesures médicales jusqu'à 20 ans, puis l'assurance de base prend le relais.
+
+Pour la plupart des enfants, ce n'est pas le cas. Des dents qui se chevauchent ou une mâchoire un peu en retrait, c'est l'affaire des parents. Ou d'une complémentaire, si elle a été conclue à temps.
+
+## Qui rembourse quoi, en un coup d'œil
 
 | Soin | Assurance de base (LAMal) | Complémentaire dentaire |
 |---|---|---|
-| Contrôle annuel et détartrage | Non | Souvent, selon la formule |
-| Carie et plombage | Non | Oui, selon le taux et le plafond |
+| Contrôle et détartrage | Non | Souvent, selon la formule |
+| Carie, plombage | Non | Oui, selon le taux et le plafond |
 | Couronne, pont, implant | Non, sauf maladie grave | Oui, souvent après un délai d'attente |
 | Appareil dentaire de l'enfant | Non, sauf infirmité congénitale (AI) | Oui, si la formule le prévoit |
 | Dents de sagesse | Non, sauf maladie grave | Souvent |
 | Dent cassée lors d'un accident | Oui, si aucune autre assurance ne paie | Selon la formule |
-| Blanchiment et soins esthétiques | Non | En général non |
+| Blanchiment, soins esthétiques | Non | En général non |
 
-Ce tableau donne la logique générale. Chaque complémentaire a ses propres conditions : ce sont toujours les conditions générales du contrat qui font foi.
+C'est la logique générale. Chaque complémentaire a ses conditions, et ce sont elles qui comptent le jour où vous envoyez la facture.
 
-[[cta | Vos enfants n'ont pas encore de couverture dentaire ? Voyez en deux minutes ce qu'elle coûterait. | /particuliers/complementaire-maladie/?besoin=fam_dent | Estimer ma prime]]
+[[cta | Vos enfants n'ont pas encore de couverture dentaire ? Regardez ce que ça coûterait, ça prend deux minutes. | /particuliers/complementaire-maladie/?besoin=fam_dent | Estimer ma prime]]
 
-## Comment fonctionne une complémentaire dentaire
+## Une complémentaire dentaire, comment ça marche ?
 
-Une complémentaire dentaire est une assurance privée, régie par la loi sur le contrat d'assurance (LCA). Elle fonctionne avec trois réglages.
+C'est une assurance privée (LCA), donc l'assureur choisit qui il accepte. Pour un adulte, il demande souvent un certificat du dentiste qui atteste que vos dents sont en bon état. Il peut aussi exclure une dent déjà abîmée.
 
-1. **Le taux de remboursement.** L'assureur paie une partie de la facture, par exemple 50 % ou 75 %.
-2. **Le plafond annuel.** Le remboursement est limité à un montant par année civile. Selon la formule, il va de quelques centaines à plusieurs milliers de francs.
-3. **Le délai d'attente.** Certaines prestations ne sont remboursées qu'après quelques mois. Chez certains assureurs, il faut attendre 12 mois pour les couronnes, les ponts ou l'orthodontie.
+Ensuite, tout se joue sur trois réglages :
 
-Contrairement à l'assurance de base, l'assureur peut refuser une demande ou exclure certaines dents. Pour un adulte, il demande souvent un certificat d'un dentiste qui confirme que vos dents sont en bon état.
+1. **Le taux.** La part de la facture remboursée, par exemple 50 % ou 75 %.
+2. **Le plafond.** Le montant maximum remboursé par année civile. Selon la formule, quelques centaines de francs ou plusieurs milliers.
+3. **Le délai d'attente.** Certaines prestations ne sont remboursées qu'après quelques mois. Chez certains assureurs, il faut attendre 12 mois pour une couronne, un pont ou un appareil.
 
-> **Exemple** Marc, 45 ans, vit à Fribourg. Son dentiste lui annonce une couronne et deux caries pour une facture estimée à 2'400 francs. Avec une formule à 50 % plafonnée à 1'000 francs par an, il récupère 1'000 francs : la moitié de la facture (1'200 francs) dépasse le plafond. Avec une formule à 75 % plafonnée à 2'000 francs, il récupère 1'800 francs. Le plafond compte souvent autant que le taux.
+On regarde souvent le taux en premier. C'est une erreur fréquente : sur une grosse facture, c'est le plafond qui décide.
 
-Pour comparer deux formules, calculez toujours le remboursement sur une facture réaliste pour votre situation. Un taux élevé avec un petit plafond peut rembourser moins qu'un taux plus bas avec un grand plafond.
+> **Exemple** Marc, 45 ans, habite Fribourg. Son dentiste lui annonce une couronne et deux caries : environ 2'400 francs. Avec une formule à 50 % plafonnée à 1'000 francs, il récupère 1'000 francs, pas 1'200. Avec une formule à 75 % plafonnée à 2'000 francs, il récupère 1'800 francs. Même facture, 800 francs d'écart.
 
-### Le calcul en trois lignes
+Pour faire le calcul vous-même, trois lignes suffisent. Multipliez la facture par le taux. Si le résultat dépasse le plafond, gardez le plafond. La différence avec la facture, c'est ce qui reste pour vous.
 
-Une méthode simple pour comparer :
-
-- **Étape 1 :** facture × taux de remboursement = montant théorique.
-- **Étape 2 :** si ce montant dépasse le plafond, retenez le plafond.
-- **Étape 3 :** facture − remboursement = ce qui reste à votre charge.
-
-Appliqué à la facture de Marc :
-
-| Formule | Montant théorique | Remboursé | Reste à payer |
+| Formule | Calcul | Remboursé | Reste pour Marc |
 |---|---|---|---|
-| 50 %, plafond 1'000 francs | 1'200 francs | 1'000 francs | 1'400 francs |
-| 75 %, plafond 2'000 francs | 1'800 francs | 1'800 francs | 600 francs |
-| Sans complémentaire | 0 franc | 0 franc | 2'400 francs |
+| 50 %, plafond 1'000 francs | 2'400 × 50 % = 1'200 | 1'000 francs | 1'400 francs |
+| 75 %, plafond 2'000 francs | 2'400 × 75 % = 1'800 | 1'800 francs | 600 francs |
+| Sans complémentaire | — | 0 franc | 2'400 francs |
 
-Ces montants sont des exemples de calcul. Ils ne correspondent pas à une offre précise : les taux et plafonds réels varient d'un assureur et d'une formule à l'autre.
+Ces chiffres servent à illustrer le calcul. Ce n'est pas une offre : les taux et les plafonds réels varient selon l'assureur et la formule.
 
-## Les enfants : le bon moment, c'est tôt
+### Et les soins faits en France ?
 
-C'est le cas où une complémentaire dentaire fait le plus de différence. Selon les assureurs, un traitement orthodontique simple coûte **au moins 3'000 francs**. Un traitement complet dépasse souvent **10'000 francs** et dure deux à trois ans.
+La question revient souvent en Suisse romande, surtout près de la frontière. L'assurance de base ne paie pas plus le dentiste en France qu'en Suisse. Certaines complémentaires, en revanche, remboursent aussi des soins à l'étranger, mais à des conditions précises (dentiste au diplôme équivalent, remboursement limité au tarif suisse). Lisez cette clause avant de prendre rendez-vous à Annemasse ou à Pontarlier.
 
-Le problème : une fois que les dents de l'enfant sont mal placées, il est souvent trop tard. L'assureur peut refuser ou exclure ce traitement, car le besoin est déjà connu.
+## Pour un enfant, n'attendez pas
 
-> **Exemple** Léa, 36 ans, vit à Lausanne avec ses deux enfants. Sa fille Inès a 2 ans : elle l'assure maintenant, sans examen de santé. Son fils Noah a 8 ans et le dentiste scolaire a déjà noté un décalage de la mâchoire. Pour lui, l'assureur peut exclure l'orthodontie. Léa demande quand même une offre, mais prévoit un budget pour un éventuel appareil.
+C'est là qu'une complémentaire dentaire fait la plus grande différence. Selon les assureurs, un traitement orthodontique simple coûte au moins 3'000 francs. Un traitement complet dépasse souvent 10'000 francs et s'étale sur deux à trois ans.
 
-La règle pratique :
+Le piège, c'est le timing. Une fois que le dentiste scolaire a noté un problème de position des dents, l'assureur le sait aussi, puisqu'il pose la question. Il peut alors refuser l'enfant ou exclure l'orthodontie.
 
-- **Pendant la grossesse ou dès la naissance**, une demande permet souvent d'assurer l'enfant sans questionnaire de santé.
-- **Jusqu'à 3 ans**, plusieurs assureurs acceptent l'enfant sans examen de santé ni certificat du dentiste.
-- **Après**, l'assureur pose des questions et peut demander un contrôle dentaire.
+> **Exemple** Léa, 36 ans, vit à Lausanne avec ses deux enfants. Inès a 2 ans : Léa l'assure maintenant, sans examen de santé. Pour Noah, 8 ans, c'est plus compliqué. Le dentiste scolaire a déjà relevé un décalage de la mâchoire, et l'assureur risque d'exclure l'appareil. Léa demande quand même une offre, mais elle met de côté un budget au cas où.
 
-> **Attention** Une formule dentaire classique n'inclut pas toujours l'orthodontie. Si c'est votre besoin principal, vérifiez que les « anomalies de position des dents » sont bien mentionnées dans les conditions, ainsi que le plafond prévu pour ce traitement.
+Ce qu'il faut retenir pour les plus petits :
 
-## Les réflexes de fin d'année
+- avant la naissance ou juste après, l'enfant peut souvent être assuré sans questionnaire de santé ;
+- jusqu'à 3 ans, plusieurs assureurs l'acceptent sans examen ni certificat du dentiste ;
+- après, il y aura des questions, parfois un contrôle.
 
-Novembre et décembre sont un bon moment pour faire le point sur vos frais dentaires. Trois raisons à cela.
+> **Attention** Une formule « dentaire » n'inclut pas forcément l'orthodontie. Si c'est ce qui vous inquiète, cherchez dans les conditions les mots « anomalies de position des dents » et vérifiez le plafond prévu pour ce traitement.
 
-**1. Le plafond se remet à zéro au 1er janvier.** La plupart des complémentaires dentaires fixent leur plafond par année civile. Si vous ne l'avez pas utilisé, le solde est perdu au 31 décembre. Un détartrage ou un contrôle prévu en janvier peut parfois être avancé.
+## Avant le 31 décembre : trois choses à vérifier
 
-**2. Un gros traitement peut être étalé.** Pour un traitement en plusieurs étapes, demandez à votre dentiste s'il peut répartir les séances sur deux années. Vous profitez alors de deux plafonds annuels au lieu d'un. Votre dentiste reste le seul juge de ce qui est possible sur le plan médical.
+Novembre est un bon moment pour sortir le classeur des factures. Il y a trois raisons à ça, et deux d'entre elles ont une date limite.
 
-**3. Les frais restants peuvent réduire vos impôts.** Les frais dentaires que vous payez vous-même font partie des frais de maladie déductibles. Pour l'impôt fédéral direct, la part qui dépasse 5 % de votre revenu net est déductible. Les cantons ont leurs propres règles : en Valais, par exemple, le seuil cantonal est de 2 %. Le blanchiment des dents n'est pas déductible.
+**Le plafond repart à zéro au 1er janvier.** La plupart des complémentaires dentaires fonctionnent par année civile. Ce qui n'est pas utilisé avant le 31 décembre est perdu. Si votre détartrage est prévu en janvier, demandez au cabinet s'il peut l'avancer.
 
-> **Astuce** Gardez toutes vos factures de dentiste et les décomptes de remboursement de votre assureur dans un même dossier. Au moment de remplir votre déclaration, vous saurez exactement ce qui est resté à votre charge.
+**Un gros traitement peut parfois être étalé.** Pour un traitement en plusieurs séances, parlez-en à votre dentiste. S'il peut répartir les étapes sur deux années, vous profitez de deux plafonds au lieu d'un. Bien sûr, c'est lui qui décide ce qui est raisonnable sur le plan médical.
 
-Pensez à garder vos factures de dentiste : une partie des frais de santé peut se déduire dans votre déclaration d'impôts.
+**Ce qui reste à votre charge peut se déduire.** Les frais dentaires que vous payez vous-même comptent comme frais de maladie dans la déclaration d'impôts. Pour l'impôt fédéral direct, la part qui dépasse 5 % de votre revenu net est déductible. Les cantons ont leurs propres seuils : en Valais, par exemple, c'est 2 % pour l'impôt cantonal. Le blanchiment, lui, ne passe pas.
 
-[[cta | Un conseiller vous aide à choisir la formule dentaire adaptée à votre famille. | /particuliers/complementaire-maladie/?besoin=fam_dent | Être conseillé gratuitement]]
+> **Astuce** Glissez chaque facture de dentiste et chaque décompte de l'assureur dans la même enveloppe, ou le même dossier sur votre téléphone. En mars, vous saurez en cinq minutes ce qui est resté à votre charge.
 
-## Votre check-list avant de souscrire
+[[cta | Vous hésitez entre deux formules ? Un conseiller fait le calcul avec vous, sur vos vraies factures. | /particuliers/complementaire-maladie/?besoin=fam_dent | Être conseillé gratuitement]]
 
-Avant de signer, posez-vous ces questions :
+## Les questions à poser avant de signer
 
-- **Qui assurer ?** Les enfants en priorité, surtout avant 3 ans.
-- **Quel taux et quel plafond ?** Calculez le remboursement sur une facture réaliste.
-- **L'orthodontie est-elle incluse ?** Avec quel plafond ?
-- **Quels délais d'attente ?** Notamment pour les couronnes et les appareils.
-- **Faut-il un certificat du dentiste ?** Prévoyez un contrôle avant la demande.
-- **Les contrôles et l'hygiène sont-ils remboursés ?** C'est la dépense la plus régulière.
-- **Avez-vous déjà une couverture dentaire** dans une autre complémentaire ? Évitez les doublons.
+Avant de choisir, prenez cinq minutes pour répondre à ces questions. Elles évitent la plupart des mauvaises surprises.
 
-Une complémentaire dentaire peut s'ajouter à vos autres complémentaires, ou se conclure seule. Si vous avez déjà une [complémentaire ambulatoire](/particuliers/complementaire-ambulatoire/), vérifiez si elle prévoit une participation à l'orthodontie des enfants avant d'ajouter un contrat.
+- Qui faut-il assurer en priorité ? En général, les enfants, surtout avant 3 ans.
+- Quel taux, et surtout quel plafond ? Faites le calcul sur une facture réaliste.
+- L'orthodontie est-elle comprise, et jusqu'à combien ?
+- Quels délais d'attente pour les couronnes et les appareils ?
+- Faut-il un certificat du dentiste ? Si oui, prévoyez le contrôle avant la demande.
+- Les contrôles et l'hygiène sont-ils remboursés ? C'est la dépense qui revient chaque année.
+- Avez-vous déjà une part de dentaire dans une autre complémentaire ?
 
-> **Conseil** Ne résiliez jamais une couverture existante avant d'avoir reçu l'acceptation écrite du nouvel assureur. Une complémentaire n'est pas obligée de vous accepter.
+Ce dernier point est souvent oublié. Si vous avez déjà une [complémentaire ambulatoire](/particuliers/complementaire-ambulatoire/), regardez si elle participe à l'orthodontie des enfants avant d'ajouter un contrat.
+
+> **Conseil** Ne résiliez jamais une couverture avant d'avoir l'acceptation écrite du nouvel assureur. En complémentaire, personne n'est obligé de vous accepter.
 
 ## Questions fréquentes
 
 ### La caisse maladie rembourse-t-elle le dentiste ?
 
-En principe non. L'assurance de base ne paie les soins dentaires que s'ils sont causés par une maladie grave, s'ils sont nécessaires pour la traiter, ou s'ils suivent un accident qu'aucune autre assurance ne couvre. Les contrôles, le détartrage et les caries restent à votre charge sans complémentaire dentaire.
+En principe non. L'assurance de base ne paie les soins dentaires que s'ils sont causés par une maladie grave, s'ils sont nécessaires pour la soigner, ou s'ils suivent un accident qu'aucune autre assurance ne couvre. Contrôles, détartrage et caries restent à votre charge sans complémentaire dentaire.
 
 ### À quel âge assurer son enfant pour les dents ?
 
-Le plus tôt possible. Plusieurs assureurs acceptent un enfant sans examen de santé jusqu'à 3 ans. Plus tard, si un défaut de position des dents est déjà connu, l'assureur peut refuser ou exclure l'orthodontie.
+Le plus tôt possible. Plusieurs assureurs acceptent un enfant sans examen de santé jusqu'à 3 ans. Plus tard, si un problème de position des dents est déjà connu, l'assureur peut refuser ou exclure l'orthodontie.
 
 ### Les frais de dentiste sont-ils déductibles des impôts ?
 
-Oui, les frais de traitement dentaire que vous payez vous-même font partie des frais de maladie. Pour l'impôt fédéral direct, seule la part qui dépasse 5 % du revenu net est déductible. Les seuils cantonaux peuvent être différents. Le blanchiment, lui, n'est pas déductible.
+Oui, les frais dentaires que vous payez vous-même font partie des frais de maladie. Pour l'impôt fédéral direct, seule la part qui dépasse 5 % du revenu net est déductible. Les seuils cantonaux peuvent être différents. Le blanchiment n'est pas déductible.

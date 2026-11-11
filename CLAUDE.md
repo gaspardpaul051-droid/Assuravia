@@ -116,5 +116,14 @@ Règles éditoriales :
 - Image de partage : après `python3 build.py`, lancer `python3 outils/images_partage.py` (crée `static/og/<slug>.png` pour les nouveaux articles), puis relancer `python3 build.py`.
 - Lancer `python3 build.py` et vérifier qu'il n'y a pas d'erreur avant de pousser.
 - Mettre `brouillon: oui` dans l'en-tête pour préparer un article sans le publier.
+
+Écrire comme un humain (demande du propriétaire : le texte doit sembler écrit par une personne, pas par une IA) :
+- Avant d'écrire, lire 3 à 5 pages qui se classent sur le sujet (concurrents, assureurs, comparateurs, médias, forums) pour repérer les vraies questions des lecteurs et ce qui manque. S'en inspirer pour les angles, jamais pour les phrases : tout est réécrit, aucune tournure reprise.
+- Ton de conversation, comme un conseiller qui explique à un client : vouvoiement, phrases courtes et longues mélangées, quelques questions, une remarque franche (« C'est une erreur fréquente »), du concret local (dentiste scolaire, frontière française, courrier de la caisse en octobre, CFF, Migros…).
+- Intertitres naturels, souvent sous forme de question que les gens tapent dans Google (« La LAMal paie-t-elle le dentiste ? »), pas « Ce qu'il faut savoir sur… ».
+- Éviter les tics d'IA : « Voici… », « Dans cet article », « Il est important de noter », « En résumé », « Bonne nouvelle / mauvaise nouvelle », « Trois raisons à cela », « La règle d'or », « Que vous soyez… ou… », « crucial », « essentiel », « n'hésitez pas », « plongeons », listes de trois adjectifs, gras dans chaque phrase, deux-points dans tous les titres, chaque section bâtie sur le même moule (liste + encadré).
+- Varier la structure d'une section à l'autre : une section en texte suivi, une autre avec un tableau, une autre avec une liste. Peu de gras, seulement sur ce qui compte vraiment.
+- Les personnages ont une vie (ville, métier, situation de famille) et un problème réel, avec un dénouement nuancé (tout ne se règle pas forcément). Pas de témoignage ni de citation inventés présentés comme vrais.
+- Relire à voix haute : toute phrase qu'un conseiller ne dirait pas à un client est réécrite.
 - Une section `## Questions fréquentes` suivie de `### Question` et d'un paragraphe de réponse
   devient automatiquement une FAQ dépliable avec données structurées pour Google.
