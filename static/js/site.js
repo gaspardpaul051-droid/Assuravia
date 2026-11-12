@@ -1066,8 +1066,12 @@
       });
     };
     // Préremplissage depuis l'adresse (ex. simulateur de la page Privé) : ?nom=valeur
+    // Anciens noms de secteurs encore utilisés dans des liens d'annonces Google Ads
+    var ANCIENS_SECTEURS = { "Conseil et fiduciaire": "Conseil et finance", "Santé et thérapies": "Santé",
+      "Commerce et vente": "Commerce", "Services aux personnes": "Services", "Construction et artisanat": "Construction" };
     new URLSearchParams(location.search).forEach(function (v, k) {
       if (k === "logement") return;
+      if (k === "secteur" && ANCIENS_SECTEURS[v]) v = ANCIENS_SECTEURS[v];
       formF.querySelectorAll('[name="' + k.replace(/"/g, "") + '"]').forEach(function (el) {
         if (el.type === "radio" || el.type === "checkbox") { if (el.value === v) el.checked = true; }
         else if ((el.type !== "hidden" || el.hasAttribute("data-depuis-url")) && !el.value) el.value = v;
