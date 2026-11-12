@@ -1,11 +1,6 @@
 {# Écrans de la simulation RC pro, partagés par la simulation et la page publicitaire lp/rc-pro. Inclus avec `e` (etapes) et `sim` dans le contexte. #}
-{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", [
-  {"valeur": "Santé et thérapies", "icone": "croix", "detail": "Cabinet, physiothérapie, soins, thérapeutes.", "attrs": 'data-facteur="2"'},
-  {"valeur": "Construction et artisanat", "icone": "batiment", "detail": "Gros œuvre, second œuvre, installations, menuiserie.", "attrs": 'data-facteur="2"'},
-  {"valeur": "Conseil et fiduciaire", "icone": "balance", "detail": "Fiduciaire, gestion, architecture, ingénierie, conseil.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Informatique et digital", "icone": "cyber", "detail": "Développement, agence web, conseil informatique.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Commerce et vente", "icone": "colis", "detail": "Magasin, vente en ligne, import et distribution.", "attrs": 'data-facteur="1.1"'},
-  {"valeur": "Services aux personnes", "icone": "groupe", "detail": "Coiffure, beauté, nettoyage, enseignement, événementiel.", "attrs": 'data-facteur="1.1"'}], colonnes=3, premier=True) }}
+{% set _cartes = [] %}{% for nom, icone, facteur in secteurs %}{% set _ = _cartes.append({"valeur": nom, "icone": icone, "attrs": 'data-facteur="' ~ facteur ~ '"'}) %}{% endfor %}
+{{ e.cartes("secteur", "Quel est votre domaine d'activité ?", _cartes, colonnes=3, premier=True) }}
 
 {{ e.cartes("statut_juridique", "Quelle est la forme juridique de votre entreprise ?", [
   {"valeur": "Raison individuelle", "icone": "utilisateur", "detail": "Vous exercez en votre nom, en indépendant."},

@@ -63,6 +63,15 @@ GROUPES = {
     },
 }
 
+# Domaines d'activité Pro, les mêmes partout (RC pro, demandes LAA, perte de gain, PJ entreprise, cyber) :
+# (nom, icône, coefficient de prime RC pro). « Autre activité » couvre tout le reste.
+SECTEURS = [
+    ("Santé", "croix", 2), ("Construction", "batiment", 2), ("Artisanat", "mallette", 2),
+    ("Commerce", "colis", 1.1), ("Restauration et hôtellerie", "cle", 1.1), ("Conseil et finance", "balance", 1.1),
+    ("Informatique et digital", "cyber", 1.1), ("Immobilier", "maison", 1.1), ("Transport et logistique", "camion", 1.1),
+    ("Industrie", "engrenage", 1.1), ("Services", "groupe", 1.1), ("Autre activité", "bulle", 1.1),
+]
+
 CHAMPS_PRODUIT = ("slug", "groupe", "nom", "categorie", "icone", "ordre", "desc", "points", "badge", "bouton")
 
 
@@ -350,6 +359,8 @@ def main() -> None:
         ads_secondaires={k: v for k, v in ADS_SECONDAIRES.items() if v},
         gsc_verif=GSC_VERIF,
         cantons=CANTONS,
+        secteurs=SECTEURS,
+        secteurs_noms=[x[0] for x in SECTEURS],
         groupes=GROUPES,
         produits=produits,
         par_slug=par_slug,

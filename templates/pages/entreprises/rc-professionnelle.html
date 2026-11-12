@@ -17,14 +17,7 @@
   ("prix", "Ce qui fait varier le prix"), ("erreurs", "Les erreurs à éviter"), ("conseiller", "Ce que vérifie le conseiller"),
   ("pour-qui", "Est-ce pour vous ?"), ("quiz-titre", "Vrai ou faux"), ("questions-frequentes", "Questions fréquentes")
 ] %}
-{% set secteurs = [
-  ("Santé et thérapies", "croix", "Cabinet, physio, thérapeutes"),
-  ("Construction et artisanat", "batiment", "Gros et second œuvre, installations"),
-  ("Conseil et fiduciaire", "balance", "Fiduciaire, architecture, conseil"),
-  ("Informatique et digital", "cyber", "Développement, agence web"),
-  ("Commerce et vente", "colis", "Magasin, vente en ligne"),
-  ("Services aux personnes", "groupe", "Beauté, nettoyage, enseignement")
-] %}
+
 {% block theme %}pro{% endblock %}
 {% block title %}RC pro en Suisse : estimez votre prime en 2 min | Assuravia{% endblock %}
 {% block description %}RC professionnelle pour indépendants et PME de Suisse romande : ce qu'elle couvre, la somme à choisir, les pièges à éviter. Estimation gratuite en 2 minutes.{% endblock %}
@@ -52,12 +45,12 @@
       <h2 class="form-titre">Quelle est votre activité ?</h2>
       <p class="form-sous-titre">Touchez votre domaine : l'estimation démarre directement. Gratuit et sans engagement.</p>
       <div class="rcp-depart__choix">
-        {% for nom, icone, detail in secteurs %}
-        <a class="rcp-depart__carte" href="{{ sim_url }}?secteur={{ nom|urlencode }}&amp;passer=secteur"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong><small>{{ detail }}</small></span></a>
+        {% for nom, icone, facteur in secteurs %}
+        <a class="rcp-depart__carte" href="{{ sim_url }}?secteur={{ nom|urlencode }}&amp;passer=secteur"><span class="rcp-depart__icone">{{ i.icone(icone) }}</span><span><strong>{{ nom }}</strong></span></a>
         {% endfor %}
       </div>
       <a class="bouton bouton--action rcp-depart__go" href="{{ sim_url }}">Estimer ma prime RC pro</a>
-      {{ rr.bouton("rc-pro", choix=(secteurs|map(attribute=0)|list + ["Autre activité"])|join("|"), question="Votre domaine d'activité") }}
+      {{ rr.bouton("rc-pro", choix=secteurs_noms|join("|"), question="Votre domaine d'activité") }}
       <ul class="lp-depart__rassure">
         <li>{{ i.icone("horloge", "icone icone--petite") }} 2 minutes</li>
         <li>{{ i.icone("valide", "icone icone--petite") }} Sans engagement</li>
@@ -119,11 +112,10 @@
       <h2 id="metiers">Qui a besoin d'une RC pro ?</h2>
       <p>Toute entreprise dont l'activité peut causer un dommage à un client ou à un tiers. Choisissez votre domaine pour démarrer l'estimation :</p>
       <div class="rcp-metiers">
-        {% for nom, icone, detail in secteurs %}
+        {% for nom, icone, facteur in secteurs %}
         <a class="rcp-metier" href="{{ sim_url }}?secteur={{ nom|urlencode }}&amp;passer=secteur">
           <span class="lp-avantage__icone">{{ i.icone(icone) }}</span>
           <strong>{{ nom }}</strong>
-          <small>{{ detail }}</small>
           <span class="rcp-metier__lien">Estimer ma prime {{ i.icone("fleche", "icone icone--petite") }}</span>
         </a>
         {% endfor %}
