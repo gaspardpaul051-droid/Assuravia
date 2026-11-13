@@ -5,25 +5,11 @@
   "note": "Estimation indicative. La prime réelle dépend de l'assureur, de votre état de santé et des conditions du contrat."} %}
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
+{% import "partials/etapes-sante.html" as s with context %}
 {% block etapes %}
+{{ s.couvertures(["fam_amb"]) }}
 {{ e.profil_sante() }}
-{{ e.ouvrir("besoins", "De quoi avez-vous besoin ?", "Cochez tout ce qui vous concerne : vous ne payez que ce qui vous est utile.") }}
-  {{ e.lca_cartes("besoins_amb", ["amb_douces", "amb_lunettes", "amb_medicaments", "amb_prevention", "amb_etranger", "amb_ortho"], type="checkbox", requis=False, groupe="besoins_amb") }}
-  {{ e.continuer() }}
-</fieldset>
-{{ e.ouvrir("niveau", "Quel niveau de couverture ?") }}
-  {{ e.niveau_amb() }}
-  <div class="consentement fe__option">
-    <input id="pj-amb" name="options" type="checkbox" value="Protection juridique santé" data-lca="pj_sante">
-    <label for="pj-amb">Ajouter une protection juridique santé (litige avec un hôpital, un médecin ou un assureur).</label>
-  </div>
-  {{ e.continuer() }}
-</fieldset>
-{{ e.ouvrir("hospitalisation", "Souhaitez-vous aussi une couverture d'hospitalisation ?", "Choisissez la chambre que vous souhaitez à l'hôpital. Elle s'ajoute à votre estimation.") }}
-  {{ e.lca_cartes("division", ["hop_commune", "hop_flex", "hop_demi", "hop_privee"], aucun="Non merci") }}
-  {{ e.continuer() }}
-</fieldset>
 {{ e.npa("Quelle est votre adresse ?") }}
 {{ e.coordonnees(nom_prenom=True, naissance=False) }}
-{{ e.resultat_lca("besoins") }}
+{{ e.resultat_lca("familles") }}
 {% endblock %}

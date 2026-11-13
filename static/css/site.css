@@ -2216,3 +2216,34 @@ html.cookies-ouvert { overflow: hidden; }
 .resultat-actions__final { width: 100%; font-size: 1.05rem; min-height: 54px; }
 .resultat-actions__note { margin: 6px 0 0; color: var(--texte-doux); font-size: .92rem; text-align: center; }
 .lien-modifier { align-self: flex-start; background: none; border: 0; padding: 4px 0; color: var(--bleu); text-decoration: underline; font: inherit; font-size: .92rem; cursor: pointer; }
+
+/* Simulations santé : moins de défilement sur mobile (question visible dès l'arrivée, cartes plus courtes) */
+.choix-cartes--duo { grid-template-columns: 1fr 1fr; margin-bottom: var(--e-4); }
+@media (max-width: 720px) {
+  .funnel-page--compact { padding-top: var(--e-3); }
+  .funnel-page--compact .fil, .funnel-page--compact .etiquette, .funnel-page--compact .funnel-page__chapeau { display: none; }
+  .funnel-page--compact .funnel-page__titre { margin-top: 0; font-size: 1.45rem; }
+  .funnel-page--compact .funnel { margin-top: var(--e-3); }
+}
+@media (max-width: 520px) {
+  .formules--lca .formule { padding: var(--e-3) var(--e-4); gap: 4px; }
+  .formules--lca .formule__icone { display: none; }
+  .formules--lca .formule__nom { font-size: var(--t-m); }
+  .formules--lca .formule ul li:nth-child(n+2) { display: none; }
+}
+
+/* Simulations santé : barre « Vos couvertures » de l'écran composer (ajout ou retrait d'une couverture) */
+.ajout-couv { margin: var(--e-4) 0; padding: var(--e-3) var(--e-4); border: 1.5px dashed var(--bordure); border-radius: var(--r-l); background: var(--surface); }
+.ajout-couv__titre { margin: 0 0 var(--e-2); font-weight: 700; color: var(--marine); }
+.ajout-couv__titre span { display: block; font-weight: 400; font-size: var(--t-xs); color: var(--texte-doux); }
+.ajout-couv__liste { display: flex; flex-wrap: wrap; gap: 8px; }
+.ajout-couv__puce { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1.5px solid var(--bordure); border-radius: var(--r-plein); background: #fff; font-size: var(--t-s); font-weight: 600; color: var(--texte); cursor: pointer; transition: border-color .2s, background .2s; }
+.ajout-couv__puce input { position: absolute; opacity: 0; pointer-events: none; }
+.ajout-couv__puce .choix-carte__icone { width: 28px; height: 28px; }
+.ajout-couv__puce .choix-carte__icone .icone { width: 16px; height: 16px; }
+.ajout-couv__puce span:last-child::before { content: "+ "; color: var(--bleu); }
+.ajout-couv__puce:has(input:checked) { border-color: var(--bleu); background: var(--bleu-pale); color: var(--bleu); }
+.ajout-couv__puce:has(input:checked) .choix-carte__icone { background: var(--bleu); color: #fff; }
+.ajout-couv__puce:has(input:checked) span:last-child::before { content: "✓ "; }
+.ajout-couv__puce:has(input:focus-visible) { outline: 3px solid rgba(21,101,168,.35); outline-offset: 2px; }
+.lca-bloc { scroll-margin-top: 96px; }

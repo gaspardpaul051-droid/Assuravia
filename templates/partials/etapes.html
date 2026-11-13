@@ -260,7 +260,12 @@
 {%- endmacro %}
 
 {% macro profil_sante() -%}
-{{ ouvrir("profil", "Quelques informations sur la personne à assurer", "La prime d'une complémentaire dépend surtout de l'âge, puis du sexe et du lieu de domicile.") }}
+{# Après le choix des couvertures (on commence par une question simple), avant l'adresse #}
+{{ ouvrir("profil", "Pour calculer votre prime", "Trois réponses suffisent : la prime d'une complémentaire dépend de l'âge, du sexe et du canton.") }}
+  <div class="choix-cartes choix-cartes--duo">
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Femme" required><span>Femme</span></label>
+    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Homme" required><span>Homme</span></label>
+  </div>
   <div class="grille-champs">
     <div class="champ"><label for="annee-{{ sim.id }}">Année de naissance</label><input id="annee-{{ sim.id }}" name="annee_naissance" type="number" inputmode="numeric" min="{{ annee - 100 }}" max="{{ annee }}" required placeholder="Ex. 1988"></div>
     <div class="champ"><label for="canton-{{ sim.id }}">Canton de domicile</label>
@@ -269,10 +274,6 @@
         {% for c, nom in [("VD","Vaud"),("GE","Genève"),("FR","Fribourg"),("NE","Neuchâtel"),("VS","Valais"),("JU","Jura"),("BE","Berne"),("autre","Autre canton")] %}<option value="{{ c }}">{{ nom }}</option>{% endfor %}
       </select>
     </div>
-  </div>
-  <div class="choix-cartes">
-    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Femme" required><span>Femme</span></label>
-    <label class="choix-carte choix-carte--compact"><input type="radio" name="sexe" value="Homme" required><span>Homme</span></label>
   </div>
   {{ continuer() }}
 </fieldset>

@@ -16,8 +16,8 @@ entree: sante
 chiffres: 2 min ; pour estimer votre prime ; horloge | 6 ; besoins à cocher, sans payer le reste ; coeur | 2 ; niveaux : Standard ou Étendu ; bouclier | 0 ; engagement, conseil gratuit ; valide
 simulateur: /particuliers/simulation-ambulatoire/
 simulateur_titre: Qu'est-ce qui compte pour vous ?
-prestations: besoins_amb=Médecines complémentaires ; Médecines douces ; coeur | besoins_amb=Lunettes et lentilles ; Lunettes et lentilles ; valide | besoins_amb=Médicaments hors liste ; Médicaments hors liste ; croix | besoins_amb=Prévention et bien-être ; Prévention ; bouclier | besoins_amb=Étranger et sauvetage ; Voyage ; avion | besoins_amb=Orthodontie des enfants ; Orthodontie enfants ; groupe
-prestations_passer: besoins_amb
+prestations: fam_amb=oui&besoins_amb=Médecines complémentaires ; Médecines douces ; coeur | fam_amb=oui&besoins_amb=Lunettes et lentilles ; Lunettes et lentilles ; valide | fam_amb=oui&besoins_amb=Médicaments hors liste ; Médicaments hors liste ; croix | fam_amb=oui&besoins_amb=Prévention et bien-être ; Prévention ; bouclier | fam_voy=oui ; Voyage ; avion | fam_amb=oui&besoins_amb=Orthodontie des enfants ; Orthodontie enfants ; groupe
+prestations_passer: fam_amb,fam_voy
 prestations_multi: besoins_amb
 simulateur_texte: Choisissez la formule qui vous ressemble et découvrez une estimation de prime avec les prestations possibles.
 simulateur_bouton: Voir ma prime

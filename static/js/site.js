@@ -1072,11 +1072,49 @@
     new URLSearchParams(location.search).forEach(function (v, k) {
       if (k === "logement") return;
       if (k === "secteur" && ANCIENS_SECTEURS[v]) v = ANCIENS_SECTEURS[v];
+      // Ancien lien d'annonce santé : « Étranger et sauvetage » est désormais la couverture Voyage
+      if (k === "besoins_amb" && v === "Étranger et sauvetage") { k = "fam_voy"; v = "oui"; }
       formF.querySelectorAll('[name="' + k.replace(/"/g, "") + '"]').forEach(function (el) {
         if (el.type === "radio" || el.type === "checkbox") { if (el.value === v) el.checked = true; }
         else if ((el.type !== "hidden" || el.hasAttribute("data-depuis-url")) && !el.value) el.value = v;
       });
     });
+    // Simulations santé : à l'écran « composer », barre pour ajouter ou retirer des couvertures,
+    // synchronisée avec les cases de l'écran « familles » (utile quand le client n'a choisi qu'une chose au départ)
+    var famF = formF.querySelector('[data-fe="familles"]'), compF = formF.querySelector('[data-fe="composer"]');
+    if (famF && compF) {
+      var barre = document.createElement("div");
+      barre.className = "ajout-couv";
+      barre.innerHTML = '<p class="ajout-couv__titre">Ajouter d\'autres couvertures ? <span>Touchez pour en ajouter ou en retirer : votre prime en tient compte.</span></p><div class="ajout-couv__liste"></div>';
+      var liste = barre.querySelector(".ajout-couv__liste");
+      var origines = famF.querySelectorAll('input[type="checkbox"]');
+      origines.forEach(function (o) {
+        var carte = o.closest("label");
+        var puce = document.createElement("label");
+        puce.className = "ajout-couv__puce";
+        var c = document.createElement("input");
+        c.type = "checkbox"; c.checked = o.checked;
+        puce.appendChild(c);
+        var t = document.createElement("span");
+        t.textContent = o.getAttribute("data-court") || (carte.querySelector(".choix-carte__titre") || carte).textContent.trim();
+        puce.appendChild(t);
+        liste.appendChild(puce);
+        c.addEventListener("change", function () {
+          var reste = [].some.call(origines, function (x) { return x !== o && x.checked; });
+          if (!c.checked && !reste) { c.checked = true; return; } // au moins une couverture
+          o.checked = c.checked;
+          o.dispatchEvent(new Event("change", { bubbles: true }));
+          if (c.checked) {
+            var bloc = compF.querySelector('[data-montre-si="' + o.name + '=oui"]');
+            if (bloc) setTimeout(function () { bloc.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50);
+          }
+        });
+        o.addEventListener("change", function () { c.checked = o.checked; });
+      });
+      // En bas de l'écran, juste avant « Continuer »
+      var suivant = compF.querySelector("[data-fe-suivant]");
+      if (suivant) suivant.parentNode.insertBefore(barre, suivant); else compF.appendChild(barre);
+    }
     formF.addEventListener("change", majConditions);
     majConditions();
     // Compteurs + / −

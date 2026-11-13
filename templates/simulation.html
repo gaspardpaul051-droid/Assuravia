@@ -13,7 +13,7 @@
 {% endblock %}
 {% block content %}
 {% set g = groupes[sim.groupe] %}
-<section class="funnel-page funnel-page--{{ sim.theme }}">
+<section class="funnel-page funnel-page--{{ sim.theme }}{% if sim.lca %} funnel-page--compact{% endif %}">
   <div class="cadre cadre--etroit">
     <nav class="fil" aria-label="Fil d'Ariane"><a href="/">Accueil</a> <span aria-hidden="true">/</span> <a href="{{ g.url }}">{{ g.nom }}</a> <span aria-hidden="true">/</span> <a href="{{ sim.page }}">{{ sim.produit_nom }}</a></nav>
     <p class="etiquette etiquette--{{ sim.theme }}">{{ i.icone(sim.icone, "icone icone--petite") }} {% if sim.etiquette %}{{ sim.etiquette }}{% else %}Simulation {{ sim.produit_nom|lower if sim.theme == "prive" else sim.produit_nom }}{% endif %}</p>

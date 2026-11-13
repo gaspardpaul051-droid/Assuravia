@@ -11,7 +11,6 @@
 {% import "partials/icones.html" as i %}
 {% block title %}{{ sim.titre }} | Assuravia{% endblock %}
 {% block etapes %}
-{{ e.profil_sante() }}
 {{ e.ouvrir("familles", "Que souhaitez-vous ajouter à votre assurance de base ?", "Cochez tout ce qui vous intéresse. Vous choisirez ensuite la formule de chaque module.") }}
   <div class="choix-cartes choix-cartes--3">
     {% for nom, titre, detail, icone in [
@@ -21,7 +20,7 @@
       ("fam_dent", "Dentaire", "Contrôles, soins, orthodontie", "valide"),
       ("fam_voyage", "Voyage", "Urgences dans le monde entier", "avion"),
       ("fam_capital", "Capital hospitalisation", "Un montant versé à vous", "tirelire")] %}
-    <label class="choix-carte"><input type="checkbox" name="{{ nom }}" value="oui" data-groupe-requis="familles"><span class="choix-carte__icone">{{ i.icone(icone) }}</span><span class="choix-carte__titre">{{ titre }}</span><span class="choix-carte__detail">{{ detail }}</span></label>
+    <label class="choix-carte"><input type="checkbox" name="{{ nom }}" value="oui" data-groupe-requis="familles" data-court="{{ titre }}"><span class="choix-carte__icone">{{ i.icone(icone) }}</span><span class="choix-carte__titre">{{ titre }}</span><span class="choix-carte__detail">{{ detail }}</span></label>
     {% endfor %}
   </div>
   {{ e.continuer() }}
@@ -52,6 +51,7 @@
   </div>
   {{ e.continuer() }}
 </fieldset>
+{{ e.profil_sante() }}
 {{ e.npa("Quelle est votre adresse ?") }}
 {{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat_lca("familles") }}
