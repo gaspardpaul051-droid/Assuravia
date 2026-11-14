@@ -80,7 +80,7 @@ Ces rendements sont des hypothèses, pas des promesses : un placement en fonds p
 - **Selon les frais.** Comparez les frais de gestion et les frais des fonds proposés, surtout pour un placement en fonds.
 - **Selon vos projets.** Achat d'un logement, départ à l'étranger, indépendance : chaque projet a ses propres règles de retrait.
 
-Si vous souhaitez aussi placer une épargne libre en parallèle, nos spécialistes en [placements](/particuliers/placements/) peuvent vous accompagner.
+Si vous souhaitez aussi placer une épargne libre en parallèle, un conseiller peut vous présenter les solutions possibles, par exemple un [3e pilier](/particuliers/3e-pilier/).
 
 ## Retrait de l'avoir
 
