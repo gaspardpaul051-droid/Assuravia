@@ -317,10 +317,37 @@ def ecrire(url: str, contenu: str) -> None:
     out.write_text(contenu, encoding="utf-8")
 
 
+def minifier_css(texte: str) -> str:
+    """Allège le CSS publié (commentaires et espaces) ; les fichiers de static/ restent lisibles."""
+    texte = re.sub(r"/\*.*?\*/", "", texte, flags=re.S)
+    texte = re.sub(r"\s+", " ", texte)
+    texte = re.sub(r"\s*([{};,>])\s*", r"\1", texte)
+    return texte.replace(";}", "}").strip()
+
+
+def minifier_js(texte: str) -> str:
+    """Allège le JS publié : lignes de commentaire, indentation et lignes vides (sans toucher au code)."""
+    lignes = []
+    for ligne in texte.splitlines():
+        l = ligne.strip()
+        if not l or l.startswith("//"):
+            continue
+        lignes.append(l)
+    return "\n".join(lignes) + "\n"
+
+
+def alleger_fichiers() -> None:
+    for f in (DIST / "css").glob("*.css"):
+        f.write_text(minifier_css(f.read_text(encoding="utf-8")), encoding="utf-8")
+    for f in (DIST / "js").glob("*.js"):
+        f.write_text(minifier_js(f.read_text(encoding="utf-8")), encoding="utf-8")
+
+
 def main() -> None:
     if DIST.exists():
         shutil.rmtree(DIST)
     shutil.copytree(ROOT / "static", DIST)
+    alleger_fichiers()
 
     env = Environment(
         loader=FileSystemLoader(ROOT / "templates"),
