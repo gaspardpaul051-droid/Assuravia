@@ -20,6 +20,7 @@
     <h1 class="funnel-page__titre">{{ sim.h1 }}</h1>
     {% if sim.chapeau %}<p class="chapeau funnel-page__chapeau">{{ sim.chapeau }}</p>{% endif %}
 
+    {% block avant_funnel %}{% endblock %}
     <div class="funnel funnel--{{ sim.theme }}" data-funnel{% for k, v in (sim.attrs or {}).items() %} data-{{ k }}="{{ v }}"{% endfor %}>
       <div class="funnel__haut">
         <button type="button" class="funnel__retour" data-funnel-retour hidden>{{ i.icone("fleche", "icone icone--petite carrousel__retour") }} Retour</button>

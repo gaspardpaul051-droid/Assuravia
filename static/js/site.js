@@ -1079,6 +1079,14 @@
         else if ((el.type !== "hidden" || el.hasAttribute("data-depuis-url")) && !el.value) el.value = v;
       });
     });
+    // Page « Faire une demande » : ?produit=<slug> coche le produit et choisit Privé ou Professionnel
+    var prodUrl = params.get("produit"), caseProd = prodUrl && formF.querySelector('input[data-slug="' + CSS.escape(prodUrl) + '"]');
+    if (caseProd) {
+      caseProd.checked = true;
+      var blocU = caseProd.closest("[data-montre-si]"), u = blocU && blocU.getAttribute("data-montre-si").split("=")[1];
+      var radioU = u && formF.querySelector('[name="univers"][value="' + CSS.escape(u) + '"]');
+      if (radioU) { radioU.checked = true; sauter[etapesF.indexOf(radioU.closest("[data-fe]"))] = true; }
+    }
     // Simulations santé : à l'écran « composer », barre pour ajouter ou retirer des couvertures,
     // synchronisée avec les cases de l'écran « familles » (utile quand le client n'a choisi qu'une chose au départ)
     var famF = formF.querySelector('[data-fe="familles"]'), compF = formF.querySelector('[data-fe="composer"]');
