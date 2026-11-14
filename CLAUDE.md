@@ -4,7 +4,7 @@ Site de génération de leads assurance et prévoyance pour la Suisse romande (f
 Le site est statique : `python3 build.py` génère `dist/`, publié par Netlify à chaque push sur `main`.
 
 ## Structure
-- `build.py` : générateur (Jinja2 + Markdown). CSS et JS publiés allégés à la génération (`alleger_fichiers`) ; les fichiers de `static/` restent lisibles. Produits retirés : redirections 301 dans `netlify.toml`.
+- `build.py` : générateur (Jinja2 + Markdown). CSS et JS publiés allégés à la génération (`alleger_fichiers`) ; les fichiers de `static/` restent lisibles. Produits retirés : redirections 301 dans `netlify.toml`. Bing Webmaster Tools vérifié par la balise `msvalidate.01` (`base.html`, à ne pas retirer). IndexNow : `build.py` écrit `/indexnow.json` (pages modifiées ces 2 derniers jours), envoyées à api.indexnow.org après chaque mise en ligne par `netlify/functions/deploy-succeeded.mjs` ; clé dans `static/80a1ed501ee442b4945fc893ae0bebfc.txt`.
 - `content/produits/*.md` : un fichier par produit (champs widgets : `retenir`, `pour_qui`, `quiz`, comme les articles) (carte sur la page Privé ou Pro, entrée de menu
   et page produit générée avec `templates/produit.html`). Un produit avec un champ `url` a une page fixe.
   Groupes et catégories autorisées : `GROUPES` dans `build.py`.

@@ -444,6 +444,9 @@ def main() -> None:
         ecrire(a["url"], tpl_article.render(url=a["url"], article=a, autres=autres[:3], og_image=og))
         sitemap.append((a["url"], a.get("maj", a["date"])))
 
+    # IndexNow : pages modifiées ces 2 derniers jours, envoyées à Bing après la mise en ligne (netlify/functions/deploy-succeeded.mjs)
+    limite = (dt.date.today() - dt.timedelta(days=2)).isoformat()
+    (DIST / "indexnow.json").write_text(json.dumps([SITE_URL + u for u, d in sitemap if d >= limite]), encoding="utf-8")
     lignes = [f"<url><loc>{SITE_URL}{u}</loc><lastmod>{d}</lastmod></url>" for u, d in sitemap]
     (DIST / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
