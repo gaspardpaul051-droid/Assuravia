@@ -5,31 +5,66 @@
   "note": "Dans les cantons de Vaud, Fribourg, Neuchâtel, du Jura et de Berne, l'incendie et les éléments naturels des bâtiments sont assurés obligatoirement auprès de l'établissement cantonal. La formule Complémentaire bâtiment ajoute ce que l'assurance cantonale ne couvre pas. Le spécialiste adapte l'offre à votre canton."} %}
 {% extends "simulation.html" %}
 {% import "partials/etapes.html" as e with context %}
+{% import "partials/icones.html" as i %}
+{% set CANTONS_LIBRES = "Genève|Valais|Autre canton" %}
+{% set CANTONS_ECA = "Vaud|Fribourg|Neuchâtel|Jura|Berne" %}
 {% block etapes %}
-{{ e.cartes("type_bien", "Quel type de bien ?", [
-  {"valeur": "Maison", "titre": "Maison ou villa", "icone": "maison"},
-  {"valeur": "Chalet", "icone": "maison"},
-  {"valeur": "Maison de vacances", "icone": "cle"},
-  {"valeur": "Immeuble", "titre": "Immeuble ou PPE", "icone": "batiment"}], premier=True) }}
-{{ e.ouvrir("valeur", "Quelle est la valeur de construction du bien ?", "C'est le coût pour reconstruire le bâtiment à neuf, sans le terrain. Il figure souvent sur votre police actuelle ou dans l'estimation de l'établissement cantonal.") }}
-  <div class="champ">
-    <label for="valeur-bt">Valeur de construction (CHF)</label>
-    <input id="valeur-bt" name="valeur_construction" type="number" inputmode="numeric" min="1" step="1" required placeholder="Ex. 850000" data-somme>
+{# 1. Propriétaire ? Un locataire part vers la simulation ménage (pas de lead bâtiment) #}
+{{ e.ouvrir("statut_bien", "Vous êtes…", premier=True) }}
+  <div class="choix-cartes">
+    <label class="choix-carte"><input type="radio" name="statut_bien" value="Propriétaire occupant" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span class="choix-carte__titre">Propriétaire, j'y habite</span></label>
+    <label class="choix-carte"><input type="radio" name="statut_bien" value="Propriétaire bailleur" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("cle") }}</span><span class="choix-carte__titre">Propriétaire, je loue</span></label>
+    <label class="choix-carte"><input type="radio" name="statut_bien" value="Achat en cours" required data-fe-auto><span class="choix-carte__icone">{{ i.icone("valide") }}</span><span class="choix-carte__titre">J'achète un bien</span></label>
+    <a class="choix-carte" href="/particuliers/simulation-menage/"><span class="choix-carte__icone">{{ i.icone("batiment") }}</span><span class="choix-carte__titre">Locataire</span><span class="choix-carte__detail">Votre assurance ménage</span></a>
+  </div>
+</fieldset>
+{# 2. Type de bien. Valeurs Maison, Chalet, Immeuble gardées pour les liens existants (?type_bien=…&passer=type_bien) #}
+{{ e.ouvrir("type_bien", "Quel type de bien ?") }}
+  <div class="choix-cartes">
+    <label class="choix-carte"><input type="radio" name="type_bien" value="Maison" required data-fe-auto data-valeur-defaut="valeur_construction:800000"><span class="choix-carte__icone">{{ i.icone("maison") }}</span><span class="choix-carte__titre">Villa ou maison</span></label>
+    <label class="choix-carte"><input type="radio" name="type_bien" value="Chalet" required data-fe-auto data-valeur-defaut="valeur_construction:600000"><span class="choix-carte__icone">{{ i.icone("cle") }}</span><span class="choix-carte__titre">Chalet ou maison de vacances</span></label>
+    <label class="choix-carte"><input type="radio" name="type_bien" value="Immeuble" required data-fe-auto data-valeur-defaut="valeur_construction:3000000"><span class="choix-carte__icone">{{ i.icone("batiment") }}</span><span class="choix-carte__titre">Immeuble locatif</span></label>
+    <label class="choix-carte"><input type="radio" name="type_bien" value="PPE" required data-fe-auto data-valeur-defaut="valeur_construction:2500000"><span class="choix-carte__icone">{{ i.icone("groupe") }}</span><span class="choix-carte__titre">Immeuble en PPE</span><span class="choix-carte__detail">Copropriété</span></label>
+  </div>
+  <p class="fe__aide">Bureaux, commerce ou atelier ? <a href="/entreprises/simulation-batiment/">Bâtiment professionnel</a></p>
+</fieldset>
+{# 3. Canton : il décide des formules proposées (couverture complète ou complément à l'assurance cantonale) #}
+{{ e.cartes("canton", "Dans quel canton se trouve le bien ?", [
+  {"valeur": "Genève"}, {"valeur": "Valais"}, {"valeur": "Vaud"}, {"valeur": "Fribourg"},
+  {"valeur": "Neuchâtel"}, {"valeur": "Jura"}, {"valeur": "Berne"}, {"valeur": "Autre canton"}],
+  aide="Selon le canton, l'incendie et les éléments naturels sont assurés par l'établissement cantonal ou par un assureur privé.") }}
+{# 4. Le bien : valeur proposée selon le type, nombre de logements pour un immeuble #}
+{{ e.ouvrir("valeur", "Parlez-nous de votre bien", "La valeur de construction est le coût pour reconstruire à neuf, sans le terrain. Nous proposons une valeur moyenne : corrigez-la si vous la connaissez.") }}
+  <div class="grille-champs">
+    <div class="champ">
+      <label for="valeur-bt">Valeur de construction (CHF)</label>
+      <input id="valeur-bt" name="valeur_construction" type="number" inputmode="numeric" min="1" step="1" required value="800000" data-somme>
+    </div>
+    <div class="champ" data-montre-si="type_bien=Immeuble|PPE" hidden>
+      <label for="logements-bt">Nombre de logements</label>
+      <input id="logements-bt" name="nb_logements" type="number" inputmode="numeric" min="1" step="1" placeholder="Ex. 8">
+    </div>
+  </div>
+  <div class="consentement fe__option">
+    <input id="valeur-inconnue-bt" name="valeur_inconnue" type="checkbox" value="oui">
+    <label for="valeur-inconnue-bt">Je ne connais pas la valeur exacte : le conseiller la vérifiera avec moi.</label>
   </div>
   {{ e.continuer() }}
 </fieldset>
+{# 5. Âge du bâtiment #}
+{{ e.cartes("annee_construction", "Quand le bâtiment a-t-il été construit ?", [
+  {"valeur": "Moins de 10 ans"}, {"valeur": "10 à 30 ans"}, {"valeur": "30 à 60 ans"}, {"valeur": "Plus de 60 ans"}]) }}
+{# 6. Formules : complètes à Genève et en Valais (libre choix), complément ailleurs #}
 {{ e.formules([
-  {"nom": "Essentiel", "taux": 0.8, "points": ["Incendie et événements naturels", "Dégâts d'eau", "Bris de glace jusqu'à CHF 10'000", "Faute grave couverte"]},
-  {"nom": "Confort", "taux": 0.95, "badge": "Le plus choisi", "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 15'000", "Dégâts d'eau", "Faute grave couverte"]},
-  {"nom": "Premium", "taux": 1.4, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 20'000", "Installations techniques jusqu'à CHF 50'000", "Dégâts d'eau", "Faute grave couverte"]},
-  {"nom": "Complémentaire bâtiment", "taux": 0.57, "badge": "Cantons à assurance cantonale", "points": ["All risk", "Dégâts d'eau", "Bris de glace", "Faute grave couverte"]},
+  {"nom": "Essentiel", "taux": 0.8, "si": "canton=" ~ CANTONS_LIBRES, "points": ["Incendie et événements naturels", "Dégâts d'eau", "Bris de glace jusqu'à CHF 10'000", "Faute grave couverte"]},
+  {"nom": "Confort", "taux": 0.95, "badge": "Le plus choisi", "si": "canton=" ~ CANTONS_LIBRES, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 15'000", "Dégâts d'eau", "Faute grave couverte"]},
+  {"nom": "Premium", "taux": 1.4, "si": "canton=" ~ CANTONS_LIBRES, "points": ["Incendie et événements naturels", "Vol", "Couverture élargie", "Bris de glace jusqu'à CHF 20'000", "Installations techniques jusqu'à CHF 50'000", "Dégâts d'eau", "Faute grave couverte"]},
+  {"nom": "Complémentaire bâtiment", "taux": 0.57, "badge": "Avec l'assurance cantonale", "si": "canton=" ~ CANTONS_ECA, "points": ["All risk", "Dégâts d'eau", "Bris de glace", "Faute grave couverte"]},
   {"nom": "Sur mesure", "taux": 0, "points": ["Vous choisissez chaque couverture", "Piscine, panneaux solaires, dépendances", "Un spécialiste construit l'offre avec vous"]}], prix=False) }}
-{{ e.options("Complétez votre protection, et vos économies", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
-  ("option_pj", "balance", "Protection juridique", "Litige avec un voisin, un artisan ou un vendeur : frais d'avocat et de procédure pris en charge.", 285),
-  ("option_cyber", "cyber", "Cyberassurance", "Piratage de vos comptes, achat en ligne frauduleux, atteinte à votre réputation sur internet.", 50),
-  ("interet_menage", "maison", "Revoir mon assurance ménage", "Un spécialiste revoit votre assurance ménage et vous montre ce qui peut être amélioré.", 0),
-  ("economiser_impots", "tirelire", "Payer moins d'impôts", "Un spécialiste vous montre ce que le 3e pilier ou votre déclaration peuvent vous faire économiser.", 0)], prix_visibles=False) }}
-{{ e.npa("Quelle est l'adresse du bien ?", "Elle détermine aussi l'assureur compétent selon le canton. Elle sert uniquement à votre demande.") }}
+{{ e.options("Complétez la protection de votre bien", "Facultatif. Cochez ce qui vous intéresse, ou continuez directement.", [
+  ("option_rc_proprietaire", "bouclier", "RC propriétaire", "Un passant blessé par une chute de neige du toit, un dégât causé chez le voisin : les prétentions de tiers sont couvertes.", 150),
+  ("option_pj", "balance", "Protection juridique immeuble", "Litige avec un voisin, un locataire ou une entreprise de construction : frais d'avocat et de procédure.", 285)], prix_visibles=False) }}
+{{ e.npa("Quelle est l'adresse du bien ?", "Le conseiller en a besoin pour préparer une offre exacte. Elle sert uniquement à votre demande.") }}
 {{ e.coordonnees(nom_prenom=True, naissance=False) }}
 {{ e.resultat("valeur") }}
 {% endblock %}

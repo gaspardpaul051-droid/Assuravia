@@ -225,7 +225,7 @@
 {{ ouvrir("formule", question) }}
   <div class="formules">
     {% for x in liste %}
-    <label class="formule{% if x.badge %} formule--conseil{% endif %}"><input type="radio" name="formule" value="{{ x.nom }}" data-taux="{{ x.taux }}" required data-fe-auto>
+    <label class="formule{% if x.badge %} formule--conseil{% endif %}"{% if x.si %} data-montre-si="{{ x.si }}"{% endif %}><input type="radio" name="formule" value="{{ x.nom }}" data-taux="{{ x.taux }}" required data-fe-auto>
       {% if x.badge %}<span class="formule__badge">{{ x.badge }}</span>{% endif %}
       <span class="formule__nom">{{ x.nom }}</span>
       {% if not prix %}{% elif x.taux %}<span class="formule__prix" data-prix-formule="{{ x.taux }}">CHF 000 / an</span>{% else %}<span class="formule__prix">Offre personnalisée</span>{% endif %}

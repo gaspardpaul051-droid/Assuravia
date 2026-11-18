@@ -1062,9 +1062,19 @@
         var parts = regle.split(neg ? "!=" : "="), nom = parts[0], attendu = parts[1];
         var el = formF.querySelector('[name="' + nom + '"]:checked');
         var v = el ? el.value : "";
-        bloc.hidden = neg ? v === attendu : v !== attendu;
+        // Plusieurs valeurs possibles : "canton=Genève|Valais"
+        var egal = attendu.split("|").indexOf(v) > -1;
+        bloc.hidden = neg ? egal : !egal;
+        // Formule masquée (ex. selon le canton) : elle ne reste pas choisie
+        if (bloc.hidden) bloc.querySelectorAll('input[name="formule"]:checked').forEach(function (r) { r.checked = false; });
+      });
+      // Valeur proposée selon un choix : data-valeur-defaut="champ:valeur" (tant que le client n'a pas modifié le champ)
+      formF.querySelectorAll("[data-valeur-defaut]:checked").forEach(function (r) {
+        var d = r.getAttribute("data-valeur-defaut").split(":"), cible = formF.querySelector('[name="' + d[0] + '"]');
+        if (cible && !cible.hasAttribute("data-modifie")) cible.value = d[1];
       });
     };
+    formF.querySelectorAll("[data-somme]").forEach(function (c) { c.addEventListener("input", function () { c.setAttribute("data-modifie", ""); }); });
     // Préremplissage depuis l'adresse (ex. simulateur de la page Privé) : ?nom=valeur
     // Anciens noms de secteurs encore utilisés dans des liens d'annonces Google Ads
     var ANCIENS_SECTEURS = { "Conseil et fiduciaire": "Conseil et finance", "Santé et thérapies": "Santé",
