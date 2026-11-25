@@ -66,6 +66,21 @@ Deux paramètres sont à fixer avec soin :
 
 Une somme trop basse entraîne une **sous-assurance** : l'indemnité est réduite en proportion. Certains contrats prévoient une renonciation à cette règle jusqu'à un certain écart, ou un ajustement automatique des sommes. C'est un point à comparer.
 
+## Propriétaire de vos locaux : immeuble et inventaire ensemble
+
+Vous possédez l'atelier, l'arcade ou l'immeuble où vous travaillez ? Il faut alors penser à deux couvertures qui se complètent :
+
+| Ce qu'il faut assurer | Avec quelle assurance |
+|---|---|
+| Les murs, la toiture, les installations fixes | [Assurance bâtiment d'entreprise](/entreprises/assurance-batiment/) |
+| Le mobilier, les machines, les marchandises | Assurance inventaire |
+| La marge perdue pendant les travaux | Interruption d'exploitation |
+| Les loyers des locaux que vous louez à d'autres | Option perte de loyers de l'assurance bâtiment |
+
+Le plus simple est de faire établir les deux offres en même temps, avec des sommes d'assurance cohérentes et les mêmes échéances. Un dégât d'eau abîme souvent le bâtiment **et** le stock : quand les deux contrats sont pensés ensemble, il n'y a pas de zone grise entre ce qui relève de l'un ou de l'autre.
+
+Dans les cantons où l'incendie et les éléments naturels du bâtiment sont assurés auprès de l'établissement cantonal (Vaud, Fribourg, Neuchâtel, Jura, Berne), le conseiller complète seulement ce qui manque.
+
 ## Les erreurs fréquentes
 
 - **Garder la somme d'assurance de l'ouverture** alors que l'entreprise a grandi.
@@ -77,6 +92,9 @@ Une somme trop basse entraîne une **sous-assurance** : l'indemnité est réduit
 
 ### Mes locaux professionnels sont-ils couverts ?
 Cela dépend de votre statut. Locataire, vous assurez votre inventaire, vos marchandises et les aménagements que vous avez payés (agencement, cuisine, vitrines). Propriétaire, le bâtiment lui-même se couvre avec une [assurance bâtiment d'entreprise](/entreprises/assurance-batiment/), et l'inventaire à part.
+
+### Peut-on assurer l'immeuble et l'inventaire de l'entreprise ensemble ?
+Oui. Ce sont deux contrats distincts, bâtiment d'un côté, inventaire et interruption d'exploitation de l'autre, mais un conseiller peut les préparer en même temps pour que les sommes et les échéances concordent.
 
 ### Mon bail commercial m'oblige-t-il à m'assurer ?
 Souvent oui : le bailleur exige en général une RC et une assurance de vos biens. Le bâtiment lui-même est assuré par le propriétaire.

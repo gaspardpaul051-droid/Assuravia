@@ -5,7 +5,7 @@ nom: Assurance de base (LAMal)
 categorie: Santé
 icone: croix
 ordre: 1
-titre_seo: Caisse maladie LAMal : franchise et modèle
+titre_seo: Changer de caisse maladie : franchise et modèle
 description: Assurance de base LAMal en Suisse romande : choisir sa franchise et son modèle, changer de caisse dans les délais et éviter les erreurs de résiliation.
 desc: Même couverture partout, mais pas le même prix : choisissez la bonne caisse, la bonne franchise et le bon modèle.
 points: Primes comparées entre caisses | Franchise adaptée à vos frais réels | Modèle médecin de famille, Telmed ou HMO
@@ -89,6 +89,9 @@ Une condition s'ajoute : vous ne devez pas avoir de primes ou de participations 
 Si votre revenu est modeste, votre canton peut prendre en charge une partie de vos primes : ce sont les **subsides** ou **réductions de primes**. Les conditions et les démarches dépendent du canton. Le conseiller vous indique si vous pourriez y avoir droit et vers quel service vous tourner.
 
 ## Questions fréquentes
+
+### Comment changer de caisse maladie, étape par étape ?
+Comparez les primes de votre région, choisissez la nouvelle caisse, la franchise et le modèle, puis demandez votre affiliation. Envoyez ensuite votre résiliation en recommandé à l'ancienne caisse : elle doit arriver au plus tard le dernier jour ouvrable de novembre pour un changement au 1er janvier. Gardez vos complémentaires tant que vous n'êtes pas accepté ailleurs.
 
 ### La nouvelle caisse peut-elle refuser de m'assurer ?
 Non, pas pour l'assurance de base. Toute caisse doit accepter toute personne domiciliée dans sa zone d'activité, sans questionnaire de santé.

@@ -96,6 +96,9 @@ En partie seulement. L'assurance ménage limite souvent les bijoux à un plafond
 ### À partir de quelle valeur une assurance dédiée est-elle utile ?
 Dès que vos objets de valeur dépassent le plafond prévu par votre assurance ménage, ou si vous les portez souvent hors de chez vous. Le conseiller fait le point avec votre contrat actuel.
 
+### Une entreprise peut-elle assurer ses objets de valeur ?
+Oui, mais pas avec cette assurance privée. Les œuvres d'art d'un bureau, le stock d'une bijouterie ou les montres d'un horloger s'assurent avec l'[assurance inventaire de l'entreprise](/entreprises/commerce-inventaire/), qui prévoit des limites et des mesures de protection propres aux objets de valeur.
+
 ### Faut-il un coffre-fort ?
 Certains assureurs l'exigent au-delà d'une certaine valeur, ou accordent une réduction. Les conditions de conservation font partie du contrat.
 

@@ -78,6 +78,16 @@ Pour estimer juste :
 
 Certains assureurs proposent une renonciation à la sous-assurance si vous utilisez leur outil d'estimation. Demandez-le à votre conseiller.
 
+## Premier logement : par quoi commencer ?
+
+Vous quittez le domicile de vos parents ou emménagez pour la première fois en Suisse ? Tant que vous viviez chez vos parents, leur contrat vous couvrait souvent. Dès que vous avez votre propre bail, il vous faut vos propres assurances.
+
+1. **La RC privée d'abord.** La plupart des régies la demandent avant la remise des clés, et c'est elle qui paie si vous causez un dégât d'eau chez le voisin du dessous.
+2. **L'assurance ménage ensuite.** Faites le tour de ce que vous possédez, pièce par pièce : on sous-estime presque toujours la valeur de ses affaires, vêtements et électronique compris.
+3. **Une seule police pour les deux.** Ménage et RC privée se combinent dans un même contrat, avec une seule échéance.
+
+Si vous achetez votre logement, ajoutez l'assurance du bâtiment : voyez notre page [assurance bâtiment](/particuliers/assurance-batiment/).
+
 ## Comment bien choisir son contrat
 
 Une bonne couverture tient au détail des conditions, pas seulement à la prime. Points à comparer :
@@ -102,6 +112,9 @@ Si vous craignez un litige avec votre régie ou un voisin, la RC privée ne suff
 
 ### La RC privée couvre-t-elle les dégâts dans mon appartement loué ?
 En général oui pour les dommages au-delà de l'usure normale, avec parfois une franchise spécifique. Vérifiez la mention « dégâts aux choses louées » dans votre contrat.
+
+### Quelle assurance prendre pour un premier logement ?
+Au minimum une RC privée, que la plupart des régies demandent, et une assurance ménage pour vos affaires. Les deux se combinent dans un seul contrat. Si vous êtes propriétaire, il faut aussi assurer le bâtiment.
 
 ### Mon vélo électrique est-il couvert ?
 Le vol au domicile est en général couvert par l'assurance ménage. Le vol à l'extérieur demande souvent l'option « vol simple ». Les vélos électriques rapides, dont l'assistance va jusqu'à 45 km/h, portent une plaque jaune avec une vignette qui sert de preuve d'assurance responsabilité civile. Pour un vélo électrique lent, la responsabilité est souvent comprise dans la RC privée.
